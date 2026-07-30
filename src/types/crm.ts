@@ -131,6 +131,46 @@ export interface AuditEntryInput {
   metadata?: Record<string, unknown>;
 }
 
+export interface Message {
+  id: string;
+  leadId: string;
+  senderId: string;
+  body: string;
+  createdAt: string;
+  readAt: string | null;
+}
+
+export interface MessageWithSender extends Message {
+  senderName: string;
+  senderRole: UserRole;
+}
+
+export type StudentNotificationType = 'status_change' | 'assigned' | 'message';
+
+export interface StudentNotification {
+  id: string;
+  type: StudentNotificationType;
+  leadId: string | null;
+  metadata: Record<string, unknown>;
+  createdAt: string;
+  read: boolean;
+}
+
+export interface NewMessageInput {
+  leadId: string;
+  senderId: string;
+  body: string;
+}
+
+export interface NewDocumentUploadInput {
+  applicationId: string;
+  fileName: string;
+  filePath: string;
+  mimeType: string;
+  sizeBytes: number;
+  uploadedBy: string;
+}
+
 // Ordered pipeline for UI steppers/Kanban columns.
 export const LEAD_PIPELINE: LeadStatus[] = [
   'new', 'contacted', 'document_collection', 'application_submitted',
