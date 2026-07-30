@@ -10,9 +10,6 @@ import {
 } from 'next-intl/server';
 import { routing, isRtl, isLocale, type AppLocale } from '@/i18n/routing';
 import { siteConfig } from '@/config/site';
-import { Header } from '@/components/layout/header';
-import { Footer } from '@/components/layout/footer';
-import { WhatsAppFloat } from '@/components/layout/whatsapp-float';
 import { JsonLd } from '@/components/seo/json-ld';
 import { organizationJsonLd, websiteJsonLd } from '@/lib/seo/json-ld';
 import '../globals.css';
@@ -81,10 +78,7 @@ export default async function LocaleLayout({
           >
             {tCommon('skipToContent')}
           </a>
-          <Header />
-          <main id="main">{children}</main>
-          <Footer />
-          <WhatsAppFloat />
+          {children}
         </NextIntlClientProvider>
       </body>
     </html>
