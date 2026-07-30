@@ -51,3 +51,12 @@ export async function uploadStudentDocument(formData: FormData): Promise<ActionR
   revalidateTag('student-documents');
   return { ok: true };
 }
+
+export async function markThreadReadAction(leadId: string): Promise<ActionResult> {
+  const session = await getStudentSession();
+  if (!session) return { ok: false, error: 'Not authenticated' };
+  const lead = await crm.getLead(leadId);
+  if (!lead || lead.userId !== session.userId) return { ok: false, error: 'Not allowed' };
+  await crm.markThreadRead(leadId, session.userId);
+  return { ok: true };
+}
