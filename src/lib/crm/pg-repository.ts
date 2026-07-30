@@ -13,9 +13,14 @@ import type {
   LeadFilter,
   LeadStatus,
   LeadWithRelations,
+  Message,
+  MessageWithSender,
   NewDocumentInput,
+  NewDocumentUploadInput,
   NewLeadInput,
+  NewMessageInput,
   Profile,
+  StudentNotification,
   StudentProfileInput,
 } from '@/types/crm';
 import { NotFoundError, type CrmRepository } from './repositories';
@@ -227,6 +232,60 @@ export function createPgCrm(getPool: () => Pool): CrmRepository {
     async getProfile(id: string): Promise<Profile | null> {
       const res = await q('select * from public.profiles where id = $1', [id]);
       return res.rowCount ? rowToProfile(res.rows[0]) : null;
+    },
+
+    async listStudents(): Promise<Profile[]> {
+      const res = await q(`select * from public.profiles where role = 'student' order by full_name`);
+      return res.rows.map(rowToProfile);
+    },
+
+    async listMyLeads(userId: string): Promise<LeadWithRelations[]> {
+      const res = await q(
+        `select l.*, s.id s_id, s.full_name s_name, s.email s_email, s.country_code s_country,
+                c.id c_id, c.full_name c_name
+         from public.leads l
+         join public.profiles s on s.id = l.user_id
+         left join public.profiles c on c.id = l.assigned_consultant_id
+         where l.user_id = $1
+         order by l.created_at desc`,
+        [userId],
+      );
+      return res.rows.map((r) => ({
+        ...rowToLead(r),
+        student: { id: r.s_id, fullName: r.s_name, email: r.s_email, countryCode: r.s_country },
+        consultant: r.c_id ? { id: r.c_id, fullName: r.c_name } : null,
+      }));
+    },
+
+    async listMyApplications(userId: string): Promise<Application[]> {
+      const res = await q(
+        `select a.* from public.applications a
+         join public.leads l on l.id = a.lead_id
+         where l.user_id = $1
+         order by a.created_at desc`,
+        [userId],
+      );
+      return res.rows.map((r) => ({
+        id: r.id, leadId: r.lead_id, universityId: r.university_id, programId: r.program_id,
+        status: r.status, assignedConsultantId: r.assigned_consultant_id, notes: r.notes,
+        createdAt: r.created_at, updatedAt: r.updated_at,
+      }));
+    },
+
+    async listMyDocuments(userId: string): Promise<ApplicationDocument[]> {
+      const res = await q(
+        `select d.* from public.application_documents d
+         join public.applications a on a.id = d.application_id
+         join public.leads l on l.id = a.lead_id
+         where l.user_id = $1
+         order by d.created_at desc`,
+        [userId],
+      );
+      return res.rows.map((r) => ({
+        id: r.id, applicationId: r.application_id, fileName: r.file_name, fileUrl: r.file_url,
+        mimeType: r.mime_type, sizeBytes: r.size_bytes, verified: r.verified,
+        uploadedBy: r.uploaded_by, createdAt: r.created_at,
+      }));
     },
 
     async findOrCreateStudent(input: StudentProfileInput): Promise<Profile> {
