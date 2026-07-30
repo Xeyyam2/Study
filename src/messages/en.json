@@ -326,5 +326,15 @@
     "title": "Something went wrong",
     "body": "An unexpected error occurred. Please try again.",
     "retry": "Try again"
+  },
+  "Student": {
+    "nav": { "overview": "Overview", "applications": "Applications", "documents": "Documents", "messages": "Messages", "notifications": "Notifications", "logout": "Log out" },
+    "overview": { "title": "My dashboard", "subtitle": "Track your applications, documents and messages.", "applications": "Applications", "unreadMessages": "Unread messages", "status": "Current status", "noApplications": "No applications yet", "recentNotifications": "Recent notifications" },
+    "applications": { "title": "My applications", "empty": "You have no applications yet.", "viewDetail": "View details" },
+    "detail": { "consultant": "Consultant", "timeline": "Activity" },
+    "documents": { "title": "My documents", "upload": "Upload a document", "uploadCta": "Upload", "uploadError": "Upload failed. Check the file type/size.", "empty": "No documents yet.", "verified": "Verified", "pending": "Pending", "download": "Download" },
+    "messages": { "title": "Messages", "empty": "No messages yet.", "placeholder": "Write a message…", "send": "Send", "consultant": "Consultant", "you": "You" },
+    "notifications": { "title": "Notifications", "empty": "No notifications.", "statusChange": "Your application status changed.", "assigned": "A consultant was assigned to you.", "message": "New message from {name}", "viewDetail": "View details" },
+    "login": { "title": "Student login (demo)", "subtitle": "Pick a demo student profile to continue.", "choose": "Continue" }
   }
 }

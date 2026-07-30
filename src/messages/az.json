@@ -326,5 +326,15 @@
     "title": "Bir şey düzgün getmədi",
     "body": "Gözlənilməz xəta baş verdi. Yenidən cəhd edin.",
     "retry": "Yenidən cəhd et"
+  },
+  "Student": {
+    "nav": { "overview": "Ümumi baxış", "applications": "Müraciətlər", "documents": "Sənədlər", "messages": "Mesajlar", "notifications": "Bildirişlər", "logout": "Çıxış" },
+    "overview": { "title": "Panelim", "subtitle": "Müraciətlərinizi, sənədlərinizi və mesajlarınızı izləyin.", "applications": "Müraciətlər", "unreadMessages": "Oxunmamış mesajlar", "status": "Cari status", "noApplications": "Hələ müraciət yoxdur", "recentNotifications": "Son bildirişlər" },
+    "applications": { "title": "Müraciətlərim", "empty": "Hələ müraciətiniz yoxdur.", "viewDetail": "Detalları gör" },
+    "detail": { "consultant": "Konsultant", "timeline": "Fəaliyyət" },
+    "documents": { "title": "Sənədlərim", "upload": "Sənəd yüklə", "uploadCta": "Yüklə", "uploadError": "Yükləmə alınmadı. Fayl tipini/ölçüsünü yoxlayın.", "empty": "Hələ sənəd yoxdur.", "verified": "Təsdiqlənib", "pending": "Gözləyir", "download": "Yüklə" },
+    "messages": { "title": "Mesajlar", "empty": "Hələ mesaj yoxdur.", "placeholder": "Mesaj yazın…", "send": "Göndər", "consultant": "Konsultant", "you": "Siz" },
+    "notifications": { "title": "Bildirişlər", "empty": "Bildiriş yoxdur.", "statusChange": "Müraciət statusunuz dəyişdi.", "assigned": "Sizə konsultant təyin olundu.", "message": "{name} adlı şəxsdən yeni mesaj", "viewDetail": "Detalları gör" },
+    "login": { "title": "Tələbə girişi (demo)", "subtitle": "Davam etmək üçün demo tələbə profili seçin.", "choose": "Davam et" }
   }
 }

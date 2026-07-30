@@ -326,5 +326,15 @@
     "title": "Что-то пошло не так",
     "body": "Произошла непредвиденная ошибка. Попробуйте снова.",
     "retry": "Повторить"
+  },
+  "Student": {
+    "nav": { "overview": "Обзор", "applications": "Заявки", "documents": "Документы", "messages": "Сообщения", "notifications": "Уведомления", "logout": "Выйти" },
+    "overview": { "title": "Моя панель", "subtitle": "Отслеживайте заявки, документы и сообщения.", "applications": "Заявки", "unreadMessages": "Непрочитанные", "status": "Текущий статус", "noApplications": "Заявок пока нет", "recentNotifications": "Недавние уведомления" },
+    "applications": { "title": "Мои заявки", "empty": "У вас пока нет заявок.", "viewDetail": "Подробнее" },
+    "detail": { "consultant": "Консультант", "timeline": "События" },
+    "documents": { "title": "Мои документы", "upload": "Загрузить документ", "uploadCta": "Загрузить", "uploadError": "Ошибка загрузки. Проверьте тип/размер.", "empty": "Документов пока нет.", "verified": "Проверен", "pending": "Ожидает", "download": "Скачать" },
+    "messages": { "title": "Сообщения", "empty": "Сообщений пока нет.", "placeholder": "Напишите сообщение…", "send": "Отправить", "consultant": "Консультант", "you": "Вы" },
+    "notifications": { "title": "Уведомления", "empty": "Нет уведомлений.", "statusChange": "Статус заявки изменился.", "assigned": "Вам назначен консультант.", "message": "Новое сообщение от {name}", "viewDetail": "Подробнее" },
+    "login": { "title": "Вход для студента (демо)", "subtitle": "Выберите демо-профиль студента.", "choose": "Продолжить" }
   }
 }

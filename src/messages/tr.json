@@ -326,5 +326,15 @@
     "title": "Bir şeyler ters gitti",
     "body": "Beklenmeyen bir hata oluştu. Lütfen tekrar deneyin.",
     "retry": "Tekrar dene"
+  },
+  "Student": {
+    "nav": { "overview": "Genel bakış", "applications": "Başvurular", "documents": "Belgeler", "messages": "Mesajlar", "notifications": "Bildirimler", "logout": "Çıkış yap" },
+    "overview": { "title": "Panelim", "subtitle": "Başvurularınızı, belgelerinizi ve mesajlarınızı takip edin.", "applications": "Başvurular", "unreadMessages": "Okunmamış mesajlar", "status": "Mevcut durum", "noApplications": "Henüz başvuru yok", "recentNotifications": "Son bildirimler" },
+    "applications": { "title": "Başvurularım", "empty": "Henüz başvurunuz yok.", "viewDetail": "Detayları gör" },
+    "detail": { "consultant": "Danışman", "timeline": "Etkinlik" },
+    "documents": { "title": "Belgelerim", "upload": "Belge yükle", "uploadCta": "Yükle", "uploadError": "Yükleme başarısız. Dosya türünü/boyutunu kontrol edin.", "empty": "Henüz belge yok.", "verified": "Doğrulandı", "pending": "Bekliyor", "download": "İndir" },
+    "messages": { "title": "Mesajlar", "empty": "Henüz mesaj yok.", "placeholder": "Mesaj yazın…", "send": "Gönder", "consultant": "Danışman", "you": "Siz" },
+    "notifications": { "title": "Bildirimler", "empty": "Bildirim yok.", "statusChange": "Başvuru durumunuz değişti.", "assigned": "Size bir danışman atandı.", "message": "{name} adlı kişiden yeni mesaj", "viewDetail": "Detayları gör" },
+    "login": { "title": "Öğrenci girişi (demo)", "subtitle": "Devam etmek için bir demo öğrenci profili seçin.", "choose": "Devam et" }
   }
 }
