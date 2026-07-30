@@ -48,3 +48,19 @@ create policy "docs_write" on public.application_documents for all
 
 drop policy if exists "audit_read" on public.audit_logs;
 create policy "audit_read" on public.audit_logs for select using (public.is_admin());
+
+-- messages (Phase 2C)
+alter table public.messages enable row level security;
+
+drop policy if exists "messages_read" on public.messages;
+create policy "messages_read" on public.messages for select using (
+  exists (select 1 from public.leads l where l.id = messages.lead_id
+          and (l.user_id = auth.uid() or l.assigned_consultant_id = auth.uid()))
+);
+
+drop policy if exists "messages_insert" on public.messages;
+create policy "messages_insert" on public.messages for insert with check (
+  sender_id = auth.uid()
+  and exists (select 1 from public.leads l where l.id = messages.lead_id
+          and (l.user_id = auth.uid() or l.assigned_consultant_id = auth.uid()))
+);
