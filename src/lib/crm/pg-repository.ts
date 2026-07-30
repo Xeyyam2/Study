@@ -334,6 +334,69 @@ export function createPgCrm(getPool: () => Pool): CrmRepository {
       return res.rows[0]?.c ?? 0;
     },
 
+    async listNotifications(userId: string, limit = 20): Promise<StudentNotification[]> {
+      const [auditRes, msgRes] = await Promise.all([
+        q(
+          `select a.id, a.action, a.metadata, a.created_at, l.id lead_id
+           from public.audit_logs a
+           join public.leads l on l.id = a.entity_id
+           where l.user_id = $1 and a.entity = 'lead'
+             and a.action in ('lead.create', 'lead.update_status', 'lead.assign')
+           order by a.created_at desc limit $2`,
+          [userId, limit],
+        ),
+        q(
+          `select m.id, m.body, m.created_at, m.lead_id, p.full_name sender_name
+           from public.messages m
+           join public.leads l on l.id = m.lead_id
+           join public.profiles p on p.id = m.sender_id
+           where l.user_id = $1 and m.sender_id <> $1 and m.read_at is null
+           order by m.created_at desc limit $2`,
+          [userId, limit],
+        ),
+      ]);
+      const notes: StudentNotification[] = [
+        ...auditRes.rows.map((r): StudentNotification => ({
+          id: `audit-${r.id}`,
+          type: r.action === 'lead.assign' ? 'assigned' : 'status_change',
+          leadId: r.lead_id,
+          metadata: r.metadata ?? {},
+          createdAt: r.created_at,
+          read: false,
+        })),
+        ...msgRes.rows.map((r): StudentNotification => ({
+          id: `msg-${r.id}`,
+          type: 'message',
+          leadId: r.lead_id,
+          metadata: { senderName: r.sender_name, body: r.body },
+          createdAt: r.created_at,
+          read: false,
+        })),
+      ];
+      return notes.sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1)).slice(0, limit);
+    },
+
+    async addStudentDocument(input: NewDocumentUploadInput): Promise<ApplicationDocument> {
+      const res = await q(
+        `insert into public.application_documents
+           (application_id, file_name, file_url, mime_type, size_bytes, uploaded_by)
+         values ($1, $2, $3, $4, $5, $6) returning *`,
+        [input.applicationId, input.fileName, input.filePath, input.mimeType, input.sizeBytes, input.uploadedBy],
+      );
+      const r = res.rows[0];
+      await audit({
+        userId: input.uploadedBy,
+        action: 'document.create',
+        entity: 'application',
+        entityId: input.applicationId,
+      });
+      return {
+        id: r.id, applicationId: r.application_id, fileName: r.file_name, fileUrl: r.file_url,
+        mimeType: r.mime_type, sizeBytes: r.size_bytes, verified: r.verified,
+        uploadedBy: r.uploaded_by, createdAt: r.created_at,
+      };
+    },
+
     async findOrCreateStudent(input: StudentProfileInput): Promise<Profile> {
       const found = await q('select * from public.profiles where email = $1', [input.email]);
       if (found.rowCount) return rowToProfile(found.rows[0]);

@@ -62,3 +62,30 @@ describe('student messaging', () => {
     expect(after).toBeLessThan(before);
   });
 });
+
+describe('notifications + student document', () => {
+  it('lists notifications composed from audit + unread messages', async () => {
+    const notes = await crm.listNotifications(STUDENT, 20);
+    expect(Array.isArray(notes)).toBe(true);
+    for (const n of notes) {
+      expect(['status_change', 'assigned', 'message']).toContain(n.type);
+    }
+  });
+
+  it('adds a student document row', async () => {
+    const apps = await crm.listMyApplications(STUDENT);
+    if (apps.length === 0) return;
+    const [app] = apps;
+    const before = await crm.listMyDocuments(STUDENT);
+    await crm.addStudentDocument({
+      applicationId: app.id,
+      fileName: 'test.pdf',
+      filePath: `${STUDENT}/test-uuid.pdf`,
+      mimeType: 'application/pdf',
+      sizeBytes: 1234,
+      uploadedBy: STUDENT,
+    });
+    const after = await crm.listMyDocuments(STUDENT);
+    expect(after.length).toBeGreaterThan(before.length);
+  });
+});
