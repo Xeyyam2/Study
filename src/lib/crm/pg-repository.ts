@@ -288,6 +288,52 @@ export function createPgCrm(getPool: () => Pool): CrmRepository {
       }));
     },
 
+    async listMessages(leadId: string): Promise<MessageWithSender[]> {
+      const res = await q(
+        `select m.*, p.full_name sender_name, p.role sender_role
+         from public.messages m
+         join public.profiles p on p.id = m.sender_id
+         where m.lead_id = $1
+         order by m.created_at asc`,
+        [leadId],
+      );
+      return res.rows.map((r) => ({
+        id: r.id, leadId: r.lead_id, senderId: r.sender_id, body: r.body,
+        createdAt: r.created_at, readAt: r.read_at,
+        senderName: r.sender_name, senderRole: r.sender_role,
+      }));
+    },
+
+    async sendMessage(input: NewMessageInput): Promise<Message> {
+      const res = await q(
+        `insert into public.messages (lead_id, sender_id, body) values ($1, $2, $3) returning *`,
+        [input.leadId, input.senderId, input.body],
+      );
+      const r = res.rows[0];
+      return {
+        id: r.id, leadId: r.lead_id, senderId: r.sender_id, body: r.body,
+        createdAt: r.created_at, readAt: r.read_at,
+      };
+    },
+
+    async markThreadRead(leadId: string, readerId: string): Promise<void> {
+      await q(
+        `update public.messages set read_at = now()
+         where lead_id = $1 and sender_id <> $2 and read_at is null`,
+        [leadId, readerId],
+      );
+    },
+
+    async unreadMessageCount(userId: string): Promise<number> {
+      const res = await q(
+        `select count(*)::int c from public.messages m
+         join public.leads l on l.id = m.lead_id
+         where l.user_id = $1 and m.sender_id <> $1 and m.read_at is null`,
+        [userId],
+      );
+      return res.rows[0]?.c ?? 0;
+    },
+
     async findOrCreateStudent(input: StudentProfileInput): Promise<Profile> {
       const found = await q('select * from public.profiles where email = $1', [input.email]);
       if (found.rowCount) return rowToProfile(found.rows[0]);

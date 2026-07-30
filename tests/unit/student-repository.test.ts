@@ -39,3 +39,26 @@ describe('student-scoped reads', () => {
     expect(Array.isArray(docs)).toBe(true);
   });
 });
+
+describe('student messaging', () => {
+  const CONSULTANT = '22222222-2222-2222-2222-222222222222'; // Ayşe (seed)
+
+  it('sends and lists messages in a lead thread', async () => {
+    const [lead] = await crm.listMyLeads(STUDENT);
+    const sent = await crm.sendMessage({ leadId: lead.id, senderId: STUDENT, body: 'Hello consultant' });
+    expect(sent.body).toBe('Hello consultant');
+    const thread = await crm.listMessages(lead.id);
+    expect(thread.some((m) => m.id === sent.id)).toBe(true);
+    expect(thread[0].senderName).toBeTruthy();
+  });
+
+  it('counts unread messages sent to the student, then marks them read', async () => {
+    const [lead] = await crm.listMyLeads(STUDENT);
+    await crm.sendMessage({ leadId: lead.id, senderId: CONSULTANT, body: 'Reply' });
+    const before = await crm.unreadMessageCount(STUDENT);
+    expect(before).toBeGreaterThanOrEqual(1);
+    await crm.markThreadRead(lead.id, STUDENT);
+    const after = await crm.unreadMessageCount(STUDENT);
+    expect(after).toBeLessThan(before);
+  });
+});
