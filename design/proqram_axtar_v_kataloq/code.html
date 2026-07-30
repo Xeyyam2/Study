@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>StudyTurkey - Program Search</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Geist:wght@600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-secondary-container": "#592600",
+                        "on-primary-container": "#c4d2ff",
+                        "tertiary": "#004b58",
+                        "primary": "#003d9b",
+                        "surface-variant": "#dce2f3",
+                        "on-background": "#151c27",
+                        "surface-container-lowest": "#ffffff",
+                        "on-primary-fixed-variant": "#0040a2",
+                        "on-tertiary-container": "#70e2ff",
+                        "on-surface-variant": "#434654",
+                        "on-secondary-fixed": "#321200",
+                        "inverse-surface": "#2a313d",
+                        "on-secondary-fixed-variant": "#753400",
+                        "secondary-fixed": "#ffdbc8",
+                        "secondary-container": "#fb7800",
+                        "surface-card": "#FFFFFF",
+                        "on-surface": "#151c27",
+                        "surface-container-highest": "#dce2f3",
+                        "inverse-on-surface": "#ebf1ff",
+                        "on-tertiary-fixed-variant": "#004e5d",
+                        "tertiary-fixed": "#adecff",
+                        "surface-container-low": "#f0f3ff",
+                        "surface-tint": "#0c56d0",
+                        "surface-bright": "#f9f9ff",
+                        "surface-container": "#e7eefe",
+                        "error-container": "#ffdad6",
+                        "primary-fixed-dim": "#b2c5ff",
+                        "surface": "#f9f9ff",
+                        "tertiary-fixed-dim": "#5dd6f3",
+                        "on-secondary": "#ffffff",
+                        "border-low-contrast": "#E5E7EB",
+                        "background-subtle": "#F9FAFB",
+                        "on-primary": "#ffffff",
+                        "primary-container": "#0052cc",
+                        "verified-green": "#10B981",
+                        "tertiary-container": "#006476",
+                        "secondary": "#994700",
+                        "outline-variant": "#c3c6d6",
+                        "error": "#ba1a1a",
+                        "on-tertiary-fixed": "#001f26",
+                        "on-primary-fixed": "#001848",
+                        "secondary-fixed-dim": "#ffb68b",
+                        "on-tertiary": "#ffffff",
+                        "inverse-primary": "#b2c5ff",
+                        "outline": "#737685",
+                        "on-error": "#ffffff",
+                        "surface-dim": "#d3daea",
+                        "background": "#f9f9ff",
+                        "surface-container-high": "#e2e8f8",
+                        "primary-fixed": "#dae2ff",
+                        "on-error-container": "#93000a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-max": "1280px",
+                        "section-gap-lg": "80px",
+                        "gutter": "24px",
+                        "section-gap-md": "48px",
+                        "stack-md": "16px",
+                        "margin-mobile": "16px",
+                        "stack-sm": "8px"
+                    },
+                    "fontFamily": {
+                        "body-lg": ["Inter"],
+                        "body-sm": ["Inter"],
+                        "headline-xl-mobile": ["Geist"],
+                        "body-md": ["Inter"],
+                        "headline-lg": ["Geist"],
+                        "tabular-nums": ["Inter"],
+                        "label-md": ["Geist"],
+                        "headline-md": ["Geist"],
+                        "headline-xl": ["Geist"]
+                    },
+                    "fontSize": {
+                        "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+                        "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "headline-xl-mobile": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "headline-lg": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.01em", "fontWeight": "600" }],
+                        "tabular-nums": ["14px", { "lineHeight": "20px", "fontWeight": "500" }],
+                        "label-md": ["14px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "600" }],
+                        "headline-md": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "headline-xl": ["48px", { "lineHeight": "56px", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md antialiased flex flex-col min-h-screen">
+<!-- TopNavBar -->
+<header class="bg-surface dark:bg-on-background border-b border-border-low-contrast dark:border-outline-variant w-full sticky top-0 z-50">
+<div class="flex justify-between items-center w-full px-gutter max-w-container-max mx-auto h-16">
+<div class="flex items-center gap-gutter">
+<a class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed" href="#">StudyTurkey</a>
+<nav class="hidden md:flex gap-6">
+<a class="text-on-surface-variant dark:text-surface-variant font-medium hover:text-primary dark:hover:text-primary-fixed transition-colors" href="#">Universities</a>
+<a class="text-primary dark:text-primary-fixed border-b-2 border-primary font-bold pb-1 hover:text-primary dark:hover:text-primary-fixed transition-colors" href="#">Programs</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-medium hover:text-primary dark:hover:text-primary-fixed transition-colors" href="#">Scholarships</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-medium hover:text-primary dark:hover:text-primary-fixed transition-colors" href="#">Life in Turkey</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="hidden lg:flex relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant" data-icon="search">search</span>
+<input class="pl-10 pr-4 py-2 bg-surface-container-low border border-border-low-contrast rounded-full focus:ring-2 focus:ring-primary focus:border-transparent font-body-sm text-body-sm w-64 transition-all" placeholder="Search programs, cities..." type="text"/>
+</div>
+<div class="flex items-center gap-2">
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="language">language</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined" data-icon="account_circle">account_circle</span>
+</button>
+</div>
+<div class="hidden sm:flex items-center gap-3">
+<button class="font-label-md text-label-md text-on-surface hover:text-primary transition-colors px-4 py-2">Login</button>
+<button class="font-label-md text-label-md bg-secondary text-on-secondary px-4 py-2 rounded hover:bg-secondary-container transition-colors">Apply Now</button>
+</div>
+</div>
+</div>
+</header>
+<div class="flex-1 w-full max-w-container-max mx-auto flex flex-col lg:flex-row">
+<!-- SideNavBar (Filters) -->
+<aside class="hidden lg:flex flex-col p-6 gap-stack-md h-full w-80 sticky top-16 bg-surface-container-low dark:bg-on-background self-start border-r border-border-low-contrast">
+<div class="mb-4">
+<h2 class="font-headline-md text-headline-md font-bold text-primary">Filters</h2>
+<p class="font-body-sm text-body-sm text-on-surface-variant mt-1">Narrow your search</p>
+</div>
+<nav class="flex flex-col gap-2">
+<a class="flex items-center gap-3 p-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-variant dark:hover:bg-surface-container-high rounded-lg transition-all duration-200 ease-in-out font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined" data-icon="location_on">location_on</span>
+                    Location
+                </a>
+<a class="flex items-center gap-3 p-3 text-primary dark:text-primary-fixed font-bold bg-surface-container-highest dark:bg-tertiary-container rounded-lg transition-all duration-200 ease-in-out font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined" data-icon="school">school</span>
+                    Degree Level
+                </a>
+<a class="flex items-center gap-3 p-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-variant dark:hover:bg-surface-container-high rounded-lg transition-all duration-200 ease-in-out font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined" data-icon="payments">payments</span>
+                    Tuition Range
+                </a>
+<a class="flex items-center gap-3 p-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-variant dark:hover:bg-surface-container-high rounded-lg transition-all duration-200 ease-in-out font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined" data-icon="translate">translate</span>
+                    Language
+                </a>
+<a class="flex items-center gap-3 p-3 text-on-surface-variant dark:text-surface-variant hover:bg-surface-variant dark:hover:bg-surface-container-high rounded-lg transition-all duration-200 ease-in-out font-label-md text-label-md" href="#">
+<span class="material-symbols-outlined" data-icon="leaderboard">leaderboard</span>
+                    Ranking
+                </a>
+</nav>
+<div class="mt-auto pt-6">
+<button class="w-full font-label-md text-label-md bg-primary-container text-on-primary-container px-4 py-3 rounded-lg hover:bg-primary hover:text-on-primary transition-colors text-center">Apply Filters</button>
+</div>
+</aside>
+<!-- Main Content -->
+<main class="flex-1 p-margin-mobile md:p-gutter">
+<div class="mb-section-gap-md">
+<h1 class="font-headline-xl-mobile md:font-headline-xl text-headline-xl-mobile md:text-headline-xl text-on-surface mb-2">Engineering Programs in Turkey</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">Discover top-ranked engineering degrees across Turkey's leading technical universities, designed to launch your global career.</p>
+</div>
+<div class="flex justify-between items-center mb-6">
+<span class="font-body-sm text-body-sm text-on-surface-variant">Showing 243 programs</span>
+<div class="flex items-center gap-2">
+<span class="font-label-md text-label-md text-on-surface-variant">Sort by:</span>
+<select class="bg-surface border border-border-low-contrast rounded-md px-3 py-1 font-body-sm text-body-sm focus:ring-primary focus:border-primary">
+<option>Ranking (High to Low)</option>
+<option>Tuition (Low to High)</option>
+<option>Alphabetical</option>
+</select>
+</div>
+</div>
+<!-- Program List Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter mb-section-gap-lg">
+<!-- Card 1 -->
+<article class="bg-surface-card border border-border-low-contrast rounded-xl overflow-hidden hover:shadow-[0_4px_12px_rgba(0,0,0,0.04)] transition-shadow duration-300 flex flex-col h-full">
+<div class="relative h-48 w-full">
+<img class="w-full h-full object-cover" data-alt="Modern architecture of a university engineering faculty building on a bright sunny day, wide angle shot, clean light mode aesthetic, crisp details, professional academic atmosphere, high resolution." src="https://lh3.googleusercontent.com/aida-public/AB6AXuByj8I_y9WKDO6SLqY6adYwXWsMKdGM535NeByDdKx39Uqqto-LM1OHEt89RkUaLgk26j9wFjGMifqdahbaj_1CdJJrzdEVmCLJ6uC_eAKrNmRIpFlp8soW-3yjbAEjn5JZ32DyhS-eQd9IjZl17ka57dmMpbcSvBiOuDuglljbG0g3AUShPFk97G2BtR5LKKfaAlcpU4bGPL4F6QgPliMNmBdBDX7hXvAvviK-XfQEQVMN7DV-9LDvBA"/>
+<div class="absolute top-4 right-4 bg-surface/90 backdrop-blur-sm px-3 py-1 rounded-full flex items-center gap-1 border border-border-low-contrast shadow-sm">
+<span class="material-symbols-outlined text-verified-green text-[16px]" data-icon="verified">verified</span>
+<span class="font-label-md text-label-md text-on-surface">Top 500</span>
+</div>
+</div>
+<div class="p-6 flex flex-col flex-1">
+<div class="mb-4">
+<span class="inline-block px-2 py-1 bg-surface-container text-primary font-label-md text-label-md rounded text-[12px] mb-2 uppercase tracking-wide">BSc</span>
+<h3 class="font-headline-md text-headline-md text-on-surface leading-tight mb-1">Computer Engineering</h3>
+<p class="font-body-md text-body-md text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]" data-icon="account_balance">account_balance</span>
+                                Istanbul Technical University
+                            </p>
+</div>
+<div class="grid grid-cols-2 gap-4 mb-6 mt-auto pt-4 border-t border-border-low-contrast">
+<div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-1">Tuition / Year</p>
+<p class="font-tabular-nums text-tabular-nums text-on-surface font-semibold">$3,500</p>
+</div>
+<div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-1">Duration</p>
+<p class="font-tabular-nums text-tabular-nums text-on-surface">4 Years</p>
+</div>
+<div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-1">Language</p>
+<p class="font-body-sm text-body-sm text-on-surface flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="language">language</span> 100% English
+                                </p>
+</div>
+<div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-1">City</p>
+<p class="font-body-sm text-body-sm text-on-surface flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="location_on">location_on</span> Istanbul
+                                </p>
+</div>
+</div>
+<div class="flex gap-3 mt-4">
+<button class="flex-1 font-label-md text-label-md border border-primary text-primary px-4 py-2 rounded hover:bg-surface-container transition-colors">Details</button>
+<button class="flex-1 font-label-md text-label-md bg-secondary text-on-secondary px-4 py-2 rounded hover:bg-secondary-container transition-colors shadow-sm">Apply Now</button>
+</div>
+</div>
+</article>
+<!-- Card 2 -->
+<article class="bg-surface-card border border-border-low-contrast rounded-xl overflow-hidden hover:shadow-[0_4px_12px_rgba(0,0,0,0.04)] transition-shadow duration-300 flex flex-col h-full">
+<div class="relative h-48 w-full">
+<img class="w-full h-full object-cover" data-alt="High tech robotics laboratory in a modern Turkish university, students working on a robotic arm, bright clinical lighting, professional educational environment, clean modern aesthetic, sharp focus." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAWRchl7vK8mQtqOIyGv2pYnIiWnZL2Ewukfak8FskMbDQ6a9UnhUvVBbgeUamLLUz6dOkUXbRoetcTFEAeE0uJ5InYhCGInPL9jXxe-tw0xZXnSatniivmRX7wtup7wnZkKplzhBrXMmNSf6nfQskQIJmYVLAjcuS1ohoLVwSJ-TSjGPtNJ-UfkalloXoISrig_rks_YEhiHYWpg8_Zz-jaGTy4Lzyxw3mJzYuTCfHLMxzKNHe5mGD0w"/>
+<div class="absolute top-4 right-4 bg-surface/90 backdrop-blur-sm px-3 py-1 rounded-full flex items-center gap-1 border border-border-low-contrast shadow-sm">
+<span class="material-symbols-outlined text-verified-green text-[16px]" data-icon="verified">verified</span>
+<span class="font-label-md text-label-md text-on-surface">Top 1000</span>
+</div>
+</div>
+<div class="p-6 flex flex-col flex-1">
+<div class="mb-4">
+<span class="inline-block px-2 py-1 bg-surface-container text-primary font-label-md text-label-md rounded text-[12px] mb-2 uppercase tracking-wide">MSc</span>
+<h3 class="font-headline-md text-headline-md text-on-surface leading-tight mb-1">Mechatronics Engineering</h3>
+<p class="font-body-md text-body-md text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-[18px]" data-icon="account_balance">account_balance</span>
+                                Middle East Technical Univ.
+                            </p>
+</div>
+<div class="grid grid-cols-2 gap-4 mb-6 mt-auto pt-4 border-t border-border-low-contrast">
+<div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-1">Tuition / Year</p>
+<p class="font-tabular-nums text-tabular-nums text-on-surface font-semibold">$4,200</p>
+</div>
+<div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-1">Duration</p>
+<p class="font-tabular-nums text-tabular-nums text-on-surface">2 Years</p>
+</div>
+<div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-1">Language</p>
+<p class="font-body-sm text-body-sm text-on-surface flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="language">language</span> 100% English
+                                </p>
+</div>
+<div>
+<p class="font-body-sm text-body-sm text-on-surface-variant mb-1">City</p>
+<p class="font-body-sm text-body-sm text-on-surface flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="location_on">location_on</span> Ankara
+                                </p>
+</div>
+</div>
+<div class="flex gap-3 mt-4">
+<button class="flex-1 font-label-md text-label-md border border-primary text-primary px-4 py-2 rounded hover:bg-surface-container transition-colors">Details</button>
+<button class="flex-1 font-label-md text-label-md bg-secondary text-on-secondary px-4 py-2 rounded hover:bg-secondary-container transition-colors shadow-sm">Apply Now</button>
+</div>
+</div>
+</article>
+</div>
+<!-- SEO Content Section -->
+<section class="bg-surface-container-lowest border border-border-low-contrast rounded-xl p-8 mb-section-gap-md max-w-4xl">
+<h2 class="font-headline-lg text-headline-lg text-on-surface mb-4">Studying Engineering in Turkey</h2>
+<div class="prose prose-sm md:prose-base text-on-surface-variant font-body-md text-body-md space-y-4">
+<p>Turkey has rapidly become a hub for technological innovation and engineering excellence in the region. Choosing to study engineering at a Turkish university offers international students a unique blend of high-quality education, state-of-the-art laboratory facilities, and highly competitive tuition fees compared to Western Europe and North America.</p>
+<p>Many top-tier universities, such as Istanbul Technical University (ITU) and Middle East Technical University (METU), hold ABET accreditation, ensuring your degree is globally recognized. Programs are increasingly taught entirely in English, preparing graduates for the international job market.</p>
+</div>
+</section>
+</main>
+</div>
+<!-- Footer -->
+<footer class="bg-surface-container-highest dark:bg-on-background border-t border-border-low-contrast dark:border-outline-variant w-full mt-auto">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-gutter px-gutter py-section-gap-md max-w-container-max mx-auto">
+<div class="col-span-1 md:col-span-1 flex flex-col items-start gap-4">
+<span class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed">StudyTurkey</span>
+<p class="font-body-sm text-body-sm text-on-surface dark:text-on-surface-variant">© 2024 StudyTurkey. Official Academic Authority Platform.</p>
+</div>
+<div class="col-span-1 md:col-span-3 grid grid-cols-2 md:grid-cols-3 gap-8">
+<nav class="flex flex-col gap-3">
+<a class="font-body-sm text-body-sm text-on-surface-variant dark:text-surface-variant hover:text-primary hover:underline transition-all" href="#">About Us</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant dark:text-surface-variant hover:text-primary hover:underline transition-all" href="#">Visa Guide</a>
+</nav>
+<nav class="flex flex-col gap-3">
+<a class="font-body-sm text-body-sm text-on-surface-variant dark:text-surface-variant hover:text-primary hover:underline transition-all" href="#">Contact Support</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant dark:text-surface-variant hover:text-primary hover:underline transition-all" href="#">Privacy Policy</a>
+</nav>
+<nav class="flex flex-col gap-3">
+<a class="font-body-sm text-body-sm text-on-surface-variant dark:text-surface-variant hover:text-primary hover:underline transition-all" href="#">University Rankings</a>
+<a class="font-body-sm text-body-sm text-on-surface-variant dark:text-surface-variant hover:text-primary hover:underline transition-all" href="#">City Guides</a>
+</nav>
+</div>
+</div>
+</footer>
+</body></html>

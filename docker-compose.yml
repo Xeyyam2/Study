@@ -1,0 +1,14 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: study_crm_db
+    environment:
+      POSTGRES_DB: study_crm
+      POSTGRES_USER: study
+      POSTGRES_PASSWORD: study
+    ports:
+      - "5433:5432"
+    volumes:
+      - study_pgdata:/var/lib/postgresql/data
+volumes:
+  study_pgdata:

@@ -1,0 +1,93 @@
+import { describe, it, expect } from 'vitest';
+import { data } from '@/lib/data';
+
+describe('UniversityRepository (seed)', () => {
+  it('lists all seed universities', async () => {
+    const list = await data.universities.list();
+    expect(list.length).toBe(10);
+  });
+
+  it('returns featured universities', async () => {
+    const featured = await data.universities.getFeatured(4);
+    expect(featured.length).toBeLessThanOrEqual(4);
+    expect(featured.every((u) => u.featured)).toBe(true);
+  });
+
+  it('filters by city', async () => {
+    const istanbul = await data.universities.list({ citySlug: 'istanbul' });
+    expect(istanbul.length).toBeGreaterThan(0);
+    expect(
+      istanbul.every((u) => u.cityId === 'c-istanbul'),
+    ).toBe(true);
+  });
+
+  it('filters by degree level', async () => {
+    const masters = await data.universities.list({ degreeLevel: 'master' });
+    expect(masters.length).toBeGreaterThan(0);
+  });
+
+  it('returns null for unknown slug', async () => {
+    expect(await data.universities.getBySlug('does-not-exist')).toBeNull();
+  });
+
+  it('getDetail enriches with programs and city', async () => {
+    const detail = await data.universities.getDetail('bahcesehir-university');
+    expect(detail).not.toBeNull();
+    expect(detail!.programs.length).toBeGreaterThan(0);
+    expect(detail!.city?.slug).toBe('istanbul');
+  });
+
+  it('computes min tuition', () => {
+    expect(data.universities.getMinTuitionUSD('u-bahcesehir')).toBeGreaterThan(0);
+  });
+
+  it('computes aggregate rating', () => {
+    const r = data.universities.getRating('u-bahcesehir');
+    expect(r.count).toBeGreaterThan(0);
+    expect(r.rating).toBeGreaterThan(0);
+    expect(r.rating).toBeLessThanOrEqual(5);
+  });
+
+  it('returns related universities excluding self', async () => {
+    const related = await data.universities.getRelated('bahcesehir-university');
+    expect(related.every((u) => u.slug !== 'bahcesehir-university')).toBe(true);
+  });
+});
+
+describe('ProgramRepository (seed)', () => {
+  it('exposes categories', () => {
+    expect(data.programs.getCategories().length).toBeGreaterThan(0);
+  });
+
+  it('builds programmatic combinations', () => {
+    const combos = data.programs.getCombinations();
+    expect(combos.length).toBeGreaterThan(0);
+    for (const c of combos) {
+      expect(c.universityCount).toBeGreaterThan(0);
+      expect(c.minTuitionUSD).toBeGreaterThan(0);
+    }
+  });
+
+  it('resolves a category+city combination', () => {
+    const result = data.programs.getByCategoryAndCity('computer-science', 'istanbul');
+    expect(result.city?.slug).toBe('istanbul');
+    expect(result.programs.length).toBeGreaterThan(0);
+  });
+});
+
+describe('Supporting repositories', () => {
+  it('lists cities and countries', async () => {
+    expect((await data.cities.list()).length).toBeGreaterThan(0);
+    expect((await data.countries.list()).length).toBeGreaterThan(0);
+  });
+
+  it('returns general FAQs', async () => {
+    expect((await data.faqs.general()).length).toBeGreaterThan(0);
+  });
+
+  it('returns blog posts sorted by date', async () => {
+    const posts = await data.blog.list();
+    expect(posts.length).toBeGreaterThan(0);
+    expect(posts[0].publishedAt >= posts[1].publishedAt).toBe(true);
+  });
+});
