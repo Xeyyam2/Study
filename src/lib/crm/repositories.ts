@@ -12,9 +12,14 @@ import type {
   LeadFilter,
   LeadStatus,
   LeadWithRelations,
+  Message,
+  MessageWithSender,
   NewDocumentInput,
+  NewDocumentUploadInput,
   NewLeadInput,
+  NewMessageInput,
   Profile,
+  StudentNotification,
   StudentProfileInput,
 } from '@/types/crm';
 
@@ -49,4 +54,15 @@ export interface CrmRepository {
   // audit
   writeAudit(entry: AuditEntryInput): Promise<void>;
   listAudit(filter?: AuditFilter): Promise<AuditLog[]>;
+  // student-scoped (Phase 2C)
+  listStudents(): Promise<Profile[]>;
+  listMyLeads(userId: string): Promise<LeadWithRelations[]>;
+  listMyApplications(userId: string): Promise<Application[]>;
+  listMyDocuments(userId: string): Promise<ApplicationDocument[]>;
+  listMessages(leadId: string): Promise<MessageWithSender[]>;
+  sendMessage(input: NewMessageInput): Promise<Message>;
+  markThreadRead(leadId: string, readerId: string): Promise<void>;
+  unreadMessageCount(userId: string): Promise<number>;
+  listNotifications(userId: string, limit?: number): Promise<StudentNotification[]>;
+  addStudentDocument(input: NewDocumentUploadInput): Promise<ApplicationDocument>;
 }
