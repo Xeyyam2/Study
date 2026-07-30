@@ -1,11 +1,26 @@
 // scripts/migrate.ts
 import { Pool } from 'pg';
-import { readFileSync, readdirSync } from 'node:fs';
+import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = join(__dirname, '..');
+
+// Load .env.local / .env into process.env (tsx does not auto-load them like Next.js does).
+for (const file of ['.env.local', '.env']) {
+  const envPath = join(root, file);
+  if (!existsSync(envPath)) continue;
+  for (const line of readFileSync(envPath, 'utf8').split('\n')) {
+    const match = line.match(/^\s*([A-Z0-9_]+)\s*=\s*(.*)\s*$/);
+    if (!match) continue;
+    const [, key, value] = match;
+    if (process.env[key] === undefined) {
+      process.env[key] = value.replace(/^["']|["']$/g, '');
+    }
+  }
+}
+
 const migrationsDir = join(root, 'supabase', 'migrations');
 const seedPath = join(root, 'supabase', 'seed.sql');
 
