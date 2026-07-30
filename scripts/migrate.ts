@@ -10,7 +10,12 @@ const migrationsDir = join(root, 'supabase', 'migrations');
 const seedPath = join(root, 'supabase', 'seed.sql');
 
 // Skip locally: require Supabase auth schema. 0007 is manual-only (Phase 2B), never auto-run.
-const SKIP_LOCAL = ['0005_rls.sql', '0006_auth_trigger.sql', '0007_link_profiles_to_auth_users.sql'];
+const SKIP_LOCAL = [
+  '0005_rls.sql',
+  '0006_auth_trigger.sql',
+  '0007_link_profiles_to_auth_users.sql',
+  '0009_storage_bucket.sql',
+];
 
 async function main() {
   const args = new Set(process.argv.slice(2));
