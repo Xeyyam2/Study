@@ -3,6 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { EmailOtpForm } from '@/components/student/EmailOtpForm';
 import { Button } from '@/components/ui/button';
 import { crm } from '@/lib/crm';
+import { isDevAuthEnabled } from '@/lib/crm/student-session';
 
 export const dynamic = 'force-dynamic';
 
@@ -15,7 +16,7 @@ export default async function StudentLoginPage({
   const t = await getTranslations({ locale, namespace: 'Student.login' });
   const base = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000';
   const callbackUrl = `${base}/auth/callback?next=/${locale}/dashboard`;
-  const isDev = process.env.NODE_ENV !== 'production';
+  const isDev = isDevAuthEnabled();
 
   let demoStudents: Awaited<ReturnType<typeof crm.listStudents>> = [];
   if (isDev) demoStudents = await crm.listStudents();

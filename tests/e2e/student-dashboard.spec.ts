@@ -1,9 +1,9 @@
 import { test, expect } from '@playwright/test';
 
-test('student login → overview → messages', async ({ page }) => {
+test('student dev-login → overview → messages', async ({ page }) => {
   await page.goto('/en/dashboard/login');
-  // pick the first demo student button
-  await page.getByRole('button').first().click();
+  // dev fallback (NODE_ENV=development): pick the demo student Ali Veli
+  await page.getByRole('button', { name: /Ali Veli/ }).click();
   await expect(page).toHaveURL(/\/en\/dashboard$/);
   await expect(page.getByRole('heading', { name: 'My dashboard' })).toBeVisible();
 

@@ -23,5 +23,6 @@ export default defineConfig({
     url: 'http://localhost:3000',
     reuseExistingServer: !process.env.CI,
     timeout: 180_000,
+    env: { DEV_AUTH_ENABLED: '1' },
   },
 });
