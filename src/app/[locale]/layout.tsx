@@ -11,6 +11,7 @@ import {
 import { routing, isRtl, isLocale, type AppLocale } from '@/i18n/routing';
 import { siteConfig } from '@/config/site';
 import { JsonLd } from '@/components/seo/json-ld';
+import { Analytics } from '@/components/seo/analytics';
 import { organizationJsonLd, websiteJsonLd } from '@/lib/seo/json-ld';
 import '../globals.css';
 
@@ -80,6 +81,7 @@ export default async function LocaleLayout({
           </a>
           {children}
         </NextIntlClientProvider>
+        <Analytics />
       </body>
     </html>
   );

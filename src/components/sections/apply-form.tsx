@@ -46,7 +46,16 @@ export function ApplyForm({
 
   async function onSubmit(values: LeadInput) {
     const res = await submitLead(values);
-    if (res.ok) setDone(true);
+    if (res.ok) {
+      setDone(true);
+      // Conversion tracking — fire only if GA is loaded.
+      if (typeof window !== 'undefined' && typeof window.gtag === 'function') {
+        window.gtag('event', 'lead_submitted', {
+          event_category: 'engagement',
+          event_label: universitySlug ? `university:${universitySlug}` : 'apply_page',
+        });
+      }
+    }
   }
 
   if (done) {
