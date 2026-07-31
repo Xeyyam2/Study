@@ -35,6 +35,7 @@ function rowToProfile(r: QueryResultRow): Profile {
     whatsapp: r.whatsapp,
     countryCode: r.country_code,
     avatarUrl: r.avatar_url,
+    authUid: r.auth_uid ?? null,
     createdAt: r.created_at,
   };
 }
@@ -406,6 +407,27 @@ export function createPgCrm(getPool: () => Pool): CrmRepository {
         [input.email, input.fullName, input.phone ?? null, input.whatsapp ?? null, input.countryCode ?? null],
       );
       return rowToProfile(res.rows[0]);
+    },
+
+    async getProfileByAuthUid(authUid: string): Promise<Profile | null> {
+      const res = await q('select * from public.profiles where auth_uid = $1', [authUid]);
+      return res.rowCount ? rowToProfile(res.rows[0]) : null;
+    },
+
+    async upsertStudentByAuthUid(input: { authUid: string; email: string; fullName: string }): Promise<Profile> {
+      const byUid = await q('select * from public.profiles where auth_uid = $1', [input.authUid]);
+      if (byUid.rowCount) return rowToProfile(byUid.rows[0]);
+      const linked = await q(
+        'update public.profiles set auth_uid = $1 where email = $2 returning *',
+        [input.authUid, input.email],
+      );
+      if (linked.rowCount) return rowToProfile(linked.rows[0]);
+      const created = await q(
+        `insert into public.profiles (email, full_name, role, auth_uid)
+         values ($1, $2, 'student', $3) returning *`,
+        [input.email, input.fullName || '', input.authUid],
+      );
+      return rowToProfile(created.rows[0]);
     },
 
     async countByStatus(): Promise<Record<string, number>> {

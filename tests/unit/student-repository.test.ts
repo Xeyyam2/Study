@@ -1,3 +1,4 @@
+import { randomUUID } from 'node:crypto';
 import { afterEach, beforeEach, describe, expect, it } from 'vitest';
 import { Pool } from 'pg';
 import { createPgCrm } from '@/lib/crm/pg-repository';
@@ -87,5 +88,28 @@ describe('notifications + student document', () => {
     });
     const after = await crm.listMyDocuments(STUDENT);
     expect(after.length).toBeGreaterThan(before.length);
+  });
+});
+
+describe('auth_uid profile linking', () => {
+  it('creates a new student profile keyed by auth_uid', async () => {
+    const uid = randomUUID();
+    const email = `otp-${uid.slice(0,8)}@example.com`;
+    const p = await crm.upsertStudentByAuthUid({ authUid: uid, email, fullName: 'OTP User' });
+    expect(p.role).toBe('student');
+    expect(p.email).toBe(email);
+    const byUid = await crm.getProfileByAuthUid(uid);
+    expect(byUid?.id).toBe(p.id);
+  });
+
+  it('merges an existing email profile by setting its auth_uid', async () => {
+    const STUDENT2 = '55555555-5555-5555-5555-555555555555';
+    const before = await crm.getProfile(STUDENT2);
+    expect(before).not.toBeNull();
+    const uid = randomUUID();
+    const merged = await crm.upsertStudentByAuthUid({ authUid: uid, email: before!.email, fullName: before!.fullName });
+    expect(merged.id).toBe(STUDENT2);
+    const byUid = await crm.getProfileByAuthUid(uid);
+    expect(byUid?.id).toBe(STUDENT2);
   });
 });

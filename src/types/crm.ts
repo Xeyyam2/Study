@@ -18,6 +18,7 @@ export interface Profile {
   whatsapp: string | null;
   countryCode: string | null;
   avatarUrl: string | null;
+  authUid: string | null;
   createdAt: string;
 }
 

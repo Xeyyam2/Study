@@ -49,6 +49,8 @@ export interface CrmRepository {
   listStaff(): Promise<Profile[]>;
   getProfile(id: string): Promise<Profile | null>;
   findOrCreateStudent(input: StudentProfileInput): Promise<Profile>;
+  getProfileByAuthUid(authUid: string): Promise<Profile | null>;
+  upsertStudentByAuthUid(input: { authUid: string; email: string; fullName: string }): Promise<Profile>;
   // stats
   countByStatus(): Promise<Record<string, number>>;
   // audit
