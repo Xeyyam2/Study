@@ -1,8 +1,11 @@
 import type { Metadata } from 'next';
 import { setRequestLocale, getTranslations } from 'next-intl/server';
 import { Mail, Phone, MessageCircle, MapPin, Clock } from 'lucide-react';
+import type { AppLocale } from '@/i18n/routing';
 import { siteConfig } from '@/config/site';
 import { buildPageMetadata } from '@/lib/seo/alternates';
+import { contactPageJsonLd } from '@/lib/seo/json-ld';
+import { JsonLd } from '@/components/seo/json-ld';
 import { Button } from '@/components/ui/button';
 import { Link } from '@/i18n/navigation';
 import { Card, CardContent } from '@/components/ui/card';
@@ -31,6 +34,7 @@ export default async function ContactPage({
   setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: 'Contact' });
   const tc = await getTranslations({ locale, namespace: 'Footer' });
+  const appLocale = locale as AppLocale;
 
   const wa = `https://wa.me/${siteConfig.contact.whatsapp.number}`;
 
@@ -57,6 +61,7 @@ export default async function ContactPage({
 
   return (
     <div className="container-page py-section-md">
+      <JsonLd data={contactPageJsonLd(appLocale)} />
       <header className="mx-auto max-w-2xl text-center">
         <h1 className="font-display text-headline-xl text-foreground">
           {t('title')}

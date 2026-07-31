@@ -2,6 +2,7 @@ import { siteConfig } from '@/config/site';
 import type {
   BlogPost,
   Faq,
+  Review as UniversityReview,
   University,
 } from '@/types';
 import type { AppLocale } from '@/i18n/routing';
@@ -136,5 +137,163 @@ export function courseListJsonLd(
         },
       }),
     ),
+  };
+}
+
+/**
+ * Generic ItemList of universities — for the universities listing page and
+ * any page that shows a ranked/curated set of universities.
+ */
+export function itemListJsonLd(
+  items: Array<{ name: string; url: string; description?: string }>,
+): JsonLd {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    itemListElement: items.map((item, i) =>
+      L('ListItem', {
+        position: i + 1,
+        item: {
+          '@type': 'CollegeOrUniversity',
+          name: item.name,
+          url: item.url,
+          ...(item.description ? { description: item.description } : {}),
+        },
+      }),
+    ),
+  };
+}
+
+/**
+ * HowTo schema — step-by-step guide (e.g. "How to apply to a Turkish university").
+ * AEO core: Google AI Overview sources HowTo schemas for answer extraction.
+ */
+export function howToJsonLd(
+  steps: Array<{ name: string; text: string }>,
+  opts?: { name?: string; description?: string },
+): JsonLd {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: opts?.name ?? 'How to study in Turkey',
+    description: opts?.description ?? '',
+    step: steps.map((s, i) => ({
+      '@type': 'HowToStep',
+      position: i + 1,
+      name: s.name,
+      text: s.text,
+    })),
+  };
+}
+
+/**
+ * Individual Review schema — emitted alongside AggregateRating on university
+ * detail pages so review snippets appear in search results.
+ */
+export function reviewJsonLd(
+  reviews: UniversityReview[],
+  locale: AppLocale,
+  universitySlug: string,
+): JsonLd[] {
+  return reviews.map((r) => ({
+    '@context': 'https://schema.org',
+    '@type': 'Review',
+    itemReviewed: {
+      '@type': 'CollegeOrUniversity',
+      name: universitySlug,
+    },
+    reviewRating: {
+      '@type': 'Rating',
+      ratingValue: r.rating,
+      bestRating: 5,
+      worstRating: 1,
+    },
+    author: { '@type': 'Person', name: r.authorName },
+    reviewBody: r.text[locale],
+    datePublished: String(r.year),
+  }));
+}
+
+/**
+ * AboutPage schema — for the /about route.
+ */
+export function aboutPageJsonLd(locale: AppLocale): JsonLd {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'AboutPage',
+    name: `About ${siteConfig.name}`,
+    url: `${siteConfig.url}/${locale}/about`,
+    mainEntity: {
+      '@type': 'Organization',
+      name: siteConfig.name,
+      url: siteConfig.url,
+      description: siteConfig.description.en,
+    },
+  };
+}
+
+/**
+ * ContactPage schema — for the /contact route.
+ */
+export function contactPageJsonLd(locale: AppLocale): JsonLd {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'ContactPage',
+    url: `${siteConfig.url}/${locale}/contact`,
+    mainEntity: {
+      '@type': 'Organization',
+      name: siteConfig.name,
+      email: siteConfig.contact.email,
+      telephone: siteConfig.contact.phone,
+      contactPoint: {
+        '@type': 'ContactPoint',
+        contactType: 'customer support',
+        email: siteConfig.contact.email,
+        telephone: siteConfig.contact.phone,
+        availableLanguage: ['English', 'Turkish', 'Azerbaijani', 'Russian'],
+      },
+    },
+  };
+}
+
+/**
+ * CollectionPage schema — for listing/index pages (blog list, universities list).
+ */
+export function collectionPageJsonLd(
+  name: string,
+  url: string,
+  items: Array<{ name: string; url: string }>,
+): JsonLd {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name,
+    url,
+    hasPart: items.map((item) => ({
+      '@type': 'WebPage',
+      name: item.name,
+      url: item.url,
+    })),
+  };
+}
+
+/**
+ * Service schema — for the /apply page (free consultation/application support).
+ */
+export function serviceJsonLd(locale: AppLocale): JsonLd {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: 'University Application Support',
+    serviceType: 'Education consulting',
+    provider: { '@type': 'Organization', name: siteConfig.name },
+    areaServed: 'TR',
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'USD',
+      description: 'Free application support and consultation',
+    },
+    url: `${siteConfig.url}/${locale}/apply`,
   };
 }

@@ -1,7 +1,10 @@
 import type { Metadata } from 'next';
 import { setRequestLocale, getTranslations } from 'next-intl/server';
 import { Target, HeartHandshake, Globe2, Award } from 'lucide-react';
+import type { AppLocale } from '@/i18n/routing';
 import { buildPageMetadata } from '@/lib/seo/alternates';
+import { aboutPageJsonLd } from '@/lib/seo/json-ld';
+import { JsonLd } from '@/components/seo/json-ld';
 
 export async function generateMetadata({
   params,
@@ -26,6 +29,7 @@ export default async function AboutPage({
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: 'About' });
+  const appLocale = locale as AppLocale;
 
   const values = [
     { icon: Target, title: t('v1Title'), body: t('v1Body') },
@@ -36,6 +40,7 @@ export default async function AboutPage({
 
   return (
     <div className="container-page py-section-md">
+      <JsonLd data={aboutPageJsonLd(appLocale)} />
       <header className="mx-auto max-w-2xl text-center">
         <h1 className="font-display text-headline-xl text-foreground">
           {t('title')}

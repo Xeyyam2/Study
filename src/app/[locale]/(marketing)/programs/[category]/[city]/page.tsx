@@ -14,6 +14,7 @@ import { siteConfig } from '@/config/site';
 import { buildPageMetadata } from '@/lib/seo/alternates';
 import { breadcrumbJsonLd, courseListJsonLd } from '@/lib/seo/json-ld';
 import { JsonLd } from '@/components/seo/json-ld';
+import { GeoBlock } from '@/components/seo/geo-block';
 import { UniversityCard } from '@/components/sections/university-card';
 import { FaqSection } from '@/components/sections/faq-section';
 import { CTASection } from '@/components/sections/cta-section';
@@ -72,6 +73,7 @@ export default async function ProgramCombinationPage({
   setRequestLocale(locale);
   const appLocale = locale as AppLocale;
   const t = await getTranslations({ locale, namespace: 'ProgramCombination' });
+  const tg = await getTranslations({ locale, namespace: 'Geo' });
 
   const result = await data.programs.getByCategoryAndCity(category, city);
   if (!result.category || !result.city || result.programs.length === 0)
@@ -81,6 +83,9 @@ export default async function ProgramCombinationPage({
   const universities = Array.from(
     new Map(programs.map((p) => [p.university.id, p.university])).values(),
   );
+  const uniqueLanguages = [...new Set(programs.map((p) => p.language))]
+    .map((l) => l.toUpperCase())
+    .join(', ');
 
   const path = `/programs/${category}/${city}`;
   const title = t('title', {
@@ -150,6 +155,26 @@ export default async function ProgramCombinationPage({
       </section>
 
       <div className="container-page py-section-md">
+        {/* GEO block — extractable short answer for AI engines (4 locales only) */}
+        <GeoBlock
+          locale={appLocale}
+          shortAnswer={tg('programShortAnswer', {
+            category: cat.name[appLocale] ?? '',
+            city: cityObj.name[appLocale] ?? '',
+          })}
+          summary={[
+            { label: t('categoryLabel'), value: cat.name[appLocale] ?? '' },
+            { label: t('cityLabel'), value: cityObj.name[appLocale] ?? '' },
+            { label: t('programsLabel'), value: String(programs.length) },
+            { label: t('universitiesLabel'), value: String(universities.length) },
+            { label: t('fromLabel'), value: formatCurrency(result.minTuitionUSD, 'USD', locale) },
+            { label: t('language'), value: uniqueLanguages },
+          ]}
+          pros={[tg('pros1'), tg('pros2'), tg('pros3'), tg('pros4')]}
+          cons={[tg('cons1'), tg('cons2')]}
+          className="mb-section-md"
+        />
+
         {/* Programs table */}
         <section className="mb-section-md">
           <h2 className="mb-4 font-display text-headline-md text-foreground">

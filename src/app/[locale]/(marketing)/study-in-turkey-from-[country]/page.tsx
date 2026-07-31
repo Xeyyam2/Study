@@ -10,6 +10,7 @@ import { cityImage } from '@/lib/seed';
 import { buildPageMetadata } from '@/lib/seo/alternates';
 import { breadcrumbJsonLd } from '@/lib/seo/json-ld';
 import { JsonLd } from '@/components/seo/json-ld';
+import { GeoBlock } from '@/components/seo/geo-block';
 import { UniversityCard } from '@/components/sections/university-card';
 import { FaqSection } from '@/components/sections/faq-section';
 import { CTASection } from '@/components/sections/cta-section';
@@ -51,11 +52,12 @@ export default async function CountryLandingPage({
   setRequestLocale(locale);
   const appLocale = locale as AppLocale;
   const t = await getTranslations({ locale, namespace: 'CountryLanding' });
+  const tg = await getTranslations({ locale, namespace: 'Geo' });
 
   const c = await data.countries.getBySlug(country);
   if (!c) notFound();
 
-  const name = c.name[appLocale];
+  const name = c.name[appLocale] ?? '';
   const featured = await data.universities.getFeatured(3);
   const path = `/study-in-turkey-from-${country}`;
 
@@ -119,6 +121,22 @@ export default async function CountryLandingPage({
       </section>
 
       <div className="container-page py-section-md">
+        {/* GEO block — extractable short answer for AI engines (4 locales only) */}
+        <GeoBlock
+          locale={appLocale}
+          shortAnswer={tg('countryShortAnswer', { country: name })}
+          summary={[
+            { label: tg('countryLabel'), value: name },
+            { label: t('visaTitle'), value: tg('visaTypeValue') },
+            { label: t('currencyTitle'), value: tg('tuitionFromValue') },
+            { label: t('languageTitle'), value: tg('languageValue') },
+            { label: tg('supportLabel'), value: tg('supportValue') },
+          ]}
+          pros={[tg('pros1'), tg('pros2'), tg('pros3'), tg('pros4')]}
+          cons={[tg('cons1'), tg('cons2')]}
+          className="mb-section-md"
+        />
+
         <div className="grid gap-6 md:grid-cols-3">
           {info.map((item) => (
             <Card key={item.title}>

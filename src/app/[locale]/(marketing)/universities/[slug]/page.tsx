@@ -25,8 +25,10 @@ import {
   collegeOrUniversityJsonLd,
   faqPageJsonLd,
   breadcrumbJsonLd,
+  reviewJsonLd,
 } from '@/lib/seo/json-ld';
 import { JsonLd } from '@/components/seo/json-ld';
+import { GeoBlock } from '@/components/seo/geo-block';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -83,6 +85,7 @@ export default async function UniversityDetailPage({
   setRequestLocale(locale);
   const appLocale = locale as AppLocale;
   const t = await getTranslations({ locale, namespace: 'UniversityDetail' });
+  const tg = await getTranslations({ locale, namespace: 'Geo' });
 
   const detail = await data.universities.getDetail(slug);
   if (!detail) notFound();
@@ -124,6 +127,7 @@ export default async function UniversityDetailPage({
             { name: t('universities'), url: `${siteConfig.url}/${locale}/universities` },
             { name: detail.name, url: `${siteConfig.url}/${locale}/universities/${slug}` },
           ]),
+          ...(reviews.length > 0 ? reviewJsonLd(reviews.slice(0, 5), appLocale, detail.name) : []),
         ]}
       />
 
@@ -189,6 +193,32 @@ export default async function UniversityDetailPage({
 
       <div className="container-page layout-sticky-sidebar pb-section-lg">
         <div className="space-y-12">
+          {/* 1b. GEO block — extractable short answer for AI engines (4 locales only) */}
+          <GeoBlock
+            locale={appLocale}
+            shortAnswer={tg('universityShortAnswer', {
+              name: detail.name,
+              type: detail.isState ? t('typeState') : t('typePrivate'),
+              city: city?.name[appLocale] ?? '',
+              year: detail.foundedYear,
+              languages: detail.languages.map((l) => l.toUpperCase()).join(', '),
+              tuition: minTuition ? formatCurrency(minTuition, 'USD', locale) : '—',
+              accreditation: detail.accreditation,
+              students: formatNumber(detail.studentCount, locale),
+            })}
+            summary={[
+              { label: t('founded'), value: String(detail.foundedYear) },
+              { label: t('students'), value: formatNumber(detail.studentCount, locale) },
+              ...(city ? [{ label: t('city'), value: city.name[appLocale] ?? '' }] : []),
+              { label: t('type'), value: detail.isState ? t('typeState') : t('typePrivate') },
+              { label: t('languages'), value: detail.languages.map((l) => l.toUpperCase()).join(' / ') },
+              ...(minTuition ? [{ label: t('tuitionFrom'), value: formatCurrency(minTuition, 'USD', locale) }] : []),
+              { label: t('accreditation'), value: detail.accreditation },
+            ]}
+            pros={[tg('pros1'), tg('pros2'), tg('pros3'), tg('pros4')]}
+            cons={[tg('cons1'), tg('cons2')]}
+          />
+
           {/* 2. Quick facts */}
           <Section title={t('factsTitle')}>
             <div className="grid grid-cols-2 gap-px overflow-hidden rounded-lg border border-border bg-border sm:grid-cols-3">

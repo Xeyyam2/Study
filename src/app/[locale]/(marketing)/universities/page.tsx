@@ -4,7 +4,10 @@ import { setRequestLocale, getTranslations } from 'next-intl/server';
 import { SearchX } from 'lucide-react';
 import { data } from '@/lib/data';
 import type { AppLocale } from '@/i18n/routing';
+import { siteConfig } from '@/config/site';
 import { buildPageMetadata } from '@/lib/seo/alternates';
+import { collectionPageJsonLd, itemListJsonLd } from '@/lib/seo/json-ld';
+import { JsonLd } from '@/components/seo/json-ld';
 import { UniversityFilters } from '@/components/sections/university-filters';
 import { UniversityCard } from '@/components/sections/university-card';
 import { FadeIn } from '@/components/motion/fade-in';
@@ -82,6 +85,24 @@ export default async function UniversitiesPage({
 
   return (
     <div className="container-page py-section-md">
+      <JsonLd
+        data={[
+          collectionPageJsonLd(
+            t('title'),
+            `${siteConfig.url}/${locale}/universities`,
+            universities.map((u) => ({
+              name: u.name,
+              url: `${siteConfig.url}/${locale}/universities/${u.slug}`,
+            })),
+          ),
+          itemListJsonLd(
+            universities.map((u) => ({
+              name: u.name,
+              url: `${siteConfig.url}/${locale}/universities/${u.slug}`,
+            })),
+          ),
+        ]}
+      />
       <header className="mb-8">
         <h1 className="font-display text-headline-xl text-foreground">
           {t('title')}

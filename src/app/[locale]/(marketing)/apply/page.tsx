@@ -4,6 +4,8 @@ import { ShieldCheck, Clock, Headset } from 'lucide-react';
 import { data } from '@/lib/data';
 import type { AppLocale } from '@/i18n/routing';
 import { buildPageMetadata } from '@/lib/seo/alternates';
+import { serviceJsonLd } from '@/lib/seo/json-ld';
+import { JsonLd } from '@/components/seo/json-ld';
 import { ApplyForm } from '@/components/sections/apply-form';
 
 export async function generateMetadata({
@@ -40,6 +42,7 @@ export default async function ApplyPage({
 
   return (
     <div className="container-page py-section-md">
+      <JsonLd data={serviceJsonLd(appLocale)} />
       <div className="mx-auto max-w-2xl">
         <header className="mb-8 text-center">
           <h1 className="font-display text-headline-xl text-foreground">

@@ -5,7 +5,10 @@ import { Clock, ArrowRight } from 'lucide-react';
 import { data } from '@/lib/data';
 import type { AppLocale } from '@/i18n/routing';
 import { Link } from '@/i18n/navigation';
+import { siteConfig } from '@/config/site';
 import { buildPageMetadata } from '@/lib/seo/alternates';
+import { collectionPageJsonLd } from '@/lib/seo/json-ld';
+import { JsonLd } from '@/components/seo/json-ld';
 import { FadeIn } from '@/components/motion/fade-in';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
@@ -40,6 +43,13 @@ export default async function BlogPage({
 
   return (
     <div className="container-page py-section-md">
+      <JsonLd
+        data={collectionPageJsonLd(
+          t('title'),
+          `${siteConfig.url}/${locale}/blog`,
+          posts.map((p) => ({ name: lx(p.title, appLocale), url: `${siteConfig.url}/${locale}/blog/${p.slug}` })),
+        )}
+      />
       <header className="mb-10">
         <h1 className="font-display text-headline-xl text-foreground">
           {t('title')}
