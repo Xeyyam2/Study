@@ -1,4 +1,4 @@
-import { requireStudent } from '@/lib/crm/student-session';
+import { requireStudentAny } from '@/lib/crm/student-session';
 import { StudentSidebar } from '@/components/student/StudentSidebar';
 import { StudentTopbar } from '@/components/student/StudentTopbar';
 import type { AppLocale } from '@/i18n/routing';
@@ -13,7 +13,7 @@ export default async function DashboardLayout({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  const session = await requireStudent(locale as AppLocale);
+  const session = await requireStudentAny(locale as AppLocale);
   return (
     <div className="flex min-h-screen">
       <StudentSidebar locale={locale} />

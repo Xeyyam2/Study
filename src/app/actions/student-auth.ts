@@ -20,7 +20,10 @@ export async function devStudentLogin(input: unknown) {
   redirect(`/${parsed.data.locale}/dashboard`);
 }
 
-export async function devStudentLogout(locale: string) {
+export async function signOutStudent(locale: string) {
+  const { getSupabaseSessionClient } = await import('@/lib/supabase/server-session');
+  const supabase = await getSupabaseSessionClient();
+  await supabase.auth.signOut();
   const store = await cookies();
   store.delete(STUDENT_SESSION_COOKIE);
   redirect(`/${locale}/dashboard/login`);

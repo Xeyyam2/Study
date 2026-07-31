@@ -1,6 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 import { crm } from '@/lib/crm';
-import { requireStudent } from '@/lib/crm/student-session';
+import { requireStudentAny } from '@/lib/crm/student-session';
 import { markThreadReadAction } from '@/app/actions/student';
 import type { AppLocale } from '@/i18n/routing';
 import { MessageComposer } from '@/components/student/MessageComposer';
@@ -15,7 +15,7 @@ export default async function MessagesPage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  const session = await requireStudent(locale as AppLocale);
+  const session = await requireStudentAny(locale as AppLocale);
   const t = await getTranslations({ locale, namespace: 'Student.messages' });
 
   const leads = await crm.listMyLeads(session.userId);

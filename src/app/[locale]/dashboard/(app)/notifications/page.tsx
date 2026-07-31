@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { getTranslations } from 'next-intl/server';
 import { crm } from '@/lib/crm';
-import { requireStudent } from '@/lib/crm/student-session';
+import { requireStudentAny } from '@/lib/crm/student-session';
 import type { AppLocale } from '@/i18n/routing';
 import { Card, CardContent } from '@/components/ui/card';
 
@@ -13,7 +13,7 @@ export default async function NotificationsPage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  const session = await requireStudent(locale as AppLocale);
+  const session = await requireStudentAny(locale as AppLocale);
   const t = await getTranslations({ locale, namespace: 'Student.notifications' });
   const notifications = await crm.listNotifications(session.userId, 30);
 

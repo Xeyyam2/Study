@@ -1,6 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 import { crm } from '@/lib/crm';
-import { requireStudent } from '@/lib/crm/student-session';
+import { requireStudentAny } from '@/lib/crm/student-session';
 import { getSignedDocumentUrl } from '@/lib/storage';
 import type { AppLocale } from '@/i18n/routing';
 import { DocumentUploadForm } from '@/components/student/DocumentUploadForm';
@@ -15,7 +15,7 @@ export default async function DocumentsPage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  const session = await requireStudent(locale as AppLocale);
+  const session = await requireStudentAny(locale as AppLocale);
   const t = await getTranslations({ locale, namespace: 'Student.documents' });
 
   const [docs, apps] = await Promise.all([

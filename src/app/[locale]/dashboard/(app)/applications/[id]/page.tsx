@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
 import { crm } from '@/lib/crm';
-import { requireStudent } from '@/lib/crm/student-session';
+import { requireStudentAny } from '@/lib/crm/student-session';
 import type { AppLocale } from '@/i18n/routing';
 import { PipelineStepper } from '@/components/admin/PipelineStepper';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -14,7 +14,7 @@ export default async function ApplicationDetailPage({
   params: Promise<{ locale: string; id: string }>;
 }) {
   const { locale, id } = await params;
-  const session = await requireStudent(locale as AppLocale);
+  const session = await requireStudentAny(locale as AppLocale);
   const t = await getTranslations({ locale, namespace: 'Student.detail' });
   const lead = await crm.getLead(id);
   if (!lead || lead.userId !== session.userId) notFound();
