@@ -381,5 +381,14 @@
     "visaStep5Text": "Complete university registration, get your student ID, and begin your studies.",
     "whatIsUniversityTitle": "What is {name}?",
     "whatIsProgramTitle": "What is {category} in {city}?"
+  },
+  "Chatbot": {
+    "title": "Study Assistant",
+    "subtitle": "Ask about universities, programs, tuition & visas",
+    "placeholder": "Type your question…",
+    "send": "Send",
+    "greeting": "Hi! I'm your study-in-Turkey assistant. Ask me about universities, programs, tuition fees, or the application process.",
+    "error": "Sorry, I couldn't respond. Please try again or contact us via WhatsApp.",
+    "closed": "Chat closed"
   }
 }

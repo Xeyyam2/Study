@@ -381,5 +381,14 @@
     "visaStep5Text": "Üniversite kaydını tamamla, öğrenci kimliğini al ve çalışmalarına başla.",
     "whatIsUniversityTitle": "{name} nedir?",
     "whatIsProgramTitle": "{city}'da {category} nedir?"
+  },
+  "Chatbot": {
+    "title": "Eğitim Asistanı",
+    "subtitle": "Üniversiteler, bölümler, ücretler ve vizeler hakkında sor",
+    "placeholder": "Sorunu yaz…",
+    "send": "Gönder",
+    "greeting": "Merhaba! Türkiye'de eğitim asistanınım. Üniversiteler, bölümler, ücretler veya başvuru süreci hakkında soru sor.",
+    "error": "Üzgünüm, cevap veremedim. Tekrar deneyin veya WhatsApp üzerinden ulaşın.",
+    "closed": "Sohbet kapatıldı"
   }
 }

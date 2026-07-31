@@ -1,0 +1,69 @@
+import { NextRequest, NextResponse } from 'next/server';
+
+/**
+ * AI chatbot API route — Edge runtime for low latency.
+ *
+ * Uses OpenAI Chat Completions API (env: OPENAI_API_KEY).
+ * The system prompt positions the assistant as a study-in-Turkey guide.
+ * If no API key is configured, returns a graceful fallback so the widget
+ * degrades cleanly in development / preview environments.
+ *
+ * Only the 4 GEO locales (en/tr/az/ru) are supported — callers gate the
+ * widget with `isGeoLocale()` before sending requests.
+ */
+
+export const runtime = 'edge';
+
+const SYSTEM_PROMPTS: Record<string, string> = {
+  en: 'You are a helpful assistant for students interested in studying in Turkey. You provide accurate information about Turkish universities, programs, tuition fees, scholarships, visa process, and application steps. Keep answers concise (2-4 sentences). If you don\'t know something specific, direct the student to apply via the website or contact via WhatsApp. Never invent specific tuition numbers — suggest checking the university page.',
+  tr: 'Türkiye\'de eğitim almak isteyen öğrencilere yardımcı olan bir asistansın. Türk üniversiteleri, bölümler, ücretler, burslar, vize süreci ve başvuru adımları hakkında doğru bilgi verirsin. Cevapları kısa tut (2-4 cümle). Bilmediğin bir şey olursa öğrenciyi web sitesine veya WhatsApp\'a yönlendir.',
+  az: 'Sən Türkiyədə təhsil almaq istəyən tələbələrə kömək edən bir assistentsən. Türk universitetləri, proqramlar, təhsil haqqı, təqaüdlər, viza prosesi və müraciət addımları haqqında dəqiq məlumat verirsən. Cavabları qısa tut (2-4 cümlə). Bilmədiyin bir şey olarsa tələbəni veb sayta və ya WhatsApp-a yönləndir.',
+  ru: 'Вы помощник для студентов, желающих учиться в Турции. Вы даёте точную информацию о турецких вузах, программах, стоимости, стипендиях, визовом процессе и шагах поступления. Отвечайте кратко (2-4 предложения). Если чего-то не знаете, направьте студента на сайт или в WhatsApp.',
+};
+
+export async function POST(req: NextRequest) {
+  const apiKey = process.env.OPENAI_API_KEY;
+
+  if (!apiKey) {
+    // Graceful fallback when no API key is configured (dev/preview).
+    return NextResponse.json({
+      reply:
+        "I'm currently offline. Please reach out via WhatsApp for instant help with studying in Turkey!",
+    });
+  }
+
+  try {
+    const { messages, locale } = await req.json();
+    const systemPrompt = SYSTEM_PROMPTS[locale] ?? SYSTEM_PROMPTS.en;
+
+    const res = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${apiKey}`,
+      },
+      body: JSON.stringify({
+        model: 'gpt-4o-mini',
+        messages: [
+          { role: 'system', content: systemPrompt },
+          ...messages,
+        ],
+        max_tokens: 300,
+        temperature: 0.7,
+      }),
+    });
+
+    if (!res.ok) {
+      throw new Error(`OpenAI API error: ${res.status}`);
+    }
+
+    const data = await res.json();
+    const reply = data.choices?.[0]?.message?.content ?? '';
+    return NextResponse.json({ reply });
+  } catch {
+    return NextResponse.json(
+      { reply: '', error: 'Failed to get response' },
+      { status: 500 },
+    );
+  }
+}

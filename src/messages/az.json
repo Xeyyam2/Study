@@ -381,5 +381,14 @@
     "visaStep5Text": "Universitet qeydiyyatını tamamlayın, tələbə kimliyinizi alın və təhsilə başlayın.",
     "whatIsUniversityTitle": "{name} nədir?",
     "whatIsProgramTitle": "{city} şəhərində {category} nədir?"
+  },
+  "Chatbot": {
+    "title": "Təhsil Köməkçisi",
+    "subtitle": "Universitetlər, proqramlar, qiymətlər və vizalar haqqında",
+    "placeholder": "Sualınızı yazın…",
+    "send": "Göndər",
+    "greeting": "Salam! Mən Türkiyədə təhsil köməkçisiyəm. Universitetlər, proqramlar, qiymətlər və ya müraciət prosesi haqqında sual verin.",
+    "error": "Üzr istəyirəm, cavab verə bilmədim. Təkrar cəhd edin və ya WhatsApp ilə əlaqə saxlayın.",
+    "closed": "Söhbət bağlandı"
   }
 }
