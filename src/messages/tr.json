@@ -328,6 +328,7 @@
     "retry": "Tekrar dene"
   },
   "Student": {
+    "auth": { "email": "E-posta", "code": "Doğrulama kodu", "sendLink": "Sihirli bağlantı gönder", "verify": "Kodu doğrula", "back": "Farklı e-posta kullan", "linkSent": "E-postanızı kontrol edin (veya kodu girin).", "error": "Bir şeyler ters gitti. Tekrar deneyin." },
     "nav": { "overview": "Genel bakış", "applications": "Başvurular", "documents": "Belgeler", "messages": "Mesajlar", "notifications": "Bildirimler", "logout": "Çıkış yap" },
     "overview": { "title": "Panelim", "subtitle": "Başvurularınızı, belgelerinizi ve mesajlarınızı takip edin.", "applications": "Başvurular", "unreadMessages": "Okunmamış mesajlar", "status": "Mevcut durum", "noApplications": "Henüz başvuru yok", "recentNotifications": "Son bildirimler" },
     "applications": { "title": "Başvurularım", "empty": "Henüz başvurunuz yok.", "viewDetail": "Detayları gör" },

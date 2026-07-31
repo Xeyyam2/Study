@@ -328,6 +328,7 @@
     "retry": "Try again"
   },
   "Student": {
+    "auth": { "email": "Email", "code": "Verification code", "sendLink": "Send magic link", "verify": "Verify code", "back": "Use a different email", "linkSent": "Check your email for the magic link (or enter the code).", "error": "Something went wrong. Try again." },
     "nav": { "overview": "Overview", "applications": "Applications", "documents": "Documents", "messages": "Messages", "notifications": "Notifications", "logout": "Log out" },
     "overview": { "title": "My dashboard", "subtitle": "Track your applications, documents and messages.", "applications": "Applications", "unreadMessages": "Unread messages", "status": "Current status", "noApplications": "No applications yet", "recentNotifications": "Recent notifications" },
     "applications": { "title": "My applications", "empty": "You have no applications yet.", "viewDetail": "View details" },
