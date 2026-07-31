@@ -120,7 +120,7 @@ const universities = await data.universities.list({ citySlug: 'istanbul' });
 ## Roadmap (per `Study.md`)
 
 - **Phase 2:** Supabase + Prisma, RLS, auth (email/OTP/OAuth), leads CRM, student dashboard ✅
-- **Phase 3A:** i18n 4 → 18 locales ✅ · **3B:** seed → DB content migration ✅ · **3C:** programmatic scale (100k+ pages) · **3D:** Meilisearch
+- **Phase 3A:** i18n 4 → 18 locales ✅ · **3B:** seed → DB content migration ✅ · **3C (mini):** ISR on programmatic pages + sitemap infra ✅ · **3D:** Meilisearch
 - **Phase 4:** GEO/AEO refinement, schema completion, performance tuning
 - **Phase 5:** AI modules (chatbot, content generators), analytics, launch
 

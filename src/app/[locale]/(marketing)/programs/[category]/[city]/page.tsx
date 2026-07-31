@@ -36,6 +36,9 @@ export async function generateStaticParams() {
   }));
 }
 
+// ISR — content rarely changes; rebuild only every hour (or on-demand revalidation).
+export const revalidate = 3600;
+
 export async function generateMetadata({
   params,
 }: {

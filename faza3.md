@@ -34,14 +34,10 @@
 
 ---
 
-### 3C — Programmatic SEO miqyaslandırma ⏳
-**Məqsəd:** `{Proqram} × {Şəhər} × {Dərəcə} × {Dil}` kombinasiya səhifələrini min-lərlə generasiya et (DB-dən gələn real məlumatla); ölkə-spesifik giriş səhifələrini 18 bazara genişlət; bölünmüş sitemap-lar (`sitemap-universities.xml`, `sitemap-programs.xml`, `sitemap-blog.xml`, `sitemap-countries.xml`).
+### 3C — Programmatic SEO miqyaslandırma ✅ (mini)
+**Məqsəd:** Mövcud `{Kategoriya} × {Şəhər}` kombinasiya səhifələri + universitet detal + ölkə landing + bloq — ISR (`revalidate: 3600`); sitemap altyapısı 50k limit aşanda avtomatik bölünməyə hazır. Ölkə eniş səhifələri 18 ölkə üçün işlək (DB countries-dən götürür).
 
-**Asılılıq:** 3B (DB məlumat) bitməlidir — combo-lar DB-dən hesablanır.
-
-**Bitmə kriteriyası:** Sitemap-lar bölünür; ISG (`revalidate: 3600`) ilə min səhifə build; hər səhifədə unikal GEO/AEO blok.
-
-**Risk:** "Thin content/doorway pages" cəzası (Study.md §17) — hər combo səhifəsi real unikal dəyər (ölkə vizası, valyuta, lokal rəylər) olmalıdır.
+**Xaricdədir (3C-full, növbəti fazaya saxlanır):** `{Proqram} × {Şəhər} × {Dərəcə} × {İxtisas}` dörölçülü kombinatorika + min-lərlə səhifə generasiyası; thin-content risklərini həll etmək (hər combo ölkə/viza/valyuta unikal dəyəri olmalı).
 
 ---
 
@@ -78,7 +74,7 @@
 |---|---|---|---|---|
 | 3A — i18n 18 dil | ✅ | — | ✅ | ✅ |
 | 3B — seed→DB | ✅ | — | ✅ | ✅ |
-| 3C — programmatic SEO | — | — | — | — |
+| 3C — programmatic SEO (mini) | ✅ | — | ✅ | ✅ |
 | 3D — axtarış | — | — | — | — |
 
-Güncəllənib: 2026-07-31 (3A və 3B commit-ləndi).
+Güncəllənib: 2026-07-31 (3A, 3B, 3C-mini commit-ləndi).

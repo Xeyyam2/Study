@@ -53,6 +53,9 @@ export async function generateStaticParams() {
   return universities.map((u) => ({ slug: u.slug }));
 }
 
+// ISR — content rarely changes; rebuild only every hour (or on-demand revalidation).
+export const revalidate = 3600;
+
 export async function generateMetadata({
   params,
 }: {

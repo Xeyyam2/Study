@@ -21,6 +21,9 @@ export async function generateStaticParams() {
   return countries.map((c) => ({ country: c.slug }));
 }
 
+// ISR — content rarely changes; rebuild only every hour.
+export const revalidate = 3600;
+
 export async function generateMetadata({
   params,
 }: {

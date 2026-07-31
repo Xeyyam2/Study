@@ -19,6 +19,9 @@ export async function generateStaticParams() {
   return posts.map((p) => ({ slug: p.slug }));
 }
 
+// ISR — blog posts rarely change after publishing; rebuild hourly.
+export const revalidate = 3600;
+
 export async function generateMetadata({
   params,
 }: {
