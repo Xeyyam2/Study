@@ -124,3 +124,38 @@ const universities = await data.universities.list({ citySlug: 'istanbul' });
 - `"Google #1"` is not technically guaranteed (see `Study.md` §17); this builds the
   strongest possible technical foundation.
 - Test credentials / env: none required for Phase 1 (no external services).
+
+## Backend & Admin/CRM (Phase 2A)
+
+- **Postgres schema** (`supabase/migrations/0001–0007`): `profiles`, `leads`, `applications`,
+  `application_documents`, `audit_logs` + enums, indexes, triggers, RLS (Supabase-only),
+  and the deferred `profiles → auth.users` FK (`0007`).
+- **Transactional data layer** (`src/lib/crm/`): `CrmRepository` adapter with a local `pg`
+  implementation and a Supabase stub; flip via `SUPABASE_ENABLED`.
+- **Admin/CRM panel** (`/admin`): overview KPIs, leads Kanban + detail, applications, users,
+  audit log. **Dev-auth only** (`/admin/login`) — not production; real Supabase Auth replaces it.
+- **Local dev DB**: `npm run db:up && npm run db:reset` (Docker Postgres on `:5433`).
+
+## Student dashboard (Phase 2C)
+
+Localized, student-facing dashboard at `/[locale]/dashboard` (e.g. `/en/dashboard`):
+
+- **Modules:** overview (status, unread messages, recent notifications), applications (+ detail
+  with pipeline stepper), documents (upload + verify), messages (thread with assigned consultant),
+  notifications (composed from audit log + unread messages).
+- **Dev-auth student login** at `/en/dashboard/login` — pick a demo student profile. **Demo only,
+  NOT production.** Real authentication (Supabase Auth OTP/OAuth) arrives in a later phase and
+  replaces the session source; the UI/data layer stays the same.
+- **Messaging** uses the `messages` table (`0008`); **notifications** are derived — no extra table.
+- **Document upload** uses **Supabase Storage** (private bucket `application-documents`):
+  - Set `NEXT_PUBLIC_SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` in `.env.local`.
+  - Run `supabase/migrations/0009_storage_bucket.sql` in the Supabase SQL editor to create the
+    private bucket + policies. Documents are uploaded server-side (service role) and served via
+    short-lived signed URLs.
+- **`(marketing)` route group**: marketing chrome (header/footer/WhatsApp float) is isolated from
+  the dashboard shell; the guarded dashboard lives in the `dashboard/(app)` route group so the
+  login page stays outside the auth guard.
+- **Run locally:** `npm run db:up && npm run db:reset`, then visit `/en/dashboard/login`.
+
+> Security note: the service-role key bypasses RLS — keep it server-side only and never commit
+> `.env.local`. Dev-auth offers no real protection; do not deploy it as-is.
