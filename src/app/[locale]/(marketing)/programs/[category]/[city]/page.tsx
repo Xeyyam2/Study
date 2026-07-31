@@ -12,9 +12,10 @@ import type { AppLocale } from '@/i18n/routing';
 import { Link } from '@/i18n/navigation';
 import { siteConfig } from '@/config/site';
 import { buildPageMetadata } from '@/lib/seo/alternates';
-import { breadcrumbJsonLd, courseListJsonLd } from '@/lib/seo/json-ld';
+import { breadcrumbJsonLd, courseListJsonLd, faqPageJsonLd } from '@/lib/seo/json-ld';
 import { JsonLd } from '@/components/seo/json-ld';
 import { GeoBlock } from '@/components/seo/geo-block';
+import { isGeoLocale } from '@/lib/seo/geo';
 import { UniversityCard } from '@/components/sections/university-card';
 import { FaqSection } from '@/components/sections/faq-section';
 import { CTASection } from '@/components/sections/cta-section';
@@ -86,6 +87,24 @@ export default async function ProgramCombinationPage({
   const uniqueLanguages = [...new Set(programs.map((p) => p.language))]
     .map((l) => l.toUpperCase())
     .join(', ');
+  const showGeo = isGeoLocale(locale);
+  const programShortAnswer = showGeo
+    ? tg('programShortAnswer', { category: cat.name[appLocale] ?? '', city: cityObj.name[appLocale] ?? '' })
+    : '';
+  const whatIsQuestion = showGeo
+    ? tg('whatIsProgramTitle', { category: cat.name[appLocale] ?? '', city: cityObj.name[appLocale] ?? '' })
+    : '';
+  const definitionFaq = showGeo
+    ? [
+        {
+          id: 'what-is-definition',
+          entityType: 'general' as const,
+          entityId: `${category}-${city}`,
+          question: { [appLocale]: whatIsQuestion } as import('@/types').LocalizedString,
+          answer: { [appLocale]: programShortAnswer } as import('@/types').LocalizedString,
+        },
+      ]
+    : [];
 
   const path = `/programs/${category}/${city}`;
   const title = t('title', {
@@ -109,6 +128,7 @@ export default async function ProgramCombinationPage({
               fee: p.tuitionFee,
             })),
           ),
+          ...(showGeo ? [faqPageJsonLd(definitionFaq, appLocale)] : []),
         ]}
       />
 
@@ -174,6 +194,18 @@ export default async function ProgramCombinationPage({
           cons={[tg('cons1'), tg('cons2')]}
           className="mb-section-md"
         />
+
+        {/* AEO: "What is...?" definition block (4 GEO locales only) */}
+        {showGeo && (
+          <section className="mb-section-md rounded-lg border border-border bg-surface-low p-5 sm:p-6">
+            <h2 className="mb-2 font-display text-headline-md text-foreground">
+              {whatIsQuestion}
+            </h2>
+            <p className="text-sm leading-relaxed text-foreground sm:text-[15px]">
+              {programShortAnswer}
+            </p>
+          </section>
+        )}
 
         {/* Programs table */}
         <section className="mb-section-md">

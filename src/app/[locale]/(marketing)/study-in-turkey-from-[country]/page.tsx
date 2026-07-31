@@ -8,9 +8,10 @@ import { Link } from '@/i18n/navigation';
 import { siteConfig } from '@/config/site';
 import { cityImage } from '@/lib/seed';
 import { buildPageMetadata } from '@/lib/seo/alternates';
-import { breadcrumbJsonLd } from '@/lib/seo/json-ld';
+import { breadcrumbJsonLd, howToJsonLd } from '@/lib/seo/json-ld';
 import { JsonLd } from '@/components/seo/json-ld';
 import { GeoBlock } from '@/components/seo/geo-block';
+import { isGeoLocale } from '@/lib/seo/geo';
 import { UniversityCard } from '@/components/sections/university-card';
 import { FaqSection } from '@/components/sections/faq-section';
 import { CTASection } from '@/components/sections/cta-section';
@@ -60,6 +61,17 @@ export default async function CountryLandingPage({
   const name = c.name[appLocale] ?? '';
   const featured = await data.universities.getFeatured(3);
   const path = `/study-in-turkey-from-${country}`;
+  const showGeo = isGeoLocale(locale);
+
+  const visaSteps = showGeo
+    ? [
+        { name: tg('visaStep1Name'), text: tg('visaStep1Text') },
+        { name: tg('visaStep2Name'), text: tg('visaStep2Text') },
+        { name: tg('visaStep3Name'), text: tg('visaStep3Text') },
+        { name: tg('visaStep4Name'), text: tg('visaStep4Text') },
+        { name: tg('visaStep5Name'), text: tg('visaStep5Text') },
+      ]
+    : [];
 
   const info = [
     {
@@ -82,13 +94,16 @@ export default async function CountryLandingPage({
   return (
     <div>
       <JsonLd
-        data={breadcrumbJsonLd([
-          { name: t('home'), url: `${siteConfig.url}/${locale}` },
-          {
-            name: t('title', { country: name }),
-            url: `${siteConfig.url}/${locale}${path}`,
-          },
-        ])}
+        data={[
+          breadcrumbJsonLd([
+            { name: t('home'), url: `${siteConfig.url}/${locale}` },
+            {
+              name: t('title', { country: name }),
+              url: `${siteConfig.url}/${locale}${path}`,
+            },
+          ]),
+          ...(showGeo ? [howToJsonLd(visaSteps, { name: tg('visaHowToTitle') })] : []),
+        ]}
       />
 
       <section className="relative overflow-hidden border-b border-border bg-surface-low">
@@ -154,6 +169,28 @@ export default async function CountryLandingPage({
             </Card>
           ))}
         </div>
+
+        {/* AEO: Visa & residence process — step-by-step (4 GEO locales only) */}
+        {showGeo && (
+          <section className="mt-section-md">
+            <h2 className="mb-4 font-display text-headline-md text-foreground">
+              {tg('visaHowToTitle')}
+            </h2>
+            <ol className="space-y-4">
+              {visaSteps.map((step, i) => (
+                <li key={i} className="flex gap-4">
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-bold text-primary-foreground">
+                    {i + 1}
+                  </span>
+                  <div>
+                    <p className="font-semibold text-foreground">{step.name}</p>
+                    <p className="text-sm text-muted-foreground">{step.text}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </section>
+        )}
       </div>
 
       <section className="section-padding bg-surface-low">

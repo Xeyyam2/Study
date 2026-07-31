@@ -367,6 +367,19 @@
     "languageValue": "English & Turkish",
     "supportValue": "Free",
     "countryLabel": "Country",
-    "supportLabel": "Application support"
+    "supportLabel": "Application support",
+    "visaHowToTitle": "Visa & residence process",
+    "visaStep1Name": "Get your acceptance letter",
+    "visaStep1Text": "Once accepted, your university issues an official acceptance letter required for the visa application.",
+    "visaStep2Name": "Apply for a student visa",
+    "visaStep2Text": "Submit your visa application at the nearest Turkish consulate with your acceptance letter, passport, and financial proof.",
+    "visaStep3Name": "Travel to Turkey",
+    "visaStep3Text": "Enter Turkey with your student visa. Book your flight and arrange initial accommodation.",
+    "visaStep4Name": "Apply for a residence permit",
+    "visaStep4Text": "Within 30 days of arrival, apply for a student residence permit at the local immigration office.",
+    "visaStep5Name": "Register and start studying",
+    "visaStep5Text": "Complete university registration, get your student ID, and begin your studies.",
+    "whatIsUniversityTitle": "What is {name}?",
+    "whatIsProgramTitle": "What is {category} in {city}?"
   }
 }

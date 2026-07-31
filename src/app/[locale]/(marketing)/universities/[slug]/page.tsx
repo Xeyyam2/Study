@@ -29,6 +29,7 @@ import {
 } from '@/lib/seo/json-ld';
 import { JsonLd } from '@/components/seo/json-ld';
 import { GeoBlock } from '@/components/seo/geo-block';
+import { isGeoLocale } from '@/lib/seo/geo';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -97,11 +98,36 @@ export default async function UniversityDetailPage({
     data.faqs.general(),
   ]);
   const faqs = [...uniFaqs, ...generalFaqs].slice(0, 8);
+  const showGeo = isGeoLocale(locale);
   const [rating, minTuition] = await Promise.all([
     data.universities.getRating(detail.id),
     data.universities.getMinTuitionUSD(detail.id),
   ]);
   const city = detail.city;
+  const uniShortAnswer = showGeo
+    ? tg('universityShortAnswer', {
+        name: detail.name,
+        type: detail.isState ? t('typeState') : t('typePrivate'),
+        city: city?.name[appLocale] ?? '',
+        year: detail.foundedYear,
+        languages: detail.languages.map((l) => l.toUpperCase()).join(', '),
+        tuition: minTuition ? formatCurrency(minTuition, 'USD', locale) : '—',
+        accreditation: detail.accreditation,
+        students: formatNumber(detail.studentCount, locale),
+      })
+    : '';
+  const whatIsQuestion = showGeo ? tg('whatIsUniversityTitle', { name: detail.name }) : '';
+  const definitionFaq = showGeo
+    ? [
+        {
+          id: 'what-is-definition',
+          entityType: 'general' as const,
+          entityId: detail.id,
+          question: { [appLocale]: whatIsQuestion } as import('@/types').LocalizedString,
+          answer: { [appLocale]: uniShortAnswer } as import('@/types').LocalizedString,
+        },
+      ]
+    : [];
 
   const wa = `https://wa.me/${siteConfig.contact.whatsapp.number}?text=${encodeURIComponent(
     `Hello, I'm interested in ${detail.name}`,
@@ -121,7 +147,7 @@ export default async function UniversityDetailPage({
       <JsonLd
         data={[
           collegeOrUniversityJsonLd(detail, appLocale, rating),
-          faqPageJsonLd(faqs, appLocale),
+          faqPageJsonLd([...definitionFaq, ...faqs], appLocale),
           breadcrumbJsonLd([
             { name: t('home'), url: `${siteConfig.url}/${locale}` },
             { name: t('universities'), url: `${siteConfig.url}/${locale}/universities` },
@@ -218,6 +244,18 @@ export default async function UniversityDetailPage({
             pros={[tg('pros1'), tg('pros2'), tg('pros3'), tg('pros4')]}
             cons={[tg('cons1'), tg('cons2')]}
           />
+
+          {/* 1c. "What is...?" definition block — AEO (4 GEO locales only) */}
+          {showGeo && (
+            <section className="rounded-lg border border-border bg-surface-low p-5 sm:p-6">
+              <h2 className="mb-2 font-display text-headline-md text-foreground">
+                {whatIsQuestion}
+              </h2>
+              <p className="text-sm leading-relaxed text-foreground sm:text-[15px]">
+                {uniShortAnswer}
+              </p>
+            </section>
+          )}
 
           {/* 2. Quick facts */}
           <Section title={t('factsTitle')}>

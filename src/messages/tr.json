@@ -367,6 +367,19 @@
     "languageValue": "İngilizce ve Türkçe",
     "supportValue": "Ücretsiz",
     "countryLabel": "Ülke",
-    "supportLabel": "Başvuru desteği"
+    "supportLabel": "Başvuru desteği",
+    "visaHowToTitle": "Vize ve ikamet süreci",
+    "visaStep1Name": "Kabul mektubunu al",
+    "visaStep1Text": "Kabul edildiğinde, üniversiten vize başvurusu için gerekli resmi kabul mektubunu düzenler.",
+    "visaStep2Name": "Öğrenci vizesine başvur",
+    "visaStep2Text": "Kabul mektubun, pasaportun ve mali belgelerinle birlikte en yakın Türk konsolosluğuna vize başvurusu yap.",
+    "visaStep3Name": "Türkiye'ye gel",
+    "visaStep3Text": "Öğrenci vizenle Türkiye'ye gir. Uçuşunu ayarla ve ilk konaklamayı düzenle.",
+    "visaStep4Name": "İkamet izni başvurusu yap",
+    "visaStep4Text": "Gelişinden itibaren 30 gün içinde yerel göç idaresinden öğrenci ikamet izni için başvur.",
+    "visaStep5Name": "Kaydol ve çalışmalara başla",
+    "visaStep5Text": "Üniversite kaydını tamamla, öğrenci kimliğini al ve çalışmalarına başla.",
+    "whatIsUniversityTitle": "{name} nedir?",
+    "whatIsProgramTitle": "{city}'da {category} nedir?"
   }
 }

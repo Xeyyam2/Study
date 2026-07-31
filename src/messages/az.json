@@ -367,6 +367,19 @@
     "languageValue": "İngilis və türk dilləri",
     "supportValue": "Pulsuz",
     "countryLabel": "Ölkə",
-    "supportLabel": "Müraciət dəstəyi"
+    "supportLabel": "Müraciət dəstəyi",
+    "visaHowToTitle": "Viza və yaşayış icazəsi prosesi",
+    "visaStep1Name": "Qəbul məktubunu alın",
+    "visaStep1Text": "Qəbul olunduqda, universitetiniz viza müraciəti üçün lazımi rəsmi qəbul məktubunu verir.",
+    "visaStep2Name": "Tələbə vizası üçün müraciət edin",
+    "visaStep2Text": "Qəbul məktubu, pasport və maliyyə sənədləri ilə birlikdə ən yaxın Türk konsolosluğuna viza müraciəti edin.",
+    "visaStep3Name": "Türkiyəyə gəlin",
+    "visaStep3Text": "Tələbə vizanızla Türkiyəyə daxil olun. Uçuşunuzu təşkil edin və ilkin qalma yerini ayarlayın.",
+    "visaStep4Name": "Yaşayış icazəsi üçün müraciət",
+    "visaStep4Text": "Gəlişinizdən 30 gün içində yerli miqrasiya idarəsindən tələbə yaşayış icazəsi üçün müraciət edin.",
+    "visaStep5Name": "Qeydiyyatdan keçin və təhsilə başlayın",
+    "visaStep5Text": "Universitet qeydiyyatını tamamlayın, tələbə kimliyinizi alın və təhsilə başlayın.",
+    "whatIsUniversityTitle": "{name} nədir?",
+    "whatIsProgramTitle": "{city} şəhərində {category} nədir?"
   }
 }
