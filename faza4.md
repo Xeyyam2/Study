@@ -34,9 +34,9 @@
 
 | Alt-faza | Spec | Plan | İcra | Build |
 |---|---|---|---|---|
-| 4A — schema tamamlanması | — | — | ⏳ | — |
-| 4B — GEO blokları | — | — | — | — |
-| 4C — AEO strukturları | — | — | — | — |
-| 4D — performans | — | — | — | — |
+| 4A — schema tamamlanması | ✅ | — | ✅ | — |
+| 4B — GEO blokları | ✅ | — | ✅ | — |
+| 4C — AEO strukturları | ✅ | — | ✅ | — |
+| 4D — performans | ✅ | — | ✅ | — |
 
-Güncəllənib: 2026-07-31.
+Güncəllənib: 2026-08-01. Faza 4 tamamlanıb — tsc clean.

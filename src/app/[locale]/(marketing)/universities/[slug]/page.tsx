@@ -165,7 +165,7 @@ export default async function UniversityDetailPage({
             alt={detail.name}
             fill
             priority
-            sizes="100vw"
+            sizes="(max-width: 768px) 100vw, 1200px"
             className="object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-foreground/85 via-foreground/40 to-foreground/10" />
@@ -395,6 +395,7 @@ export default async function UniversityDetailPage({
                       src={src}
                       alt={`${detail.name} ${i + 1}`}
                       fill
+                      priority={i === 0}
                       sizes="(max-width: 640px) 50vw, 33vw"
                       className="object-cover"
                     />
