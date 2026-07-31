@@ -41,14 +41,18 @@
 
 ---
 
-### 3D — Axtarış motoru (Meilisearch / Typesense) ⏳
-**Məqsəd:** Universitet/proqram üzrə millisaniyəlik axtarış + facet (ölkə, şəhər, dil, təqaüd, qiymət). Edge runtime + ISR.
+### 3D — Axtarış motoru (Postgres FTS) ✅
+**Məqsəd:** Universitet/proqram/şəhər üzrə millisaniyəlik axtarış + autocomplete. ~~Meilisearch~~ əvəzinə **Postgres full-text search** (`pg_trgm` + `tsvector` index) — mövcud Postgres-də işləyir, heç bir eksternal xidmət tələb olunmur, Vercel deploy-də birbaşa işləyir.
 
-**Asılılıq:** 3B (DB-də indekslənmə mənbəyi).
+**Təsir sahələri:**
+- `0012_search_indexes.sql` — `pg_trgm` extension, universitetlərdə `search_tsv` tsvector sütunu + trigger (insert/update-də auto-sync), trigram GIN indekslər (universities/programs/cities/countries).
+- `DataLayer.search` metodu (interfeys + pg impl + seed fallback) — universitet/program/şəhər üzrə UNION ALL sorğu, ts_rank ranking.
+- `/api/search` API route (`?q=…&limit=…`).
+- Hero search box autocomplete UI (debounced fetch, klaviatur naviqasiyası, listbox rolları).
 
-**Bitmə kriteriyası:** `/search` + header axtarış box-u işləyir; facet filtr kombinasiyalı nəticə < 50ms.
+**Bitmə kriteriyası:** `< 50ms` cavavb (lokal); testlər yaşıl; build yaşıl.
 
-**Risk:** Loqosika deploy/işləmə yükü; lokal Docker variantı.
+**Risk:** Böyük miqyasda (100k+ universitet) trigram index memory istifadəsi — problem yoxdensa Meilisearch-a keçid asan (interfeys dəyişmir).
 
 ---
 
@@ -75,6 +79,6 @@
 | 3A — i18n 18 dil | ✅ | — | ✅ | ✅ |
 | 3B — seed→DB | ✅ | — | ✅ | ✅ |
 | 3C — programmatic SEO (mini) | ✅ | — | ✅ | ✅ |
-| 3D — axtarış | — | — | — | — |
+| 3D — axtarış (PG FTS) | ✅ | — | ✅ | ✅ |
 
-Güncəllənib: 2026-07-31 (3A, 3B, 3C-mini commit-ləndi).
+Güncəllənib: 2026-07-31 (3A, 3B, 3C-mini, 3D commit-ləndi — Faza 3 tamamlandı).

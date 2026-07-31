@@ -120,7 +120,7 @@ const universities = await data.universities.list({ citySlug: 'istanbul' });
 ## Roadmap (per `Study.md`)
 
 - **Phase 2:** Supabase + Prisma, RLS, auth (email/OTP/OAuth), leads CRM, student dashboard ✅
-- **Phase 3A:** i18n 4 → 18 locales ✅ · **3B:** seed → DB content migration ✅ · **3C (mini):** ISR on programmatic pages + sitemap infra ✅ · **3D:** Meilisearch
+- **Phase 3A:** i18n 4 → 18 locales ✅ · **3B:** seed → DB content migration ✅ · **3C (mini):** ISR on programmatic pages + sitemap infra ✅ · **3D:** Postgres full-text search ✅
 - **Phase 4:** GEO/AEO refinement, schema completion, performance tuning
 - **Phase 5:** AI modules (chatbot, content generators), analytics, launch
 
@@ -194,3 +194,14 @@ Localized, student-facing dashboard at `/[locale]/dashboard` (e.g. `/en/dashboar
 
 > Security note: the service-role key bypasses RLS — keep it server-side only and never commit
 > `.env.local`. Dev-auth offers no real protection; do not deploy it as-is.
+
+## Search (Phase 3D)
+
+- Full-text + fuzzy autocomplete over universities, programs and cities, backed by
+  **Postgres** (`pg_trgm` + `tsvector` indexes in `0012_search_indexes.sql`). No external
+  search service required — deploys cleanly to Vercel with the existing Supabase Postgres.
+- `GET /api/search?q=…&limit=…` returns ranked suggestions; the hero search box
+  (`src/components/sections/hero-section.tsx`) debounces and renders an ARIA combobox with
+  keyboard navigation.
+- `DataLayer.search` lives next to the other read repositories (`src/lib/data`); swap to
+  Meilisearch/Typesense later by implementing the same interface.

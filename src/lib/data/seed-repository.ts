@@ -330,6 +330,39 @@ export function createSeedDataLayer(): DataLayer {
     faqs: new SeedFaqRepository(),
     scholarships: new SeedScholarshipRepository(),
     blog: new SeedBlogRepository(),
+    search: {
+      async search(query: string, limit = 10) {
+        const q = query.toLowerCase().trim();
+        if (!q) return [];
+        const out: import('@/lib/data/repositories').SearchResult[] = [];
+        for (const u of seedUniversities) {
+          if (u.name.toLowerCase().includes(q) || u.slug.includes(q)) {
+            out.push({ type: 'university', id: u.id, slug: u.slug, label: u.name, hint: u.accreditation });
+          }
+          if (out.length >= limit) return out;
+        }
+        for (const p of seedPrograms) {
+          if (p.slug.includes(q) || Object.values(p.name).some((n) => n.toLowerCase().includes(q))) {
+            out.push({
+              type: 'program',
+              id: p.id,
+              slug: p.slug,
+              label: p.slug,
+              nameI18n: p.name,
+              hint: p.degreeLevel,
+            });
+          }
+          if (out.length >= limit) return out;
+        }
+        for (const c of seedCities) {
+          if (c.slug.includes(q) || Object.values(c.name).some((n) => n.toLowerCase().includes(q))) {
+            out.push({ type: 'city', id: c.id, slug: c.slug, label: c.slug, nameI18n: c.name });
+          }
+          if (out.length >= limit) return out;
+        }
+        return out;
+      },
+    },
   };
 }
 

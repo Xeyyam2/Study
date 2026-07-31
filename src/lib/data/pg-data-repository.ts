@@ -26,6 +26,7 @@ import type {
   ReviewRepository,
   ScholarshipRepository,
   UniversityRepository,
+  SearchResult,
 } from './repositories';
 
 type I18n = Record<string, string>;
@@ -461,5 +462,52 @@ export function createPgDataLayer(getPool: () => Pool): DataLayer {
     },
   };
 
-  return { universities, cities, countries, programs, reviews, faqs, scholarships, blog };
+  const search = {
+    async search(query: string, limit = 10): Promise<SearchResult[]> {
+      const q = query.trim();
+      if (!q) return [];
+      // ts_rank on universities + trigram ILIKE on programs/cities slugs, UNION ALL.
+      // Score via rank; universities get the strongest weight via tsvector setweight.
+      const res = await getPool().query(
+        `(
+           select 1 sort, 'university' type, u.id, u.slug, u.name label, u.accreditation hint, null::jsonb name_i18n,
+                  ts_rank(u.search_tsv, plainto_tsquery('simple', $1)) rank
+           from public.universities u
+           where u.search_tsv @@ plainto_tsquery('simple', $1)
+              or u.name ilike '%' || $1 || '%'
+           order by rank desc, u.name
+           limit $2
+         )
+         union all
+         (
+           select 2 sort, 'program' type, p.id, p.slug, p.slug label, p.degree_level hint, p.name_i18n,
+                  0::float8 rank
+           from public.programs p
+           where p.slug ilike '%' || $1 || '%' or p.name_i18n::text ilike '%' || $1 || '%'
+           limit $2
+         )
+         union all
+         (
+           select 3 sort, 'city' type, c.id, c.slug, c.slug label, null hint, c.name_i18n,
+                  0::float8 rank
+           from public.cities c
+           where c.slug ilike '%' || $1 || '%' or c.name_i18n::text ilike '%' || $1 || '%'
+           limit $2
+         )
+         order by sort, rank desc
+         limit $2`,
+        [q, limit],
+      );
+      return res.rows.map((r) => ({
+        type: r.type as SearchResult['type'],
+        id: r.id as string,
+        slug: r.slug as string,
+        label: r.label as string,
+        hint: r.hint ?? undefined,
+        nameI18n: r.name_i18n ? i18n(r.name_i18n) : undefined,
+      }));
+    },
+  };
+
+  return { universities, cities, countries, programs, reviews, faqs, scholarships, blog, search };
 }

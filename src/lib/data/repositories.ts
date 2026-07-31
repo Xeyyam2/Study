@@ -70,6 +70,23 @@ export interface BlogRepository {
   getBySlug(slug: string): Promise<BlogPost | null>;
 }
 
+export interface SearchRepository {
+  /** Full-text + fuzzy search across universities, programs, cities. Returns ranked results. */
+  search(query: string, limit?: number): Promise<SearchResult[]>;
+}
+
+export interface SearchResult {
+  type: 'university' | 'program' | 'city';
+  id: string;
+  slug: string;
+  /** Primary label (university name / program slug / city slug) — i18n resolved by the UI. */
+  label: string;
+  /** Optional secondary text (e.g. university accreditation, city country). */
+  hint?: string;
+  /** Locale-aware name when available (cities/programs have i18n; universities are plain text). */
+  nameI18n?: Record<string, string>;
+}
+
 export interface DataLayer {
   universities: UniversityRepository;
   cities: CityRepository;
@@ -79,6 +96,7 @@ export interface DataLayer {
   faqs: FaqRepository;
   scholarships: ScholarshipRepository;
   blog: BlogRepository;
+  search: SearchRepository;
 }
 
 export type { DegreeLevel };
