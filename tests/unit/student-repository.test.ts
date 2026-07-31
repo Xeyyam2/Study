@@ -112,4 +112,17 @@ describe('auth_uid profile linking', () => {
     const byUid = await crm.getProfileByAuthUid(uid);
     expect(byUid?.id).toBe(STUDENT2);
   });
+
+  it('resolves a staff profile by auth_uid without creating new rows', async () => {
+    const CONSULTANT = '22222222-2222-2222-2222-222222222222'; // Ayşe (seed)
+    const before = await crm.getProfile(CONSULTANT);
+    expect(before).not.toBeNull();
+    // link by email (simulating first real login of a pre-provisioned staff member)
+    const linked = await crm.getStaffProfileByAuthUid(randomUUID(), before!.email);
+    expect(linked?.id).toBe(CONSULTANT);
+    expect(['admin', 'consultant', 'editor']).toContain(linked?.role);
+    // unknown email → null (no auto-create)
+    const unknown = await crm.getStaffProfileByAuthUid(randomUUID(), `nope-${randomUUID().slice(0, 8)}@example.com`);
+    expect(unknown).toBeNull();
+  });
 });

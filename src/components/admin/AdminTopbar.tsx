@@ -1,5 +1,5 @@
 // src/components/admin/AdminTopbar.tsx
-import { devLogout } from '@/app/actions/admin-auth';
+import { signOutAdmin } from '@/app/actions/admin-auth';
 import { Button } from '@/components/ui/button';
 import { siteConfig } from '@/config/site';
 import type { AdminSession } from '@/lib/crm/session';
@@ -15,7 +15,7 @@ export function AdminTopbar({ session }: { session: AdminSession }) {
         <span className="rounded-full bg-secondary px-2 py-0.5 text-xs font-semibold uppercase text-secondary-foreground">
           {session.role}
         </span>
-        <form action={devLogout}>
+        <form action={signOutAdmin}>
           <Button type="submit" variant="ghost" size="sm">
             Sign out
           </Button>

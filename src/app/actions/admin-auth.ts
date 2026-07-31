@@ -7,11 +7,14 @@ import { crm } from '@/lib/crm';
 import { SESSION_COOKIE } from '@/lib/crm/session';
 import { devLoginSchema } from '@/lib/validations/crm';
 
+const STAFF_ROLES = ['admin', 'consultant', 'editor'];
+
 export async function devLogin(input: unknown) {
   const parsed = devLoginSchema.safeParse(input);
   if (!parsed.success) return { ok: false as const };
   const profile = await crm.getProfile(parsed.data.profileId);
-  if (!profile) return { ok: false as const };
+  // Dev fallback must never grant staff access to a non-staff profile.
+  if (!profile || !STAFF_ROLES.includes(profile.role)) return { ok: false as const };
   const store = await cookies();
   store.set(SESSION_COOKIE, JSON.stringify({ userId: profile.id, role: profile.role, fullName: profile.fullName }), {
     httpOnly: true,
@@ -22,7 +25,10 @@ export async function devLogin(input: unknown) {
   redirect('/admin');
 }
 
-export async function devLogout() {
+export async function signOutAdmin() {
+  const { getSupabaseSessionClient } = await import('@/lib/supabase/server-session');
+  const supabase = await getSupabaseSessionClient();
+  await supabase.auth.signOut();
   const store = await cookies();
   store.delete(SESSION_COOKIE);
   redirect('/admin/login');

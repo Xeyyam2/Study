@@ -3,8 +3,8 @@ import { test, expect } from '@playwright/test';
 
 test('admin login → overview → kanban drag updates status', async ({ page }) => {
   await page.goto('/admin/login');
-  // pick the admin demo profile (first button)
-  await page.getByRole('button').first().click();
+  // dev fallback (DEV_AUTH_ENABLED): pick the admin demo profile by name
+  await page.getByRole('button', { name: /Admin User/ }).click();
   await expect(page).toHaveURL(/\/admin$/);
 
   // overview shows pipeline

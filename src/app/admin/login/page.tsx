@@ -1,39 +1,49 @@
 // src/app/admin/login/page.tsx
 import { crm } from '@/lib/crm';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { EmailOtpForm } from '@/components/auth/EmailOtpForm';
+import { isDevAuthEnabled } from '@/lib/crm/student-session';
 
-// Allow this page to render without the locale layout's chrome interfering.
 export const dynamic = 'force-dynamic';
 
 export default async function AdminLoginPage() {
-  const staff = await crm.listStaff();
+  const base = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000';
+  const callbackUrl = `${base}/auth/callback?next=/admin`;
+  const showDev = isDevAuthEnabled();
+  const staff = showDev ? await crm.listStaff() : [];
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-background p-6">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle>Admin (dev login)</CardTitle>
+          <CardTitle>Admin sign in</CardTitle>
           <CardDescription>
-            Demo only. Pick a staff profile to continue. Real auth arrives with Supabase.
+            Sign in with your work email. Staff access requires an admin/consultant/editor profile.
           </CardDescription>
         </CardHeader>
-        <CardContent className="space-y-2">
-          {staff.map((p) => (
-            <form key={p.id} action={devLoginAction} className="block">
-              <input type="hidden" name="profileId" value={p.id} />
-              <Button type="submit" variant="outline" className="w-full justify-between">
-                <span>{p.fullName}</span>
-                <span className="text-xs uppercase text-muted-foreground">{p.role}</span>
-              </Button>
-            </form>
-          ))}
+        <CardContent className="space-y-6">
+          <EmailOtpForm redirectTo={callbackUrl} />
+          {showDev && staff.length > 0 && (
+            <div className="space-y-2 border-t border-border pt-4">
+              <p className="text-xs uppercase text-muted-foreground">Dev login</p>
+              {staff.map((p) => (
+                <form key={p.id} action={devLoginAction} className="block">
+                  <input type="hidden" name="profileId" value={p.id} />
+                  <Button type="submit" variant="outline" size="sm" className="w-full justify-between">
+                    <span>{p.fullName}</span>
+                    <span className="text-xs uppercase text-muted-foreground">{p.role}</span>
+                  </Button>
+                </form>
+              ))}
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>
   );
 }
 
-// Server action wrapper (can't import 'use server' action into a server component inline).
 async function devLoginAction(formData: FormData) {
   'use server';
   const { devLogin } = await import('@/app/actions/admin-auth');

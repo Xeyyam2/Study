@@ -133,8 +133,34 @@ const universities = await data.universities.list({ citySlug: 'istanbul' });
 - **Transactional data layer** (`src/lib/crm/`): `CrmRepository` adapter with a local `pg`
   implementation and a Supabase stub; flip via `SUPABASE_ENABLED`.
 - **Admin/CRM panel** (`/admin`): overview KPIs, leads Kanban + detail, applications, users,
-  audit log. **Dev-auth only** (`/admin/login`) — not production; real Supabase Auth replaces it.
+  audit log. Auth: real Supabase email-OTP (`/admin/login`) for staff (admin/consultant/editor)
+  with a dev-fallback picker when `DEV_AUTH_ENABLED=1`. See §Real Auth below.
 - **Local dev DB**: `npm run db:up && npm run db:reset` (Docker Postgres on `:5433`).
+
+## Real Supabase Auth (Phase 2B + admin)
+
+Email-OTP (magic link) auth via `@supabase/ssr` cookie sessions, layered on the hybrid stack
+(Supabase Auth + local Postgres data). Profayl əlaqəsi `profiles.auth_uid` (`0010`) ilə.
+
+- **Supabase clients**: `src/lib/supabase/{client,server-session,server}.ts` (browser anon,
+  server session anon w/ cookie refresh, server service-role for Storage).
+- **Middleware** refreshes the Supabase session then runs next-intl (`src/middleware.ts`).
+- **Auth callback** `/auth/callback?code=…&next=…` exchanges the code and redirects (`next`,
+  default `/{locale}/dashboard`; `/admin` for staff).
+- **Student login** (`/[locale]/dashboard/login`): `EmailOtpForm` sends the magic link; dev
+  fallback picker shown when `DEV_AUTH_ENABLED=1`. `requireStudent()` resolves the Supabase
+  session to a profile via `upsertStudentByAuthUid` (creates or email-merges). Logout via
+  `signOutStudent` (`supabase.auth.signOut`).
+- **Staff login** (`/admin/login`): same `EmailOtpForm` with `next=/admin`; `requireStaff()`
+  resolves via `getStaffProfileByAuthUid` (links by email, **never auto-creates** — staff must
+  be pre-provisioned/seeded). `devLogin` is restricted to staff roles. Logout via `signOutAdmin`.
+- **Config**: in Supabase → Authentication → URL Configuration, allow
+  `http://localhost:3000/auth/callback` (and prod) as redirect URLs. Set
+  `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` (and `SUPABASE_SERVICE_ROLE_KEY`
+  for Storage) in `.env.local`. Optional `DEV_AUTH_ENABLED=1` to enable demo pickers locally.
+- **Notes**: OAuth (Google/Apple) callback is ready; providers not wired. RLS is written but
+  enforced only once data moves to Supabase (local `pg` is superuser). Magic-link delivery uses
+  the Supabase default sender (rate-limited — use custom SMTP in prod).
 
 ## Student dashboard (Phase 2C)
 
@@ -143,9 +169,8 @@ Localized, student-facing dashboard at `/[locale]/dashboard` (e.g. `/en/dashboar
 - **Modules:** overview (status, unread messages, recent notifications), applications (+ detail
   with pipeline stepper), documents (upload + verify), messages (thread with assigned consultant),
   notifications (composed from audit log + unread messages).
-- **Dev-auth student login** at `/en/dashboard/login` — pick a demo student profile. **Demo only,
-  NOT production.** Real authentication (Supabase Auth OTP/OAuth) arrives in a later phase and
-  replaces the session source; the UI/data layer stays the same.
+- **Dev-auth student login** at `/en/dashboard/login` — pick a demo student profile. Shown only
+  when `DEV_AUTH_ENABLED=1`; otherwise the page uses the real email-OTP form (see §Real Auth).
 - **Messaging** uses the `messages` table (`0008`); **notifications** are derived — no extra table.
 - **Document upload** uses **Supabase Storage** (private bucket `application-documents`):
   - Set `NEXT_PUBLIC_SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` in `.env.local`.

@@ -1,6 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { EmailOtpForm } from '@/components/student/EmailOtpForm';
+import { EmailOtpForm } from '@/components/auth/EmailOtpForm';
 import { Button } from '@/components/ui/button';
 import { crm } from '@/lib/crm';
 import { isDevAuthEnabled } from '@/lib/crm/student-session';

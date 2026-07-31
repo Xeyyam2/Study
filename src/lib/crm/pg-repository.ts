@@ -430,6 +430,18 @@ export function createPgCrm(getPool: () => Pool): CrmRepository {
       return rowToProfile(created.rows[0]);
     },
 
+    async getStaffProfileByAuthUid(authUid: string, email: string): Promise<Profile | null> {
+      // Staff must be pre-provisioned (seed/SQL-elevated). Resolve by auth_uid, else
+      // link by email if a profile already exists; never create a new one here.
+      const byUid = await q('select * from public.profiles where auth_uid = $1', [authUid]);
+      if (byUid.rowCount) return rowToProfile(byUid.rows[0]);
+      const linked = await q(
+        'update public.profiles set auth_uid = $1 where email = $2 returning *',
+        [authUid, email],
+      );
+      return linked.rowCount ? rowToProfile(linked.rows[0]) : null;
+    },
+
     async countByStatus(): Promise<Record<string, number>> {
       const res = await q('select status, count(*)::int c from public.leads group by status');
       const out: Record<string, number> = {};
