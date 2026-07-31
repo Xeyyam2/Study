@@ -8,8 +8,8 @@
 
 ## Alt-faza planı
 
-### 3A — İ18n genişlənməsi: 4 → 17 dil ✅ (next)
-**Məqsəd:** Hazırkı `en/tr/az/ru`-ya qalan 13 dil əlavə et: `de, fr, fa, ar, tk, kk, ky, zh, bg, ur, uz, sw, so, id`.
+### 3A — İ18n genişlənməsi: 4 → 18 dil ✅
+**Məqsəd:** Hazırkı `en/tr/az/ru`-ya qalan 14 dil əlavə et: `de, fr, fa, ar, tk, kk, ky, zh, bg, ur, uz, sw, so, id` (Study.md §3 cədvəlindəki 17 unikal dil + hreflang region kodları).
 
 **Təsir sahələri:**
 - `src/config/site.ts` → `locale.locales` massivi 17-yə genişlənir
@@ -78,9 +78,9 @@
 
 | Alt-faza | Spec | Plan | İcra | Build |
 |---|---|---|---|---|
-| 3A — i18n 17 dil | ⏳ | — | — | — |
+| 3A — i18n 18 dil | ✅ | — | ✅ | ✅ |
 | 3B — seed→DB | — | — | — | — |
 | 3C — programmatic SEO | — | — | — | — |
 | 3D — axtarış | — | — | — | — |
 
-Güncəllənib: 2026-07-31.
+Güncəllənib: 2026-07-31 (3A commit-ləndi).

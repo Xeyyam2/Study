@@ -9,7 +9,7 @@ Built to the spec in [`Study.md`](./Study.md) and the
 
 ## What's included (Phase 1)
 
-- **164+ statically-generated pages** across 4 languages (`en / tr / az / ru`)
+- **1,000+ statically-generated pages** across 18 languages (`en, tr, az, ru, de, fr, fa, ar, tk, kk, ky, zh, bg, ur, uz, sw, so, id`)
 - Home, About, Contact, Apply, Compare
 - Universities listing (URL-driven filters) + **11-section detail pages**
 - Programmatic SEO: **Program × City** combination pages (76)
@@ -101,20 +101,24 @@ const universities = await data.universities.list({ citySlug: 'istanbul' });
 ## Internationalization
 
 - Locales: `en / tr / az / ru` (URL prefix `/[locale]/...`)
-- UI strings in `src/messages/*.json`; **content** localized in seed (per-locale fields)
-- RTL-ready: `dir` attribute + CSS logical properties (Arabic/Persian ready for later)
+- UI strings in `src/messages/*.json` (18 locales; full 1:1 key parity with `en.json`)
+- **Content** fields in seed are `Partial<Record<Locale, string>>` and fall back to `en` via the
+  [`lx()` helper](./src/lib/i18n/lx.ts) (`src/lib/i18n/lx.ts`) when a locale is absent, so new
+  locales work without translating every seed entity.
+- RTL-ready: `dir` attribute + CSS logical properties; `ar`, `fa`, `ur` render RTL.
 
 ## Adding a language
 
 1. Add the code to `siteConfig.locale.locales` in `src/config/site.ts`
 2. Add it to `routing` + `localeLabels` in `src/i18n/routing.ts`
-3. Create `src/messages/<code>.json`
-4. Add localized fields to seed entries (or fall back to `en`)
+3. Create `src/messages/<code>.json` mirroring the key tree of `en.json` (use the
+   `node` script in `tests/unit/i18n.test.ts` / a key-parity check to verify)
+4. Add seed content translations or simply omit — `lx()` falls back to `en`
 
 ## Roadmap (per `Study.md`)
 
-- **Phase 2:** Supabase + Prisma, RLS, auth (email/OTP/OAuth), leads CRM, student dashboard
-- **Phase 3:** Remaining 13 languages, programmatic scale (100k+ pages), Meilisearch
+- **Phase 2:** Supabase + Prisma, RLS, auth (email/OTP/OAuth), leads CRM, student dashboard ✅
+- **Phase 3A:** i18n 4 → 18 locales ✅ · **3B:** seed → DB content migration · **3C:** programmatic scale (100k+ pages) · **3D:** Meilisearch
 - **Phase 4:** GEO/AEO refinement, schema completion, performance tuning
 - **Phase 5:** AI modules (chatbot, content generators), analytics, launch
 
@@ -124,6 +128,10 @@ const universities = await data.universities.list({ citySlug: 'istanbul' });
 - `"Google #1"` is not technically guaranteed (see `Study.md` §17); this builds the
   strongest possible technical foundation.
 - Test credentials / env: none required for Phase 1 (no external services).
+- UI translations for Phase 3A locales beyond `en/tr/az/ru` are AI-generated drafts; have a
+  native speaker review before launch (see `Study.md` §17). Seed *content* (university
+  descriptions, blog copy, etc.) still ships in `en/tr/az/ru` only and falls back to `en` via
+  `lx()` for other locales until 3B moves content into the DB.
 
 ## Backend & Admin/CRM (Phase 2A)
 

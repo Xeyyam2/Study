@@ -14,6 +14,20 @@ export const localeLabels: Record<AppLocale, { native: string; flag: string }> =
   tr: { native: 'Türkçe', flag: '🇹🇷' },
   az: { native: 'Azərbaycanca', flag: '🇦🇿' },
   ru: { native: 'Русский', flag: '🇷🇺' },
+  de: { native: 'Deutsch', flag: '🇩🇪' },
+  fr: { native: 'Français', flag: '🇫🇷' },
+  fa: { native: 'فارسی', flag: '🇮🇷' },
+  ar: { native: 'العربية', flag: '🇸🇦' },
+  tk: { native: 'Türkmen', flag: '🇹🇲' },
+  kk: { native: 'Қазақша', flag: '🇰🇿' },
+  ky: { native: 'Кыргызча', flag: '🇰🇬' },
+  zh: { native: '中文', flag: '🇨🇳' },
+  bg: { native: 'Български', flag: '🇧🇬' },
+  ur: { native: 'اردو', flag: '🇵🇰' },
+  uz: { native: 'O‘zbekcha', flag: '🇺🇿' },
+  sw: { native: 'Kiswahili', flag: '🇹🇿' },
+  so: { native: 'Soomaali', flag: '🇸🇴' },
+  id: { native: 'Bahasa Indonesia', flag: '🇮🇩' },
 };
 
 export const isRtl = (locale: string): boolean =>

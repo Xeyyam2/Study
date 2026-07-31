@@ -1,6 +1,6 @@
 import type { AppLocale } from '@/i18n/routing';
 
-export type LocalizedString = Record<AppLocale, string>;
+export type LocalizedString = Partial<Record<AppLocale, string>>;
 
 export type DegreeLevel = 'bachelor' | 'master' | 'phd' | 'associate';
 

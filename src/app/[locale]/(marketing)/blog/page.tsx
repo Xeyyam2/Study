@@ -9,6 +9,7 @@ import { buildPageMetadata } from '@/lib/seo/alternates';
 import { FadeIn } from '@/components/motion/fade-in';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { lx } from '@/lib/i18n/lx';
 
 export async function generateMetadata({
   params,
@@ -53,19 +54,19 @@ export default async function BlogPage({
               <div className="relative aspect-[16/9] overflow-hidden bg-surface-low">
                 <Image
                   src={post.coverImage}
-                  alt={post.title[appLocale]}
+                  alt={lx(post.title, appLocale)}
                   fill
                   sizes="(max-width: 768px) 100vw, 33vw"
                   className="object-cover transition-transform duration-500 group-hover:scale-105"
                 />
               </div>
               <CardContent className="space-y-3 p-5">
-                <Badge variant="tertiary">{post.category[appLocale]}</Badge>
+                <Badge variant="tertiary">{lx(post.category, appLocale)}</Badge>
                 <h2 className="font-display text-lg font-semibold leading-snug text-foreground">
-                  {post.title[appLocale]}
+                  {lx(post.title, appLocale)}
                 </h2>
                 <p className="line-clamp-2 text-sm text-muted-foreground">
-                  {post.excerpt[appLocale]}
+                  {lx(post.excerpt, appLocale)}
                 </p>
                 <div className="flex items-center justify-between pt-2 text-xs text-muted-foreground">
                   <span className="flex items-center gap-1">

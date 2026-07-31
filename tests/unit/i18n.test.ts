@@ -15,14 +15,16 @@ describe('isLocale', () => {
 });
 
 describe('isRtl', () => {
-  it('flags Arabic and Persian as RTL', () => {
+  const RTL = new Set(['ar', 'fa', 'ur']);
+  it('flags Arabic, Persian and Urdu as RTL', () => {
     expect(isRtl('ar')).toBe(true);
     expect(isRtl('fa')).toBe(true);
+    expect(isRtl('ur')).toBe(true);
   });
 
-  it('treats current locales as LTR', () => {
+  it('classifies every configured locale correctly', () => {
     for (const l of routing.locales) {
-      expect(isRtl(l)).toBe(false);
+      expect(isRtl(l)).toBe(RTL.has(l));
     }
   });
 });

@@ -10,6 +10,7 @@ import { siteConfig } from '@/config/site';
 import { buildPageMetadata } from '@/lib/seo/alternates';
 import { articleJsonLd, breadcrumbJsonLd } from '@/lib/seo/json-ld';
 import { JsonLd } from '@/components/seo/json-ld';
+import { lx } from '@/lib/i18n/lx';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 
@@ -30,8 +31,8 @@ export async function generateMetadata({
   return buildPageMetadata({
     locale,
     path: `/blog/${slug}`,
-    title: t('metaDetailTitle', { title: post.title[locale as AppLocale] }),
-    description: post.excerpt[locale as AppLocale],
+    title: t('metaDetailTitle', { title: lx(post.title, locale) }),
+    description: lx(post.excerpt, locale),
     image: post.coverImage,
   });
 }
@@ -59,7 +60,7 @@ export default async function BlogPostPage({
           breadcrumbJsonLd([
             { name: t('home'), url: `${siteConfig.url}/${locale}` },
             { name: t('blog'), url: `${siteConfig.url}/${locale}/blog` },
-            { name: post.title[appLocale], url: `${siteConfig.url}/${locale}${path}` },
+            { name: lx(post.title, appLocale), url: `${siteConfig.url}/${locale}${path}` },
           ]),
         ]}
       />
@@ -74,9 +75,9 @@ export default async function BlogPostPage({
         </Link>
 
         <div className="mt-6">
-          <Badge variant="tertiary">{post.category[appLocale]}</Badge>
+          <Badge variant="tertiary">{lx(post.category, appLocale)}</Badge>
           <h1 className="mt-4 font-display text-3xl font-bold leading-tight text-foreground sm:text-4xl">
-            {post.title[appLocale]}
+            {lx(post.title, appLocale)}
           </h1>
           <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-muted-foreground">
             <span>{post.author}</span>
@@ -98,7 +99,7 @@ export default async function BlogPostPage({
         <div className="relative mt-8 aspect-[16/9] overflow-hidden rounded-lg border border-border">
           <Image
             src={post.coverImage}
-            alt={post.title[appLocale]}
+            alt={lx(post.title, appLocale)}
             fill
             priority
             sizes="(max-width: 768px) 100vw, 768px"
@@ -107,7 +108,7 @@ export default async function BlogPostPage({
         </div>
 
         <div className="prose mt-8 max-w-none">
-          {post.content[appLocale]
+          {lx(post.content, appLocale)
             .split('\n')
             .filter(Boolean)
             .map((para, i) => (

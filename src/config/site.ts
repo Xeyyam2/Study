@@ -19,7 +19,7 @@ export const siteConfig = {
   },
   locale: {
     default: 'en',
-    locales: ['en', 'tr', 'az', 'ru'] as const,
+    locales: ['en', 'tr', 'az', 'ru', 'de', 'fr', 'fa', 'ar', 'tk', 'kk', 'ky', 'zh', 'bg', 'ur', 'uz', 'sw', 'so', 'id'] as const,
   },
   contact: {
     email: 'hello@studyhub.example',
