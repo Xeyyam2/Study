@@ -31,8 +31,8 @@
 
 | Alt-faza | Spec | Plan | İcra | Build |
 |---|---|---|---|---|
-| 5A — AI chatbot | ✅ | — | ⏳ | — |
-| 5B — analitika | ✅ | — | ⏳ | — |
-| 5C — launch | ✅ | — | ⏳ | — |
+| 5A — AI chatbot | ✅ | — | ✅ | — |
+| 5B — analitika | ✅ | — | ✅ | — |
+| 5C — launch | ✅ | — | ✅ | — |
 
-Güncəllənib: 2026-08-01.
+Güncəllənib: 2026-08-01. Faza 5 tamamlanıb — tsc clean.

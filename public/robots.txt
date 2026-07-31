@@ -1,0 +1,26 @@
+# robots.txt — StudyHub (study-in-Turkey platform)
+# Allow all crawlers to access marketing + public content pages.
+# Block admin, dashboard, and API routes from indexing.
+
+User-agent: *
+
+# Public marketing pages — allow
+Allow: /
+Allow: /*/universities
+Allow: /*/programs
+Allow: /*/blog
+Allow: /*/about
+Allow: /*/contact
+Allow: /*/apply
+Allow: /*/compare
+Allow: /*/study-in-turkey-from-*
+
+# Private / dynamic routes — block
+Disallow: /admin
+Disallow: /*/admin
+Disallow: /*/dashboard
+Disallow: /api
+Disallow: /*/api
+
+# Sitemap
+Sitemap: https://studyhub.example/sitemap.xml
