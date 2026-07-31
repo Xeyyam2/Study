@@ -1,7 +1,8 @@
 import { getTranslations } from 'next-intl/server';
-import { crm } from '@/lib/crm';
-import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { EmailOtpForm } from '@/components/student/EmailOtpForm';
+import { Button } from '@/components/ui/button';
+import { crm } from '@/lib/crm';
 
 export const dynamic = 'force-dynamic';
 
@@ -12,7 +13,12 @@ export default async function StudentLoginPage({
 }) {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'Student.login' });
-  const students = await crm.listStudents();
+  const base = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000';
+  const callbackUrl = `${base}/auth/callback?next=/${locale}/dashboard`;
+  const isDev = process.env.NODE_ENV !== 'production';
+
+  let demoStudents: Awaited<ReturnType<typeof crm.listStudents>> = [];
+  if (isDev) demoStudents = await crm.listStudents();
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background p-6">
@@ -21,24 +27,30 @@ export default async function StudentLoginPage({
           <CardTitle>{t('title')}</CardTitle>
           <CardDescription>{t('subtitle')}</CardDescription>
         </CardHeader>
-        <CardContent className="space-y-2">
-          {students.map((s) => (
-            <form key={s.id} action={loginAction} className="block">
-              <input type="hidden" name="profileId" value={s.id} />
-              <input type="hidden" name="locale" value={locale} />
-              <Button type="submit" variant="outline" className="w-full justify-between">
-                <span>{s.fullName}</span>
-                <span className="text-xs text-muted-foreground">{s.email}</span>
-              </Button>
-            </form>
-          ))}
+        <CardContent className="space-y-6">
+          <EmailOtpForm redirectTo={callbackUrl} />
+          {isDev && demoStudents.length > 0 && (
+            <div className="space-y-2 border-t border-border pt-4">
+              <p className="text-xs uppercase text-muted-foreground">Dev login</p>
+              {demoStudents.map((s) => (
+                <form key={s.id} action={devLoginAction} className="block">
+                  <input type="hidden" name="profileId" value={s.id} />
+                  <input type="hidden" name="locale" value={locale} />
+                  <Button type="submit" variant="outline" size="sm" className="w-full justify-between">
+                    <span>{s.fullName}</span>
+                    <span className="text-xs text-muted-foreground">{s.email}</span>
+                  </Button>
+                </form>
+              ))}
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>
   );
 }
 
-async function loginAction(formData: FormData) {
+async function devLoginAction(formData: FormData) {
   'use server';
   const { devStudentLogin } = await import('@/app/actions/student-auth');
   await devStudentLogin({
