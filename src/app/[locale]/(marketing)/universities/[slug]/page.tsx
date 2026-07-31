@@ -91,8 +91,10 @@ export default async function UniversityDetailPage({
     data.faqs.general(),
   ]);
   const faqs = [...uniFaqs, ...generalFaqs].slice(0, 8);
-  const rating = data.universities.getRating(detail.id);
-  const minTuition = data.universities.getMinTuitionUSD(detail.id);
+  const [rating, minTuition] = await Promise.all([
+    data.universities.getRating(detail.id),
+    data.universities.getMinTuitionUSD(detail.id),
+  ]);
   const city = detail.city;
 
   const wa = `https://wa.me/${siteConfig.contact.whatsapp.number}?text=${encodeURIComponent(

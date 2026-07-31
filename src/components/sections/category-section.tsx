@@ -34,8 +34,10 @@ interface CategorySectionProps {
 
 export async function CategorySection({ locale }: CategorySectionProps) {
   const t = await getTranslations('HomePage.categories');
-  const categories = data.programs.getCategories();
-  const programs = await data.programs.list();
+  const [categories, programs] = await Promise.all([
+    data.programs.getCategories(),
+    data.programs.list(),
+  ]);
 
   const programById = new Map(programs.map((p) => [p.id, p]));
   const minFeeByCategory: Record<string, number> = {};

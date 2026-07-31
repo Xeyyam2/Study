@@ -14,14 +14,16 @@ interface UniversityCardProps {
   priority?: boolean;
 }
 
-export function UniversityCard({
+export async function UniversityCard({
   university,
   locale,
   priority,
 }: UniversityCardProps) {
-  const city = data.cities.getByUniversityId(university.id);
-  const minTuition = data.universities.getMinTuitionUSD(university.id);
-  const { rating, count } = data.universities.getRating(university.id);
+  const [city, minTuition, { rating, count }] = await Promise.all([
+    data.cities.getByUniversityId(university.id),
+    data.universities.getMinTuitionUSD(university.id),
+    data.universities.getRating(university.id),
+  ]);
 
   return (
     <Link

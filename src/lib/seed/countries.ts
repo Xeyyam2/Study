@@ -61,4 +61,10 @@ export const seedCountries: Country[] = [
     flag: '🇮🇶',
     name: { en: 'Iraq', tr: 'Irak', az: 'İraq', ru: 'Ирак' },
   },
+  {
+    code: 'TR',
+    slug: 'turkey',
+    flag: '🇹🇷',
+    name: { en: 'Turkey', tr: 'Türkiye', az: 'Türkiyə', ru: 'Турция' },
+  },
 ];

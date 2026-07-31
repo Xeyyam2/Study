@@ -29,7 +29,8 @@ import { Badge } from '@/components/ui/badge';
 import { formatCurrency } from '@/lib/utils';
 
 export async function generateStaticParams() {
-  return data.programs.getCombinations().map((c) => ({
+  const combos = await data.programs.getCombinations();
+  return combos.map((c) => ({
     category: c.categorySlug,
     city: c.citySlug,
   }));
@@ -41,7 +42,7 @@ export async function generateMetadata({
   params: Promise<{ locale: string; category: string; city: string }>;
 }): Promise<Metadata> {
   const { locale, category, city } = await params;
-  const result = data.programs.getByCategoryAndCity(category, city);
+  const result = await data.programs.getByCategoryAndCity(category, city);
   if (!result.category || !result.city) return {};
   const t = await getTranslations({ locale, namespace: 'ProgramCombination' });
   const title = t('metaTitle', {
@@ -69,7 +70,7 @@ export default async function ProgramCombinationPage({
   const appLocale = locale as AppLocale;
   const t = await getTranslations({ locale, namespace: 'ProgramCombination' });
 
-  const result = data.programs.getByCategoryAndCity(category, city);
+  const result = await data.programs.getByCategoryAndCity(category, city);
   if (!result.category || !result.city || result.programs.length === 0)
     notFound();
 

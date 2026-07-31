@@ -3,6 +3,7 @@ import { Pool } from 'pg';
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { seedContent } from './seed-content';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = join(__dirname, '..');
@@ -64,19 +65,28 @@ async function main() {
     }
 
     if (seed) {
-      console.log('→ seeding');
+      console.log('→ seeding CRM (seed.sql)');
       const sql = readFileSync(seedPath, 'utf8');
       await client.query(sql);
     }
 
-    console.log('✓ done');
+    console.log('✓ done (migrations + CRM seed)');
   } finally {
     client.release();
     await pool.end();
   }
 }
 
-main().catch((err) => {
+// Content tables (Phase 3B) load from seed TS after migrations/CRM-seed.
+async function seedContentPhase() {
+  const args = new Set(process.argv.slice(2));
+  const reset = args.has('--reset');
+  const seed = args.has('--seed') || reset;
+  if (!seed) return;
+  await seedContent();
+}
+
+main().then(() => seedContentPhase()).catch((err) => {
   console.error(err);
   process.exit(1);
 });

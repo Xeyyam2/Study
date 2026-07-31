@@ -21,14 +21,14 @@ export interface UniversityRepository {
   getBySlug(slug: string): Promise<University | null>;
   getDetail(slug: string): Promise<UniversityDetail | null>;
   getRelated(slug: string, limit?: number): Promise<University[]>;
-  getMinTuitionUSD(universityId: string): number;
-  getRating(universityId: string): { rating: number; count: number };
+  getMinTuitionUSD(universityId: string): Promise<number>;
+  getRating(universityId: string): Promise<{ rating: number; count: number }>;
 }
 
 export interface CityRepository {
   list(): Promise<City[]>;
   getBySlug(slug: string): Promise<City | null>;
-  getByUniversityId(universityId: string): City | null;
+  getByUniversityId(universityId: string): Promise<City | null>;
 }
 
 export interface CountryRepository {
@@ -38,18 +38,18 @@ export interface CountryRepository {
 
 export interface ProgramRepository {
   list(): Promise<Program[]>;
-  getCategories(): ProgramCategory[];
-  getCombinations(): ProgramCombination[];
+  getCategories(): Promise<ProgramCategory[]>;
+  getCombinations(): Promise<ProgramCombination[]>;
   getByCategoryAndCity(
     category: string,
     citySlug: string,
-  ): {
+  ): Promise<{
     category: ProgramCategory | null;
     city: City | null;
     programs: Array<Program & { university: University; tuitionFee: number; language: InstructionLanguage }>;
     universityCount: number;
     minTuitionUSD: number;
-  };
+  }>;
 }
 
 export interface ReviewRepository {

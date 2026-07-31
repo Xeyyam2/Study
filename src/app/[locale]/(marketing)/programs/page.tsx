@@ -33,9 +33,11 @@ export default async function ProgramsPage({
   const appLocale = locale as AppLocale;
   const t = await getTranslations({ locale, namespace: 'ProgramsIndex' });
 
-  const categories = data.programs.getCategories();
-  const combinations = data.programs.getCombinations();
-  const cities = await data.cities.list();
+  const [categories, combinations, cities] = await Promise.all([
+    data.programs.getCategories(),
+    data.programs.getCombinations(),
+    data.cities.list(),
+  ]);
   const cityBySlug = new Map(cities.map((c) => [c.slug, c]));
 
   return (

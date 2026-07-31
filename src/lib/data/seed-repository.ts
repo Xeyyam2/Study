@@ -74,7 +74,11 @@ class SeedUniversityRepository implements UniversityRepository {
           if (!has) return false;
         }
         if (filters.maxTuitionUSD !== undefined) {
-          if (this.getMinTuitionUSD(u.id) > filters.maxTuitionUSD) return false;
+          const min = seedUniversityPrograms
+            .filter((up) => up.universityId === u.id && up.currency === 'USD')
+            .map((up) => up.tuitionFee);
+          const m = min.length ? Math.min(...min) : 0;
+          if (m > filters.maxTuitionUSD) return false;
         }
         return true;
       }),
@@ -125,14 +129,14 @@ class SeedUniversityRepository implements UniversityRepository {
     return delay([...sameCity, ...others].slice(0, limit));
   }
 
-  getMinTuitionUSD(universityId: string): number {
+  getMinTuitionUSD(universityId: string): Promise<number> {
     const fees = seedUniversityPrograms
       .filter((up) => up.universityId === universityId && up.currency === 'USD')
       .map((up) => up.tuitionFee);
-    return fees.length ? Math.min(...fees) : 0;
+    return Promise.resolve(fees.length ? Math.min(...fees) : 0);
   }
 
-  getRating(universityId: string): { rating: number; count: number } {
+  async getRating(universityId: string): Promise<{ rating: number; count: number }> {
     const rs = seedReviews.filter((r) => r.universityId === universityId);
     if (!rs.length) return { rating: 0, count: 0 };
     const sum = rs.reduce((acc, r) => acc + r.rating, 0);
@@ -158,7 +162,7 @@ class SeedCityRepository implements CityRepository {
   async getBySlug(slug: string): Promise<City | null> {
     return delay(seedCities.find((c) => c.slug === slug) ?? null);
   }
-  getByUniversityId(universityId: string): City | null {
+  async getByUniversityId(universityId: string): Promise<City | null> {
     const u = seedUniversities.find((un) => un.id === universityId);
     if (!u) return null;
     return seedCities.find((c) => c.id === u.cityId) ?? null;
@@ -178,10 +182,11 @@ class SeedProgramRepository implements ProgramRepository {
   async list(): Promise<Program[]> {
     return delay(seedPrograms);
   }
-  getCategories(): ProgramCategory[] {
-    return seedCategories;
+  async getCategories(): Promise<ProgramCategory[]> {
+    return Promise.resolve(seedCategories);
   }
-  getCombinations(): ProgramCombination[] {
+
+  async getCombinations(): Promise<ProgramCombination[]> {
     const map = new Map<string, ProgramCombination>();
     const universities = new Set<string>();
     for (const up of seedUniversityPrograms) {
@@ -225,7 +230,13 @@ class SeedProgramRepository implements ProgramRepository {
     }
     return uniIds.size;
   }
-  getByCategoryAndCity(category: string, citySlug: string) {
+  async getByCategoryAndCity(category: string, citySlug: string): Promise<{
+    category: ProgramCategory | null;
+    city: City | null;
+    programs: Array<Program & { university: University; tuitionFee: number; language: import('@/types').InstructionLanguage }>;
+    universityCount: number;
+    minTuitionUSD: number;
+  }> {
     const cat = seedCategories.find((c) => c.slug === category) ?? null;
     const city = seedCities.find((c) => c.slug === citySlug) ?? null;
     if (!city) {

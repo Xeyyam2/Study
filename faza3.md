@@ -25,14 +25,12 @@
 
 ---
 
-### 3B — Məlumatların seed → DB-yə köçürülməsi ⏳
-**Məqsəd:** Universitet/proqram/şəhər/ölkə/bloq/review/faq/təqaüd/yataqxana datasını (`src/lib/seed/*.ts`) Postgres cədvəllərinə (0001–0004) köçür; `DataLayer`-ın `createSupabaseDataLayer()` (və ya `createPgDataLayer()`) implementasiyasını yaz; `src/lib/data/index.ts` flip nöqtəsi dəyişdirilir.
+### 3B — Məlumatların seed → DB-yə köçürülməsi ✅
+**Məqsəd:** Universitet/proqram/şəhər/ölkə/bloq/review/faq/təqaüd/yataqxana datasını (`src/lib/seed/*.ts`) Postgres cədvəllərinə (0011) köçür; `DataLayer`-ın `createPgDataLayer()` implementasiyasını yaz; `src/lib/data/index.ts` flip nöqtəsi dəyişdirilir.
 
-**Təsir:** `seed-repository.ts` əvəzinə `pg-data-repository.ts`; `getMinTuitionUSD`/`getRating` kimi sinxron metodlar async olur (interfeysdə artıq async). Seeder script (`scripts/seed-content.ts`) seed TS obyektlərini DB-yə insert edir; `db:reset` onu çağırır.
+**Təsir:** `seed-repository.ts` əvəzinə `pg-data-repository.ts`; `getMinTuitionUSD`/`getRating`/`getByUniversityId`/`getCategories`/`getCombinations`/`getByCategoryAndCity` async oldu; `scripts/seed-content.ts` seed TS obyektlərini DB-yə insert edir; `db:reset` onu çağırır.
 
 **Bitmə kriteriyası:** Bütün `(marketing)` səhifələri DB-dən oxuyur; `npm run build` + E2E yaşıl; seed TS faylları yalnız seeder-ın mənbəyi kimi qalır (runtime import yoxdur).
-
-**Risk:** Mövcud uni proqram tələb edənə qədər gözlə (YAGNI).
 
 ---
 
@@ -79,8 +77,8 @@
 | Alt-faza | Spec | Plan | İcra | Build |
 |---|---|---|---|---|
 | 3A — i18n 18 dil | ✅ | — | ✅ | ✅ |
-| 3B — seed→DB | — | — | — | — |
+| 3B — seed→DB | ✅ | — | ✅ | ✅ |
 | 3C — programmatic SEO | — | — | — | — |
 | 3D — axtarış | — | — | — | — |
 
-Güncəllənib: 2026-07-31 (3A commit-ləndi).
+Güncəllənib: 2026-07-31 (3A və 3B commit-ləndi).

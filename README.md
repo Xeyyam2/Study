@@ -81,9 +81,11 @@ src/
 ## Data layer (adapter pattern)
 
 All UI talks to the `DataLayer` interface in [`src/lib/data/repositories.ts`](./src/lib/data/repositories.ts).
-Today it is backed by an in-memory `SeedRepository`. To switch to Supabase in a
-later phase, implement `createSupabaseDataLayer()` and swap it in
-[`src/lib/data/index.ts`](./src/lib/data/index.ts) — no UI changes required.
+It is backed by a **Postgres repository** (`src/lib/data/pg-data-repository.ts`) when
+`DATABASE_URL` is set; otherwise it falls back to the in-memory `SeedRepository`.
+Content data (universities, programs, cities, countries, blog, …) lives in content tables
+(`supabase/migrations/0011_content_tables.sql`) seeded from `src/lib/seed/*` via
+`scripts/seed-content.ts` (run by `npm run db:reset`).
 
 ```ts
 import { data } from '@/lib/data';
@@ -118,7 +120,7 @@ const universities = await data.universities.list({ citySlug: 'istanbul' });
 ## Roadmap (per `Study.md`)
 
 - **Phase 2:** Supabase + Prisma, RLS, auth (email/OTP/OAuth), leads CRM, student dashboard ✅
-- **Phase 3A:** i18n 4 → 18 locales ✅ · **3B:** seed → DB content migration · **3C:** programmatic scale (100k+ pages) · **3D:** Meilisearch
+- **Phase 3A:** i18n 4 → 18 locales ✅ · **3B:** seed → DB content migration ✅ · **3C:** programmatic scale (100k+ pages) · **3D:** Meilisearch
 - **Phase 4:** GEO/AEO refinement, schema completion, performance tuning
 - **Phase 5:** AI modules (chatbot, content generators), analytics, launch
 
@@ -129,9 +131,9 @@ const universities = await data.universities.list({ citySlug: 'istanbul' });
   strongest possible technical foundation.
 - Test credentials / env: none required for Phase 1 (no external services).
 - UI translations for Phase 3A locales beyond `en/tr/az/ru` are AI-generated drafts; have a
-  native speaker review before launch (see `Study.md` §17). Seed *content* (university
-  descriptions, blog copy, etc.) still ships in `en/tr/az/ru` only and falls back to `en` via
-  `lx()` for other locales until 3B moves content into the DB.
+  native speaker review before launch (see `Study.md` §17). Seed *content* now lives in the
+  Postgres content tables (`0011_content_tables.sql`) and still ships in `en/tr/az/ru` only
+  (falls back to `en` via `lx()` for other locales).
 
 ## Backend & Admin/CRM (Phase 2A)
 

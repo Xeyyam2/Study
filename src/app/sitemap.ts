@@ -7,12 +7,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = siteConfig.url;
   const now = new Date();
 
-  const [universities, countries, posts] = await Promise.all([
+  const [universities, countries, posts, combinations] = await Promise.all([
     data.universities.list(),
     data.countries.list(),
     data.blog.list(),
+    data.programs.getCombinations(),
   ]);
-  const combinations = data.programs.getCombinations();
 
   const staticPaths = [
     { path: '/', priority: 1.0, change: 'weekly' as const },

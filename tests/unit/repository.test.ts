@@ -37,12 +37,12 @@ describe('UniversityRepository (seed)', () => {
     expect(detail!.city?.slug).toBe('istanbul');
   });
 
-  it('computes min tuition', () => {
-    expect(data.universities.getMinTuitionUSD('u-bahcesehir')).toBeGreaterThan(0);
+  it('computes min tuition', async () => {
+    expect(await data.universities.getMinTuitionUSD('u-bahcesehir')).toBeGreaterThan(0);
   });
 
-  it('computes aggregate rating', () => {
-    const r = data.universities.getRating('u-bahcesehir');
+  it('computes aggregate rating', async () => {
+    const r = await data.universities.getRating('u-bahcesehir');
     expect(r.count).toBeGreaterThan(0);
     expect(r.rating).toBeGreaterThan(0);
     expect(r.rating).toBeLessThanOrEqual(5);
@@ -55,12 +55,12 @@ describe('UniversityRepository (seed)', () => {
 });
 
 describe('ProgramRepository (seed)', () => {
-  it('exposes categories', () => {
-    expect(data.programs.getCategories().length).toBeGreaterThan(0);
+  it('exposes categories', async () => {
+    expect((await data.programs.getCategories()).length).toBeGreaterThan(0);
   });
 
-  it('builds programmatic combinations', () => {
-    const combos = data.programs.getCombinations();
+  it('builds programmatic combinations', async () => {
+    const combos = await data.programs.getCombinations();
     expect(combos.length).toBeGreaterThan(0);
     for (const c of combos) {
       expect(c.universityCount).toBeGreaterThan(0);
@@ -68,8 +68,8 @@ describe('ProgramRepository (seed)', () => {
     }
   });
 
-  it('resolves a category+city combination', () => {
-    const result = data.programs.getByCategoryAndCity('computer-science', 'istanbul');
+  it('resolves a category+city combination', async () => {
+    const result = await data.programs.getByCategoryAndCity('computer-science', 'istanbul');
     expect(result.city?.slug).toBe('istanbul');
     expect(result.programs.length).toBeGreaterThan(0);
   });
