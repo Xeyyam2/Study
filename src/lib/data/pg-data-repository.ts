@@ -192,24 +192,21 @@ export function createPgDataLayer(getPool: () => Pool): DataLayer {
         params.push(filters.language);
         pi++;
       }
-      let sql = `select u.* from public.universities u`;
+      // Min USD tədris haqqı — korrelyasiyalı subquery (filtr SQL-də tətbiq olunur, N+1 yoxdur).
+      const maxTuitionExpr = `coalesce((select min(tuition_fee) filter (where currency='USD') from public.university_programs up where up.university_id = u.id), 0)`;
+      const wantMaxTuition = filters.maxTuitionUSD !== undefined;
+
+      let sql = `select u.*`;
+      if (wantMaxTuition) sql += `, ${maxTuitionExpr} as _min_tuition`;
+      sql += ` from public.universities u`;
       if (where.length) sql += ` where ` + where.join(' and ');
+      if (wantMaxTuition) {
+        sql += `${where.length ? ' and ' : ' where '}${maxTuitionExpr} <= $${pi}`;
+        params.push(filters.maxTuitionUSD as number);
+      }
       sql += ` order by u.name`;
       const res = await getPool().query(sql, params);
-      let rows = res.rows.map(rowUniversity);
-      if (filters.maxTuitionUSD !== undefined) {
-        const keep = await Promise.all(
-          rows.map(async (u) => {
-            const r = await getPool().query(
-              `select coalesce(min(tuition_fee) filter (where currency='USD'), 0) m from public.university_programs where university_id = $1`,
-              [u.id],
-            );
-            return Number(r.rows[0]?.m ?? 0) <= (filters.maxTuitionUSD as number);
-          }),
-        );
-        rows = rows.filter((_, i) => keep[i]);
-      }
-      return rows;
+      return res.rows.map(rowUniversity);
     },
 
     async getFeatured(limit = 4): Promise<University[]> {

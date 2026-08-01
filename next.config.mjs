@@ -15,6 +15,7 @@ const nextConfig = {
     remotePatterns: [
       { protocol: 'https', hostname: 'images.unsplash.com' },
       { protocol: 'https', hostname: 'images.pexels.com' },
+      { protocol: 'https', hostname: '*.supabase.co' },
     ],
   },
   async headers() {
@@ -25,6 +26,30 @@ const nextConfig = {
       {
         key: 'Permissions-Policy',
         value: 'camera=(), microphone=(), geolocation=()',
+      },
+      {
+        key: 'Strict-Transport-Security',
+        value: 'max-age=63072000; includeSubDomains; preload',
+      },
+      {
+        key: 'Content-Security-Policy',
+        value: [
+          "default-src 'self'",
+          // next/script inline + GA gtag + Clarity + GA collect
+          "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.clarity.ms",
+          "style-src 'self' 'unsafe-inline'",
+          // next/image öz originindən xidmət edir; uzaq Unsplash/Pexels/Supabase + data URI-lar
+          "img-src 'self' data: blob: https:",
+          "font-src 'self' data:",
+          // Supabase client (auth/realtime/storage) + GA/Clarity
+          "connect-src 'self' https://*.supabase.co https://www.google-analytics.com https://www.googletagmanager.com https://*.clarity.ms",
+          "frame-src 'self'",
+          "frame-ancestors 'self'",
+          "object-src 'none'",
+          "base-uri 'self'",
+          "form-action 'self'",
+          "upgrade-insecure-requests",
+        ].join('; '),
       },
     ];
     return [{ source: '/(.*)', headers: securityHeaders }];

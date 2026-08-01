@@ -7,7 +7,13 @@ export const dynamic = 'force-dynamic';
 export async function GET(req: NextRequest) {
   const requestUrl = new URL(req.url);
   const code = requestUrl.searchParams.get('code');
-  const next = requestUrl.searchParams.get('next') ?? `/${routing.defaultLocale}/dashboard`;
+  let next = requestUrl.searchParams.get('next') ?? `/${routing.defaultLocale}/dashboard`;
+  // Open-redirect qorunması: `next` yalnız lokal, nispi path ola bilər.
+  // Tam URL (https://evil.com) və ya `//evil.com` `new URL()` tərəfindən origin-i
+  // override edə bilər — ona görə yalnız `/` ilə başlayan və `//` olmayan path-ə icazə veririk.
+  if (!next.startsWith('/') || next.startsWith('//')) {
+    next = `/${routing.defaultLocale}/dashboard`;
+  }
   const redirectTarget = new URL(next, requestUrl.origin);
   const res = NextResponse.redirect(redirectTarget);
 
