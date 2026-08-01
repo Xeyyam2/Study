@@ -178,7 +178,7 @@
     "applyCta": "همین حالا درخواست دهید",
     "whatsappCta": "پرسش در واتس‌اپ",
     "applyNote": "مشاوره رایگان · پشتیبانی ویزا گنجانده شده",
-    "degree": { "bachelor": "کارشناسی", "master": "کارشناسی ارشد", "phd": "دکترا", "associate": "کاردانی" }
+    "degrees": { "bachelor": "کارشناسی", "master": "کارشناسی ارشد", "phd": "دکترا", "associate": "کاردانی" }
   },
   "ProgramsIndex": {
     "metaTitle": "رشته‌های تحصیلی در ترکیه — مرور بر اساس حوزه و شهر",
@@ -207,7 +207,7 @@
     "tuition": "شهریه / سال",
     "universitiesTitle": "دانشگاه‌ها",
     "viewAll": "همه دانشگاه‌ها",
-    "degree": { "bachelor": "کارشناسی", "master": "کارشناسی ارشد", "phd": "دکترا", "associate": "کاردانی" }
+    "degrees": { "bachelor": "کارشناسی", "master": "کارشناسی ارشد", "phd": "دکترا", "associate": "کاردانی" }
   },
   "CountryLanding": {
     "metaTitle": "تحصیل در ترکیه از {country} — راهنمای کامل",

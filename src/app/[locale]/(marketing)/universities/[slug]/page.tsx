@@ -307,7 +307,7 @@ export default async function UniversityDetailPage({
                         </TableCell>
                         <TableCell>
                           <Badge variant="secondary">
-                            {t(`degree.${up.program.degreeLevel}`)}
+                            {t(`degrees.${up.program.degreeLevel}`)}
                           </Badge>
                         </TableCell>
                         <TableCell className="uppercase">{up.language}</TableCell>

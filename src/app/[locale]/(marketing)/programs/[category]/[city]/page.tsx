@@ -243,7 +243,7 @@ export default async function ProgramCombinationPage({
                     </TableCell>
                     <TableCell>
                       <Badge variant="secondary">
-                        {t(`degree.${p.degreeLevel}`)}
+                        {t(`degrees.${p.degreeLevel}`)}
                       </Badge>
                     </TableCell>
                     <TableCell className="uppercase">{p.language}</TableCell>

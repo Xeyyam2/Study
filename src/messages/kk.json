@@ -178,7 +178,7 @@
     "applyCta": "Қазір өтініш беру",
     "whatsappCta": "WhatsApp-та сұрау",
     "applyNote": "Тегін кеңес · Виза қолдауы қоса",
-    "degree": { "bachelor": "Бакалавр", "master": "Магистр", "phd": "Докторантура", "associate": "Колледж" }
+    "degrees": { "bachelor": "Бакалавр", "master": "Магистр", "phd": "Докторантура", "associate": "Колледж" }
   },
   "ProgramsIndex": {
     "metaTitle": "Түркиядағы оқу бағдарлары — Сала мен қала бойынша",
@@ -207,7 +207,7 @@
     "tuition": "Ақы / жыл",
     "universitiesTitle": "Университеттер",
     "viewAll": "Барлық университеттер",
-    "degree": { "bachelor": "Бакалавр", "master": "Магистр", "phd": "Докторантура", "associate": "Колледж" }
+    "degrees": { "bachelor": "Бакалавр", "master": "Магистр", "phd": "Докторантура", "associate": "Колледж" }
   },
   "CountryLanding": {
     "metaTitle": "{country} елінен Түркияда оқу — Толық нұсқаулық",

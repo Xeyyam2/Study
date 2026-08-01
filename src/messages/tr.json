@@ -179,7 +179,7 @@
     "applyCta": "Hemen başvur",
     "whatsappCta": "WhatsApp'tan sor",
     "applyNote": "Ücretsiz danışmanlık · Vize desteği dahil",
-    "degree": { "bachelor": "Lisans", "master": "Yüksek Lisans", "phd": "Doktora", "associate": "Önlisans" }
+    "degrees": { "bachelor": "Lisans", "master": "Yüksek Lisans", "phd": "Doktora", "associate": "Önlisans" }
   },
   "ProgramsIndex": {
     "metaTitle": "Türkiye'de Bölümler — Alana ve Şehre Göre Göz Atın",
@@ -210,7 +210,7 @@
     "tuition": "Ücret / yıl",
     "universitiesTitle": "Üniversiteler",
     "viewAll": "Tüm üniversiteler",
-    "degree": { "bachelor": "Lisans", "master": "Yüksek Lisans", "phd": "Doktora", "associate": "Önlisans" }
+    "degrees": { "bachelor": "Lisans", "master": "Yüksek Lisans", "phd": "Doktora", "associate": "Önlisans" }
   },
   "CountryLanding": {
     "metaTitle": "{country} için Türkiye'de Eğitim — Tam Rehber",

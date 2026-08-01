@@ -179,7 +179,7 @@
     "applyCta": "Apply now",
     "whatsappCta": "Ask on WhatsApp",
     "applyNote": "Free consultation · Visa support included",
-    "degree": { "bachelor": "Bachelor", "master": "Master", "phd": "PhD", "associate": "Associate" }
+    "degrees": { "bachelor": "Bachelor", "master": "Master", "phd": "PhD", "associate": "Associate" }
   },
   "ProgramsIndex": {
     "metaTitle": "Study Programs in Turkey — Browse by Field & City",
@@ -210,7 +210,7 @@
     "tuition": "Tuition / year",
     "universitiesTitle": "Universities",
     "viewAll": "All universities",
-    "degree": { "bachelor": "Bachelor", "master": "Master", "phd": "PhD", "associate": "Associate" }
+    "degrees": { "bachelor": "Bachelor", "master": "Master", "phd": "PhD", "associate": "Associate" }
   },
   "CountryLanding": {
     "metaTitle": "Study in Turkey from {country} — Complete Guide",

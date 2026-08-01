@@ -178,7 +178,7 @@
     "applyCta": "Азыр өтүнмө бериңиз",
     "whatsappCta": "WhatsApp-да сура",
     "applyNote": "Акысыз кеңеш · Виза колдоосу менен",
-    "degree": { "bachelor": "Бакалавр", "master": "Магистр", "phd": "Докторантура", "associate": "Коллеж" }
+    "degrees": { "bachelor": "Бакалавр", "master": "Магистр", "phd": "Докторантура", "associate": "Коллеж" }
   },
   "ProgramsIndex": {
     "metaTitle": "Түркиядагы окуу программалары — Тармак жана шаар боюнча",
@@ -207,7 +207,7 @@
     "tuition": "Акы / жыл",
     "universitiesTitle": "Университеттер",
     "viewAll": "Бардык университеттер",
-    "degree": { "bachelor": "Бакалавр", "master": "Магистр", "phd": "Докторантура", "associate": "Коллеж" }
+    "degrees": { "bachelor": "Бакалавр", "master": "Магистр", "phd": "Докторантура", "associate": "Коллеж" }
   },
   "CountryLanding": {
     "metaTitle": "{country} өлкөсүнөн Түркияда окуу — Толук нускамалуу",

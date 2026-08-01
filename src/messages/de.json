@@ -178,7 +178,7 @@
     "applyCta": "Jetzt bewerben",
     "whatsappCta": "Auf WhatsApp fragen",
     "applyNote": "Kostenlose Beratung · Visum-Unterstützung inklusive",
-    "degree": { "bachelor": "Bachelor", "master": "Master", "phd": "Promotion", "associate": "Associate" }
+    "degrees": { "bachelor": "Bachelor", "master": "Master", "phd": "Promotion", "associate": "Associate" }
   },
   "ProgramsIndex": {
     "metaTitle": "Studiengänge in der Türkei — Nach Fach & Stadt",
@@ -207,7 +207,7 @@
     "tuition": "Studiengebühren / Jahr",
     "universitiesTitle": "Universitäten",
     "viewAll": "Alle Universitäten",
-    "degree": { "bachelor": "Bachelor", "master": "Master", "phd": "Promotion", "associate": "Associate" }
+    "degrees": { "bachelor": "Bachelor", "master": "Master", "phd": "Promotion", "associate": "Associate" }
   },
   "CountryLanding": {
     "metaTitle": "In der Türkei aus {country} studieren — Vollständiger Leitfaden",

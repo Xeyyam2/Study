@@ -178,7 +178,7 @@
     "applyCta": "تقدّم الآن",
     "whatsappCta": "اسأل على واتساب",
     "applyNote": "استشارة مجانية · دعم التأشيرة مشمول",
-    "degree": { "bachelor": "بكالوريوس", "master": "ماجستير", "phd": "دكتوراه", "associate": "زمالة" }
+    "degrees": { "bachelor": "بكالوريوس", "master": "ماجستير", "phd": "دكتوراه", "associate": "زمالة" }
   },
   "ProgramsIndex": {
     "metaTitle": "تخصصات الدراسة في تركيا — حسب المجال والمدينة",
@@ -207,7 +207,7 @@
     "tuition": "الرسوم / سنة",
     "universitiesTitle": "الجامعات",
     "viewAll": "كل الجامعات",
-    "degree": { "bachelor": "بكالوريوس", "master": "ماجستير", "phd": "دكتوراه", "associate": "زمالة" }
+    "degrees": { "bachelor": "بكالوريوس", "master": "ماجستير", "phd": "دكتوراه", "associate": "زمالة" }
   },
   "CountryLanding": {
     "metaTitle": "الدراسة في تركيا من {country} — دليل كامل",

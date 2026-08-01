@@ -179,7 +179,7 @@
     "applyCta": "İndi müraciət et",
     "whatsappCta": "WhatsApp-dan soruş",
     "applyNote": "Pulsuz məsləhət · Viza dəstəyi daxil",
-    "degree": { "bachelor": "Bakalavr", "master": "Magistr", "phd": "Doktorantura", "associate": "Orta ixtisas" }
+    "degrees": { "bachelor": "Bakalavr", "master": "Magistr", "phd": "Doktorantura", "associate": "Orta ixtisas" }
   },
   "ProgramsIndex": {
     "metaTitle": "Türkiyədə Proqramlar — Sahə və Şəhərə görə",
@@ -210,7 +210,7 @@
     "tuition": "Qiymət / il",
     "universitiesTitle": "Universitetlər",
     "viewAll": "Bütün universitetlər",
-    "degree": { "bachelor": "Bakalavr", "master": "Magistr", "phd": "Doktorantura", "associate": "Orta ixtisas" }
+    "degrees": { "bachelor": "Bakalavr", "master": "Magistr", "phd": "Doktorantura", "associate": "Orta ixtisas" }
   },
   "CountryLanding": {
     "metaTitle": "{country} üçün Türkiyədə Təhsil — Tam Bələdçi",

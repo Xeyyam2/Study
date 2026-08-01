@@ -179,7 +179,7 @@
     "applyCta": "Подать заявку",
     "whatsappCta": "Спросить в WhatsApp",
     "applyNote": "Бесплатная консультация · помощь с визой",
-    "degree": { "bachelor": "Бакалавриат", "master": "Магистратура", "phd": "Аспирантура", "associate": "Ассоциат" }
+    "degrees": { "bachelor": "Бакалавриат", "master": "Магистратура", "phd": "Аспирантура", "associate": "Ассоциат" }
   },
   "ProgramsIndex": {
     "metaTitle": "Программы в Турции — по направлениям и городам",
@@ -210,7 +210,7 @@
     "tuition": "Стоимость / год",
     "universitiesTitle": "Университеты",
     "viewAll": "Все университеты",
-    "degree": { "bachelor": "Бакалавриат", "master": "Магистратура", "phd": "Аспирантура", "associate": "Ассоциат" }
+    "degrees": { "bachelor": "Бакалавриат", "master": "Магистратура", "phd": "Аспирантура", "associate": "Ассоциат" }
   },
   "CountryLanding": {
     "metaTitle": "Учеба в Турции для студентов из {country} — гид",

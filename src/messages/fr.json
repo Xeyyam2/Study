@@ -178,7 +178,7 @@
     "applyCta": "Postuler maintenant",
     "whatsappCta": "Demander sur WhatsApp",
     "applyNote": "Consultation gratuite · Soutien visa inclus",
-    "degree": { "bachelor": "Licence", "master": "Master", "phd": "Doctorat", "associate": "Associate" }
+    "degrees": { "bachelor": "Licence", "master": "Master", "phd": "Doctorat", "associate": "Associate" }
   },
   "ProgramsIndex": {
     "metaTitle": "Programmes d'études en Turquie — Par domaine & ville",
@@ -207,7 +207,7 @@
     "tuition": "Frais / an",
     "universitiesTitle": "Universités",
     "viewAll": "Toutes les universités",
-    "degree": { "bachelor": "Licence", "master": "Master", "phd": "Doctorat", "associate": "Associate" }
+    "degrees": { "bachelor": "Licence", "master": "Master", "phd": "Doctorat", "associate": "Associate" }
   },
   "CountryLanding": {
     "metaTitle": "Étudier en Turquie depuis {country} — Guide complet",

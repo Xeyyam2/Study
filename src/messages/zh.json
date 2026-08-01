@@ -178,7 +178,7 @@
     "applyCta": "立即申请",
     "whatsappCta": "在 WhatsApp 上咨询",
     "applyNote": "免费咨询 · 含签证支持",
-    "degree": { "bachelor": "学士", "master": "硕士", "phd": "博士", "associate": "副学士" }
+    "degrees": { "bachelor": "学士", "master": "硕士", "phd": "博士", "associate": "副学士" }
   },
   "ProgramsIndex": {
     "metaTitle": "土耳其留学项目 —— 按领域与城市",
@@ -207,7 +207,7 @@
     "tuition": "学费/年",
     "universitiesTitle": "大学",
     "viewAll": "全部大学",
-    "degree": { "bachelor": "学士", "master": "硕士", "phd": "博士", "associate": "副学士" }
+    "degrees": { "bachelor": "学士", "master": "硕士", "phd": "博士", "associate": "副学士" }
   },
   "CountryLanding": {
     "metaTitle": "从 {country} 前往土耳其留学 —— 完全指南",

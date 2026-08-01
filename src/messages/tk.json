@@ -178,7 +178,7 @@
     "applyCta": "Häzir başla",
     "whatsappCta": "WhatsApp-da sora",
     "applyNote": "Mugt maslahat · Wiza goldawy goşuldy",
-    "degree": { "bachelor": "Bakalawr", "master": "Magistr", "phd": "Doktora", "associate": "Orta hünär" }
+    "degrees": { "bachelor": "Bakalawr", "master": "Magistr", "phd": "Doktora", "associate": "Orta hünär" }
   },
   "ProgramsIndex": {
     "metaTitle": "Türkiýa okuw hünärleri — Ugur we şäher boýunça",
@@ -207,7 +207,7 @@
     "tuition": "Töleg / ýyl",
     "universitiesTitle": "Uniwersvetler",
     "viewAll": "Ähli uniwersvetler",
-    "degree": { "bachelor": "Bakalawr", "master": "Magistr", "phd": "Doktora", "associate": "Orta hünär" }
+    "degrees": { "bachelor": "Bakalawr", "master": "Magistr", "phd": "Doktora", "associate": "Orta hünär" }
   },
   "CountryLanding": {
     "metaTitle": "{country} ýurdundan Türkiýada okuw — Doly görkezme",
