@@ -86,7 +86,10 @@ export default async function UniversityDetailPage({
   setRequestLocale(locale);
   const appLocale = locale as AppLocale;
   const t = await getTranslations({ locale, namespace: 'UniversityDetail' });
-  const tg = await getTranslations({ locale, namespace: 'Geo' });
+  const showGeo = isGeoLocale(locale);
+  // Only load the Geo translator for supported locales — the Geo namespace
+  // doesn't exist in the other 14 message files and getTranslations throws.
+  const tg = showGeo ? await getTranslations({ locale, namespace: 'Geo' }) : null;
 
   const detail = await data.universities.getDetail(slug);
   if (!detail) notFound();
@@ -98,13 +101,12 @@ export default async function UniversityDetailPage({
     data.faqs.general(),
   ]);
   const faqs = [...uniFaqs, ...generalFaqs].slice(0, 8);
-  const showGeo = isGeoLocale(locale);
   const [rating, minTuition] = await Promise.all([
     data.universities.getRating(detail.id),
     data.universities.getMinTuitionUSD(detail.id),
   ]);
   const city = detail.city;
-  const uniShortAnswer = showGeo
+  const uniShortAnswer = tg
     ? tg('universityShortAnswer', {
         name: detail.name,
         type: detail.isState ? t('typeState') : t('typePrivate'),
@@ -116,8 +118,8 @@ export default async function UniversityDetailPage({
         students: formatNumber(detail.studentCount, locale),
       })
     : '';
-  const whatIsQuestion = showGeo ? tg('whatIsUniversityTitle', { name: detail.name }) : '';
-  const definitionFaq = showGeo
+  const whatIsQuestion = tg ? tg('whatIsUniversityTitle', { name: detail.name }) : '';
+  const definitionFaq = tg
     ? [
         {
           id: 'what-is-definition',
@@ -220,33 +222,35 @@ export default async function UniversityDetailPage({
       <div className="container-page layout-sticky-sidebar pb-section-lg">
         <div className="space-y-12">
           {/* 1b. GEO block — extractable short answer for AI engines (4 locales only) */}
-          <GeoBlock
-            locale={appLocale}
-            shortAnswer={tg('universityShortAnswer', {
-              name: detail.name,
-              type: detail.isState ? t('typeState') : t('typePrivate'),
-              city: city?.name[appLocale] ?? '',
-              year: detail.foundedYear,
-              languages: detail.languages.map((l) => l.toUpperCase()).join(', '),
-              tuition: minTuition ? formatCurrency(minTuition, 'USD', locale) : '—',
-              accreditation: detail.accreditation,
-              students: formatNumber(detail.studentCount, locale),
-            })}
-            summary={[
-              { label: t('founded'), value: String(detail.foundedYear) },
-              { label: t('students'), value: formatNumber(detail.studentCount, locale) },
-              ...(city ? [{ label: t('city'), value: city.name[appLocale] ?? '' }] : []),
-              { label: t('type'), value: detail.isState ? t('typeState') : t('typePrivate') },
-              { label: t('languages'), value: detail.languages.map((l) => l.toUpperCase()).join(' / ') },
-              ...(minTuition ? [{ label: t('tuitionFrom'), value: formatCurrency(minTuition, 'USD', locale) }] : []),
-              { label: t('accreditation'), value: detail.accreditation },
-            ]}
-            pros={[tg('pros1'), tg('pros2'), tg('pros3'), tg('pros4')]}
-            cons={[tg('cons1'), tg('cons2')]}
-          />
+          {showGeo && tg && (
+            <GeoBlock
+              locale={appLocale}
+              shortAnswer={tg('universityShortAnswer', {
+                name: detail.name,
+                type: detail.isState ? t('typeState') : t('typePrivate'),
+                city: city?.name[appLocale] ?? '',
+                year: detail.foundedYear,
+                languages: detail.languages.map((l) => l.toUpperCase()).join(', '),
+                tuition: minTuition ? formatCurrency(minTuition, 'USD', locale) : '—',
+                accreditation: detail.accreditation,
+                students: formatNumber(detail.studentCount, locale),
+              })}
+              summary={[
+                { label: t('founded'), value: String(detail.foundedYear) },
+                { label: t('students'), value: formatNumber(detail.studentCount, locale) },
+                ...(city ? [{ label: t('city'), value: city.name[appLocale] ?? '' }] : []),
+                { label: t('type'), value: detail.isState ? t('typeState') : t('typePrivate') },
+                { label: t('languages'), value: detail.languages.map((l) => l.toUpperCase()).join(' / ') },
+                ...(minTuition ? [{ label: t('tuitionFrom'), value: formatCurrency(minTuition, 'USD', locale) }] : []),
+                { label: t('accreditation'), value: detail.accreditation },
+              ]}
+              pros={[tg('pros1'), tg('pros2'), tg('pros3'), tg('pros4')]}
+              cons={[tg('cons1'), tg('cons2')]}
+            />
+          )}
 
           {/* 1c. "What is...?" definition block — AEO (4 GEO locales only) */}
-          {showGeo && (
+          {showGeo && tg && (
             <section className="rounded-lg border border-border bg-surface-low p-5 sm:p-6">
               <h2 className="mb-2 font-display text-headline-md text-foreground">
                 {whatIsQuestion}

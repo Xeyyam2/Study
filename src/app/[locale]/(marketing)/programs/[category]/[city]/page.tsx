@@ -74,7 +74,10 @@ export default async function ProgramCombinationPage({
   setRequestLocale(locale);
   const appLocale = locale as AppLocale;
   const t = await getTranslations({ locale, namespace: 'ProgramCombination' });
-  const tg = await getTranslations({ locale, namespace: 'Geo' });
+  const showGeo = isGeoLocale(locale);
+  // Only load the Geo translator for supported locales — the Geo namespace
+  // doesn't exist in the other 14 message files and getTranslations throws.
+  const tg = showGeo ? await getTranslations({ locale, namespace: 'Geo' }) : null;
 
   const result = await data.programs.getByCategoryAndCity(category, city);
   if (!result.category || !result.city || result.programs.length === 0)
@@ -87,14 +90,13 @@ export default async function ProgramCombinationPage({
   const uniqueLanguages = [...new Set(programs.map((p) => p.language))]
     .map((l) => l.toUpperCase())
     .join(', ');
-  const showGeo = isGeoLocale(locale);
-  const programShortAnswer = showGeo
+  const programShortAnswer = tg
     ? tg('programShortAnswer', { category: cat.name[appLocale] ?? '', city: cityObj.name[appLocale] ?? '' })
     : '';
-  const whatIsQuestion = showGeo
+  const whatIsQuestion = tg
     ? tg('whatIsProgramTitle', { category: cat.name[appLocale] ?? '', city: cityObj.name[appLocale] ?? '' })
     : '';
-  const definitionFaq = showGeo
+  const definitionFaq = tg
     ? [
         {
           id: 'what-is-definition',
@@ -176,24 +178,26 @@ export default async function ProgramCombinationPage({
 
       <div className="container-page py-section-md">
         {/* GEO block — extractable short answer for AI engines (4 locales only) */}
-        <GeoBlock
-          locale={appLocale}
-          shortAnswer={tg('programShortAnswer', {
-            category: cat.name[appLocale] ?? '',
-            city: cityObj.name[appLocale] ?? '',
-          })}
-          summary={[
-            { label: t('categoryLabel'), value: cat.name[appLocale] ?? '' },
-            { label: t('cityLabel'), value: cityObj.name[appLocale] ?? '' },
-            { label: t('programsLabel'), value: String(programs.length) },
-            { label: t('universitiesLabel'), value: String(universities.length) },
-            { label: t('fromLabel'), value: formatCurrency(result.minTuitionUSD, 'USD', locale) },
-            { label: t('language'), value: uniqueLanguages },
-          ]}
-          pros={[tg('pros1'), tg('pros2'), tg('pros3'), tg('pros4')]}
-          cons={[tg('cons1'), tg('cons2')]}
-          className="mb-section-md"
-        />
+        {showGeo && tg && (
+          <GeoBlock
+            locale={appLocale}
+            shortAnswer={tg('programShortAnswer', {
+              category: cat.name[appLocale] ?? '',
+              city: cityObj.name[appLocale] ?? '',
+            })}
+            summary={[
+              { label: t('categoryLabel'), value: cat.name[appLocale] ?? '' },
+              { label: t('cityLabel'), value: cityObj.name[appLocale] ?? '' },
+              { label: t('programsLabel'), value: String(programs.length) },
+              { label: t('universitiesLabel'), value: String(universities.length) },
+              { label: t('fromLabel'), value: formatCurrency(result.minTuitionUSD, 'USD', locale) },
+              { label: t('language'), value: uniqueLanguages },
+            ]}
+            pros={[tg('pros1'), tg('pros2'), tg('pros3'), tg('pros4')]}
+            cons={[tg('cons1'), tg('cons2')]}
+            className="mb-section-md"
+          />
+        )}
 
         {/* AEO: "What is...?" definition block (4 GEO locales only) */}
         {showGeo && (

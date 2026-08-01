@@ -53,7 +53,10 @@ export default async function CountryLandingPage({
   setRequestLocale(locale);
   const appLocale = locale as AppLocale;
   const t = await getTranslations({ locale, namespace: 'CountryLanding' });
-  const tg = await getTranslations({ locale, namespace: 'Geo' });
+  const showGeo = isGeoLocale(locale);
+  // Only load the Geo translator for supported locales — the Geo namespace
+  // doesn't exist in the other 14 message files and getTranslations throws.
+  const tg = showGeo ? await getTranslations({ locale, namespace: 'Geo' }) : null;
 
   const c = await data.countries.getBySlug(country);
   if (!c) notFound();
@@ -61,9 +64,8 @@ export default async function CountryLandingPage({
   const name = c.name[appLocale] ?? '';
   const featured = await data.universities.getFeatured(3);
   const path = `/study-in-turkey-from-${country}`;
-  const showGeo = isGeoLocale(locale);
 
-  const visaSteps = showGeo
+  const visaSteps = tg
     ? [
         { name: tg('visaStep1Name'), text: tg('visaStep1Text') },
         { name: tg('visaStep2Name'), text: tg('visaStep2Text') },
@@ -102,7 +104,7 @@ export default async function CountryLandingPage({
               url: `${siteConfig.url}/${locale}${path}`,
             },
           ]),
-          ...(showGeo ? [howToJsonLd(visaSteps, { name: tg('visaHowToTitle') })] : []),
+          ...(showGeo && tg ? [howToJsonLd(visaSteps, { name: tg('visaHowToTitle') })] : []),
         ]}
       />
 
@@ -137,20 +139,22 @@ export default async function CountryLandingPage({
 
       <div className="container-page py-section-md">
         {/* GEO block — extractable short answer for AI engines (4 locales only) */}
-        <GeoBlock
-          locale={appLocale}
-          shortAnswer={tg('countryShortAnswer', { country: name })}
-          summary={[
-            { label: tg('countryLabel'), value: name },
-            { label: t('visaTitle'), value: tg('visaTypeValue') },
-            { label: t('currencyTitle'), value: tg('tuitionFromValue') },
-            { label: t('languageTitle'), value: tg('languageValue') },
-            { label: tg('supportLabel'), value: tg('supportValue') },
-          ]}
-          pros={[tg('pros1'), tg('pros2'), tg('pros3'), tg('pros4')]}
-          cons={[tg('cons1'), tg('cons2')]}
-          className="mb-section-md"
-        />
+        {showGeo && tg && (
+          <GeoBlock
+            locale={appLocale}
+            shortAnswer={tg('countryShortAnswer', { country: name })}
+            summary={[
+              { label: tg('countryLabel'), value: name },
+              { label: t('visaTitle'), value: tg('visaTypeValue') },
+              { label: t('currencyTitle'), value: tg('tuitionFromValue') },
+              { label: t('languageTitle'), value: tg('languageValue') },
+              { label: tg('supportLabel'), value: tg('supportValue') },
+            ]}
+            pros={[tg('pros1'), tg('pros2'), tg('pros3'), tg('pros4')]}
+            cons={[tg('cons1'), tg('cons2')]}
+            className="mb-section-md"
+          />
+        )}
 
         <div className="grid gap-6 md:grid-cols-3">
           {info.map((item) => (
@@ -171,7 +175,7 @@ export default async function CountryLandingPage({
         </div>
 
         {/* AEO: Visa & residence process — step-by-step (4 GEO locales only) */}
-        {showGeo && (
+        {showGeo && tg && (
           <section className="mt-section-md">
             <h2 className="mb-4 font-display text-headline-md text-foreground">
               {tg('visaHowToTitle')}

@@ -33,11 +33,13 @@ export default async function ApplyPage({
   setRequestLocale(locale);
   const appLocale = locale as AppLocale;
   const t = await getTranslations({ locale, namespace: 'Apply' });
-  const tg = await getTranslations({ locale, namespace: 'Geo' });
-  const countries = await data.countries.list();
   const showGeo = isGeoLocale(locale);
+  // Only load the Geo translator for supported locales — the Geo namespace
+  // doesn't exist in the other 14 message files and getTranslations throws.
+  const tg = showGeo ? await getTranslations({ locale, namespace: 'Geo' }) : null;
+  const countries = await data.countries.list();
 
-  const howToSteps = showGeo
+  const howToSteps = tg
     ? [
         { name: tg('step1Name'), text: tg('step1Text') },
         { name: tg('step2Name'), text: tg('step2Text') },
@@ -58,7 +60,7 @@ export default async function ApplyPage({
       <JsonLd
         data={[
           serviceJsonLd(appLocale),
-          ...(showGeo ? [howToJsonLd(howToSteps, { name: tg('howToApplyTitle') })] : []),
+          ...(showGeo && tg ? [howToJsonLd(howToSteps, { name: tg('howToApplyTitle') })] : []),
         ]}
       />
       <div className="mx-auto max-w-2xl">
@@ -82,7 +84,7 @@ export default async function ApplyPage({
         </div>
 
         {/* AEO: How to apply — step-by-step guide (4 GEO locales only) */}
-        {showGeo && (
+        {showGeo && tg && (
           <section className="mt-10">
             <h2 className="mb-4 font-display text-headline-md text-foreground">
               {tg('howToApplyTitle')}
