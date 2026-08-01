@@ -17,12 +17,26 @@ export function formatCurrency(
       maximumFractionDigits: 0,
     }).format(amount);
   } catch {
-    return `${amount.toLocaleString(locale)} ${currency}`;
+    // Locale or currency not supported by this runtime's Intl — fall back to 'en'.
+    try {
+      return new Intl.NumberFormat('en', {
+        style: 'currency',
+        currency,
+        maximumFractionDigits: 0,
+      }).format(amount);
+    } catch {
+      return `${amount} ${currency}`;
+    }
   }
 }
 
 export function formatNumber(value: number, locale: string = 'en'): string {
-  return new Intl.NumberFormat(locale).format(value);
+  try {
+    return new Intl.NumberFormat(locale).format(value);
+  } catch {
+    // Locale not supported by this runtime's Intl — fall back to 'en'.
+    return new Intl.NumberFormat('en').format(value);
+  }
 }
 
 export function slugify(input: string): string {
