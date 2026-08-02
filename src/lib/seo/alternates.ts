@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { routing } from '@/i18n/routing';
-import { siteConfig } from '@/config/site';
+import { siteConfig, fullyTranslatedLocales } from '@/config/site';
 
 /**
  * Path is the URL path WITHOUT the locale prefix, always starting with '/'.
@@ -13,7 +13,11 @@ function localizedUrl(locale: string, path: string): string {
 
 export function buildAlternates(path: string): Pick<Metadata, 'alternates'> {
   const languages: Record<string, string> = {};
-  for (const locale of routing.locales) {
+  // Only announce hreflang for fully-translated locales. Pointing crawlers at
+  // the six stub locales (bg/id/so/ur/uz/sw) would advertise near-empty pages
+  // as alternates, which is a "thin content" signal that can hurt the complete
+  // locales' rankings.
+  for (const locale of fullyTranslatedLocales) {
     languages[locale] = localizedUrl(locale, path);
   }
   languages['x-default'] = localizedUrl(routing.defaultLocale, path);

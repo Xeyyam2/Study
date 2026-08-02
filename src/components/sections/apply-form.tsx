@@ -27,6 +27,7 @@ export function ApplyForm({
 }: ApplyFormProps) {
   const t = useTranslations('Apply');
   const [done, setDone] = useState(false);
+  const [formError, setFormError] = useState<string | null>(null);
 
   const {
     register,
@@ -45,6 +46,7 @@ export function ApplyForm({
   });
 
   async function onSubmit(values: LeadInput) {
+    setFormError(null);
     const res = await submitLead(values);
     if (res.ok) {
       setDone(true);
@@ -55,6 +57,9 @@ export function ApplyForm({
           event_label: universitySlug ? `university:${universitySlug}` : 'apply_page',
         });
       }
+    } else if (res.errors._form?.length) {
+      // Server-side rejection (e.g. rate limit). Surface it above the form.
+      setFormError(res.errors._form[0]);
     }
   }
 
@@ -157,6 +162,12 @@ export function ApplyForm({
       <Field label={t('message')} hint={t('optional')}>
         <Textarea rows={4} {...register('message')} placeholder={t('messagePlaceholder')} />
       </Field>
+
+      {formError && (
+        <p role="alert" className="text-sm text-destructive">
+          {formError}
+        </p>
+      )}
 
       <Button
         type="submit"

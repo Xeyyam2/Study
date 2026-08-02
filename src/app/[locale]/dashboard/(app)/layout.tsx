@@ -1,7 +1,13 @@
+import type { Metadata } from 'next';
 import { requireStudentAny } from '@/lib/crm/student-session';
 import { StudentSidebar } from '@/components/student/StudentSidebar';
 import { StudentTopbar } from '@/components/student/StudentTopbar';
 import type { AppLocale } from '@/i18n/routing';
+
+// Never index the student dashboard. Mirrors the admin noindex policy; the
+// locale-prefixed path is also covered by robots.txt, but the meta tag is the
+// authoritative signal for crawlers that ignore disallow.
+export const metadata: Metadata = { robots: { index: false, follow: false } };
 
 export const dynamic = 'force-dynamic';
 

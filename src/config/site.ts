@@ -48,3 +48,28 @@ export type Locale = (typeof siteConfig.locale.locales)[number];
 
 export const locales = siteConfig.locale.locales as readonly Locale[];
 export const defaultLocale = siteConfig.locale.default as Locale;
+
+/**
+ * Locales with a complete message file. Six locales (bg/id/so/ur/uz/sw) are
+ * near-empty stubs (~41-42 lines, ~10% translated) and are excluded from the
+ * sitemap and hreflang alternates so search engines don't flag the site for
+ * "thin content", which would drag down the ranking of the fully-translated
+ * pages too. The stub pages still render if visited directly; they're simply
+ * not promoted for indexing.
+ *
+ * When a stub locale is fully translated, remove it from this exclusion list
+ * and it re-enters the sitemap/hreflang automatically.
+ */
+const INCOMPLETE_LOCALES: ReadonlySet<string> = new Set([
+  'bg',
+  'id',
+  'so',
+  'ur',
+  'uz',
+  'sw',
+]);
+
+/** Locales that have a complete message file (used by sitemap + hreflang). */
+export const fullyTranslatedLocales: readonly Locale[] = locales.filter(
+  (l) => !INCOMPLETE_LOCALES.has(l),
+);

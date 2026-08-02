@@ -7,8 +7,7 @@
 
 import type { MetadataRoute } from 'next';
 import { data } from '@/lib/data';
-import { routing } from '@/i18n/routing';
-import { siteConfig } from '@/config/site';
+import { siteConfig, fullyTranslatedLocales } from '@/config/site';
 
 const CHUNK_SIZE = 45000; // keep a margin under the Google 50k-per-file limit
 
@@ -55,7 +54,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const urls: MetadataRoute.Sitemap = [];
   const locPrefix = (loc: string, path: string) => `/${loc}${path === '/' ? '' : path}`;
 
-  for (const locale of routing.locales) {
+  // Only emit URLs for fully-translated locales. The six stub locales
+  // (bg/id/so/ur/uz/sw) are near-empty; indexing them would flag the site
+  // for "thin content" and hurt the ranking of complete locales too.
+  for (const locale of fullyTranslatedLocales) {
     for (const { path, priority, change } of staticPaths) {
       urls.push(makeEntry(locPrefix(locale, path), now, change, priority));
     }

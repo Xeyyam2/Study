@@ -1,11 +1,17 @@
 'use server';
 
+import { headers } from 'next/headers';
 import { leadSchema, type LeadInput } from '@/lib/validations/lead';
 import { crm } from '@/lib/crm';
+import { rateLimit, getIpFromHeaders } from '@/lib/rate-limit';
 
 export type LeadResult =
   | { ok: true }
   | { ok: false; errors: Record<string, string[]> };
+
+// 5 lead submissions per minute per IP — enough for an honest applicant who
+// retries after a typo, but blocks a script flooding the CRM with spam leads.
+const leadLimiter = rateLimit({ windowMs: 60_000, max: 5 });
 
 export async function submitLead(input: unknown): Promise<LeadResult> {
   const parsed = leadSchema.safeParse(input);
@@ -25,6 +31,16 @@ export async function submitLead(input: unknown): Promise<LeadResult> {
   // Honeypot caught a bot.
   if (data.website) {
     return { ok: true };
+  }
+
+  // Rate limit per IP before touching the DB so spam can't fill the leads table.
+  const h = await headers();
+  const ip = getIpFromHeaders((name) => h.get(name));
+  if (!leadLimiter.check(ip)) {
+    return {
+      ok: false,
+      errors: { _form: ['Too many submissions. Please wait a minute and try again.'] },
+    };
   }
 
   // Persist the lead into the CRM. We fail open: a transient DB error must not

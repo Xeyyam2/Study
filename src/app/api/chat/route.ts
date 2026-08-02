@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { z } from 'zod';
+import { rateLimit, getIpFromHeaders } from '@/lib/rate-limit';
 
 /**
  * AI chatbot API route — Edge runtime for low latency.
@@ -10,9 +12,17 @@ import { NextRequest, NextResponse } from 'next/server';
  *
  * Only the 4 GEO locales (en/tr/az/ru) are supported — callers gate the
  * widget with `isGeoLocale()` before sending requests.
+ *
+ * Security: the `messages` array is validated with Zod (max count, max length,
+ * only user/assistant roles) so a client cannot inject a `system` role to
+ * override the prompt. Requests are rate-limited per IP to cap OpenAI spend.
  */
 
 export const runtime = 'edge';
+
+// 10 chat requests per minute per IP. The widget sends one request per user
+// turn, so this is generous for real users while throttling scripted abuse.
+const chatLimiter = rateLimit({ windowMs: 60_000, max: 10 });
 
 const SYSTEM_PROMPTS: Record<string, string> = {
   en: 'You are a helpful assistant for students interested in studying in Turkey. You provide accurate information about Turkish universities, programs, tuition fees, scholarships, visa process, and application steps. Keep answers concise (2-4 sentences). If you don\'t know something specific, direct the student to apply via the website or contact via WhatsApp. Never invent specific tuition numbers — suggest checking the university page.',
@@ -20,6 +30,21 @@ const SYSTEM_PROMPTS: Record<string, string> = {
   az: 'Sən Türkiyədə təhsil almaq istəyən tələbələrə kömək edən bir assistentsən. Türk universitetləri, proqramlar, təhsil haqqı, təqaüdlər, viza prosesi və müraciət addımları haqqında dəqiq məlumat verirsən. Cavabları qısa tut (2-4 cümlə). Bilmədiyin bir şey olarsa tələbəni veb sayta və ya WhatsApp-a yönləndir.',
   ru: 'Вы помощник для студентов, желающих учиться в Турции. Вы даёте точную информацию о турецких вузах, программах, стоимости, стипендиях, визовом процессе и шагах поступления. Отвечайте кратко (2-4 предложения). Если чего-то не знаете, направьте студента на сайт или в WhatsApp.',
 };
+
+// Validate the client payload. Only user/assistant turns are allowed — a
+// client-supplied `system` message could override the prompt below, so it is
+// rejected. Bounded counts/lengths cap request size and token spend.
+const chatSchema = z.object({
+  locale: z.string().optional(),
+  messages: z
+    .array(
+      z.object({
+        role: z.enum(['user', 'assistant']),
+        content: z.string().max(2000),
+      }),
+    )
+    .max(20),
+});
 
 export async function POST(req: NextRequest) {
   const apiKey = process.env.OPENAI_API_KEY;
@@ -32,10 +57,37 @@ export async function POST(req: NextRequest) {
     });
   }
 
-  try {
-    const { messages, locale } = await req.json();
-    const systemPrompt = SYSTEM_PROMPTS[locale] ?? SYSTEM_PROMPTS.en;
+  // Rate limit before any upstream call to protect the OpenAI budget.
+  const ip = getIpFromHeaders((name) => req.headers.get(name));
+  if (!chatLimiter.check(ip)) {
+    return NextResponse.json(
+      { reply: '', error: 'Too many requests. Please try again shortly.' },
+      { status: 429 },
+    );
+  }
 
+  let payload: z.infer<typeof chatSchema>;
+  try {
+    const raw = await req.json();
+    const parsed = chatSchema.safeParse(raw);
+    if (!parsed.success) {
+      return NextResponse.json(
+        { reply: '', error: 'Invalid request.' },
+        { status: 400 },
+      );
+    }
+    payload = parsed.data;
+  } catch {
+    return NextResponse.json(
+      { reply: '', error: 'Invalid request.' },
+      { status: 400 },
+    );
+  }
+
+  const { messages, locale } = payload;
+  const systemPrompt = SYSTEM_PROMPTS[locale ?? 'en'] ?? SYSTEM_PROMPTS.en;
+
+  try {
     const res = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: {

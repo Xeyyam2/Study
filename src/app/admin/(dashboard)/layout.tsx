@@ -1,7 +1,12 @@
-// src/app/admin/(dashboard)/layout.tsx
+import type { Metadata } from 'next';
 import { requireStaff } from '@/lib/crm/session';
 import { AdminSidebar } from '@/components/admin/AdminSidebar';
 import { AdminTopbar } from '@/components/admin/AdminTopbar';
+
+// Never index admin pages. robots.txt disallow alone is insufficient —
+// Google may still surface discovered URLs without a snippet. The meta tag
+// makes the intent explicit at the document level.
+export const metadata: Metadata = { robots: { index: false, follow: false } };
 
 export const dynamic = 'force-dynamic';
 

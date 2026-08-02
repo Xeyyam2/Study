@@ -7,9 +7,9 @@ import type { Profile } from '@/types/crm';
 
 export const STUDENT_SESSION_COOKIE = 'student_session';
 
-/** Dev-auth fallback is on in development, off in production unless explicitly enabled. */
+/** Dev-auth fallback is OFF by default. Enable only by setting DEV_AUTH_ENABLED=1. */
 export function isDevAuthEnabled(): boolean {
-  return process.env.DEV_AUTH_ENABLED === '1' || process.env.NODE_ENV !== 'production';
+  return process.env.DEV_AUTH_ENABLED === '1';
 }
 
 export interface StudentSession {
@@ -34,7 +34,7 @@ export async function requireStudent(locale: AppLocale): Promise<StudentSession>
   return session;
 }
 
-// Dev fallback (NODE_ENV !== production): resolve a seeded demo student via legacy cookie.
+// Dev fallback (DEV_AUTH_ENABLED=1): resolve a seeded demo student via legacy cookie.
 export async function getDevStudentSession(): Promise<StudentSession | null> {
   if (!isDevAuthEnabled()) return null;
   const store = await cookies();
