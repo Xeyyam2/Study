@@ -35,4 +35,18 @@ test.describe("University filters", () => {
     await page.getByRole("button", { name: /close/i }).click();
     await expect(page.getByRole("dialog", { name: /filters/i })).toBeHidden();
   });
+
+  test("keeps the filter drawer open while typing a mobile search", async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto("/en/universities");
+
+    await page.getByRole("button", { name: /filters/i }).click();
+    const dialog = page.getByRole("dialog", { name: /filters/i });
+    await dialog.getByRole("searchbox", { name: /search/i }).fill("Bahcesehir");
+
+    await expect(dialog).toBeVisible();
+    await expect(page).toHaveURL(/\/en\/universities\?search=Bahcesehir/);
+  });
 });

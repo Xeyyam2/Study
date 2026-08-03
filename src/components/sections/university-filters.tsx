@@ -128,7 +128,6 @@ export function UniversityFilters({
             </DialogHeader>
             <FilterControls
               {...filterProps}
-              onUpdated={() => setMobileOpen(false)}
             />
           </DialogContent>
         </Dialog>
@@ -166,7 +165,6 @@ function FilterControls({
   searchParams,
   update,
   clearFilters,
-  onUpdated,
 }: {
   cities: City[];
   labels: UniversityFiltersProps["labels"];
@@ -174,12 +172,8 @@ function FilterControls({
   searchParams: ReturnType<typeof useSearchParams>;
   update: (key: string, value: string | null) => void;
   clearFilters: () => void;
-  onUpdated?: () => void;
 }) {
-  const change = (key: string, value: string | null) => {
-    update(key, value);
-    onUpdated?.();
-  };
+  const change = (key: string, value: string | null) => update(key, value);
 
   return (
     <div className="space-y-4">

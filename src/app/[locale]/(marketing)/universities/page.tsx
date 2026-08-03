@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+﻿import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import { setRequestLocale, getTranslations } from 'next-intl/server';
 import { SearchX } from 'lucide-react';
@@ -11,6 +11,7 @@ import { JsonLd } from '@/components/seo/json-ld';
 import { UniversityFilters } from '@/components/sections/university-filters';
 import { UniversityCard } from '@/components/sections/university-card';
 import { FadeIn } from '@/components/motion/fade-in';
+import { parseListingQuery } from '@/lib/universities/listing-query';
 
 export async function generateMetadata({
   params,
@@ -27,10 +28,6 @@ export async function generateMetadata({
   });
 }
 
-function str(v: string | string[] | undefined): string | undefined {
-  return typeof v === 'string' ? v : undefined;
-}
-
 export default async function UniversitiesPage({
   params,
   searchParams,
@@ -44,19 +41,7 @@ export default async function UniversitiesPage({
   const sp = await searchParams;
   const t = await getTranslations({ locale, namespace: 'UniversitiesPage' });
 
-  const type = str(sp.type);
-  const filters = {
-    citySlug: str(sp.city),
-    degreeLevel: str(sp.degree) as
-      | 'bachelor'
-      | 'master'
-      | 'phd'
-      | 'associate'
-      | undefined,
-    language: str(sp.language) as 'en' | 'tr' | undefined,
-    isState: type === 'state' ? true : type === 'private' ? false : undefined,
-    search: str(sp.search),
-  };
+  const { filters } = parseListingQuery(sp);
 
   const [universities, cities] = await Promise.all([
     data.universities.list(filters),
@@ -112,35 +97,39 @@ export default async function UniversitiesPage({
         </p>
       </header>
 
-      <Suspense fallback={<div className="h-24 rounded-lg border border-border bg-card" />}>
-        <UniversityFilters
-          locale={appLocale}
-          cities={cities}
-          labels={filterLabels}
-        />
-      </Suspense>
+      <div className="grid gap-8 lg:grid-cols-[16rem_minmax(0,1fr)] lg:items-start">
+        <Suspense fallback={<div className="h-24 rounded-lg border border-border bg-card" />}>
+          <UniversityFilters
+            locale={appLocale}
+            cities={cities}
+            labels={filterLabels}
+          />
+        </Suspense>
 
-      <div className="mt-4 text-sm text-muted-foreground">
-        {t('results', { count: universities.length })}
+        <main>
+          <div className="text-sm text-muted-foreground">
+            {t('results', { count: universities.length })}
+          </div>
+
+          {universities.length > 0 ? (
+            <FadeIn className="mt-4 grid gap-6 sm:grid-cols-2">
+              {universities.map((u) => (
+                <UniversityCard key={u.id} university={u} locale={appLocale} />
+              ))}
+            </FadeIn>
+          ) : (
+            <div className="mt-12 flex flex-col items-center justify-center rounded-lg border border-dashed border-border py-16 text-center">
+              <SearchX className="h-10 w-10 text-muted-foreground" />
+              <p className="mt-4 font-display text-lg font-semibold text-foreground">
+                {t('emptyTitle')}
+              </p>
+              <p className="mt-1 max-w-sm text-sm text-muted-foreground">
+                {t('emptySubtitle')}
+              </p>
+            </div>
+          )}
+        </main>
       </div>
-
-      {universities.length > 0 ? (
-        <FadeIn className="mt-4 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {universities.map((u) => (
-            <UniversityCard key={u.id} university={u} locale={appLocale} />
-          ))}
-        </FadeIn>
-      ) : (
-        <div className="mt-12 flex flex-col items-center justify-center rounded-lg border border-dashed border-border py-16 text-center">
-          <SearchX className="h-10 w-10 text-muted-foreground" />
-          <p className="mt-4 font-display text-lg font-semibold text-foreground">
-            {t('emptyTitle')}
-          </p>
-          <p className="mt-1 max-w-sm text-sm text-muted-foreground">
-            {t('emptySubtitle')}
-          </p>
-        </div>
-      )}
     </div>
   );
 }
