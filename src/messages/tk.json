@@ -143,6 +143,7 @@
     "sortRanking": "Reýting",
     "results": "{count, plural, =0 {Uniwersvet ýok} one {# uniwersvet} other {# uniwersvetler}}",
     "emptyTitle": "Uniwersvet tapylmady",
+    "verified": "YÖK", "english": "Iňlisçe", "turkish": "Türkçe", "turkey": "Türkiýe", "from": "-den", "tuition": "Okuw tölegi", "rank": "Dereje", "founded": "Döredilen", "close": "Ýap",
     "emptySubtitle": "Süzgüçleriň birnäni aýyraň ýa-dabaşga zadyh göräň."
   },
   "UniversityDetail": {

@@ -143,7 +143,7 @@
     "sortRanking": "Sıralama",
     "results": "{count, plural, =0 {Üniversite yok} one {# üniversite} other {# üniversite}}",
     "emptyTitle": "Üniversite bulunamadı",
-    "emptySubtitle": "Bazı filtreleri kaldırmayı deneyin."
+    "emptySubtitle": "Bazı filtreleri kaldırmayı deneyin.", "verified": "YÖK", "english": "İngilizce", "turkish": "Türkçe", "turkey": "Türkiye", "from": "-den başlayan", "tuition": "Öğrenim ücreti", "rank": "Sıralama", "founded": "Kuruluş", "close": "Kapat"
   },
   "UniversityDetail": {
     "metaTitle": "{name} — Ücretler, Bölümler ve Başvuru",

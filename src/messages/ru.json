@@ -143,7 +143,7 @@
     "sortRanking": "Рейтинг",
     "results": "{count, plural, =0 {Нет университетов} one {# университет} other {# университетов}}",
     "emptyTitle": "Университеты не найдены",
-    "emptySubtitle": "Попробуйте убрать часть фильтров."
+    "emptySubtitle": "Попробуйте убрать часть фильтров.", "verified": "YÖK", "english": "Английский", "turkish": "Турецкий", "turkey": "Турция", "from": "от", "tuition": "Стоимость обучения", "rank": "Рейтинг", "founded": "Основан", "close": "Закрыть"
   },
   "UniversityDetail": {
     "metaTitle": "{name} — стоимость, программы и поступление",

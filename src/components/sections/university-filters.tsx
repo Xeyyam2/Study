@@ -35,6 +35,8 @@ interface UniversityFiltersProps {
     allDegrees: string;
     language: string;
     allLanguages: string;
+    english?: string;
+    turkish?: string;
     type: string;
     allTypes: string;
     state: string;
@@ -44,6 +46,7 @@ interface UniversityFiltersProps {
     phd: string;
     associate: string;
     reset: string;
+    close?: string;
     clearAll?: string;
     maxTuition?: string;
     activeFilters?: string;
@@ -74,6 +77,7 @@ export function UniversityFilters({
   );
   const lastUrlSearch = useRef(searchParams.get("search") ?? "");
   const searchEditedLocally = useRef(false);
+  const searchTimeout = useRef<number | null>(null);
 
   const update = useCallback(
     (key: string, value: string | null) => {
@@ -89,6 +93,12 @@ export function UniversityFilters({
   );
 
   function clearFilters() {
+    if (searchTimeout.current !== null) {
+      window.clearTimeout(searchTimeout.current);
+      searchTimeout.current = null;
+    }
+    searchEditedLocally.current = false;
+    setSearchValue("");
     const params = new URLSearchParams(searchParams.toString());
     LISTING_FILTER_KEYS.forEach((key) => params.delete(key));
     const qs = params.toString();
@@ -110,12 +120,18 @@ export function UniversityFilters({
     const urlSearch = searchParams.get("search") ?? "";
     if (!searchEditedLocally.current || searchValue === urlSearch) return;
 
-    const timeoutId = window.setTimeout(() => {
+    searchTimeout.current = window.setTimeout(() => {
       searchEditedLocally.current = false;
+      searchTimeout.current = null;
       update("search", searchValue || null);
     }, 300);
 
-    return () => window.clearTimeout(timeoutId);
+    return () => {
+      if (searchTimeout.current !== null) {
+        window.clearTimeout(searchTimeout.current);
+        searchTimeout.current = null;
+      }
+    };
   }, [searchParams, searchValue, update]);
 
   const activeFilterCount = LISTING_FILTER_KEYS.filter((key) =>
@@ -164,7 +180,10 @@ export function UniversityFilters({
               )}
             </Button>
           </DialogTrigger>
-          <DialogContent className="left-auto right-0 top-0 h-full max-h-none w-[min(22rem,calc(100%-1rem))] translate-x-0 translate-y-0 overflow-y-auto rounded-none p-5 sm:rounded-l-lg">
+          <DialogContent
+            closeLabel={labels.close}
+            className="left-auto right-0 top-0 h-full max-h-none w-[min(22rem,calc(100%-1rem))] translate-x-0 translate-y-0 overflow-y-auto rounded-none p-5 sm:rounded-l-lg"
+          >
             <DialogHeader className="pr-8">
               <DialogTitle>{labels.filtersTitle}</DialogTitle>
               <DialogDescription className="sr-only">
@@ -272,8 +291,8 @@ function FilterControls({
         onChange={(value) => change("language", value)}
       >
         <SelectItem value="all">{labels.allLanguages}</SelectItem>
-        <SelectItem value="en">English</SelectItem>
-        <SelectItem value="tr">Türkçe</SelectItem>
+        <SelectItem value="en">{labels.english ?? "English"}</SelectItem>
+        <SelectItem value="tr">{labels.turkish ?? "Türkçe"}</SelectItem>
       </SelectField>
 
       <SelectField

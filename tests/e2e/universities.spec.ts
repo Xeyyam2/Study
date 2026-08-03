@@ -46,20 +46,30 @@ test.describe("University filters", () => {
     await expect
       .poll(() => new URL(page.url()).searchParams.get("sort"))
       .toBe("name");
-    await expect(
-      page.locator("main article, main a[href*='/universities/']").first(),
-    ).toBeVisible();
+
+    const names = await page
+      .locator("main a[href*='/universities/'] h3")
+      .allTextContents();
+    expect(names.length).toBeGreaterThan(1);
+    expect(names).toEqual([...names].sort((a, b) => a.localeCompare(b)));
   });
 
-  test("passes tuition filtering through the URL", async ({ page }) => {
+  test("filters the rendered results by maximum tuition", async ({ page }) => {
     await page.goto("/en/universities");
 
     const sidebar = page.getByRole("complementary", { name: /filters/i });
-    await sidebar.getByRole("spinbutton", { name: /tuition/i }).fill("12500");
+    await sidebar.getByRole("spinbutton", { name: /tuition/i }).fill("1500");
 
     await expect
       .poll(() => new URL(page.url()).searchParams.get("maxTuition"))
-      .toBe("12500");
+      .toBe("1500");
+    await expect(page.locator("main a[href*='/universities/']")).toHaveCount(6);
+    await expect(
+      page.locator("main a[href*='/universities/bahcesehir-university']"),
+    ).toHaveCount(0);
+    await expect(
+      page.locator("main a[href*='/universities/']").first(),
+    ).toContainText("Tuition");
   });
 
   test("clear all removes listing filters but preserves unrelated query parameters", async ({
@@ -75,6 +85,18 @@ test.describe("University filters", () => {
       .click();
 
     await expect.poll(() => new URL(page.url()).search).toBe("?ref=campaign");
+  });
+
+  test("clear all cancels a pending search update", async ({ page }) => {
+    await page.goto("/en/universities?search=Bahcesehir&ref=campaign");
+
+    const sidebar = page.getByRole("complementary", { name: /filters/i });
+    await sidebar.getByRole("searchbox", { name: /search/i }).fill("Istanbul");
+    await sidebar.getByRole("button", { name: /clear all/i }).click();
+
+    await expect.poll(() => new URL(page.url()).search).toBe("?ref=campaign");
+    await page.waitForTimeout(400);
+    expect(new URL(page.url()).searchParams.get("search")).toBeNull();
   });
 
   test("opens and closes the filter drawer on mobile", async ({ page }) => {

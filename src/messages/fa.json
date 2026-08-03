@@ -143,7 +143,7 @@
     "sortRanking": "رتبه‌بندی",
     "results": "{count, plural, =0 {بدون دانشگاه} one {# دانشگاه} other {# دانشگاه}}",
     "emptyTitle": "دانشگاهی یافت نشد",
-    "emptySubtitle": "برخی فیلترها را حذف کنید یا چیز دیگری جستجو کنید."
+    "emptySubtitle": "برخی فیلترها را حذف کنید یا چیز دیگری جستجو کنید.", "verified": "YÖK", "english": "انگلیسی", "turkish": "ترکی", "turkey": "ترکیه", "from": "از", "tuition": "شهریه", "rank": "رتبه", "founded": "تأسیس", "close": "بستن"
   },
   "UniversityDetail": {
     "metaTitle": "{name} — شهریه، رشته‌ها و پذیرش",

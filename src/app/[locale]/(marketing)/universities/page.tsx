@@ -80,6 +80,8 @@ export default async function UniversitiesPage({
     allDegrees: t("allDegrees"),
     language: t("language"),
     allLanguages: t("allLanguages"),
+    english: t("english"),
+    turkish: t("turkish"),
     type: t("type"),
     allTypes: t("allTypes"),
     state: t("state"),
@@ -89,6 +91,7 @@ export default async function UniversitiesPage({
     phd: t("phd"),
     associate: t("associate"),
     reset: t("reset"),
+    close: t("close"),
     clearAll: t("clearAll"),
     maxTuition: t("maxTuition"),
     activeFilters: t("activeFilters"),
@@ -124,7 +127,17 @@ export default async function UniversitiesPage({
       <div className="grid gap-8 lg:grid-cols-[16rem_minmax(0,1fr)] lg:items-start">
         <Suspense
           fallback={
-            <div className="h-24 rounded-lg border border-border bg-card" />
+            <div className="hidden h-[28rem] rounded-lg border border-border bg-card p-5 lg:block">
+              <div className="h-5 w-2/3 animate-pulse rounded bg-surface-high" />
+              <div className="mt-6 space-y-4">
+                {Array.from({ length: 6 }).map((_, index) => (
+                  <div
+                    key={index}
+                    className="h-10 animate-pulse rounded bg-surface-high"
+                  />
+                ))}
+              </div>
+            </div>
           }
         >
           <UniversityFilters
@@ -160,6 +173,16 @@ export default async function UniversitiesPage({
                   university={u}
                   locale={appLocale}
                   minTuition={tuitionByUniversity?.get(u.id)}
+                  labels={{
+                    verified: t("verified"),
+                    state: t("state"),
+                    private: t("private"),
+                    turkey: t("turkey"),
+                    from: t("from"),
+                    tuition: t("tuition"),
+                    rank: t("rank"),
+                    founded: t("founded"),
+                  }}
                 />
               ))}
             </FadeIn>

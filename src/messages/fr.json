@@ -143,7 +143,7 @@
     "sortRanking": "Classement",
     "results": "{count, plural, =0 {Aucune université} one {# université} other {# universités}}",
     "emptyTitle": "Aucune université trouvée",
-    "emptySubtitle": "Essayez de retirer des filtres ou de rechercher autre chose."
+    "emptySubtitle": "Essayez de retirer des filtres ou de rechercher autre chose.", "verified": "YÖK", "english": "Anglais", "turkish": "Turc", "turkey": "Turquie", "from": "à partir de", "tuition": "Frais", "rank": "Classement", "founded": "Fondée", "close": "Fermer"
   },
   "UniversityDetail": {
     "metaTitle": "{name} — Frais, programmes & admissions",

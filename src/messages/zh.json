@@ -143,7 +143,7 @@
     "sortRanking": "排名",
     "results": "{count, plural, =0 {没有大学} other {# 所大学}}",
     "emptyTitle": "未找到大学",
-    "emptySubtitle": "尝试移除一些筛选或搜索其他内容。"
+    "emptySubtitle": "尝试移除一些筛选或搜索其他内容。", "verified": "YÖK", "english": "英语", "turkish": "土耳其语", "turkey": "土耳其", "from": "起", "tuition": "学费", "rank": "排名", "founded": "成立于", "close": "关闭"
   },
   "UniversityDetail": {
     "metaTitle": "{name} —— 学费、项目与招生",

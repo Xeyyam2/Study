@@ -193,7 +193,8 @@ export function createPgDataLayer(getPool: () => Pool): DataLayer {
         pi++;
       }
       // Min USD tədris haqqı — korrelyasiyalı subquery (filtr SQL-də tətbiq olunur, N+1 yoxdur).
-      const maxTuitionExpr = `coalesce((select min(tuition_fee) filter (where currency='USD') from public.university_programs up where up.university_id = u.id), 0)`;
+      const minTuitionExpr = `(select min(tuition_fee) filter (where currency='USD') from public.university_programs up where up.university_id = u.id)`;
+      const maxTuitionExpr = `coalesce(${minTuitionExpr}, 0)`;
       const wantMaxTuition = filters.maxTuitionUSD !== undefined;
 
       let sql = `select u.*`;
@@ -201,7 +202,7 @@ export function createPgDataLayer(getPool: () => Pool): DataLayer {
       sql += ` from public.universities u`;
       if (where.length) sql += ` where ` + where.join(' and ');
       if (wantMaxTuition) {
-        sql += `${where.length ? ' and ' : ' where '}${maxTuitionExpr} <= $${pi}`;
+        sql += `${where.length ? ' and ' : ' where '}${minTuitionExpr} is not null and ${minTuitionExpr} <= $${pi}`;
         params.push(filters.maxTuitionUSD as number);
       }
       sql += ` order by u.name`;

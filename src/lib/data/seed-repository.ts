@@ -77,8 +77,8 @@ class SeedUniversityRepository implements UniversityRepository {
           const min = seedUniversityPrograms
             .filter((up) => up.universityId === u.id && up.currency === 'USD')
             .map((up) => up.tuitionFee);
-          const m = min.length ? Math.min(...min) : 0;
-          if (m > filters.maxTuitionUSD) return false;
+          if (min.length === 0 || Math.min(...min) > filters.maxTuitionUSD)
+            return false;
         }
         return true;
       }),

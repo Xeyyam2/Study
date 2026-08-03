@@ -8,18 +8,42 @@ import { Link } from '@/i18n/navigation';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 
+interface UniversityCardLabels {
+  verified: string;
+  state: string;
+  private: string;
+  turkey: string;
+  from: string;
+  tuition: string;
+  rank: string;
+  founded: string;
+}
+
 interface UniversityCardProps {
   university: University;
   locale: AppLocale;
   priority?: boolean;
   minTuition?: number;
+  labels?: UniversityCardLabels;
 }
+
+const DEFAULT_LABELS: UniversityCardLabels = {
+  verified: 'YÖK',
+  state: 'State',
+  private: 'Private',
+  turkey: 'Turkey',
+  from: 'from',
+  tuition: 'Tuition',
+  rank: 'Rank',
+  founded: 'Founded',
+};
 
 export async function UniversityCard({
   university,
   locale,
   priority,
   minTuition: suppliedMinTuition,
+  labels = DEFAULT_LABELS,
 }: UniversityCardProps) {
   const [city, minTuition, { rating, count }] = await Promise.all([
     data.cities.getByUniversityId(university.id),
@@ -32,7 +56,7 @@ export async function UniversityCard({
   return (
     <Link
       href={`/universities/${university.slug}`}
-      className="group block focus-visible:outline-none"
+      className="group block rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 focus-visible:ring-offset-background"
     >
       <Card className="overflow-hidden transition-shadow duration-300 hover:shadow-flat-hover">
         <div className="relative aspect-[16/9] overflow-hidden bg-surface-low">
@@ -50,7 +74,7 @@ export async function UniversityCard({
               className="gap-1 bg-card/90 backdrop-blur"
             >
               <BadgeCheck className="h-3.5 w-3.5" />
-              YÖK
+              {labels.verified}
             </Badge>
           </div>
           <div className="absolute left-3 top-3 flex h-10 w-10 items-center justify-center rounded-md bg-card/90 font-display text-sm font-bold text-primary backdrop-blur">
@@ -64,13 +88,13 @@ export async function UniversityCard({
               {university.name}
             </h3>
             <Badge variant={university.isState ? 'tertiary' : 'cta'}>
-              {university.isState ? 'State' : 'Private'}
+              {university.isState ? labels.state : labels.private}
             </Badge>
           </div>
 
           <p className="flex items-center gap-1 text-sm text-muted-foreground">
             <MapPin className="h-4 w-4" aria-hidden />
-            {city?.name[locale] ?? 'Turkey'}
+            {city?.name[locale] ?? labels.turkey}
           </p>
 
           {count > 0 && (
@@ -85,15 +109,15 @@ export async function UniversityCard({
 
           <div className="grid grid-cols-3 gap-2 border-t border-border pt-3 text-center">
             <Stat
-              label="Tuition"
+              label={labels.tuition}
               value={
                 minTuition
-                  ? `from ${formatCurrency(minTuition, 'USD', locale)}`
+                  ? `${labels.from} ${formatCurrency(minTuition, 'USD', locale)}`
                   : '—'
               }
             />
-            <Stat label="Rank" value={`#${university.ranking}`} />
-            <Stat label="Founded" value={String(university.foundedYear)} />
+            <Stat label={labels.rank} value={`#${university.ranking}`} />
+            <Stat label={labels.founded} value={String(university.foundedYear)} />
           </div>
         </div>
       </Card>
