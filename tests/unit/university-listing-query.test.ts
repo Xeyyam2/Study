@@ -60,6 +60,11 @@ describe('parseListingQuery', () => {
       filters: {},
       sort: 'relevance',
     });
+
+    expect(parseListingQuery({ maxTuition: '0' })).toEqual({
+      filters: {},
+      sort: 'relevance',
+    });
   });
 });
 

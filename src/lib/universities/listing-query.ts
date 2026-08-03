@@ -27,7 +27,7 @@ function valueOf(input: ListingQueryInput, key: string): string | undefined {
 function tuitionValue(value: string | undefined): number | undefined {
   if (value === undefined || value === '') return undefined;
   const parsed = Number(value);
-  return Number.isFinite(parsed) && parsed >= 0 ? parsed : undefined;
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : undefined;
 }
 
 export function parseListingQuery(input: ListingQueryInput): ParsedListingQuery {

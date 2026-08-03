@@ -194,12 +194,11 @@ export function createPgDataLayer(getPool: () => Pool): DataLayer {
         pi++;
       }
       // Min USD tədris haqqı — korrelyasiyalı subquery (filtr SQL-də tətbiq olunur, N+1 yoxdur).
-      const minTuitionExpr = `(select min(tuition_fee) filter (where currency='USD') from public.university_programs up where up.university_id = u.id)`;
-      const maxTuitionExpr = `coalesce(${minTuitionExpr}, 0)`;
-      const wantMaxTuition = filters.maxTuitionUSD !== undefined;
+      const minTuitionExpr = `(select min(tuition_fee) filter (where currency='USD' and tuition_fee > 0) from public.university_programs up where up.university_id = u.id)`;
+      const wantMaxTuition = filters.maxTuitionUSD !== undefined && filters.maxTuitionUSD > 0;
 
       let sql = `select u.*`;
-      if (wantMaxTuition) sql += `, ${maxTuitionExpr} as _min_tuition`;
+      if (wantMaxTuition) sql += `, ${minTuitionExpr} as _min_tuition`;
       sql += ` from public.universities u`;
       if (where.length) sql += ` where ` + where.join(' and ');
       if (wantMaxTuition) {
@@ -288,7 +287,7 @@ export function createPgDataLayer(getPool: () => Pool): DataLayer {
 
     async getMinTuitionUSD(universityId: string): Promise<number> {
       const res = await getPool().query(
-        `select coalesce(min(tuition_fee) filter (where currency = 'USD'), 0) m from public.university_programs where university_id = $1`,
+        `select coalesce(min(tuition_fee) filter (where currency = 'USD' and tuition_fee > 0), 0) m from public.university_programs where university_id = $1`,
         [universityId],
       );
       return Number(res.rows[0]?.m ?? 0);
@@ -309,12 +308,14 @@ export function createPgDataLayer(getPool: () => Pool): DataLayer {
       if (!universityIds.length) return new Map();
       const res = await getPool().query(
         `with tuition as (
-               select university_id, min(tuition_fee) filter (where currency = 'USD') min_tuition
+               select university_id, min(tuition_fee) filter (where currency = 'USD' and tuition_fee > 0) min_tuition
                from public.university_programs
+               where university_id = any($1::text[])
                group by university_id
              ), review_stats as (
                select university_id, avg(rating) avg_rating, count(*)::int review_count
                from public.reviews
+               where university_id = any($1::text[])
                group by university_id
              )
          select u.id,

@@ -68,9 +68,13 @@ test.describe("University filters", () => {
     await expect(
       page.locator("main a[href*='/universities/bahcesehir-university']"),
     ).toHaveCount(0);
-    await expect(
-      page.locator("main a[href*='/universities/']").first(),
-    ).toContainText("Tuition");
+    const cardTexts = await resultCards.allTextContents();
+    expect(cardTexts.length).toBeGreaterThan(0);
+    for (const cardText of cardTexts) {
+      const amount = cardText.match(/\$\s*([\d,.]+)[\s\S]*Tuition/)?.[1];
+      expect(amount, `missing tuition amount in ${cardText}`).toBeTruthy();
+      expect(Number(amount!.replace(/,/g, ""))).toBeLessThanOrEqual(1500);
+    }
   });
 
   test("clear all removes listing filters but preserves unrelated query parameters", async ({

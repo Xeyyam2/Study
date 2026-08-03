@@ -26,6 +26,11 @@ describe('UniversityRepository (seed)', () => {
     expect(masters.length).toBeGreaterThan(0);
   });
 
+  it('treats a zero maximum tuition as an invalid filter', async () => {
+    const all = await data.universities.list();
+    expect(await data.universities.list({ maxTuitionUSD: 0 })).toEqual(all);
+  });
+
   it('returns null for unknown slug', async () => {
     expect(await data.universities.getBySlug('does-not-exist')).toBeNull();
   });
@@ -63,6 +68,10 @@ describe('UniversityRepository (seed)', () => {
     });
     expect(metadata.get('u-itu')?.minTuitionUSD).toBe(1200);
     expect(metadata.has('missing-university')).toBe(false);
+  });
+
+  it('returns no listing metadata for an empty ID batch', async () => {
+    expect(await data.universities.getListingMetadata([])).toEqual(new Map());
   });
 
   it('returns related universities excluding self', async () => {

@@ -74,9 +74,14 @@ class SeedUniversityRepository implements UniversityRepository {
             );
           if (!has) return false;
         }
-        if (filters.maxTuitionUSD !== undefined) {
+        if (filters.maxTuitionUSD !== undefined && filters.maxTuitionUSD > 0) {
           const min = seedUniversityPrograms
-            .filter((up) => up.universityId === u.id && up.currency === 'USD')
+            .filter(
+              (up) =>
+                up.universityId === u.id &&
+                up.currency === 'USD' &&
+                up.tuitionFee > 0,
+            )
             .map((up) => up.tuitionFee);
           if (min.length === 0 || Math.min(...min) > filters.maxTuitionUSD)
             return false;
@@ -154,7 +159,12 @@ class SeedUniversityRepository implements UniversityRepository {
       if (!requested.has(university.id)) continue;
       const city = seedCities.find((c) => c.id === university.cityId) ?? null;
       const fees = seedUniversityPrograms
-        .filter((up) => up.universityId === university.id && up.currency === 'USD')
+        .filter(
+          (up) =>
+            up.universityId === university.id &&
+            up.currency === 'USD' &&
+            up.tuitionFee > 0,
+        )
         .map((up) => up.tuitionFee);
       const reviews = seedReviews.filter((r) => r.universityId === university.id);
       const rating = reviews.length
