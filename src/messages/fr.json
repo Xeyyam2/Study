@@ -195,7 +195,8 @@
     "subtitle": "Parcourez les programmes par domaine et ville. Chaque page compare les frais, les diplômes et les universités qui les proposent.",
     "cities": "villes",
     "universities": "{count, plural, one {# université} other {# universités}}",
-    "from": "à partir de"
+    "from": "à partir de",
+    "filters": "Filtres", "searchPlaceholder": "Rechercher par domaine ou ville…", "category": "Domaine", "allCategories": "Tous les domaines", "city": "Ville", "allCities": "Toutes les villes", "reset": "Réinitialiser les filtres", "close": "Fermer", "activeFilters": "Filtres actifs", "results": "{count, plural, =0 {Aucun résultat} one {# résultat} other {# résultats}}", "sort": "Trier", "sortRelevance": "Pertinence", "sortName": "Nom", "sortTuition": "Frais", "emptyTitle": "Aucun programme trouvé", "emptySubtitle": "Essayez de supprimer un filtre ou de rechercher un autre domaine ou une autre ville."
   },
   "ProgramCombination": {
     "metaTitle": "{category} à {city} — Universités, frais & programmes",

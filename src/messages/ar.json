@@ -195,7 +195,8 @@
     "subtitle": "تصفّح التخصصات حسب المجال والمدينة. كل صفحة تقارن الرسوم والدرجات والجامعات التي تقدّمها.",
     "cities": "مدن",
     "universities": "{count, plural, one {# جامعة} other {# جامعة}}",
-    "from": "من"
+    "from": "من",
+    "filters": "الفلاتر", "searchPlaceholder": "البحث حسب المجال أو المدينة…", "category": "المجال", "allCategories": "كل المجالات", "city": "المدينة", "allCities": "كل المدن", "reset": "إعادة ضبط الفلاتر", "close": "إغلاق", "activeFilters": "الفلاتر النشطة", "results": "{count, plural, =0 {لا توجد نتائج} one {# نتيجة} other {# نتائج}}", "sort": "ترتيب", "sortRelevance": "الأكثر صلة", "sortName": "الاسم", "sortTuition": "الرسوم", "emptyTitle": "لم يتم العثور على برامج", "emptySubtitle": "حاول إزالة فلتر أو البحث عن مجال أو مدينة أخرى."
   },
   "ProgramCombination": {
     "metaTitle": "{category} في {city} — جامعات ورسوم وتخصصات",

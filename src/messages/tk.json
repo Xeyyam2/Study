@@ -196,7 +196,8 @@
     "subtitle": "Hünärleri ugur we şäher boýunça gez. Her sahypa töleg, derejeleri we uniwersvetleri deňeşdirýär.",
     "cities": "şäherler",
     "universities": "{count, plural, one {# uniwersvet} other {# uniwersvetler}}",
-    "from": "şeýleden"
+    "from": "şeýleden",
+    "filters": "Süzgüçler", "searchPlaceholder": "Ugur ýa-da şäher boýunça gözle…", "category": "Ugur", "allCategories": "Ähli ugurlar", "city": "Şäher", "allCities": "Ähli şäherler", "reset": "Süzgüçleri aýyr", "close": "Ýap", "activeFilters": "Işjeň süzgüçler", "results": "{count, plural, =0 {Netije ýok} one {# netije} other {# netije}}", "sort": "Tertiple", "sortRelevance": "Degişlilik", "sortName": "At", "sortTuition": "Töleg", "emptyTitle": "Okuw hünäri tapylmady", "emptySubtitle": "Süzgüji aýryp ýa-da başga ugur ýa-da şäher gözläp görüň."
   },
   "ProgramCombination": {
     "metaTitle": "{city} - {category} — Uniwersvetler, töleg we hünärler",

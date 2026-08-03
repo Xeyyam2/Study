@@ -196,7 +196,8 @@
     "subtitle": "Alana ve şehre göre bölümlere göz atın. Her sayfa ücretleri, dereceleri ve sunan üniversiteleri karşılaştırır.",
     "cities": "şehir",
     "universities": "{count, plural, one {# üniversite} other {# üniversite}}",
-    "from": "başlangıç"
+    "from": "başlangıç",
+    "filters": "Filtreler", "searchPlaceholder": "Alan veya şehre göre ara…", "category": "Alan", "allCategories": "Tüm alanlar", "city": "Şehir", "allCities": "Tüm şehirler", "reset": "Filtreleri sıfırla", "close": "Kapat", "activeFilters": "Aktif filtreler", "results": "{count, plural, =0 {Sonuç yok} one {# sonuç} other {# sonuç}}", "sort": "Sırala", "sortRelevance": "Alaka", "sortName": "Ad", "sortTuition": "Ücret", "emptyTitle": "Program bulunamadı", "emptySubtitle": "Bir filtreyi kaldırmayı veya başka bir alan ya da şehir aramayı deneyin."
   },
   "ProgramCombination": {
     "metaTitle": "{city}'da {category} — Üniversiteler, Ücretler ve Bölümler",

@@ -196,7 +196,8 @@
     "subtitle": "Browse programs by field and city. Each page compares tuition, degrees and the universities that offer them.",
     "cities": "cities",
     "universities": "{count, plural, one {# university} other {# universities}}",
-    "from": "from"
+    "from": "from",
+    "filters": "Filters", "searchPlaceholder": "Search by field or city…", "category": "Field", "allCategories": "All fields", "city": "City", "allCities": "All cities", "reset": "Reset filters", "close": "Close", "activeFilters": "Active filters", "results": "{count, plural, =0 {No program combinations} one {# result} other {# results}}", "sort": "Sort", "sortRelevance": "Relevance", "sortName": "Name", "sortTuition": "Tuition", "emptyTitle": "No programs found", "emptySubtitle": "Try removing a filter or searching for another field or city."
   },
   "ProgramCombination": {
     "metaTitle": "{category} in {city} — Universities, Tuition & Programs",

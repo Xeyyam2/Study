@@ -195,7 +195,8 @@
     "subtitle": "Durchsuche Studiengänge nach Fach und Stadt. Jede Seite vergleicht Studiengebühren, Abschlüsse und die Universitäten, die sie anbieten.",
     "cities": "Städte",
     "universities": "{count, plural, one {# Universität} other {# Universitäten}}",
-    "from": "ab"
+    "from": "ab",
+    "filters": "Filter", "searchPlaceholder": "Nach Fach oder Stadt suchen…", "category": "Fach", "allCategories": "Alle Fächer", "city": "Stadt", "allCities": "Alle Städte", "reset": "Filter zurücksetzen", "close": "Schließen", "activeFilters": "Aktive Filter", "results": "{count, plural, =0 {Keine Ergebnisse} one {# Ergebnis} other {# Ergebnisse}}", "sort": "Sortieren", "sortRelevance": "Relevanz", "sortName": "Name", "sortTuition": "Gebühren", "emptyTitle": "Keine Programme gefunden", "emptySubtitle": "Entferne einen Filter oder suche nach einem anderen Fach oder einer anderen Stadt."
   },
   "ProgramCombination": {
     "metaTitle": "{category} in {city} — Universitäten, Studiengebühren & Studiengänge",

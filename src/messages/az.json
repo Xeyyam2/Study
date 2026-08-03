@@ -196,7 +196,8 @@
     "subtitle": "Sahə və şəhərə görə proqramlara baxın. Hər səhifə qiymətləri, dərəcələri və təklif edən universitetləri müqayisə edir.",
     "cities": "şəhər",
     "universities": "{count, plural, one {# universitet} other {# universitet}}",
-    "from": "bundan"
+    "from": "bundan",
+    "filters": "Filtrlər", "searchPlaceholder": "Sahə və ya şəhər üzrə axtar…", "category": "Sahə", "allCategories": "Bütün sahələr", "city": "Şəhər", "allCities": "Bütün şəhərlər", "reset": "Filtrləri sıfırla", "close": "Bağla", "activeFilters": "Aktiv filtrlər", "results": "{count, plural, =0 {Nəticə yoxdur} one {# nəticə} other {# nəticə}}", "sort": "Sırala", "sortRelevance": "Uyğunluq", "sortName": "Ad", "sortTuition": "Qiymət", "emptyTitle": "Proqram tapılmadı", "emptySubtitle": "Filtri silin və ya başqa sahə və şəhər axtarın."
   },
   "ProgramCombination": {
     "metaTitle": "{city} şəhərində {category} — Universitetlər, Qiymətlər və Proqramlar",
