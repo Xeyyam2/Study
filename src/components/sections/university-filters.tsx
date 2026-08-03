@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Search, SlidersHorizontal, X } from "lucide-react";
 import type { City, DegreeLevel } from "@/types";
@@ -10,6 +10,7 @@ import { Input } from "@/components/ui/input";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -65,6 +66,10 @@ export function UniversityFilters({
   const router = useRouter();
   const searchParams = useSearchParams();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [searchValue, setSearchValue] = useState(
+    searchParams.get("search") ?? "",
+  );
+  const lastUrlSearch = useRef(searchParams.get("search") ?? "");
 
   function update(key: string, value: string | null) {
     const params = new URLSearchParams(searchParams.toString());
@@ -85,6 +90,25 @@ export function UniversityFilters({
     });
   }
 
+  useEffect(() => {
+    const urlSearch = searchParams.get("search") ?? "";
+    if (urlSearch === lastUrlSearch.current) return;
+
+    lastUrlSearch.current = urlSearch;
+    setSearchValue(urlSearch);
+  }, [searchParams]);
+
+  useEffect(() => {
+    const urlSearch = searchParams.get("search") ?? "";
+    if (searchValue === urlSearch) return;
+
+    const timeoutId = window.setTimeout(() => {
+      update("search", searchValue || null);
+    }, 300);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [searchParams, searchValue, update]);
+
   const activeFilterCount = LISTING_FILTER_KEYS.filter((key) =>
     searchParams.get(key),
   ).length;
@@ -93,6 +117,8 @@ export function UniversityFilters({
     labels,
     locale,
     searchParams,
+    searchValue,
+    setSearchValue,
     update,
     clearFilters,
   };
@@ -125,6 +151,9 @@ export function UniversityFilters({
           <DialogContent className="left-auto right-0 top-0 h-full max-h-none w-[min(22rem,calc(100%-1rem))] translate-x-0 translate-y-0 overflow-y-auto rounded-none p-5 sm:rounded-l-lg">
             <DialogHeader className="pr-8">
               <DialogTitle>{labels.filtersTitle}</DialogTitle>
+              <DialogDescription className="sr-only">
+                {labels.filtersTitle}
+              </DialogDescription>
             </DialogHeader>
             <FilterControls
               {...filterProps}
@@ -163,6 +192,8 @@ function FilterControls({
   labels,
   locale,
   searchParams,
+  searchValue,
+  setSearchValue,
   update,
   clearFilters,
 }: {
@@ -170,6 +201,8 @@ function FilterControls({
   labels: UniversityFiltersProps["labels"];
   locale: AppLocale;
   searchParams: ReturnType<typeof useSearchParams>;
+  searchValue: string;
+  setSearchValue: (value: string) => void;
   update: (key: string, value: string | null) => void;
   clearFilters: () => void;
 }) {
@@ -181,8 +214,8 @@ function FilterControls({
         <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
         <Input
           type="search"
-          value={searchParams.get("search") ?? ""}
-          onChange={(event) => change("search", event.target.value || null)}
+          value={searchValue}
+          onChange={(event) => setSearchValue(event.target.value)}
           placeholder={labels.search}
           aria-label={labels.search}
           className="pl-9"

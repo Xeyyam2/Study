@@ -8,7 +8,9 @@ test.describe("University filters", () => {
       page.getByRole("complementary", { name: /filters/i }),
     ).toBeVisible();
     await expect(
-      page.getByRole("searchbox", { name: /search/i }),
+      page
+        .getByRole("complementary", { name: /filters/i })
+        .getByRole("searchbox", { name: /search/i }),
     ).toBeVisible();
   });
 
@@ -17,12 +19,18 @@ test.describe("University filters", () => {
   }) => {
     await page.goto("/en/universities?sort=name&city=istanbul");
 
-    const search = page.getByRole("searchbox", { name: /search/i });
-    await search.fill("Bahcesehir");
+    const sidebar = page.getByRole("complementary", { name: /filters/i });
+    await sidebar.getByRole("searchbox", { name: /search/i }).fill("Bahcesehir");
 
-    await expect(page).toHaveURL(
-      /\/en\/universities\?sort=name&city=istanbul&search=Bahcesehir/,
-    );
+    await expect
+      .poll(() => new URL(page.url()).searchParams.get("sort"))
+      .toBe("name");
+    await expect
+      .poll(() => new URL(page.url()).searchParams.get("city"))
+      .toBe("istanbul");
+    await expect
+      .poll(() => new URL(page.url()).searchParams.get("search"))
+      .toBe("Bahcesehir");
   });
 
   test("opens and closes the filter drawer on mobile", async ({ page }) => {
@@ -47,6 +55,8 @@ test.describe("University filters", () => {
     await dialog.getByRole("searchbox", { name: /search/i }).fill("Bahcesehir");
 
     await expect(dialog).toBeVisible();
-    await expect(page).toHaveURL(/\/en\/universities\?search=Bahcesehir/);
+    await expect
+      .poll(() => new URL(page.url()).searchParams.get("search"))
+      .toBe("Bahcesehir");
   });
 });
