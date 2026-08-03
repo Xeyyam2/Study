@@ -20,7 +20,9 @@ test.describe("University filters", () => {
     await page.goto("/en/universities?sort=name&city=istanbul");
 
     const sidebar = page.getByRole("complementary", { name: /filters/i });
-    await sidebar.getByRole("searchbox", { name: /search/i }).fill("Bahcesehir");
+    await sidebar
+      .getByRole("searchbox", { name: /search/i })
+      .fill("Bahcesehir");
 
     await expect
       .poll(() => new URL(page.url()).searchParams.get("sort"))
@@ -31,6 +33,48 @@ test.describe("University filters", () => {
     await expect
       .poll(() => new URL(page.url()).searchParams.get("search"))
       .toBe("Bahcesehir");
+  });
+
+  test("changes sort through the URL and reorders the listing", async ({
+    page,
+  }) => {
+    await page.goto("/en/universities?sort=relevance");
+
+    await page.getByRole("combobox", { name: /sort/i }).click();
+    await page.getByRole("option", { name: /^name$/i }).click();
+
+    await expect
+      .poll(() => new URL(page.url()).searchParams.get("sort"))
+      .toBe("name");
+    await expect(
+      page.locator("main article, main a[href*='/universities/']").first(),
+    ).toBeVisible();
+  });
+
+  test("passes tuition filtering through the URL", async ({ page }) => {
+    await page.goto("/en/universities");
+
+    const sidebar = page.getByRole("complementary", { name: /filters/i });
+    await sidebar.getByRole("spinbutton", { name: /tuition/i }).fill("12500");
+
+    await expect
+      .poll(() => new URL(page.url()).searchParams.get("maxTuition"))
+      .toBe("12500");
+  });
+
+  test("clear all removes listing filters but preserves unrelated query parameters", async ({
+    page,
+  }) => {
+    await page.goto(
+      "/en/universities?sort=name&maxTuition=12500&city=istanbul&ref=campaign",
+    );
+
+    await page
+      .getByRole("complementary", { name: /filters/i })
+      .getByRole("button", { name: /clear all/i })
+      .click();
+
+    await expect.poll(() => new URL(page.url()).search).toBe("?ref=campaign");
   });
 
   test("opens and closes the filter drawer on mobile", async ({ page }) => {

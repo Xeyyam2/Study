@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Search, SlidersHorizontal, X } from "lucide-react";
 import type { City, DegreeLevel } from "@/types";
@@ -44,7 +44,9 @@ interface UniversityFiltersProps {
     phd: string;
     associate: string;
     reset: string;
+    clearAll?: string;
     maxTuition?: string;
+    activeFilters?: string;
   };
 }
 
@@ -56,6 +58,7 @@ const LISTING_FILTER_KEYS = [
   "type",
   "search",
   "maxTuition",
+  "sort",
 ];
 
 export function UniversityFilters({
@@ -70,22 +73,26 @@ export function UniversityFilters({
     searchParams.get("search") ?? "",
   );
   const lastUrlSearch = useRef(searchParams.get("search") ?? "");
+  const searchEditedLocally = useRef(false);
 
-  function update(key: string, value: string | null) {
-    const params = new URLSearchParams(searchParams.toString());
-    if (value && value !== "all") params.set(key, value);
-    else params.delete(key);
-    const qs = params.toString();
-    router.push(`/${locale}/universities${qs ? `?${qs}` : ""}`, {
-      scroll: false,
-    });
-  }
+  const update = useCallback(
+    (key: string, value: string | null) => {
+      const params = new URLSearchParams(searchParams.toString());
+      if (value && value !== "all") params.set(key, value);
+      else params.delete(key);
+      const qs = params.toString();
+      router.push(`/${locale}/universities${qs ? `?${qs}` : ""}`, {
+        scroll: false,
+      });
+    },
+    [locale, router, searchParams],
+  );
 
   function clearFilters() {
     const params = new URLSearchParams(searchParams.toString());
     LISTING_FILTER_KEYS.forEach((key) => params.delete(key));
     const qs = params.toString();
-    router.push(`/${locale}/universities${qs ? `?${qs}` : ""}`, {
+    router.replace(`/${locale}/universities${qs ? `?${qs}` : ""}`, {
       scroll: false,
     });
   }
@@ -95,14 +102,16 @@ export function UniversityFilters({
     if (urlSearch === lastUrlSearch.current) return;
 
     lastUrlSearch.current = urlSearch;
+    searchEditedLocally.current = false;
     setSearchValue(urlSearch);
   }, [searchParams]);
 
   useEffect(() => {
     const urlSearch = searchParams.get("search") ?? "";
-    if (searchValue === urlSearch) return;
+    if (!searchEditedLocally.current || searchValue === urlSearch) return;
 
     const timeoutId = window.setTimeout(() => {
+      searchEditedLocally.current = false;
       update("search", searchValue || null);
     }, 300);
 
@@ -118,7 +127,10 @@ export function UniversityFilters({
     locale,
     searchParams,
     searchValue,
-    setSearchValue,
+    setSearchValue: (value: string) => {
+      searchEditedLocally.current = true;
+      setSearchValue(value);
+    },
     update,
     clearFilters,
   };
@@ -143,7 +155,11 @@ export function UniversityFilters({
               </span>
               {activeFilterCount > 0 && (
                 <span className="rounded-full bg-primary px-2 py-0.5 text-xs text-primary-foreground">
-                  {activeFilterCount}
+                  <span
+                    aria-label={`${labels.activeFilters ?? labels.filtersTitle}: ${activeFilterCount}`}
+                  >
+                    {activeFilterCount}
+                  </span>
                 </span>
               )}
             </Button>
@@ -155,9 +171,7 @@ export function UniversityFilters({
                 {labels.filtersTitle}
               </DialogDescription>
             </DialogHeader>
-            <FilterControls
-              {...filterProps}
-            />
+            <FilterControls {...filterProps} />
           </DialogContent>
         </Dialog>
       </div>
@@ -180,7 +194,11 @@ function FilterHeading({
       </div>
       {activeFilterCount > 0 && (
         <span className="rounded-full bg-primary/10 px-2 py-0.5 text-xs font-medium text-primary">
-          {activeFilterCount}
+          <span
+            aria-label={`${labels.activeFilters ?? labels.filtersTitle}: ${activeFilterCount}`}
+          >
+            {activeFilterCount}
+          </span>
         </span>
       )}
     </div>
@@ -291,7 +309,7 @@ function FilterControls({
           onClick={clearFilters}
         >
           <X className="h-4 w-4" />
-          {labels.reset}
+          {labels.clearAll ?? labels.reset}
         </Button>
       )}
     </div>

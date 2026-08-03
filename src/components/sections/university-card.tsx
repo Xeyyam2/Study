@@ -12,16 +12,20 @@ interface UniversityCardProps {
   university: University;
   locale: AppLocale;
   priority?: boolean;
+  minTuition?: number;
 }
 
 export async function UniversityCard({
   university,
   locale,
   priority,
+  minTuition: suppliedMinTuition,
 }: UniversityCardProps) {
   const [city, minTuition, { rating, count }] = await Promise.all([
     data.cities.getByUniversityId(university.id),
-    data.universities.getMinTuitionUSD(university.id),
+    suppliedMinTuition === undefined
+      ? data.universities.getMinTuitionUSD(university.id)
+      : Promise.resolve(suppliedMinTuition),
     data.universities.getRating(university.id),
   ]);
 
@@ -41,7 +45,10 @@ export async function UniversityCard({
             priority={priority}
           />
           <div className="absolute right-3 top-3">
-            <Badge variant="verified" className="gap-1 bg-card/90 backdrop-blur">
+            <Badge
+              variant="verified"
+              className="gap-1 bg-card/90 backdrop-blur"
+            >
               <BadgeCheck className="h-3.5 w-3.5" />
               YÖK
             </Badge>
@@ -51,7 +58,7 @@ export async function UniversityCard({
           </div>
         </div>
 
-        <div className="space-y-3 p-4">
+        <div className="space-y-2.5 p-3.5">
           <div className="flex items-start justify-between gap-2">
             <h3 className="font-display text-base font-semibold leading-snug text-foreground">
               {university.name}
@@ -69,7 +76,9 @@ export async function UniversityCard({
           {count > 0 && (
             <p className="flex items-center gap-1 text-sm">
               <Star className="h-4 w-4 fill-cta text-cta" aria-hidden />
-              <span className="font-semibold tabular-nums">{rating.toFixed(1)}</span>
+              <span className="font-semibold tabular-nums">
+                {rating.toFixed(1)}
+              </span>
               <span className="text-muted-foreground">({count})</span>
             </p>
           )}
@@ -77,7 +86,11 @@ export async function UniversityCard({
           <div className="grid grid-cols-3 gap-2 border-t border-border pt-3 text-center">
             <Stat
               label="Tuition"
-              value={minTuition ? `from ${formatCurrency(minTuition, 'USD', locale)}` : '—'}
+              value={
+                minTuition
+                  ? `from ${formatCurrency(minTuition, 'USD', locale)}`
+                  : '—'
+              }
             />
             <Stat label="Rank" value={`#${university.ranking}`} />
             <Stat label="Founded" value={String(university.foundedYear)} />
@@ -91,7 +104,9 @@ export async function UniversityCard({
 function Stat({ label, value }: { label: string; value: string }) {
   return (
     <div className={cn('space-y-0.5')}>
-      <div className="truncate text-xs font-semibold text-foreground">{value}</div>
+      <div className="truncate text-xs font-semibold text-foreground">
+        {value}
+      </div>
       <div className="text-[10px] uppercase tracking-wide text-muted-foreground">
         {label}
       </div>
