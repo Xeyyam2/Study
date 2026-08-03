@@ -15,6 +15,13 @@ import type {
   UniversityFilters,
 } from '@/types';
 
+export interface UniversityListingMetadata {
+  city: City | null;
+  minTuitionUSD?: number;
+  rating: number;
+  count: number;
+}
+
 export interface UniversityRepository {
   list(filters?: UniversityFilters): Promise<University[]>;
   getFeatured(limit?: number): Promise<University[]>;
@@ -23,6 +30,9 @@ export interface UniversityRepository {
   getRelated(slug: string, limit?: number): Promise<University[]>;
   getMinTuitionUSD(universityId: string): Promise<number>;
   getRating(universityId: string): Promise<{ rating: number; count: number }>;
+  getListingMetadata(
+    universityIds: readonly string[],
+  ): Promise<ReadonlyMap<string, UniversityListingMetadata>>;
 }
 
 export interface CityRepository {

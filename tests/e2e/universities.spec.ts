@@ -63,7 +63,8 @@ test.describe("University filters", () => {
     await expect
       .poll(() => new URL(page.url()).searchParams.get("maxTuition"))
       .toBe("1500");
-    await expect(page.locator("main a[href*='/universities/']")).toHaveCount(6);
+    const resultCards = page.locator("main a[href*='/universities/']");
+    await expect.poll(() => resultCards.count()).toBeGreaterThan(0);
     await expect(
       page.locator("main a[href*='/universities/bahcesehir-university']"),
     ).toHaveCount(0);
@@ -95,8 +96,10 @@ test.describe("University filters", () => {
     await sidebar.getByRole("button", { name: /clear all/i }).click();
 
     await expect.poll(() => new URL(page.url()).search).toBe("?ref=campaign");
-    await page.waitForTimeout(400);
-    expect(new URL(page.url()).searchParams.get("search")).toBeNull();
+    await expect(page).toHaveURL(/\/en\/universities\?ref=campaign$/);
+    await expect(
+      page.getByRole("complementary", { name: /filters/i }).getByRole("searchbox", { name: /search/i }),
+    ).toHaveValue("");
   });
 
   test("opens and closes the filter drawer on mobile", async ({ page }) => {

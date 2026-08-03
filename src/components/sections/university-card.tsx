@@ -2,6 +2,7 @@ import Image from 'next/image';
 import { MapPin, BadgeCheck, Star } from 'lucide-react';
 import type { University } from '@/types';
 import type { AppLocale } from '@/i18n/routing';
+import type { UniversityListingMetadata } from '@/lib/data/repositories';
 import { data } from '@/lib/data';
 import { cn, formatCurrency } from '@/lib/utils';
 import { Link } from '@/i18n/navigation';
@@ -24,6 +25,7 @@ interface UniversityCardProps {
   locale: AppLocale;
   priority?: boolean;
   minTuition?: number;
+  listingMetadata?: UniversityListingMetadata;
   labels?: UniversityCardLabels;
 }
 
@@ -43,15 +45,28 @@ export async function UniversityCard({
   locale,
   priority,
   minTuition: suppliedMinTuition,
+  listingMetadata,
   labels = DEFAULT_LABELS,
 }: UniversityCardProps) {
-  const [city, minTuition, { rating, count }] = await Promise.all([
-    data.cities.getByUniversityId(university.id),
-    suppliedMinTuition === undefined
-      ? data.universities.getMinTuitionUSD(university.id)
-      : Promise.resolve(suppliedMinTuition),
-    data.universities.getRating(university.id),
-  ]);
+  const [city, minTuition, rating, count] = listingMetadata
+    ? [
+        listingMetadata.city,
+        suppliedMinTuition ?? listingMetadata.minTuitionUSD,
+        listingMetadata.rating,
+        listingMetadata.count,
+      ]
+    : await Promise.all([
+        data.cities.getByUniversityId(university.id),
+        suppliedMinTuition === undefined
+          ? data.universities.getMinTuitionUSD(university.id)
+          : Promise.resolve(suppliedMinTuition),
+        data.universities.getRating(university.id),
+      ]).then(([fallbackCity, fallbackMinTuition, fallbackRating]) => [
+        fallbackCity,
+        fallbackMinTuition,
+        fallbackRating.rating,
+        fallbackRating.count,
+      ] as const);
 
   return (
     <Link

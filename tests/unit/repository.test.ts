@@ -48,6 +48,23 @@ describe('UniversityRepository (seed)', () => {
     expect(r.rating).toBeLessThanOrEqual(5);
   });
 
+  it('returns listing metadata for a batch of universities', async () => {
+    const metadata = await data.universities.getListingMetadata([
+      'u-bahcesehir',
+      'u-itu',
+      'missing-university',
+    ]);
+
+    expect(metadata.get('u-bahcesehir')).toMatchObject({
+      city: expect.objectContaining({ slug: 'istanbul' }),
+      minTuitionUSD: 7000,
+      rating: expect.any(Number),
+      count: expect.any(Number),
+    });
+    expect(metadata.get('u-itu')?.minTuitionUSD).toBe(1200);
+    expect(metadata.has('missing-university')).toBe(false);
+  });
+
   it('returns related universities excluding self', async () => {
     const related = await data.universities.getRelated('bahcesehir-university');
     expect(related.every((u) => u.slug !== 'bahcesehir-university')).toBe(true);

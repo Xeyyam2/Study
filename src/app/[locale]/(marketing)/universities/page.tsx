@@ -51,18 +51,15 @@ export default async function UniversitiesPage({
     data.universities.list(filters),
     data.cities.list(),
   ]);
+  const listingMetadata = await data.universities.getListingMetadata(
+    universities.map((university) => university.id),
+  );
   const tuitionByUniversity =
     sort === "tuition"
       ? new Map(
-          await Promise.all(
-            universities.map(
-              async (university) =>
-                [
-                  university.id,
-                  await data.universities.getMinTuitionUSD(university.id),
-                ] as const,
-            ),
-          ),
+          Array.from(listingMetadata.entries())
+            .filter(([, metadata]) => metadata.minTuitionUSD !== undefined)
+            .map(([id, metadata]) => [id, metadata.minTuitionUSD!] as const),
         )
       : undefined;
   const listedUniversities = sortUniversities(
@@ -172,7 +169,7 @@ export default async function UniversitiesPage({
                   key={u.id}
                   university={u}
                   locale={appLocale}
-                  minTuition={tuitionByUniversity?.get(u.id)}
+                  listingMetadata={listingMetadata.get(u.id)}
                   labels={{
                     verified: t("verified"),
                     state: t("state"),

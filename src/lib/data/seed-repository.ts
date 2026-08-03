@@ -37,6 +37,7 @@ import type {
   ReviewRepository,
   ScholarshipRepository,
   UniversityRepository,
+  UniversityListingMetadata,
 } from './repositories';
 
 const delay = <T>(value: T): Promise<T> => Promise.resolve(value);
@@ -141,6 +142,34 @@ class SeedUniversityRepository implements UniversityRepository {
     if (!rs.length) return { rating: 0, count: 0 };
     const sum = rs.reduce((acc, r) => acc + r.rating, 0);
     return { rating: Math.round((sum / rs.length) * 10) / 10, count: rs.length };
+  }
+
+  async getListingMetadata(
+    universityIds: readonly string[],
+  ): Promise<ReadonlyMap<string, UniversityListingMetadata>> {
+    const requested = new Set(universityIds);
+    const metadata = new Map<string, UniversityListingMetadata>();
+
+    for (const university of seedUniversities) {
+      if (!requested.has(university.id)) continue;
+      const city = seedCities.find((c) => c.id === university.cityId) ?? null;
+      const fees = seedUniversityPrograms
+        .filter((up) => up.universityId === university.id && up.currency === 'USD')
+        .map((up) => up.tuitionFee);
+      const reviews = seedReviews.filter((r) => r.universityId === university.id);
+      const rating = reviews.length
+        ? Math.round((reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length) * 10) / 10
+        : 0;
+
+      metadata.set(university.id, {
+        city,
+        minTuitionUSD: fees.length ? Math.min(...fees) : undefined,
+        rating,
+        count: reviews.length,
+      });
+    }
+
+    return metadata;
   }
 
   private _programsFor(universityId: string) {

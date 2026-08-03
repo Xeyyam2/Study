@@ -96,6 +96,16 @@ describe('sortUniversities', () => {
     ).toEqual(['u2', 'u3', 'u1']);
   });
 
+  test('sorts universities with unknown tuition after known tuition', () => {
+    expect(
+      sortUniversities(universities, 'tuition', {
+        u1: 9000,
+        u2: 3000,
+        u3: 0,
+      }).map((u) => u.id),
+    ).toEqual(['u2', 'u1', 'u3']);
+  });
+
   test('preserves relevance order and does not mutate the input', () => {
     const result = sortUniversities(universities, 'relevance');
 

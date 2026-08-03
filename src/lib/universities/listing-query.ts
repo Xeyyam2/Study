@@ -64,9 +64,10 @@ function tuitionFor(
   tuitionByUniversity: TuitionByUniversity | undefined,
 ): number | undefined {
   if (!tuitionByUniversity) return undefined;
-  return tuitionByUniversity instanceof Map
+  const value = tuitionByUniversity instanceof Map
     ? tuitionByUniversity.get(universityId)
     : (tuitionByUniversity as Readonly<Record<string, number>>)[universityId];
+  return value !== undefined && Number.isFinite(value) && value > 0 ? value : undefined;
 }
 
 export function sortUniversities(

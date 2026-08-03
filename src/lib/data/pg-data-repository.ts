@@ -26,6 +26,7 @@ import type {
   ReviewRepository,
   ScholarshipRepository,
   UniversityRepository,
+  UniversityListingMetadata,
   SearchResult,
 } from './repositories';
 
@@ -300,6 +301,52 @@ export function createPgDataLayer(getPool: () => Pool): DataLayer {
       );
       const avg = Number(res.rows[0]?.avg ?? 0);
       return { rating: Math.round(avg * 10) / 10, count: Number(res.rows[0]?.c ?? 0) };
+    },
+
+    async getListingMetadata(
+      universityIds: readonly string[],
+    ): Promise<ReadonlyMap<string, UniversityListingMetadata>> {
+      if (!universityIds.length) return new Map();
+      const res = await getPool().query(
+        `with tuition as (
+               select university_id, min(tuition_fee) filter (where currency = 'USD') min_tuition
+               from public.university_programs
+               group by university_id
+             ), review_stats as (
+               select university_id, avg(rating) avg_rating, count(*)::int review_count
+               from public.reviews
+               group by university_id
+             )
+         select u.id,
+                c.id city_id, c.slug city_slug, c.country_code city_country_code, c.name_i18n city_name_i18n,
+                tuition.min_tuition,
+                coalesce(review_stats.avg_rating, 0) avg_rating,
+                coalesce(review_stats.review_count, 0) review_count
+         from public.universities u
+         left join public.cities c on c.id = u.city_id
+         left join tuition on tuition.university_id = u.id
+         left join review_stats on review_stats.university_id = u.id
+         where u.id = any($1::text[])
+         `,
+        [universityIds],
+      );
+      const metadata = new Map<string, UniversityListingMetadata>();
+      for (const row of res.rows) {
+        metadata.set(row.id as string, {
+          city: row.city_id
+            ? {
+                id: row.city_id as string,
+                slug: row.city_slug as string,
+                countryId: row.city_country_code as string,
+                name: i18n(row.city_name_i18n),
+              }
+            : null,
+          minTuitionUSD: row.min_tuition == null ? undefined : Number(row.min_tuition),
+          rating: Math.round(Number(row.avg_rating ?? 0) * 10) / 10,
+          count: Number(row.review_count ?? 0),
+        });
+      }
+      return metadata;
     },
   };
 
