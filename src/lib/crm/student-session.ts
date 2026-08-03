@@ -18,14 +18,20 @@ export interface StudentSession {
 }
 
 export async function getStudentSession(): Promise<StudentSession | null> {
-  const user = await getSessionUser();
-  if (!user) return null;
-  const profile = await crm.upsertStudentByAuthUid({
-    authUid: user.id,
-    email: user.email ?? '',
-    fullName: (user.user_metadata?.full_name as string | undefined) ?? '',
-  });
-  return { userId: profile.id, profile };
+  // Same defensive pattern as getStaffSession: a Supabase failure must not
+  // block the dev fallback from running.
+  try {
+    const user = await getSessionUser();
+    if (!user) return null;
+    const profile = await crm.upsertStudentByAuthUid({
+      authUid: user.id,
+      email: user.email ?? '',
+      fullName: (user.user_metadata?.full_name as string | undefined) ?? '',
+    });
+    return { userId: profile.id, profile };
+  } catch {
+    return null;
+  }
 }
 
 export async function requireStudent(locale: AppLocale): Promise<StudentSession> {

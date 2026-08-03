@@ -19,11 +19,18 @@ export interface AdminSession {
 
 /** Real Supabase session resolved to a staff profile (role check). */
 async function getStaffSession(): Promise<AdminSession | null> {
-  const user = await getSessionUser();
-  if (!user) return null;
-  const profile = await crm.getStaffProfileByAuthUid(user.id, user.email ?? '');
-  if (!profile || !STAFF_ROLES.includes(profile.role)) return null;
-  return { userId: profile.id, role: profile.role, fullName: profile.fullName, profile };
+  // Supabase can throw for transient reasons (network, bad cookie, env not yet
+  // configured). The dev fallback below must still get a chance, so never let a
+  // Supabase failure abort the whole session resolution — degrade to null.
+  try {
+    const user = await getSessionUser();
+    if (!user) return null;
+    const profile = await crm.getStaffProfileByAuthUid(user.id, user.email ?? '');
+    if (!profile || !STAFF_ROLES.includes(profile.role)) return null;
+    return { userId: profile.id, role: profile.role, fullName: profile.fullName, profile };
+  } catch {
+    return null;
+  }
 }
 
 /** Dev fallback (DEV_AUTH_ENABLED): seeded demo staff via legacy cookie. */
