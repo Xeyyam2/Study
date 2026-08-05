@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { requireStaff } from '@/lib/crm/session';
+import { crm } from '@/lib/crm';
 import { AdminSidebar } from '@/components/admin/AdminSidebar';
 import { AdminTopbar } from '@/components/admin/AdminTopbar';
 
@@ -12,9 +13,11 @@ export const dynamic = 'force-dynamic';
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const session = await requireStaff();
+  const counts = await crm.countByStatus();
+  const newApplicationsCount = counts['new'] ?? 0;
   return (
     <div className="flex min-h-screen">
-      <AdminSidebar />
+      <AdminSidebar newApplicationsCount={newApplicationsCount} />
       <div className="flex min-w-0 flex-1 flex-col">
         <AdminTopbar session={session} />
         <main className="flex-1 p-4 lg:p-6">{children}</main>
