@@ -85,8 +85,8 @@ export default async function AdminOverviewPage() {
               ))}
             </ul>
           )}
-          <Link href="/admin/leads" className="mt-4 inline-block text-sm font-medium text-primary hover:underline">
-            Go to leads →
+          <Link href="/admin/applications" className="mt-4 inline-block text-sm font-medium text-primary hover:underline">
+            Müraciətlərə bax → View applications →
           </Link>
         </CardContent>
       </Card>

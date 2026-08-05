@@ -3,11 +3,12 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Users, ScrollText, GraduationCap } from 'lucide-react';
+import { LayoutDashboard, Users, ScrollText, GraduationCap, FileText } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 const NAV = [
   { href: '/admin', label: 'Overview', icon: LayoutDashboard },
+  { href: '/admin/applications', label: 'Müraciətlər / Applications', icon: FileText },
   { href: '/admin/leads', label: 'Leads (CRM)', icon: GraduationCap },
   { href: '/admin/users', label: 'Users', icon: Users },
   { href: '/admin/audit', label: 'Audit Log', icon: ScrollText },
