@@ -235,6 +235,32 @@ export function createPgCrm(getPool: () => Pool): CrmRepository {
       return res.rowCount ? rowToProfile(res.rows[0]) : null;
     },
 
+    async updateProfileRole(id: string, role: 'admin' | 'consultant', actorId: string): Promise<Profile> {
+      // Last active admin protection: count remaining active admins if demoting an admin.
+      if (role !== 'admin') {
+        const current = await q('select role from public.profiles where id = $1', [id]);
+        if (current.rowCount && current.rows[0].role === 'admin') {
+          const adminCount = await q(`select count(*)::int as n from public.profiles where role = 'admin'`);
+          if (adminCount.rows[0].n <= 1) {
+            throw new Error('Cannot demote the last active admin');
+          }
+        }
+      }
+      const res = await q(
+        'update public.profiles set role = $1, updated_at = now() where id = $2 returning *',
+        [role, id],
+      );
+      if (!res.rowCount) throw new NotFoundError('Profile', id);
+      await audit({
+        userId: actorId,
+        action: 'role_change',
+        entity: 'profile',
+        entityId: id,
+        metadata: { newRole: role },
+      });
+      return rowToProfile(res.rows[0]);
+    },
+
     async listStudents(): Promise<Profile[]> {
       const res = await q(`select * from public.profiles where role = 'student' order by full_name`);
       return res.rows.map(rowToProfile);

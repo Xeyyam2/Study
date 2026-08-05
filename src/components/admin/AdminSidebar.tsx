@@ -4,7 +4,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Users, ScrollText, GraduationCap, FileText } from 'lucide-react';
+import { LayoutDashboard, Users, ScrollText, GraduationCap, FileText, Settings } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { AdminLocale } from '@/lib/admin-i18n';
 
@@ -16,6 +16,7 @@ const navKeys = [
   { href: '/admin/leads', key: 'nav.leads', icon: GraduationCap },
   { href: '/admin/users', key: 'nav.users', icon: Users },
   { href: '/admin/audit', key: 'nav.audit', icon: ScrollText },
+  { href: '/admin/settings', key: 'nav.settings', icon: Settings },
 ] as const;
 
 const NAV_LABELS: Record<AdminLocale, Record<string, string>> = {
@@ -25,6 +26,7 @@ const NAV_LABELS: Record<AdminLocale, Record<string, string>> = {
     'nav.leads': 'Leads (CRM)',
     'nav.users': 'İstifadəçilər',
     'nav.audit': 'Audit jurnalı',
+    'nav.settings': 'Tənzimləmələr',
   },
   en: {
     'nav.overview': 'Overview',
@@ -32,6 +34,7 @@ const NAV_LABELS: Record<AdminLocale, Record<string, string>> = {
     'nav.leads': 'Leads (CRM)',
     'nav.users': 'Users',
     'nav.audit': 'Audit Log',
+    'nav.settings': 'Settings',
   },
 };
 

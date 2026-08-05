@@ -52,6 +52,7 @@ export interface CrmRepository {
   getProfileByAuthUid(authUid: string): Promise<Profile | null>;
   upsertStudentByAuthUid(input: { authUid: string; email: string; fullName: string }): Promise<Profile>;
   getStaffProfileByAuthUid(authUid: string, email: string): Promise<Profile | null>;
+  updateProfileRole(id: string, role: 'admin' | 'consultant', actorId: string): Promise<Profile>;
   // stats
   countByStatus(): Promise<Record<string, number>>;
   // audit

@@ -15,3 +15,19 @@ export const assignConsultantSchema = z.object({
 export const devLoginSchema = z.object({
   profileId: z.string().uuid(),
 });
+
+export const updateRoleSchema = z.object({
+  profileId: z.string().uuid(),
+  role: z.enum(['admin', 'consultant']),
+});
+
+export const changePasswordSchema = z
+  .object({
+    currentPassword: z.string().min(1, 'Current password is required'),
+    newPassword: z.string().min(8, 'Password must be at least 8 characters'),
+    confirmPassword: z.string().min(1),
+  })
+  .refine((d) => d.newPassword === d.confirmPassword, {
+    message: 'Passwords do not match',
+    path: ['confirmPassword'],
+  });
