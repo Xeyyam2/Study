@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { requireStaff } from '@/lib/crm/session';
 import { crm } from '@/lib/crm';
+import { getAdminLocale } from '@/lib/admin-i18n';
 import { AdminSidebar } from '@/components/admin/AdminSidebar';
 import { AdminTopbar } from '@/components/admin/AdminTopbar';
 
@@ -13,13 +14,14 @@ export const dynamic = 'force-dynamic';
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const session = await requireStaff();
+  const locale = await getAdminLocale();
   const counts = await crm.countByStatus();
   const newApplicationsCount = counts['new'] ?? 0;
   return (
     <div className="flex min-h-screen">
-      <AdminSidebar newApplicationsCount={newApplicationsCount} />
+      <AdminSidebar newApplicationsCount={newApplicationsCount} locale={locale} />
       <div className="flex min-w-0 flex-1 flex-col">
-        <AdminTopbar session={session} />
+        <AdminTopbar session={session} locale={locale} />
         <main className="flex-1 p-4 lg:p-6">{children}</main>
       </div>
     </div>

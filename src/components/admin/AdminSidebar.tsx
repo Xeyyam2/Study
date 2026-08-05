@@ -6,21 +6,46 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { LayoutDashboard, Users, ScrollText, GraduationCap, FileText } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import type { AdminLocale } from '@/lib/admin-i18n';
 
 const STORAGE_KEY = 'admin_seen_applications_count';
 
-const NAV = [
-  { href: '/admin', label: 'Overview', icon: LayoutDashboard },
-  { href: '/admin/applications', label: 'Müraciətlər / Applications', icon: FileText },
-  { href: '/admin/leads', label: 'Leads (CRM)', icon: GraduationCap },
-  { href: '/admin/users', label: 'Users', icon: Users },
-  { href: '/admin/audit', label: 'Audit Log', icon: ScrollText },
-];
+const navKeys = [
+  { href: '/admin', key: 'nav.overview', icon: LayoutDashboard },
+  { href: '/admin/applications', key: 'nav.applications', icon: FileText },
+  { href: '/admin/leads', key: 'nav.leads', icon: GraduationCap },
+  { href: '/admin/users', key: 'nav.users', icon: Users },
+  { href: '/admin/audit', key: 'nav.audit', icon: ScrollText },
+] as const;
 
-export function AdminSidebar({ newApplicationsCount = 0 }: { newApplicationsCount?: number }) {
+const NAV_LABELS: Record<AdminLocale, Record<string, string>> = {
+  az: {
+    'nav.overview': 'Ümumi baxış',
+    'nav.applications': 'Müraciətlər',
+    'nav.leads': 'Leads (CRM)',
+    'nav.users': 'İstifadəçilər',
+    'nav.audit': 'Audit jurnalı',
+  },
+  en: {
+    'nav.overview': 'Overview',
+    'nav.applications': 'Applications',
+    'nav.leads': 'Leads (CRM)',
+    'nav.users': 'Users',
+    'nav.audit': 'Audit Log',
+  },
+};
+
+export function AdminSidebar({
+  newApplicationsCount = 0,
+  locale = 'az',
+}: {
+  newApplicationsCount?: number;
+  locale?: AdminLocale;
+}) {
   const pathname = usePathname();
   const [seenCount, setSeenCount] = useState<number | null>(null);
-  const onApplicationsPage = pathname === '/admin/applications' || pathname.startsWith('/admin/applications');
+  const onApplicationsPage =
+    pathname === '/admin/applications' || pathname.startsWith('/admin/applications');
 
   useEffect(() => {
     const stored = Number(localStorage.getItem(STORAGE_KEY) ?? '0');
@@ -31,12 +56,14 @@ export function AdminSidebar({ newApplicationsCount = 0 }: { newApplicationsCoun
     }
   }, [onApplicationsPage, newApplicationsCount]);
 
-  const unread = seenCount !== null ? Math.max(0, newApplicationsCount - seenCount) : newApplicationsCount;
+  const unread =
+    seenCount !== null ? Math.max(0, newApplicationsCount - seenCount) : newApplicationsCount;
+  const labels = NAV_LABELS[locale];
 
   return (
     <aside className="hidden w-60 shrink-0 border-r border-border bg-card lg:block">
       <nav className="flex flex-col gap-1 p-4">
-        {NAV.map(({ href, label, icon: Icon }) => {
+        {navKeys.map(({ href, key, icon: Icon }) => {
           const active = href === '/admin' ? pathname === href : pathname.startsWith(href);
           const badge = href === '/admin/applications' && unread > 0 ? unread : 0;
           return (
@@ -51,7 +78,7 @@ export function AdminSidebar({ newApplicationsCount = 0 }: { newApplicationsCoun
               )}
             >
               <Icon className="h-4 w-4 shrink-0" />
-              <span className="flex-1">{label}</span>
+              <span className="flex-1">{labels[key]}</span>
               {badge > 0 && (
                 <span
                   className={cn(

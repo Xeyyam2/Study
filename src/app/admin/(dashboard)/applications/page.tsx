@@ -1,7 +1,7 @@
 // src/app/admin/(dashboard)/applications/page.tsx
 import Link from 'next/link';
 import { crm } from '@/lib/crm';
-import { LEAD_STATUS_LABELS } from '@/types/crm';
+import { getAdminT } from '@/lib/admin-i18n';
 import { LeadStatusBadge } from '@/components/admin/LeadStatusBadge';
 import { Badge } from '@/components/ui/badge';
 import {
@@ -22,6 +22,7 @@ export default async function ApplicationsPage({
   searchParams: Promise<{ status?: string }>;
 }) {
   const sp = await searchParams;
+  const { t } = await getAdminT();
   const leads = await crm.listLeads(
     sp.status ? { status: sp.status as never } : undefined,
   );
@@ -29,21 +30,37 @@ export default async function ApplicationsPage({
   const consultantMap = new Map(staff.map((s) => [s.id, s.fullName]));
   const newCount = leads.filter((l) => l.status === 'new').length;
 
-  const statuses = Object.entries(LEAD_STATUS_LABELS) as [string, string][];
+  const statusKeys = [
+    'new', 'contacted', 'document_collection', 'application_submitted',
+    'offer_received', 'accepted', 'visa_processing', 'arrived',
+    'completed', 'lost',
+  ] as const;
+  const statusLabelMap: Record<string, string> = {
+    new: t('status.new'),
+    contacted: t('status.contacted'),
+    document_collection: t('status.document_collection'),
+    application_submitted: t('status.application_submitted'),
+    offer_received: t('status.offer_received'),
+    accepted: t('status.accepted'),
+    visa_processing: t('status.visa_processing'),
+    arrived: t('status.arrived'),
+    completed: t('status.completed'),
+    lost: t('status.lost'),
+  };
 
   return (
     <div className="space-y-6">
       <div>
         <h1 className="font-display text-headline-lg text-foreground">
-          Müraciətlər / Applications
+          {t('applications.title')}
         </h1>
         <p className="text-sm text-muted-foreground">
-          {leads.length} tələbə müraciəti · {newCount} yeni
+          {t('applications.subtitle', { count: leads.length, new: newCount })}
         </p>
       </div>
 
       <div className="flex flex-wrap gap-2">
-        {statuses.map(([value, label]) => {
+        {statusKeys.map((value) => {
           const active = sp.status === value;
           const count =
             value === 'new'
@@ -52,18 +69,14 @@ export default async function ApplicationsPage({
           return (
             <Link
               key={value}
-              href={
-                value === 'new'
-                  ? '/admin/applications?status=new'
-                  : `/admin/applications?status=${value}`
-              }
+              href={`/admin/applications?status=${value}`}
               className={`inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-medium transition-colors ${
                 active
                   ? 'border-primary bg-primary text-primary-foreground'
                   : 'border-border bg-card text-muted-foreground hover:border-foreground/20 hover:text-foreground'
               }`}
             >
-              {label}
+              {statusLabelMap[value]}
               {count > 0 && (
                 <span className="rounded bg-foreground/10 px-1.5 tabular-nums">
                   {count}
@@ -77,7 +90,7 @@ export default async function ApplicationsPage({
             href="/admin/applications"
             className="inline-flex items-center rounded-full border border-border px-3 py-1 text-xs font-medium text-muted-foreground hover:text-foreground"
           >
-            Bütün / All
+            {t('applications.all')}
           </Link>
         )}
       </div>
@@ -86,10 +99,10 @@ export default async function ApplicationsPage({
         <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-border py-20 text-center">
           <FileText className="h-10 w-10 text-muted-foreground/50" />
           <p className="mt-4 text-sm text-muted-foreground">
-            Hələ heç bir müraciət yoxdur.
+            {t('applications.empty')}
           </p>
           <p className="text-xs text-muted-foreground/70">
-            No applications yet. Student Apply form submissions will appear here.
+            {t('applications.emptyHint')}
           </p>
         </div>
       ) : (
@@ -97,12 +110,12 @@ export default async function ApplicationsPage({
           <Table>
             <TableHeader>
               <TableRow className="bg-muted/50">
-                <TableHead>Tələbə / Student</TableHead>
-                <TableHead>Əlaqə / Contact</TableHead>
-                <TableHead>Universitet</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Konsultant</TableHead>
-                <TableHead>Tarix / Date</TableHead>
+                <TableHead>{t('applications.student')}</TableHead>
+                <TableHead>{t('applications.contact')}</TableHead>
+                <TableHead>{t('applications.university')}</TableHead>
+                <TableHead>{t('applications.status')}</TableHead>
+                <TableHead>{t('applications.consultant')}</TableHead>
+                <TableHead>{t('applications.date')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -113,7 +126,7 @@ export default async function ApplicationsPage({
                       href={`/admin/leads/${lead.id}`}
                       className="font-medium text-primary hover:underline"
                     >
-                      {lead.student?.fullName ?? 'Naməlum / Unknown'}
+                      {lead.student?.fullName ?? t('applications.unknown')}
                     </Link>
                   </TableCell>
                   <TableCell>
@@ -134,7 +147,7 @@ export default async function ApplicationsPage({
                   </TableCell>
                   <TableCell className="text-muted-foreground">
                     {lead.universityId === 'direct'
-                      ? 'Ümumi / General'
+                      ? t('applications.general')
                       : lead.universityId}
                     {lead.programId && (
                       <Badge variant="outline" className="ml-2 text-xs">

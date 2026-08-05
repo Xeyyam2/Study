@@ -1,13 +1,15 @@
 // src/app/admin/(dashboard)/page.tsx
 import Link from 'next/link';
 import { crm } from '@/lib/crm';
-import { LEAD_PIPELINE, LEAD_STATUS_LABELS } from '@/types/crm';
+import { getAdminT } from '@/lib/admin-i18n';
+import { LEAD_PIPELINE } from '@/types/crm';
 import { KpiCard } from '@/components/admin/KpiCard';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export const dynamic = 'force-dynamic';
 
 export default async function AdminOverviewPage() {
+  const { t } = await getAdminT();
   const [leads, counts, audit] = await Promise.all([
     crm.listLeads(),
     crm.countByStatus(),
@@ -24,23 +26,36 @@ export default async function AdminOverviewPage() {
   const conversion = active + completed > 0 ? Math.round((completed / (active + completed)) * 100) : 0;
   const maxCount = Math.max(1, ...LEAD_PIPELINE.map((s) => counts[s] ?? 0));
 
+  const statusLabels: Record<string, string> = {
+    new: t('status.new'),
+    contacted: t('status.contacted'),
+    document_collection: t('status.document_collection'),
+    application_submitted: t('status.application_submitted'),
+    offer_received: t('status.offer_received'),
+    accepted: t('status.accepted'),
+    visa_processing: t('status.visa_processing'),
+    arrived: t('status.arrived'),
+    completed: t('status.completed'),
+    lost: t('status.lost'),
+  };
+
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="font-display text-headline-lg text-foreground">Overview</h1>
-        <p className="text-sm text-muted-foreground">Pipeline health and recent activity.</p>
+        <h1 className="font-display text-headline-lg text-foreground">{t('overview.title')}</h1>
+        <p className="text-sm text-muted-foreground">{t('overview.subtitle')}</p>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <KpiCard label="Total leads" value={leads.length} tone="default" />
-        <KpiCard label="New" value={newCount} tone="tertiary" />
-        <KpiCard label="Unassigned" value={unassigned} tone="cta" hint="Needs a consultant" />
-        <KpiCard label="Conversion" value={`${conversion}%`} tone="verified" hint="Completed / total" />
+        <KpiCard label={t('overview.totalLeads')} value={leads.length} tone="default" />
+        <KpiCard label={t('overview.new')} value={newCount} tone="tertiary" />
+        <KpiCard label={t('overview.unassigned')} value={unassigned} tone="cta" hint={t('overview.unassigned.hint')} />
+        <KpiCard label={t('overview.conversion')} value={`${conversion}%`} tone="verified" hint={t('overview.conversion.hint')} />
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>Pipeline</CardTitle>
+          <CardTitle>{t('overview.pipeline')}</CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
           {LEAD_PIPELINE.map((status) => {
@@ -48,7 +63,7 @@ export default async function AdminOverviewPage() {
             return (
               <div key={status} className="flex items-center gap-3">
                 <span className="w-40 shrink-0 text-sm text-muted-foreground">
-                  {LEAD_STATUS_LABELS[status]}
+                  {statusLabels[status] ?? status}
                 </span>
                 <div className="h-3 flex-1 overflow-hidden rounded-full bg-muted">
                   <div
@@ -65,11 +80,11 @@ export default async function AdminOverviewPage() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Recent activity</CardTitle>
+          <CardTitle>{t('overview.recentActivity')}</CardTitle>
         </CardHeader>
         <CardContent>
           {audit.length === 0 ? (
-            <p className="text-sm text-muted-foreground">No activity yet.</p>
+            <p className="text-sm text-muted-foreground">{t('overview.noActivity')}</p>
           ) : (
             <ul className="divide-y divide-border">
               {audit.map((a) => (
@@ -86,7 +101,7 @@ export default async function AdminOverviewPage() {
             </ul>
           )}
           <Link href="/admin/applications" className="mt-4 inline-block text-sm font-medium text-primary hover:underline">
-            Müraciətlərə bax → View applications →
+            {t('overview.viewApplications')}
           </Link>
         </CardContent>
       </Card>
