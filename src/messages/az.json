@@ -341,7 +341,7 @@
   },
   "Student": {
     "auth": { "email": "E-poçt", "code": "Təsdiq kodu", "sendLink": "Sehrli link göndər", "verify": "Kodu təsdiqlə", "back": "Başqa e-poçt istifadə et", "linkSent": "E-poçtunuzu yoxlayın (və ya kodu daxil edin).", "error": "Bir şey xəta verdi. Təkrar cəhd edin." },
-    "nav": { "overview": "Ümumi baxış", "applications": "Müraciətlər", "documents": "Sənədlər", "messages": "Mesajlar", "notifications": "Bildirişlər", "logout": "Çıxış" },
+    "nav": { "overview": "Ümumi baxış", "profile": "Profil", "applications": "Müraciətlər", "documents": "Sənədlər", "messages": "Mesajlar", "notifications": "Bildirişlər", "logout": "Çıxış" },
     "overview": { "title": "Panelim", "subtitle": "Müraciətlərinizi, sənədlərinizi və mesajlarınızı izləyin.", "applications": "Müraciətlər", "unreadMessages": "Oxunmamış mesajlar", "status": "Cari status", "noApplications": "Hələ müraciət yoxdur", "recentNotifications": "Son bildirişlər" },
     "applications": { "title": "Müraciətlərim", "empty": "Hələ müraciətiniz yoxdur.", "viewDetail": "Detalları gör" },
     "detail": { "consultant": "Konsultant", "timeline": "Fəaliyyət" },

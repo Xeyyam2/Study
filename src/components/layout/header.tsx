@@ -8,6 +8,8 @@ import { type AppLocale } from '@/i18n/routing';
 import { siteConfig } from '@/config/site';
 import { Button } from '@/components/ui/button';
 import { GoogleSignInButton } from '@/components/auth/GoogleSignInButton';
+import { StudentProfileDrawer } from '@/components/student/StudentProfileDrawer';
+import type { Profile } from '@/types/crm';
 import { LocaleSwitcher } from './locale-switcher';
 
 const navItems = [
@@ -20,7 +22,7 @@ const navItems = [
 
 interface HeaderSession {
   userId: string;
-  profile: { fullName: string; email: string; role: string };
+  profile: Profile;
 }
 
 export function Header({ session }: { session: HeaderSession | null }) {
@@ -130,7 +132,13 @@ export function Header({ session }: { session: HeaderSession | null }) {
         </div>
       )}
 
-      {drawerOpen && <div data-drawer-placeholder aria-hidden="true" />}
+      {session && (
+        <StudentProfileDrawer
+          session={session}
+          open={drawerOpen}
+          onOpenChange={setDrawerOpen}
+        />
+      )}
     </header>
   );
 }

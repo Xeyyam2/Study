@@ -341,7 +341,7 @@
   },
   "Student": {
     "auth": { "email": "Эл. почта", "code": "Код подтверждения", "sendLink": "Отправить ссылку", "verify": "Проверить код", "back": "Использовать другую почту", "linkSent": "Проверьте почту (или введите код).", "error": "Что-то пошло не так. Попробуйте снова." },
-    "nav": { "overview": "Обзор", "applications": "Заявки", "documents": "Документы", "messages": "Сообщения", "notifications": "Уведомления", "logout": "Выйти" },
+    "nav": { "overview": "Обзор", "profile": "Профиль", "applications": "Заявки", "documents": "Документы", "messages": "Сообщения", "notifications": "Уведомления", "logout": "Выйти" },
     "overview": { "title": "Моя панель", "subtitle": "Отслеживайте заявки, документы и сообщения.", "applications": "Заявки", "unreadMessages": "Непрочитанные", "status": "Текущий статус", "noApplications": "Заявок пока нет", "recentNotifications": "Недавние уведомления" },
     "applications": { "title": "Мои заявки", "empty": "У вас пока нет заявок.", "viewDetail": "Подробнее" },
     "detail": { "consultant": "Консультант", "timeline": "События" },
