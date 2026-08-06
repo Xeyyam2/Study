@@ -9,10 +9,13 @@ export const dynamic = 'force-dynamic';
 
 export default async function StudentLoginPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string }>;
+  searchParams: Promise<{ error?: string }>;
 }) {
   const { locale } = await params;
+  const { error: authError } = await searchParams;
   const t = await getTranslations({ locale, namespace: 'Student.login' });
   const base = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000';
   const callbackUrl = `${base}/auth/callback?next=/${locale}/dashboard`;
@@ -29,6 +32,11 @@ export default async function StudentLoginPage({
           <CardDescription>{t('subtitle')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
+          {authError && (
+            <p className="rounded bg-destructive/10 p-3 text-sm text-destructive">
+              Authentication failed. Check console logs or try again.
+            </p>
+          )}
           <GoogleSignInButton redirectTo={callbackUrl} />
           {isDev && demoStudents.length > 0 && (
             <div className="space-y-2 border-t border-border pt-4">

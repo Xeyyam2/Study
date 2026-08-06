@@ -8,6 +8,13 @@ import {
   Compass,
   Smile,
   Palette,
+  Users,
+  HeartPulse,
+  Atom,
+  BookOpen,
+  Radio,
+  MapPin,
+  Leaf,
   ArrowRight,
 } from 'lucide-react';
 import { data } from '@/lib/data';
@@ -26,6 +33,13 @@ const iconMap = {
   compass: Compass,
   smile: Smile,
   palette: Palette,
+  users: Users,
+  'heart-pulse': HeartPulse,
+  atom: Atom,
+  'book-open': BookOpen,
+  radio: Radio,
+  'map-pin': MapPin,
+  leaf: Leaf,
 } as const;
 
 interface CategorySectionProps {

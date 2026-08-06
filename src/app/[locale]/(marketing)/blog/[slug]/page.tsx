@@ -15,8 +15,19 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 
 export async function generateStaticParams() {
-  const posts = await data.blog.list();
-  return posts.map((p) => ({ slug: p.slug }));
+  // DB əlçatan deyilsə (dev seed əvvəli, DB çöküb və ya boşdur) bütün
+  // [locale] route tree-nin çökməsinin qarşısını al: xəta halında params-ı
+  // boş qaytar — səhifə on-demand render olunacaq.
+  try {
+    const posts = await data.blog.list();
+    return posts.map((p) => ({ slug: p.slug }));
+  } catch (error) {
+    console.error(
+      '[blog/[slug] generateStaticParams] DB xətası, [] qaytarılır:',
+      error,
+    );
+    return [];
+  }
 }
 
 // ISR — blog posts rarely change after publishing; rebuild hourly.

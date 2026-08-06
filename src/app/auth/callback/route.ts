@@ -7,19 +7,30 @@ export const dynamic = 'force-dynamic';
 export async function GET(req: NextRequest) {
   const requestUrl = new URL(req.url);
   const code = requestUrl.searchParams.get('code');
+  const errorParam = requestUrl.searchParams.get('error');
+  const errorDescription = requestUrl.searchParams.get('error_description');
   let next = requestUrl.searchParams.get('next') ?? `/${routing.defaultLocale}/dashboard`;
-  // Open-redirect qorunması: `next` yalnız lokal, nispi path ola bilər.
-  // Tam URL (https://evil.com) və ya `//evil.com` `new URL()` tərəfindən origin-i
-  // override edə bilər — ona görə yalnız `/` ilə başlayan və `//` olmayan path-ə icazə veririk.
   if (!next.startsWith('/') || next.startsWith('//')) {
     next = `/${routing.defaultLocale}/dashboard`;
   }
+
+  // Supabase auth error redirect (e.g. from email link)
+  if (errorParam) {
+    console.error('[auth/callback] Supabase error:', errorParam, errorDescription);
+    return NextResponse.redirect(
+      new URL(`/${routing.defaultLocale}/dashboard/login?error=auth`, requestUrl.origin),
+    );
+  }
+
   const redirectTarget = new URL(next, requestUrl.origin);
   const res = NextResponse.redirect(redirectTarget);
 
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  if (!url || !anon) return res;
+  if (!url || !anon) {
+    console.error('[auth/callback] Missing Supabase env vars');
+    return res;
+  }
   const supabase = createServerClient(url, anon, {
     cookies: {
       getAll: () => req.cookies.getAll(),
@@ -30,10 +41,14 @@ export async function GET(req: NextRequest) {
   });
 
   if (code) {
-    const { error } = await supabase.auth.exchangeCodeForSession(code);
+    const { error, data } = await supabase.auth.exchangeCodeForSession(code);
     if (error) {
-      return NextResponse.redirect(new URL(`/${routing.defaultLocale}/dashboard/login?error=auth`, requestUrl.origin));
+      console.error('[auth/callback] exchangeCodeForSession failed:', error.message, error.code);
+      return NextResponse.redirect(
+        new URL(`/${routing.defaultLocale}/dashboard/login?error=auth`, requestUrl.origin),
+      );
     }
+    console.log('[auth/callback] Session established for user:', data.user?.email);
   }
   return res;
 }

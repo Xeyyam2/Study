@@ -35,8 +35,12 @@ const nextConfig = {
         key: 'Content-Security-Policy',
         value: [
           "default-src 'self'",
-          // next/script inline + GA gtag + Clarity + GA collect
-          "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.clarity.ms",
+          // next/script inline + GA gtag + Clarity + GA collect.
+          // Dev mode requires 'unsafe-eval' (webpack source maps + HMR use eval);
+          // production builds don't, so it stays strict there.
+          `script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.clarity.ms${
+            process.env.NODE_ENV === 'development' ? " 'unsafe-eval'" : ''
+          }`,
           "style-src 'self' 'unsafe-inline'",
           // next/image öz originindən xidmət edir; uzaq Unsplash/Pexels/Supabase + data URI-lar
           "img-src 'self' data: blob: https:",

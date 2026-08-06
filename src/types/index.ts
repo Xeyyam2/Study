@@ -12,7 +12,14 @@ export type ProgramCategorySlug =
   | 'law'
   | 'architecture'
   | 'dentistry'
-  | 'arts';
+  | 'arts'
+  | 'social-sciences'
+  | 'health-sciences'
+  | 'natural-sciences'
+  | 'humanities'
+  | 'communication'
+  | 'tourism'
+  | 'agriculture';
 
 export interface ProgramCategory {
   slug: ProgramCategorySlug;
