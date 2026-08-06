@@ -1,11 +1,13 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import { GraduationCap, Menu, X } from 'lucide-react';
 import { Link, usePathname } from '@/i18n/navigation';
+import { type AppLocale } from '@/i18n/routing';
 import { siteConfig } from '@/config/site';
 import { Button } from '@/components/ui/button';
+import { GoogleSignInButton } from '@/components/auth/GoogleSignInButton';
 import { LocaleSwitcher } from './locale-switcher';
 
 const navItems = [
@@ -16,11 +18,21 @@ const navItems = [
   { key: 'contact', href: '/contact' },
 ] as const;
 
-export function Header() {
+interface HeaderSession {
+  userId: string;
+  profile: { fullName: string; email: string; role: string };
+}
+
+export function Header({ session }: { session: HeaderSession | null }) {
   const t = useTranslations('Nav');
   const tCommon = useTranslations('Common');
+  const locale = useLocale() as AppLocale;
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
+  const redirectTo = `${siteConfig.url}/${locale}/dashboard`;
+  const initial = (session?.profile.fullName.trim().charAt(0) || '?').toUpperCase();
 
   useEffect(() => {
     setOpen(false);
@@ -58,6 +70,25 @@ export function Header() {
           <Button asChild variant="cta" size="sm" className="hidden sm:inline-flex">
             <Link href="/apply">{t('apply')}</Link>
           </Button>
+          {session ? (
+            <button
+              type="button"
+              onClick={() => setDrawerOpen(true)}
+              className="hidden items-center gap-2 rounded-full p-1 pr-3 text-sm font-medium text-foreground transition-colors hover:bg-accent sm:flex"
+              aria-label={session.profile.fullName}
+            >
+              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground">
+                {initial}
+              </span>
+              <span className="hidden max-w-[8rem] truncate md:inline">
+                {session.profile.fullName}
+              </span>
+            </button>
+          ) : (
+            <div className="hidden shrink-0 sm:block">
+              <GoogleSignInButton redirectTo={redirectTo} />
+            </div>
+          )}
           <button
             type="button"
             className="inline-flex h-10 w-10 items-center justify-center rounded text-foreground hover:bg-accent md:hidden"
@@ -98,6 +129,8 @@ export function Header() {
           </nav>
         </div>
       )}
+
+      {drawerOpen && <div data-drawer-placeholder aria-hidden="true" />}
     </header>
   );
 }
