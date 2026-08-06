@@ -379,8 +379,20 @@
     "body": "An unexpected error occurred. Please try again.",
     "retry": "Try again"
   },
+  "Header": {
+    "login": "Log in",
+    "profile": "Profile"
+  },
   "Student": {
-    "auth": { "email": "Email", "code": "Verification code", "sendLink": "Send magic link", "verify": "Verify code", "back": "Use a different email", "linkSent": "Check your email for the magic link (or enter the code).", "error": "Something went wrong. Try again." },
+    "auth": { "email": "Email", "code": "Verification code", "sendLink": "Send magic link", "verify": "Verify code", "back": "Use a different email", "linkSent": "Check your email for the magic link (or enter the code).", "error": "Something went wrong. Try again.", "googleLogin": "Continue with Google" },
+    "drawer": {
+      "applications": "Applications",
+      "documents": "Documents",
+      "messages": "Messages",
+      "notifications": "Notifications",
+      "profile": "Profile",
+      "signOut": "Sign out"
+    },
     "nav": { "overview": "Overview", "profile": "Profile", "applications": "Applications", "documents": "Documents", "messages": "Messages", "notifications": "Notifications", "logout": "Log out" },
     "overview": { "title": "My dashboard", "subtitle": "Track your applications, documents and messages.", "applications": "Applications", "unreadMessages": "Unread messages", "status": "Current status", "noApplications": "No applications yet", "recentNotifications": "Recent notifications" },
     "applications": { "title": "My applications", "empty": "You have no applications yet.", "viewDetail": "View details" },
