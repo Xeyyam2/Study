@@ -37,7 +37,11 @@ export default async function ApplyPage({
   // Only load the Geo translator for supported locales — the Geo namespace
   // doesn't exist in the other 14 message files and getTranslations throws.
   const tg = showGeo ? await getTranslations({ locale, namespace: 'Geo' }) : null;
-  const countries = await data.countries.list();
+  const [countries, universities, programs] = await Promise.all([
+    data.countries.list(),
+    data.universities.list(),
+    data.programs.list(),
+  ]);
 
   const howToSteps = tg
     ? [
@@ -105,9 +109,12 @@ export default async function ApplyPage({
           </section>
         )}
 
-        <div className="rounded-lg border border-border bg-card p-6 shadow-flat-plus sm:p-8">
-          <ApplyForm locale={appLocale} countries={countries} />
-        </div>
+        <ApplyForm
+          locale={appLocale}
+          countries={countries}
+          universities={universities}
+          programs={programs}
+        />
       </div>
     </div>
   );
