@@ -37,5 +37,47 @@ export const seedCities: City[] = [
     countryId: 'TR',
     name: { en: 'Konya', tr: 'Konya', az: 'Konya', ru: 'Конья' },
   },
+  {
+    id: 'c-trabzon',
+    slug: 'trabzon',
+    countryId: 'TR',
+    name: { en: 'Trabzon', tr: 'Trabzon', az: 'Trabzon', ru: 'Трабзон' },
+  },
+  {
+    id: 'c-mersin',
+    slug: 'mersin',
+    countryId: 'TR',
+    name: { en: 'Mersin', tr: 'Mersin', az: 'Mersin', ru: 'Мерсин' },
+  },
+  {
+    id: 'c-gaziantep',
+    slug: 'gaziantep',
+    countryId: 'TR',
+    name: { en: 'Gaziantep', tr: 'Gaziantep', az: 'Qəzziantəp', ru: 'Газиантеп' },
+  },
+  {
+    id: 'c-kayseri',
+    slug: 'kayseri',
+    countryId: 'TR',
+    name: { en: 'Kayseri', tr: 'Kayseri', az: 'Kayseri', ru: 'Кайсери' },
+  },
+  {
+    id: 'c-nevsehir',
+    slug: 'nevsehir',
+    countryId: 'TR',
+    name: { en: 'Nevsehir', tr: 'Nevşehir', az: 'Nevşəhər', ru: 'Невшехир' },
+  },
+  {
+    id: 'c-kocaeli',
+    slug: 'kocaeli',
+    countryId: 'TR',
+    name: { en: 'Kocaeli', tr: 'Kocaeli', az: 'Kocaeli', ru: 'Коджаэли' },
+  },
+  {
+    id: 'c-alanya',
+    slug: 'alanya',
+    countryId: 'TR',
+    name: { en: 'Alanya', tr: 'Alanya', az: 'Alaniya', ru: 'Аланья' },
+  },
 ];
 
