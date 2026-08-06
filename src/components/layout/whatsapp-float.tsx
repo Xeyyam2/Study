@@ -15,7 +15,7 @@ export function FloatingChatButtons() {
   const telegramHref = siteConfig.contact.telegram.url;
 
   return (
-    <div className="fixed bottom-6 left-6 z-50 flex flex-col gap-3">
+    <div className="fixed bottom-28 left-6 z-50 flex flex-col gap-3">
       <a
         href={whatsappHref}
         target="_blank"
