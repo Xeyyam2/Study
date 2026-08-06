@@ -1,6 +1,6 @@
 import { getTranslations } from 'next-intl/server';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { EmailOtpForm } from '@/components/auth/EmailOtpForm';
+import { GoogleSignInButton } from '@/components/auth/GoogleSignInButton';
 import { Button } from '@/components/ui/button';
 import { crm } from '@/lib/crm';
 import { isDevAuthEnabled } from '@/lib/crm/student-session';
@@ -29,7 +29,7 @@ export default async function StudentLoginPage({
           <CardDescription>{t('subtitle')}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          <EmailOtpForm redirectTo={callbackUrl} />
+          <GoogleSignInButton redirectTo={callbackUrl} />
           {isDev && demoStudents.length > 0 && (
             <div className="space-y-2 border-t border-border pt-4">
               <p className="text-xs uppercase text-muted-foreground">Dev login</p>
