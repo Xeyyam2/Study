@@ -1,6 +1,7 @@
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
-import { WhatsAppFloat } from '@/components/layout/whatsapp-float';
+import { FloatingChatButtons } from '@/components/layout/whatsapp-float';
+import { FloatingApplyButton } from '@/components/layout/FloatingApplyButton';
 import { ChatWidget } from '@/components/layout/chat-widget';
 import { isGeoLocale } from '@/lib/seo/geo';
 import { getStudentSessionForLayout } from '@/lib/student-session-server';
@@ -21,7 +22,8 @@ export default async function MarketingLayout({
       <Header session={session} />
       <main id="main">{children}</main>
       <Footer />
-      <WhatsAppFloat />
+      <FloatingApplyButton locale={locale} />
+      <FloatingChatButtons />
       {/* AI chatbot — only in 4 GEO locales (en/tr/az/ru) */}
       {showChat && <ChatWidget />}
     </>

@@ -29,6 +29,10 @@ export const siteConfig = {
       display: '+90 500 000 00 00',
       message: "Hello! I'd like to learn about studying in Turkey.",
     },
+    telegram: {
+      handle: 'studyhub',
+      url: 'https://t.me/studyhub',
+    },
     address: {
       en: 'Istanbul, Turkey',
       tr: 'İstanbul, Türkiye',
