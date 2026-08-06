@@ -59,10 +59,12 @@ export async function submitLead(input: unknown): Promise<LeadResult> {
       userId: profile.id,
       // university_id is NOT NULL + a soft-ref to seed content; a general
       // application with no specific university page is tagged 'direct'.
-      universityId: data.universitySlug || 'direct',
-      programId: data.programInterest || null,
+      universityId: data.universityId || data.universitySlug || 'direct',
+      programId: data.programId || data.programInterest || null,
       source: 'website',
-      notes: data.message || '',
+      // Store the free-text message plus the rich apply metadata as a JSON
+      // blob so consultants see everything in one place without a migration.
+      notes: JSON.stringify(buildLeadNotes(data)),
     });
   } catch (err) {
     // eslint-disable-next-line no-console
@@ -70,4 +72,37 @@ export async function submitLead(input: unknown): Promise<LeadResult> {
   }
 
   return { ok: true };
+}
+
+/**
+ * Collapses the rich apply payload into a single JSON-serialisable notes
+ * object. Empty/optional values are dropped so consultants only see fields the
+ * student actually filled in.
+ */
+function buildLeadNotes(data: LeadInput): Record<string, unknown> {
+  const notes: Record<string, unknown> = {
+    message: data.message || undefined,
+    degreeLevel: normalize(data.degreeLevel),
+    instructionLanguage: normalize(data.instructionLanguage),
+    intake: normalize(data.intake),
+    scholarshipInterest: data.scholarshipInterest || undefined,
+    dormitory: data.dormitory || undefined,
+    dateOfBirth: normalize(data.dateOfBirth),
+    gender: normalize(data.gender),
+    nationality: normalize(data.nationality),
+    passportUrl: normalize(data.passportUrl),
+    diplomaUrl: normalize(data.diplomaUrl),
+    photoUrl: normalize(data.photoUrl),
+    motivationLetterUrl: normalize(data.motivationLetterUrl),
+  };
+  // Strip undefined keys for a clean JSON blob.
+  for (const key of Object.keys(notes)) {
+    if (notes[key] === undefined) delete notes[key];
+  }
+  return notes;
+}
+
+/** Treat empty strings as absent. */
+function normalize(value: string | undefined): string | undefined {
+  return value ? value : undefined;
 }
