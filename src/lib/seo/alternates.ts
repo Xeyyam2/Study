@@ -50,10 +50,18 @@ export function buildPageMetadata({
   const ogImage = image ?? siteConfig.ogImage;
   const url = canonical(locale, path);
 
+  const defaultKeywords = [
+    'study in turkey',
+    'turkish universities',
+    'study abroad',
+    'university admission turkey',
+    'scholarships turkey',
+  ];
+
   return {
     title,
     description,
-    keywords,
+    keywords: keywords?.length ? keywords : defaultKeywords,
     ...(noIndex ? { robots: { index: false, follow: false } } : {}),
     alternates: {
       canonical: url,

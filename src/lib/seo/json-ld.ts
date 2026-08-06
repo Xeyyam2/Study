@@ -93,13 +93,21 @@ export function faqPageJsonLd(faqs: Faq[], locale: AppLocale): JsonLd {
 }
 
 export function articleJsonLd(post: BlogPost, locale: AppLocale): JsonLd {
+  const url = `${siteConfig.url}/${locale}/blog/${post.slug}`;
   return {
     '@context': 'https://schema.org',
     '@type': 'Article',
     headline: post.title[locale],
     description: post.excerpt[locale],
-    image: post.coverImage,
+    image: {
+      '@type': 'ImageObject',
+      url: post.coverImage,
+      width: 1200,
+      height: 630,
+    },
     datePublished: post.publishedAt,
+    dateModified: post.publishedAt,
+    mainEntityOfPage: url,
     author: { '@type': 'Organization', name: post.author },
     publisher: { '@type': 'Organization', name: siteConfig.name },
     inLanguage: locale,

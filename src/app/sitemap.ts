@@ -21,9 +21,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = siteConfig.url;
   const now = new Date();
 
-  const [universities, countries, posts, combinations] = await Promise.all([
+  const [universities, posts, combinations] = await Promise.all([
     data.universities.list(),
-    data.countries.list(),
     data.blog.list(),
     data.programs.getCombinations(),
   ]);
@@ -36,7 +35,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { path: '/about', priority: 0.5, change: 'monthly' as const },
     { path: '/blog', priority: 0.7, change: 'weekly' as const },
     { path: '/contact', priority: 0.5, change: 'monthly' as const },
-    { path: '/apply', priority: 0.6, change: 'monthly' as const },
+    { path: '/apply', priority: 0.8, change: 'monthly' as const },
   ];
 
   const makeEntry = (
@@ -72,15 +71,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       );
     }
 
-    for (const country of countries) {
-      urls.push(
-        makeEntry(locPrefix(locale, `/study-in-turkey-from-${country.slug}`), now, 'monthly', 0.6),
-      );
-    }
-
     for (const post of posts) {
       urls.push(
-        makeEntry(locPrefix(locale, `/blog/${post.slug}`), new Date(post.publishedAt), 'monthly', 0.6),
+        makeEntry(locPrefix(locale, `/blog/${post.slug}`), new Date(post.publishedAt), 'monthly', 0.7),
       );
     }
   }
