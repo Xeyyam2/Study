@@ -6,7 +6,7 @@ import { data } from "@/lib/data";
 import type { AppLocale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { buildPageMetadata } from "@/lib/seo/alternates";
-import { FadeIn } from "@/components/motion/fade-in";
+import { JsonLd } from "@/components/seo/json-ld";
 import { formatCurrency } from "@/lib/utils";
 import { ProgramFilters } from "@/components/sections/program-filters";
 import { ProgramSortSelect } from "@/components/sections/program-sort-select";
@@ -112,7 +112,7 @@ export default async function ProgramsPage({
             />
           </div>
           {listedCombinations.length > 0 ? (
-            <FadeIn className="mt-4 grid gap-4 sm:grid-cols-2">
+            <div className="mt-4 grid gap-4 sm:grid-cols-2">
               {listedCombinations.map((c) => {
                 const city = cityBySlug.get(c.citySlug);
                 const category = categories.find(
@@ -142,7 +142,7 @@ export default async function ProgramsPage({
                   </Link>
                 );
               })}
-            </FadeIn>
+            </div>
           ) : (
             <div className="mt-12 flex flex-col items-center justify-center rounded-lg border border-dashed border-border py-16 text-center">
               <SearchX className="h-10 w-10 text-muted-foreground" />

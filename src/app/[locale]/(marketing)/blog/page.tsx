@@ -9,7 +9,6 @@ import { siteConfig } from '@/config/site';
 import { buildPageMetadata } from '@/lib/seo/alternates';
 import { collectionPageJsonLd } from '@/lib/seo/json-ld';
 import { JsonLd } from '@/components/seo/json-ld';
-import { FadeIn } from '@/components/motion/fade-in';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { lx } from '@/lib/i18n/lx';
@@ -57,7 +56,7 @@ export default async function BlogPage({
         <p className="mt-2 max-w-2xl text-muted-foreground">{t('subtitle')}</p>
       </header>
 
-      <FadeIn className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
         {posts.map((post) => (
           <Link key={post.id} href={`/blog/${post.slug}`} className="group block">
             <Card className="h-full overflow-hidden transition-shadow hover:shadow-flat-hover">
@@ -92,7 +91,7 @@ export default async function BlogPage({
             </Card>
           </Link>
         ))}
-      </FadeIn>
+      </div>
     </div>
   );
 }
