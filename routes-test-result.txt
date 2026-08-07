@@ -1,0 +1,7 @@
+/en | title="Study in Turkey — Compare Universities, Programs & Scholarships | StudyHub" | h1s=["Study in Turkey with expert guidance"] | notfound=0
+/en/about | title="About — Study in Turkey Experts | StudyHub" | h1s=["Your bridge to Turkish education"] | notfound=0
+/en/programs | title="Study Programs in Turkey — Browse by Field & City | StudyHub" | h1s=["Study programs in Turkey"] | notfound=0
+/en/blog | title="Blog — Study in Turkey Guides & Tips | StudyHub" | h1s=["Study in Turkey Blog"] | notfound=0
+/en/contact | title="Contact — Study in Turkey | StudyHub" | h1s=["Get in touch"] | notfound=0
+/en/universities | title="StudyHub — Study in Turkey" | h1s=["Page not found"] | notfound=1
+/en/universities/bahcesehir-university | title="Bahçeşehir University — Tuition, Programs & Admissions | StudyHub" | h1s=["Bahçeşehir University"] | notfound=0

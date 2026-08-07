@@ -1,0 +1,53 @@
+
+> study-platform@0.1.0 dev
+> next dev
+
+   ▲ Next.js 15.5.22
+   - Local:        http://localhost:3000
+   - Network:      http://192.168.100.6:3000
+   - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 2.1s
+ ○ Compiling /middleware ...
+ ✓ Compiled /middleware in 2.9s (205 modules)
+ ○ Compiling /[locale]/programs ...
+ ✓ Compiled /[locale]/study-in-turkey-from-[country] in 23.3s (1289 modules)
+ GET /sw.js 404 in 23607ms
+ GET /en/universities 200 in 11875ms
+ GET /en/about 200 in 26187ms
+ GET /en/universities 200 in 23068ms
+ GET /en/universities 200 in 1322ms
+ GET /en/programs 200 in 31601ms
+ GET /en 200 in 16527ms
+ GET /sw.js 404 in 471ms
+ GET /en/universities 200 in 123ms
+ ○ Compiling /[locale]/blog ...
+ ✓ Compiled /[locale]/blog in 1664ms (1271 modules)
+ GET /en/blog 200 in 3308ms
+ GET /en/blog 200 in 201ms
+ ○ Compiling /[locale]/blog/[slug] ...
+ ✓ Compiled /[locale]/blog/[slug] in 1395ms (1279 modules)
+ GET /en/blog/cost-of-living-in-istanbul-for-students 200 in 2935ms
+ GET /sw.js 404 in 1569ms
+ GET /en/universities 200 in 371ms
+ GET /sw.js 404 in 603ms
+ ✓ Compiled in 2.4s (464 modules)
+ ✓ Compiled in 978ms (464 modules)
+ GET /en/testuni 200 in 1265ms
+ GET /sw.js 404 in 981ms
+ GET /sw.js 404 in 650ms
+ ✓ Compiled in 1703ms (464 modules)
+ GET /sw.js 404 in 526ms
+ GET /sw.js 404 in 560ms
+ GET /sw.js 404 in 18795ms
+ GET /sw.js 404 in 682ms
+ ✓ Compiled in 4.8s (1293 modules)
+ ○ Compiling /_not-found ...
+ GET /sw.js 500 in 17328ms
+ GET /sw.js 500 in 269ms
+ GET /sw.js 500 in 50ms
+ GET /sw.js 500 in 69ms
+ GET /sw.js 500 in 97ms
+ GET /sw.js 500 in 89ms
+[?25h
