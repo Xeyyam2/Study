@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { GraduationCap, Menu, X } from 'lucide-react';
 import { Link, usePathname } from '@/i18n/navigation';
 import { type AppLocale } from '@/i18n/routing';
@@ -30,15 +31,29 @@ export function Header({ session }: { session: HeaderSession | null }) {
   const tCommon = useTranslations('Common');
   const locale = useLocale() as AppLocale;
   const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  const redirectTo = `${siteConfig.url}/${locale}/dashboard`;
+  const redirectTo = `${siteConfig.url}/${locale}?auth=success`;
   const initial = (session?.profile.fullName.trim().charAt(0) || '?').toUpperCase();
 
   useEffect(() => {
     setOpen(false);
   }, [pathname]);
+
+  // Auto-open drawer after Google OAuth redirect
+  useEffect(() => {
+    if (searchParams.get('auth') === 'success' && session) {
+      setDrawerOpen(true);
+      // Clean URL — remove ?auth=success
+      const params = new URLSearchParams(searchParams.toString());
+      params.delete('auth');
+      const clean = params.toString();
+      router.replace(clean ? `?${clean}` : pathname);
+    }
+  }, [searchParams, session, router, pathname]);
 
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-card/85 backdrop-blur-md">

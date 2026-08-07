@@ -18,7 +18,7 @@ export default async function StudentLoginPage({
   const { error: authError } = await searchParams;
   const t = await getTranslations({ locale, namespace: 'Student.login' });
   const base = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000';
-  const callbackUrl = `${base}/auth/callback?next=/${locale}/dashboard`;
+  const callbackUrl = `${base}/${locale}?auth=success`;
   const isDev = isDevAuthEnabled();
 
   let demoStudents: Awaited<ReturnType<typeof crm.listStudents>> = [];
