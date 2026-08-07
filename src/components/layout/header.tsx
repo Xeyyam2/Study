@@ -70,7 +70,7 @@ export function Header({ session }: { session: HeaderSession | null }) {
             <LocaleSwitcher />
           </div>
           <Button asChild variant="cta" size="sm" className="hidden sm:inline-flex">
-            <Link href="/apply">{t('apply')}</Link>
+            <Link href="/dashboard/login">{t('apply')}</Link>
           </Button>
           {session ? (
             <button
