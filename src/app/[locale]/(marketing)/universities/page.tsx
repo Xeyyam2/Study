@@ -10,12 +10,11 @@ import { collectionPageJsonLd, itemListJsonLd } from "@/lib/seo/json-ld";
 import { JsonLd } from "@/components/seo/json-ld";
 import { UniversityFilters } from "@/components/sections/university-filters";
 import { UniversityCard } from "@/components/sections/university-card";
-import { FadeIn } from "@/components/motion/fade-in";
+import { UniversitySortSelect } from "@/components/sections/university-sort-select";
 import {
   parseListingQuery,
   sortUniversities,
 } from "@/lib/universities/listing-query";
-import { UniversitySortSelect } from "@/components/sections/university-sort-select";
 
 export async function generateMetadata({
   params,
@@ -163,7 +162,7 @@ export default async function UniversitiesPage({
           </div>
 
           {listedUniversities.length > 0 ? (
-            <FadeIn className="mt-4 grid gap-6 sm:grid-cols-2">
+            <div className="mt-4 grid gap-6 sm:grid-cols-2">
               {listedUniversities.map((u) => (
                 <UniversityCard
                   key={u.id}
@@ -182,7 +181,7 @@ export default async function UniversitiesPage({
                   }}
                 />
               ))}
-            </FadeIn>
+            </div>
           ) : (
             <div className="mt-12 flex flex-col items-center justify-center rounded-lg border border-dashed border-border py-16 text-center">
               <SearchX className="h-10 w-10 text-muted-foreground" />
