@@ -46,10 +46,28 @@ export interface CountryRepository {
   getBySlug(slug: string): Promise<Country | null>;
 }
 
+export interface ProgramCategoryDetail {
+  category: ProgramCategory | null;
+  programs: Array<
+    Program & {
+      university: University;
+      city: City;
+      tuitionFee: number;
+      language: InstructionLanguage;
+      scholarshipAvailable: boolean;
+    }
+  >;
+  citySlugs: string[];
+  universityCount: number;
+  minTuitionUSD: number;
+  uniqueLanguages: string[];
+}
+
 export interface ProgramRepository {
   list(): Promise<Program[]>;
   getCategories(): Promise<ProgramCategory[]>;
   getCombinations(): Promise<ProgramCombination[]>;
+  getByCategory(category: string): Promise<ProgramCategoryDetail>;
   getByCategoryAndCity(
     category: string,
     citySlug: string,

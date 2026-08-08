@@ -11,6 +11,7 @@ describe('ProgramCategory page data flow', () => {
     for (const p of result.programs) {
       expect(p.university).toBeDefined();
       expect(p.city).toBeDefined();
+      expect(p.city.monthlyLivingCostUSD).toBeGreaterThan(0);
       expect(typeof p.tuitionFee).toBe('number');
     }
     expect(result.universityCount).toBeGreaterThan(0);

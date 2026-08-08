@@ -269,6 +269,45 @@ class SeedProgramRepository implements ProgramRepository {
     }
     return uniIds.size;
   }
+  async getByCategory(
+    category: string,
+  ): Promise<import('@/lib/data/repositories').ProgramCategoryDetail> {
+    const cat = seedCategories.find((c) => c.slug === category) ?? null;
+    const items = seedUniversityPrograms
+      .filter((up) => {
+        const p = seedPrograms.find((pr) => pr.id === up.programId);
+        return p?.categorySlug === category;
+      })
+      .map((up) => {
+        const program = seedPrograms.find((p) => p.id === up.programId)!;
+        const university = seedUniversities.find(
+          (u) => u.id === up.universityId,
+        )!;
+        const city = seedCities.find((c) => c.id === university.cityId)!;
+        return {
+          ...program,
+          university,
+          city,
+          tuitionFee: up.tuitionFee,
+          language: up.language,
+          scholarshipAvailable: up.scholarshipAvailable,
+        };
+      })
+      .sort((a, b) => a.tuitionFee - b.tuitionFee);
+
+    const citySlugs = [...new Set(items.map((i) => i.city.slug))];
+    const universities = new Set(items.map((i) => i.university.id));
+
+    return {
+      category: cat,
+      programs: items,
+      citySlugs,
+      universityCount: universities.size,
+      minTuitionUSD: items.length ? items[0].tuitionFee : 0,
+      uniqueLanguages: [...new Set(items.map((i) => i.language))],
+    };
+  }
+
   async getByCategoryAndCity(category: string, citySlug: string): Promise<{
     category: ProgramCategory | null;
     city: City | null;

@@ -412,6 +412,83 @@ export function createPgDataLayer(getPool: () => Pool): DataLayer {
         minTuitionUSD: Number(r.min_tuition),
       }));
     },
+    async getByCategory(
+      category: string,
+    ): Promise<import('@/lib/data/repositories').ProgramCategoryDetail> {
+      const catRes = await getPool().query(
+        `select * from public.program_categories where slug = $1`,
+        [category],
+      );
+      const cat = catRes.rows[0] ? rowCategory(catRes.rows[0]) : null;
+      const itemsRes = await getPool().query(
+        `select up.id up_id, up.university_id up_university_id, up.program_id up_program_id,
+                up.language up_language, up.tuition_fee up_tuition_fee, up.currency up_currency, up.scholarship_available up_scholarship,
+                p.id p_id, p.slug p_slug, p.name_i18n p_name, p.degree_level p_degree, p.category_slug p_category, p.duration_years p_duration,
+                u.id u_id, u.slug u_slug, u.city_id u_city_id, u.name u_name, u.founded_year u_founded, u.student_count u_students,
+                u.ranking u_ranking, u.accreditation u_accr, u.is_state u_state, u.logo_text u_logo, u.hero_image u_hero,
+                u.gallery u_gallery, u.tagline_i18n u_tagline, u.description_i18n u_desc, u.languages u_languages, u.featured u_featured,
+                c.id c_id, c.slug c_slug, c.name_i18n c_name, c.country_code c_country,
+                c.monthly_living_cost_usd c_monthly_living
+         from public.university_programs up
+         join public.programs p on p.id = up.program_id
+         join public.universities u on u.id = up.university_id
+         join public.cities c on c.id = u.city_id
+         where p.category_slug = $1
+         order by up.tuition_fee asc`,
+        [category],
+      );
+      const items = itemsRes.rows.map((r) => ({
+        id: r.p_id as string,
+        slug: r.p_slug as string,
+        name: i18n(r.p_name),
+        degreeLevel: r.p_degree as DegreeLevel,
+        categorySlug: r.p_category as Program['categorySlug'],
+        durationYears: Number(r.p_duration),
+        university: {
+          id: r.u_id as string,
+          slug: r.u_slug as string,
+          cityId: r.u_city_id as string,
+          name: r.u_name as string,
+          foundedYear: Number(r.u_founded),
+          studentCount: Number(r.u_students),
+          ranking: Number(r.u_ranking),
+          accreditation: r.u_accr as string,
+          isState: Boolean(r.u_state),
+          logoText: r.u_logo as string,
+          heroImage: r.u_hero as string,
+          gallery: (r.u_gallery as string[]) ?? [],
+          tagline: i18n(r.u_tagline),
+          description: i18n(r.u_desc),
+          languages: (r.u_languages as string[]) ?? [],
+          featured: Boolean(r.u_featured),
+        },
+        city: {
+          id: r.c_id as string,
+          slug: r.c_slug as string,
+          name: i18n(r.c_name),
+          countryId: r.c_country as string,
+          monthlyLivingCostUSD: r.c_monthly_living
+            ? Number(r.c_monthly_living)
+            : undefined,
+        },
+        tuitionFee: Number(r.up_tuition_fee),
+        language: r.up_language as InstructionLanguage,
+        scholarshipAvailable: Boolean(r.up_scholarship),
+      }));
+      const citySlugs = [...new Set(items.map((i) => i.city.slug))];
+      const universities = new Set(items.map((i) => i.university.id));
+      const usdItems = items.filter((i) => i.tuitionFee > 0);
+      return {
+        category: cat,
+        programs: items,
+        citySlugs,
+        universityCount: universities.size,
+        minTuitionUSD: usdItems.length
+          ? Math.min(...usdItems.map((i) => i.tuitionFee))
+          : 0,
+        uniqueLanguages: [...new Set(items.map((i) => i.language))],
+      };
+    },
     async getByCategoryAndCity(category: string, citySlug: string) {
       const catRes = await getPool().query(`select * from public.program_categories where slug = $1`, [category]);
       const cityRes = await getPool().query(`select * from public.cities where slug = $1`, [citySlug]);
