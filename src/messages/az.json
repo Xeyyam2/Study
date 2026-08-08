@@ -143,7 +143,16 @@
     "sortRanking": "Reytinq",
     "results": "{count, plural, =0 {Universitet yoxdur} one {# universitet} other {# universitet}}",
     "emptyTitle": "Universitet tapılmadı",
-    "emptySubtitle": "Bəzi filtrləri silməyi sınayın.", "verified": "YÖK", "english": "İngilis dili", "turkish": "Türkcə", "turkey": "Türkiyə", "from": "-dan", "tuition": "Təhsil haqqı", "rank": "Reytinq", "founded": "Yaranma ili", "close": "Bağla"
+    "emptySubtitle": "Bəzi filtrləri silməyi sınayın.",
+    "verified": "YÖK",
+    "english": "İngilis dili",
+    "turkish": "Türkcə",
+    "turkey": "Türkiyə",
+    "from": "-dan",
+    "tuition": "Təhsil haqqı",
+    "rank": "Reytinq",
+    "founded": "Yaranma ili",
+    "close": "Bağla"
   },
   "UniversityDetail": {
     "metaTitle": "{name} — Qiymətlər, Proqramlar və Müraciət",
@@ -187,7 +196,12 @@
     "applyCta": "İndi müraciət et",
     "whatsappCta": "WhatsApp-dan soruş",
     "applyNote": "Pulsuz məsləhət · Viza dəstəyi daxil",
-    "degrees": { "bachelor": "Bakalavr", "master": "Magistr", "phd": "Doktorantura", "associate": "Orta ixtisas" }
+    "degrees": {
+      "bachelor": "Bakalavr",
+      "master": "Magistr",
+      "phd": "Doktorantura",
+      "associate": "Orta ixtisas"
+    }
   },
   "ProgramsIndex": {
     "metaTitle": "Türkiyədə Proqramlar — Sahə və Şəhərə görə",
@@ -197,7 +211,22 @@
     "cities": "şəhər",
     "universities": "{count, plural, one {# universitet} other {# universitet}}",
     "from": "bundan",
-    "filters": "Filtrlər", "searchPlaceholder": "Sahə və ya şəhər üzrə axtar…", "category": "Sahə", "allCategories": "Bütün sahələr", "city": "Şəhər", "allCities": "Bütün şəhərlər", "reset": "Filtrləri sıfırla", "close": "Bağla", "activeFilters": "Aktiv filtrlər", "results": "{count, plural, =0 {Nəticə yoxdur} one {# nəticə} other {# nəticə}}", "sort": "Sırala", "sortRelevance": "Uyğunluq", "sortName": "Ad", "sortTuition": "Qiymət", "emptyTitle": "Proqram tapılmadı", "emptySubtitle": "Filtri silin və ya başqa sahə və şəhər axtarın."
+    "filters": "Filtrlər",
+    "searchPlaceholder": "Sahə və ya şəhər üzrə axtar…",
+    "category": "Sahə",
+    "allCategories": "Bütün sahələr",
+    "city": "Şəhər",
+    "allCities": "Bütün şəhərlər",
+    "reset": "Filtrləri sıfırla",
+    "close": "Bağla",
+    "activeFilters": "Aktiv filtrlər",
+    "results": "{count, plural, =0 {Nəticə yoxdur} one {# nəticə} other {# nəticə}}",
+    "sort": "Sırala",
+    "sortRelevance": "Uyğunluq",
+    "sortName": "Ad",
+    "sortTuition": "Qiymət",
+    "emptyTitle": "Proqram tapılmadı",
+    "emptySubtitle": "Filtri silin və ya başqa sahə və şəhər axtarın."
   },
   "ProgramCombination": {
     "metaTitle": "{city} şəhərində {category} — Universitetlər, Qiymətlər və Proqramlar",
@@ -219,7 +248,12 @@
     "tuition": "Qiymət / il",
     "universitiesTitle": "Universitetlər",
     "viewAll": "Bütün universitetlər",
-    "degrees": { "bachelor": "Bakalavr", "master": "Magistr", "phd": "Doktorantura", "associate": "Orta ixtisas" }
+    "degrees": {
+      "bachelor": "Bakalavr",
+      "master": "Magistr",
+      "phd": "Doktorantura",
+      "associate": "Orta ixtisas"
+    }
   },
   "CountryLanding": {
     "metaTitle": "{country} üçün Türkiyədə Təhsil — Tam Bələdçi",
@@ -283,7 +317,7 @@
     "country": "Ölkə",
     "countryPlaceholder": "Ölkənizi seçin",
     "programInterest": "Maraqlandığınız proqram",
-    "programPlaceholder": "məs. Tibb, Kompüter Mühəndisliyi",
+    "programPlaceholder": "Proqram seçin",
     "message": "Mesaj",
     "messagePlaceholder": "Məqsədlərinizdən bəhs edin…",
     "optional": "istəyə bağlı",
@@ -302,7 +336,6 @@
     "university": "Universitet",
     "universityPlaceholder": "Universitet seçin",
     "program": "Proqram",
-    "programPlaceholder": "Proqram seçin",
     "programSelectUniversityFirst": "Əvvəl universitet seçin",
     "degreeLevel": "Dərəcə səviyyəsi",
     "degreeBachelor": "Bakalavr",
@@ -384,7 +417,16 @@
     "profile": "Profil"
   },
   "Student": {
-    "auth": { "email": "E-poçt", "code": "Təsdiq kodu", "sendLink": "Sehrli link göndər", "verify": "Kodu təsdiqlə", "back": "Başqa e-poçt istifadə et", "linkSent": "E-poçtunuzu yoxlayın (və ya kodu daxil edin).", "error": "Bir şey xəta verdi. Təkrar cəhd edin.", "googleLogin": "Google ilə davam et" },
+    "auth": {
+      "email": "E-poçt",
+      "code": "Təsdiq kodu",
+      "sendLink": "Sehrli link göndər",
+      "verify": "Kodu təsdiqlə",
+      "back": "Başqa e-poçt istifadə et",
+      "linkSent": "E-poçtunuzu yoxlayın (və ya kodu daxil edin).",
+      "error": "Bir şey xəta verdi. Təkrar cəhd edin.",
+      "googleLogin": "Google ilə davam et"
+    },
     "drawer": {
       "applications": "Müraciətlər",
       "documents": "Sənədlər",
@@ -393,14 +435,64 @@
       "profile": "Profil",
       "signOut": "Çıxış"
     },
-    "nav": { "overview": "Ümumi baxış", "profile": "Profil", "applications": "Müraciətlər", "documents": "Sənədlər", "messages": "Mesajlar", "notifications": "Bildirişlər", "logout": "Çıxış" },
-    "overview": { "title": "Panelim", "subtitle": "Müraciətlərinizi, sənədlərinizi və mesajlarınızı izləyin.", "applications": "Müraciətlər", "unreadMessages": "Oxunmamış mesajlar", "status": "Cari status", "noApplications": "Hələ müraciət yoxdur", "recentNotifications": "Son bildirişlər" },
-    "applications": { "title": "Müraciətlərim", "empty": "Hələ müraciətiniz yoxdur.", "viewDetail": "Detalları gör" },
-    "detail": { "consultant": "Konsultant", "timeline": "Fəaliyyət" },
-    "documents": { "title": "Sənədlərim", "upload": "Sənəd yüklə", "uploadCta": "Yüklə", "uploadError": "Yükləmə alınmadı. Fayl tipini/ölçüsünü yoxlayın.", "empty": "Hələ sənəd yoxdur.", "verified": "Təsdiqlənib", "pending": "Gözləyir", "download": "Yüklə" },
-    "messages": { "title": "Mesajlar", "empty": "Hələ mesaj yoxdur.", "placeholder": "Mesaj yazın…", "send": "Göndər", "consultant": "Konsultant", "you": "Siz" },
-    "notifications": { "title": "Bildirişlər", "empty": "Bildiriş yoxdur.", "statusChange": "Müraciət statusunuz dəyişdi.", "assigned": "Sizə konsultant təyin olundu.", "message": "{name} adlı şəxsdən yeni mesaj", "viewDetail": "Detalları gör" },
-    "login": { "title": "Tələbə girişi (demo)", "subtitle": "Davam etmək üçün demo tələbə profili seçin.", "choose": "Davam et" }
+    "nav": {
+      "overview": "Ümumi baxış",
+      "profile": "Profil",
+      "applications": "Müraciətlər",
+      "documents": "Sənədlər",
+      "messages": "Mesajlar",
+      "notifications": "Bildirişlər",
+      "logout": "Çıxış"
+    },
+    "overview": {
+      "title": "Panelim",
+      "subtitle": "Müraciətlərinizi, sənədlərinizi və mesajlarınızı izləyin.",
+      "applications": "Müraciətlər",
+      "unreadMessages": "Oxunmamış mesajlar",
+      "status": "Cari status",
+      "noApplications": "Hələ müraciət yoxdur",
+      "recentNotifications": "Son bildirişlər"
+    },
+    "applications": {
+      "title": "Müraciətlərim",
+      "empty": "Hələ müraciətiniz yoxdur.",
+      "viewDetail": "Detalları gör"
+    },
+    "detail": {
+      "consultant": "Konsultant",
+      "timeline": "Fəaliyyət"
+    },
+    "documents": {
+      "title": "Sənədlərim",
+      "upload": "Sənəd yüklə",
+      "uploadCta": "Yüklə",
+      "uploadError": "Yükləmə alınmadı. Fayl tipini/ölçüsünü yoxlayın.",
+      "empty": "Hələ sənəd yoxdur.",
+      "verified": "Təsdiqlənib",
+      "pending": "Gözləyir",
+      "download": "Yüklə"
+    },
+    "messages": {
+      "title": "Mesajlar",
+      "empty": "Hələ mesaj yoxdur.",
+      "placeholder": "Mesaj yazın…",
+      "send": "Göndər",
+      "consultant": "Konsultant",
+      "you": "Siz"
+    },
+    "notifications": {
+      "title": "Bildirişlər",
+      "empty": "Bildiriş yoxdur.",
+      "statusChange": "Müraciət statusunuz dəyişdi.",
+      "assigned": "Sizə konsultant təyin olundu.",
+      "message": "{name} adlı şəxsdən yeni mesaj",
+      "viewDetail": "Detalları gör"
+    },
+    "login": {
+      "title": "Tələbə girişi (demo)",
+      "subtitle": "Davam etmək üçün demo tələbə profili seçin.",
+      "choose": "Davam et"
+    }
   },
   "Geo": {
     "universityShortAnswer": "{name} — {city}, Türkiyədə {year}-ci ildə təsis edilmiş {type} universitetidir. {languages} dillərində proqramlar təklif edir, təhsil haqqı {tuition}/ildən başlayır. {accreditation} akkreditasiyalı, {students} tələbəyə ev sahibliyi edir.",
@@ -451,5 +543,36 @@
     "greeting": "Salam! Mən Türkiyədə təhsil köməkçisiyəm. Universitetlər, proqramlar, qiymətlər və ya müraciət prosesi haqqında sual verin.",
     "error": "Üzr istəyirəm, cavab verə bilmədim. Təkrar cəhd edin və ya WhatsApp ilə əlaqə saxlayın.",
     "closed": "Söhbət bağlandı"
+  },
+  "ProgramCategory": {
+    "metaTitle": "{category} Türkiyədə — Universitetlər, Təhsil Haqları və Proqramlar",
+    "metaDescription": "{category} ixtisası üzrə Türkiyədə təhsil alın. Proqram təklif edən {count} universiteti, təhsil haqlarını və şəhər seçimlərini müqayisə edin.",
+    "home": "Ana səhifə",
+    "programs": "Proqramlar",
+    "title": "{category} Türkiyədə",
+    "subtitle": "{category} proqramları təklif edən universitetləri Türkiyə üzrə müqayisə edin. Təhsil haqları, dərəcələr, dillər və şəhər seçimlərini bir baxışda görün.",
+    "programsLabel": "Proqramlar",
+    "universitiesLabel": "Universitetlər",
+    "fromLabel": "Qiymət bundan",
+    "categoryLabel": "Kateqoriya",
+    "citiesTitle": "{category} şəhərlər üzrə",
+    "universitiesInCity": "{count} universitet",
+    "from": "başlayaraq",
+    "programsTitle": "Təklif olunan proqramlar",
+    "programName": "Proqram",
+    "university": "Universitet",
+    "city": "Şəhər",
+    "degree": "Dərəcə",
+    "language": "Dil",
+    "tuition": "Qiymət / il",
+    "universitiesTitle": "Universitetlər",
+    "viewAll": "Bütün universitetlər",
+    "degrees": {
+      "bachelor": "Bakalavr",
+      "master": "Magistr",
+      "phd": "Doktorantura",
+      "associate": "Orta ixtisas"
+    },
+    "annualCost": "İllik xərc (təhsil + yaşayış)"
   }
 }

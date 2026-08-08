@@ -143,7 +143,16 @@
     "sortRanking": "رتبه‌بندی",
     "results": "{count, plural, =0 {بدون دانشگاه} one {# دانشگاه} other {# دانشگاه}}",
     "emptyTitle": "دانشگاهی یافت نشد",
-    "emptySubtitle": "برخی فیلترها را حذف کنید یا چیز دیگری جستجو کنید.", "verified": "YÖK", "english": "انگلیسی", "turkish": "ترکی", "turkey": "ترکیه", "from": "از", "tuition": "شهریه", "rank": "رتبه", "founded": "تأسیس", "close": "بستن"
+    "emptySubtitle": "برخی فیلترها را حذف کنید یا چیز دیگری جستجو کنید.",
+    "verified": "YÖK",
+    "english": "انگلیسی",
+    "turkish": "ترکی",
+    "turkey": "ترکیه",
+    "from": "از",
+    "tuition": "شهریه",
+    "rank": "رتبه",
+    "founded": "تأسیس",
+    "close": "بستن"
   },
   "UniversityDetail": {
     "metaTitle": "{name} — شهریه، رشته‌ها و پذیرش",
@@ -186,7 +195,12 @@
     "applyCta": "همین حالا درخواست دهید",
     "whatsappCta": "پرسش در واتس‌اپ",
     "applyNote": "مشاوره رایگان · پشتیبانی ویزا گنجانده شده",
-    "degrees": { "bachelor": "کارشناسی", "master": "کارشناسی ارشد", "phd": "دکترا", "associate": "کاردانی" }
+    "degrees": {
+      "bachelor": "کارشناسی",
+      "master": "کارشناسی ارشد",
+      "phd": "دکترا",
+      "associate": "کاردانی"
+    }
   },
   "ProgramsIndex": {
     "metaTitle": "رشته‌های تحصیلی در ترکیه — مرور بر اساس حوزه و شهر",
@@ -196,7 +210,22 @@
     "cities": "شهر",
     "universities": "{count, plural, one {# دانشگاه} other {# دانشگاه}}",
     "from": "از",
-    "filters": "فیلترها", "searchPlaceholder": "جستجو بر اساس حوزه یا شهر…", "category": "حوزه", "allCategories": "همه حوزه‌ها", "city": "شهر", "allCities": "همه شهرها", "reset": "بازنشانی فیلترها", "close": "بستن", "activeFilters": "فیلترهای فعال", "results": "{count, plural, =0 {نتیجه‌ای نیست} one {# نتیجه} other {# نتیجه}}", "sort": "مرتب‌سازی", "sortRelevance": "مرتبط‌ترین", "sortName": "نام", "sortTuition": "شهریه", "emptyTitle": "برنامه‌ای پیدا نشد", "emptySubtitle": "فیلترها را حذف کنید یا حوزه یا شهر دیگری جستجو کنید."
+    "filters": "فیلترها",
+    "searchPlaceholder": "جستجو بر اساس حوزه یا شهر…",
+    "category": "حوزه",
+    "allCategories": "همه حوزه‌ها",
+    "city": "شهر",
+    "allCities": "همه شهرها",
+    "reset": "بازنشانی فیلترها",
+    "close": "بستن",
+    "activeFilters": "فیلترهای فعال",
+    "results": "{count, plural, =0 {نتیجه‌ای نیست} one {# نتیجه} other {# نتیجه}}",
+    "sort": "مرتب‌سازی",
+    "sortRelevance": "مرتبط‌ترین",
+    "sortName": "نام",
+    "sortTuition": "شهریه",
+    "emptyTitle": "برنامه‌ای پیدا نشد",
+    "emptySubtitle": "فیلترها را حذف کنید یا حوزه یا شهر دیگری جستجو کنید."
   },
   "ProgramCombination": {
     "metaTitle": "{category} در {city} — دانشگاه‌ها، شهریه و رشته‌ها",
@@ -216,7 +245,12 @@
     "tuition": "شهریه / سال",
     "universitiesTitle": "دانشگاه‌ها",
     "viewAll": "همه دانشگاه‌ها",
-    "degrees": { "bachelor": "کارشناسی", "master": "کارشناسی ارشد", "phd": "دکترا", "associate": "کاردانی" }
+    "degrees": {
+      "bachelor": "کارشناسی",
+      "master": "کارشناسی ارشد",
+      "phd": "دکترا",
+      "associate": "کاردانی"
+    }
   },
   "CountryLanding": {
     "metaTitle": "تحصیل در ترکیه از {country} — راهنمای کامل",
@@ -280,7 +314,7 @@
     "country": "کشور",
     "countryPlaceholder": "کشور خود را انتخاب کنید",
     "programInterest": "رشته موردنظر",
-    "programPlaceholder": "مثلاً پزشکی، مهندسی کامپیوتر",
+    "programPlaceholder": "Select a program",
     "message": "پیام",
     "messagePlaceholder": "درباره اهداف خود به ما بگویید…",
     "optional": "اختیاری",
@@ -299,7 +333,6 @@
     "university": "University",
     "universityPlaceholder": "Select a university",
     "program": "Program",
-    "programPlaceholder": "Select a program",
     "programSelectUniversityFirst": "Select a university first",
     "degreeLevel": "Degree level",
     "degreeBachelor": "Bachelor",
@@ -381,7 +414,16 @@
     "profile": "Profile"
   },
   "Student": {
-    "auth": { "email": "ایمیل", "code": "کد تأیید", "sendLink": "ارسال لینک جادویی", "verify": "تأیید کد", "back": "ایمیل دیگری استفاده کنید", "linkSent": "ایمیل خود را برای لینک جادویی بررسی کنید (یا کد را وارد کنید).", "error": "خطایی رخ داد. دوباره تلاش کنید.", "googleLogin": "Continue with Google" },
+    "auth": {
+      "email": "ایمیل",
+      "code": "کد تأیید",
+      "sendLink": "ارسال لینک جادویی",
+      "verify": "تأیید کد",
+      "back": "ایمیل دیگری استفاده کنید",
+      "linkSent": "ایمیل خود را برای لینک جادویی بررسی کنید (یا کد را وارد کنید).",
+      "error": "خطایی رخ داد. دوباره تلاش کنید.",
+      "googleLogin": "Continue with Google"
+    },
     "drawer": {
       "applications": "Applications",
       "documents": "Documents",
@@ -390,13 +432,94 @@
       "profile": "Profile",
       "signOut": "Sign out"
     },
-    "nav": { "overview": "نمای کلی", "profile": "Profile", "applications": "درخواست‌ها", "documents": "مدارک", "messages": "پیام‌ها", "notifications": "اعلان‌ها", "logout": "خروج" },
-    "overview": { "title": "داشبورد من", "subtitle": "درخواست‌ها، مدارک و پیام‌های خود را پیگیری کنید.", "applications": "درخواست‌ها", "unreadMessages": "پیام‌های خوانده‌نشده", "status": "وضعیت فعلی", "noApplications": "هنوز درخواستی نیست", "recentNotifications": "اعلان‌های اخیر" },
-    "applications": { "title": "درخواست‌های من", "empty": "هنوز درخواستی ندارید.", "viewDetail": "مشاهده جزئیات" },
-    "detail": { "consultant": "مشاور", "timeline": "فعالیت" },
-    "documents": { "title": "مدارک من", "upload": "بارگذاری سند", "uploadCta": "بارگذاری", "uploadError": "بارگذاری ناموفق بود. نوع/اندازه فایل را بررسی کنید.", "empty": "هنوز سندی نیست.", "verified": "تأیید‌شده", "pending": "در انتظار", "download": "دانلود" },
-    "messages": { "title": "پیام‌ها", "empty": "هنوز پیامی نیست.", "placeholder": "نوشتن پیام…", "send": "ارسال", "consultant": "مشاور", "you": "شما" },
-    "notifications": { "title": "اعلان‌ها", "empty": "اعلانی نیست.", "statusChange": "وضعیت درخواست شما تغییر کرد.", "assigned": "یک مشاور به شما اختصاص یافت.", "message": "پیام جدید از {name}", "viewDetail": "مشاهده جزئیات" },
-    "login": { "title": "ورود دانشجو (دمو)", "subtitle": "یک پروفایل دانشجوی دمو انتخاب کنید تا ادامه دهید.", "choose": "ادامه" }
+    "nav": {
+      "overview": "نمای کلی",
+      "profile": "Profile",
+      "applications": "درخواست‌ها",
+      "documents": "مدارک",
+      "messages": "پیام‌ها",
+      "notifications": "اعلان‌ها",
+      "logout": "خروج"
+    },
+    "overview": {
+      "title": "داشبورد من",
+      "subtitle": "درخواست‌ها، مدارک و پیام‌های خود را پیگیری کنید.",
+      "applications": "درخواست‌ها",
+      "unreadMessages": "پیام‌های خوانده‌نشده",
+      "status": "وضعیت فعلی",
+      "noApplications": "هنوز درخواستی نیست",
+      "recentNotifications": "اعلان‌های اخیر"
+    },
+    "applications": {
+      "title": "درخواست‌های من",
+      "empty": "هنوز درخواستی ندارید.",
+      "viewDetail": "مشاهده جزئیات"
+    },
+    "detail": {
+      "consultant": "مشاور",
+      "timeline": "فعالیت"
+    },
+    "documents": {
+      "title": "مدارک من",
+      "upload": "بارگذاری سند",
+      "uploadCta": "بارگذاری",
+      "uploadError": "بارگذاری ناموفق بود. نوع/اندازه فایل را بررسی کنید.",
+      "empty": "هنوز سندی نیست.",
+      "verified": "تأیید‌شده",
+      "pending": "در انتظار",
+      "download": "دانلود"
+    },
+    "messages": {
+      "title": "پیام‌ها",
+      "empty": "هنوز پیامی نیست.",
+      "placeholder": "نوشتن پیام…",
+      "send": "ارسال",
+      "consultant": "مشاور",
+      "you": "شما"
+    },
+    "notifications": {
+      "title": "اعلان‌ها",
+      "empty": "اعلانی نیست.",
+      "statusChange": "وضعیت درخواست شما تغییر کرد.",
+      "assigned": "یک مشاور به شما اختصاص یافت.",
+      "message": "پیام جدید از {name}",
+      "viewDetail": "مشاهده جزئیات"
+    },
+    "login": {
+      "title": "ورود دانشجو (دمو)",
+      "subtitle": "یک پروفایل دانشجوی دمو انتخاب کنید تا ادامه دهید.",
+      "choose": "ادامه"
+    }
+  },
+  "ProgramCategory": {
+    "metaTitle": "{category} در ترکیه — دانشگاه‌ها، شهریه و رشته‌ها",
+    "metaDescription": "تحصیل {category} در ترکیه. مقایسه {count} دانشگاه ارائه‌دهنده برنامه، شهریه و گزینه‌های شهر.",
+    "home": "خانه",
+    "programs": "رشته‌ها",
+    "title": "{category} در ترکیه",
+    "subtitle": "دانشگاه‌های ارائه‌دهنده برنامه‌های {category} در سراسر ترکیه را مقایسه کنید. شهریه، مدارک، زبان‌ها و گزینه‌های شهر را در یک نگاه ببینید.",
+    "programsLabel": "رشته‌ها",
+    "universitiesLabel": "دانشگاه‌ها",
+    "fromLabel": "شهریه از",
+    "categoryLabel": "",
+    "citiesTitle": "تحصیل {category} به تفکیک شهر",
+    "universitiesInCity": "{count} دانشگاه",
+    "from": "از",
+    "programsTitle": "رشته‌های ارائه‌شده",
+    "programName": "رشته",
+    "university": "دانشگاه",
+    "city": "شهر",
+    "degree": "مدرک",
+    "language": "زبان",
+    "tuition": "شهریه / سال",
+    "universitiesTitle": "دانشگاه‌ها",
+    "viewAll": "همه دانشگاه‌ها",
+    "degrees": {
+      "bachelor": "کارشناسی",
+      "master": "کارشناسی ارشد",
+      "phd": "دکترا",
+      "associate": "کاردانی"
+    },
+    "annualCost": "هزینه سالانه (شهریه + زندگی)"
   }
 }

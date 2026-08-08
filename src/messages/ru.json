@@ -143,7 +143,16 @@
     "sortRanking": "Рейтинг",
     "results": "{count, plural, =0 {Нет университетов} one {# университет} other {# университетов}}",
     "emptyTitle": "Университеты не найдены",
-    "emptySubtitle": "Попробуйте убрать часть фильтров.", "verified": "YÖK", "english": "Английский", "turkish": "Турецкий", "turkey": "Турция", "from": "от", "tuition": "Стоимость обучения", "rank": "Рейтинг", "founded": "Основан", "close": "Закрыть"
+    "emptySubtitle": "Попробуйте убрать часть фильтров.",
+    "verified": "YÖK",
+    "english": "Английский",
+    "turkish": "Турецкий",
+    "turkey": "Турция",
+    "from": "от",
+    "tuition": "Стоимость обучения",
+    "rank": "Рейтинг",
+    "founded": "Основан",
+    "close": "Закрыть"
   },
   "UniversityDetail": {
     "metaTitle": "{name} — стоимость, программы и поступление",
@@ -187,7 +196,12 @@
     "applyCta": "Подать заявку",
     "whatsappCta": "Спросить в WhatsApp",
     "applyNote": "Бесплатная консультация · помощь с визой",
-    "degrees": { "bachelor": "Бакалавриат", "master": "Магистратура", "phd": "Аспирантура", "associate": "Ассоциат" }
+    "degrees": {
+      "bachelor": "Бакалавриат",
+      "master": "Магистратура",
+      "phd": "Аспирантура",
+      "associate": "Ассоциат"
+    }
   },
   "ProgramsIndex": {
     "metaTitle": "Программы в Турции — по направлениям и городам",
@@ -197,7 +211,22 @@
     "cities": "городов",
     "universities": "{count, plural, one {# университет} few {# университета} many {# университетов} other {# университетов}}",
     "from": "от",
-    "filters": "Фильтры", "searchPlaceholder": "Поиск по направлению или городу…", "category": "Направление", "allCategories": "Все направления", "city": "Город", "allCities": "Все города", "reset": "Сбросить фильтры", "close": "Закрыть", "activeFilters": "Активные фильтры", "results": "{count, plural, =0 {Нет результатов} one {# результат} other {# результатов}}", "sort": "Сортировка", "sortRelevance": "Релевантность", "sortName": "Название", "sortTuition": "Стоимость", "emptyTitle": "Программы не найдены", "emptySubtitle": "Попробуйте убрать фильтр или найти другое направление или город."
+    "filters": "Фильтры",
+    "searchPlaceholder": "Поиск по направлению или городу…",
+    "category": "Направление",
+    "allCategories": "Все направления",
+    "city": "Город",
+    "allCities": "Все города",
+    "reset": "Сбросить фильтры",
+    "close": "Закрыть",
+    "activeFilters": "Активные фильтры",
+    "results": "{count, plural, =0 {Нет результатов} one {# результат} other {# результатов}}",
+    "sort": "Сортировка",
+    "sortRelevance": "Релевантность",
+    "sortName": "Название",
+    "sortTuition": "Стоимость",
+    "emptyTitle": "Программы не найдены",
+    "emptySubtitle": "Попробуйте убрать фильтр или найти другое направление или город."
   },
   "ProgramCombination": {
     "metaTitle": "{category} в {city} — вузы, стоимость и программы",
@@ -219,7 +248,12 @@
     "tuition": "Стоимость / год",
     "universitiesTitle": "Университеты",
     "viewAll": "Все университеты",
-    "degrees": { "bachelor": "Бакалавриат", "master": "Магистратура", "phd": "Аспирантура", "associate": "Ассоциат" }
+    "degrees": {
+      "bachelor": "Бакалавриат",
+      "master": "Магистратура",
+      "phd": "Аспирантура",
+      "associate": "Ассоциат"
+    }
   },
   "CountryLanding": {
     "metaTitle": "Учеба в Турции для студентов из {country} — гид",
@@ -283,7 +317,7 @@
     "country": "Страна",
     "countryPlaceholder": "Выберите страну",
     "programInterest": "Интересующая программа",
-    "programPlaceholder": "напр. Медицина, Компьютерная инженерия",
+    "programPlaceholder": "Выберите программу",
     "message": "Сообщение",
     "messagePlaceholder": "Расскажите о своих целях…",
     "optional": "необязательно",
@@ -302,7 +336,6 @@
     "university": "Университет",
     "universityPlaceholder": "Выберите университет",
     "program": "Программа",
-    "programPlaceholder": "Выберите программу",
     "programSelectUniversityFirst": "Сначала выберите университет",
     "degreeLevel": "Уровень степени",
     "degreeBachelor": "Бакалавриат",
@@ -384,7 +417,16 @@
     "profile": "Профиль"
   },
   "Student": {
-    "auth": { "email": "Эл. почта", "code": "Код подтверждения", "sendLink": "Отправить ссылку", "verify": "Проверить код", "back": "Использовать другую почту", "linkSent": "Проверьте почту (или введите код).", "error": "Что-то пошло не так. Попробуйте снова.", "googleLogin": "Продолжить с Google" },
+    "auth": {
+      "email": "Эл. почта",
+      "code": "Код подтверждения",
+      "sendLink": "Отправить ссылку",
+      "verify": "Проверить код",
+      "back": "Использовать другую почту",
+      "linkSent": "Проверьте почту (или введите код).",
+      "error": "Что-то пошло не так. Попробуйте снова.",
+      "googleLogin": "Продолжить с Google"
+    },
     "drawer": {
       "applications": "Заявки",
       "documents": "Документы",
@@ -393,14 +435,64 @@
       "profile": "Профиль",
       "signOut": "Выйти"
     },
-    "nav": { "overview": "Обзор", "profile": "Профиль", "applications": "Заявки", "documents": "Документы", "messages": "Сообщения", "notifications": "Уведомления", "logout": "Выйти" },
-    "overview": { "title": "Моя панель", "subtitle": "Отслеживайте заявки, документы и сообщения.", "applications": "Заявки", "unreadMessages": "Непрочитанные", "status": "Текущий статус", "noApplications": "Заявок пока нет", "recentNotifications": "Недавние уведомления" },
-    "applications": { "title": "Мои заявки", "empty": "У вас пока нет заявок.", "viewDetail": "Подробнее" },
-    "detail": { "consultant": "Консультант", "timeline": "События" },
-    "documents": { "title": "Мои документы", "upload": "Загрузить документ", "uploadCta": "Загрузить", "uploadError": "Ошибка загрузки. Проверьте тип/размер.", "empty": "Документов пока нет.", "verified": "Проверен", "pending": "Ожидает", "download": "Скачать" },
-    "messages": { "title": "Сообщения", "empty": "Сообщений пока нет.", "placeholder": "Напишите сообщение…", "send": "Отправить", "consultant": "Консультант", "you": "Вы" },
-    "notifications": { "title": "Уведомления", "empty": "Нет уведомлений.", "statusChange": "Статус заявки изменился.", "assigned": "Вам назначен консультант.", "message": "Новое сообщение от {name}", "viewDetail": "Подробнее" },
-    "login": { "title": "Вход для студента (демо)", "subtitle": "Выберите демо-профиль студента.", "choose": "Продолжить" }
+    "nav": {
+      "overview": "Обзор",
+      "profile": "Профиль",
+      "applications": "Заявки",
+      "documents": "Документы",
+      "messages": "Сообщения",
+      "notifications": "Уведомления",
+      "logout": "Выйти"
+    },
+    "overview": {
+      "title": "Моя панель",
+      "subtitle": "Отслеживайте заявки, документы и сообщения.",
+      "applications": "Заявки",
+      "unreadMessages": "Непрочитанные",
+      "status": "Текущий статус",
+      "noApplications": "Заявок пока нет",
+      "recentNotifications": "Недавние уведомления"
+    },
+    "applications": {
+      "title": "Мои заявки",
+      "empty": "У вас пока нет заявок.",
+      "viewDetail": "Подробнее"
+    },
+    "detail": {
+      "consultant": "Консультант",
+      "timeline": "События"
+    },
+    "documents": {
+      "title": "Мои документы",
+      "upload": "Загрузить документ",
+      "uploadCta": "Загрузить",
+      "uploadError": "Ошибка загрузки. Проверьте тип/размер.",
+      "empty": "Документов пока нет.",
+      "verified": "Проверен",
+      "pending": "Ожидает",
+      "download": "Скачать"
+    },
+    "messages": {
+      "title": "Сообщения",
+      "empty": "Сообщений пока нет.",
+      "placeholder": "Напишите сообщение…",
+      "send": "Отправить",
+      "consultant": "Консультант",
+      "you": "Вы"
+    },
+    "notifications": {
+      "title": "Уведомления",
+      "empty": "Нет уведомлений.",
+      "statusChange": "Статус заявки изменился.",
+      "assigned": "Вам назначен консультант.",
+      "message": "Новое сообщение от {name}",
+      "viewDetail": "Подробнее"
+    },
+    "login": {
+      "title": "Вход для студента (демо)",
+      "subtitle": "Выберите демо-профиль студента.",
+      "choose": "Продолжить"
+    }
   },
   "Geo": {
     "universityShortAnswer": "{name} — {type} университет в {city}, Турция, основан в {year} году. Предлагает программы на {languages} со стоимостью от {tuition}/год. Аккредитован {accreditation}, обучает более {students} студентов.",
@@ -451,5 +543,36 @@
     "greeting": "Здравствуйте! Я ваш помощник по учёбе в Турции. Спросите о вузах, программах, стоимости или процессе поступления.",
     "error": "Извините, не удалось ответить. Попробуйте снова или свяжитесь через WhatsApp.",
     "closed": "Чат закрыт"
+  },
+  "ProgramCategory": {
+    "metaTitle": "{category} в Турции — Университеты, стоимость и программы",
+    "metaDescription": "Изучайте {category} в Турции. Сравните {count} университетов, предлагающих программы, стоимость и варианты городов.",
+    "home": "Главная",
+    "programs": "Программы",
+    "title": "{category} в Турции",
+    "subtitle": "Сравните университеты, предлагающие программы {category} по всей Турции. Смотрите стоимость, степени, языки и варианты городов.",
+    "programsLabel": "Программы",
+    "universitiesLabel": "Вузы",
+    "fromLabel": "Стоимость от",
+    "categoryLabel": "Категория",
+    "citiesTitle": "Изучайте {category} по городам",
+    "universitiesInCity": "{count} университетов",
+    "from": "от",
+    "programsTitle": "Предлагаемые программы",
+    "programName": "Программа",
+    "university": "Вуз",
+    "city": "Город",
+    "degree": "Степень",
+    "language": "Язык",
+    "tuition": "Стоимость / год",
+    "universitiesTitle": "Университеты",
+    "viewAll": "Все университеты",
+    "degrees": {
+      "bachelor": "Бакалавриат",
+      "master": "Магистратура",
+      "phd": "Аспирантура",
+      "associate": "Ассоциат"
+    },
+    "annualCost": "Годовая стоимость (обучение + проживание)"
   }
 }

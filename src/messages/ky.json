@@ -143,7 +143,16 @@
     "sortRanking": "Рейтинг",
     "results": "{count, plural, =0 {Университет жок} one {# университет} other {# университет}}",
     "emptyTitle": "Университет табылган жок",
-    "emptySubtitle": "Айрым сүзгүлөрдү алып салыңыз же башканы издеп көрүңүз.", "verified": "YÖK", "english": "Англис тили", "turkish": "Түрк тили", "turkey": "Түркия", "from": "баштап", "tuition": "Окуу акысы", "rank": "Рейтинг", "founded": "Түзүлгөн", "close": "Жабуу"
+    "emptySubtitle": "Айрым сүзгүлөрдү алып салыңыз же башканы издеп көрүңүз.",
+    "verified": "YÖK",
+    "english": "Англис тили",
+    "turkish": "Түрк тили",
+    "turkey": "Түркия",
+    "from": "баштап",
+    "tuition": "Окуу акысы",
+    "rank": "Рейтинг",
+    "founded": "Түзүлгөн",
+    "close": "Жабуу"
   },
   "UniversityDetail": {
     "metaTitle": "{name} — Окуу акысы, программалар жана кабыл алуу",
@@ -186,7 +195,12 @@
     "applyCta": "Азыр өтүнмө бериңиз",
     "whatsappCta": "WhatsApp-да сура",
     "applyNote": "Акысыз кеңеш · Виза колдоосу менен",
-    "degrees": { "bachelor": "Бакалавр", "master": "Магистр", "phd": "Докторантура", "associate": "Коллеж" }
+    "degrees": {
+      "bachelor": "Бакалавр",
+      "master": "Магистр",
+      "phd": "Докторантура",
+      "associate": "Коллеж"
+    }
   },
   "ProgramsIndex": {
     "metaTitle": "Түркиядагы окуу программалары — Тармак жана шаар боюнча",
@@ -196,7 +210,22 @@
     "cities": "шаарлар",
     "universities": "{count, plural, one {# университет} other {# университет}}",
     "from": "баштап",
-    "filters": "Чыпкалар", "searchPlaceholder": "Тармак же шаар боюнча издөө…", "category": "Тармак", "allCategories": "Бардык тармактар", "city": "Шаар", "allCities": "Бардык шаарлар", "reset": "Чыпкаларды тазалоо", "close": "Жабуу", "activeFilters": "Активдүү чыпкалар", "results": "{count, plural, =0 {Натыйжа жок} one {# натыйжа} other {# натыйжа}}", "sort": "Иреттөө", "sortRelevance": "Маанилүүлүгү", "sortName": "Аты", "sortTuition": "Баасы", "emptyTitle": "Программалар табылган жок", "emptySubtitle": "Чыпканы алып салып же башка тармак же шаар издеп көрүңүз."
+    "filters": "Чыпкалар",
+    "searchPlaceholder": "Тармак же шаар боюнча издөө…",
+    "category": "Тармак",
+    "allCategories": "Бардык тармактар",
+    "city": "Шаар",
+    "allCities": "Бардык шаарлар",
+    "reset": "Чыпкаларды тазалоо",
+    "close": "Жабуу",
+    "activeFilters": "Активдүү чыпкалар",
+    "results": "{count, plural, =0 {Натыйжа жок} one {# натыйжа} other {# натыйжа}}",
+    "sort": "Иреттөө",
+    "sortRelevance": "Маанилүүлүгү",
+    "sortName": "Аты",
+    "sortTuition": "Баасы",
+    "emptyTitle": "Программалар табылган жок",
+    "emptySubtitle": "Чыпканы алып салып же башка тармак же шаар издеп көрүңүз."
   },
   "ProgramCombination": {
     "metaTitle": "{city} шаарындагы {category} — Университеттер, окуу акысы жана программалар",
@@ -216,7 +245,12 @@
     "tuition": "Акы / жыл",
     "universitiesTitle": "Университеттер",
     "viewAll": "Бардык университеттер",
-    "degrees": { "bachelor": "Бакалавр", "master": "Магистр", "phd": "Докторантура", "associate": "Коллеж" }
+    "degrees": {
+      "bachelor": "Бакалавр",
+      "master": "Магистр",
+      "phd": "Докторантура",
+      "associate": "Коллеж"
+    }
   },
   "CountryLanding": {
     "metaTitle": "{country} өлкөсүнөн Түркияда окуу — Толук нускамалуу",
@@ -280,7 +314,7 @@
     "country": "Өлкө",
     "countryPlaceholder": "Өлкөңүздү тандаңыз",
     "programInterest": "Кызыккан программа",
-    "programPlaceholder": "мисалы: Медицина, Компьютердик инженерия",
+    "programPlaceholder": "Select a program",
     "message": "Билдирүү",
     "messagePlaceholder": "Максаттарыңыз жөнүндө айтыңыз…",
     "optional": "милдеттүү эмес",
@@ -299,7 +333,6 @@
     "university": "University",
     "universityPlaceholder": "Select a university",
     "program": "Program",
-    "programPlaceholder": "Select a program",
     "programSelectUniversityFirst": "Select a university first",
     "degreeLevel": "Degree level",
     "degreeBachelor": "Bachelor",
@@ -381,7 +414,16 @@
     "profile": "Profile"
   },
   "Student": {
-    "auth": { "email": "Эл. почта", "code": "Текшерүү коду", "sendLink": "Magic link-ти жиберүү", "verify": "Кодду текшерүү", "back": "Башка эл. почтаны колдонуңуз", "linkSent": "Magic link үчүн эл. почтаңызды текшериңиз (же кодду киргизиңиз).", "error": "Бир нерсе туура эмес болду. Кайра аракет кылыңыз.", "googleLogin": "Continue with Google" },
+    "auth": {
+      "email": "Эл. почта",
+      "code": "Текшерүү коду",
+      "sendLink": "Magic link-ти жиберүү",
+      "verify": "Кодду текшерүү",
+      "back": "Башка эл. почтаны колдонуңуз",
+      "linkSent": "Magic link үчүн эл. почтаңызды текшериңиз (же кодду киргизиңиз).",
+      "error": "Бир нерсе туура эмес болду. Кайра аракет кылыңыз.",
+      "googleLogin": "Continue with Google"
+    },
     "drawer": {
       "applications": "Applications",
       "documents": "Documents",
@@ -390,13 +432,94 @@
       "profile": "Profile",
       "signOut": "Sign out"
     },
-    "nav": { "overview": "Жалпы斌", "profile": "Profile", "applications": "Арыздар", "documents": "Документтер", "messages": "Билдирүүлөр", "notifications": "Кабарлоо", "logout": "Чыгуу" },
-    "overview": { "title": "Менин тақтам", "subtitle": "Арыздарыңызды, документтериңизди жана билдирүүлөрүңүздү көзөмөлдөңүз.", "applications": "Арыздар", "unreadMessages": "Окулбаган билдирүүлөр", "status": "Учурдагы статусу",         "noApplications": "Арыз жок", "recentNotifications": "Акыркы кабарлоо" },
-    "applications": { "title": "Менин арыздарым", "empty": "Сизде арыздар жок.", "viewDetail": "Маалыматты караңыз" },
-    "detail": { "consultant": "Кеңешчи", "timeline": "Иш-аракет" },
-    "documents": { "title": "Менин документтерим", "upload": "Документ жүктөө", "uploadCta": "Жүктөө", "uploadError": "Жүктөө ишке ашпады. Файл түрүн/өлчөмүн текшериңиз.", "empty": "Документ жок.", "verified": "Текшерилген", "pending": "Күтүүдө", "download": "Жүктөө" },
-    "messages": { "title": "Билдирүүлөр", "empty": "Билдирүү жок.", "placeholder": "Билдирүү жазыңыз…", "send": "Жиберүү", "consultant": "Кеңешчи", "you": "Сиз" },
-    "notifications": { "title": "Кабарлоо", "empty": "Кабарлоо жок.",                 "statusChange": "Өтүнмө статусуңуз өзгөрдү.", "assigned": "Сизге кеңешчи дайындалды.", "message": "{name} -дан жаңы билдирүү", "viewDetail": "Маалыматты караңыз" },
-    "login": { "title": "Студент кирүү (демо)", "subtitle": "Улантуу үчүн демо студент профайлын тандаңыз.", "choose": "Улантуу" }
+    "nav": {
+      "overview": "Жалпы斌",
+      "profile": "Profile",
+      "applications": "Арыздар",
+      "documents": "Документтер",
+      "messages": "Билдирүүлөр",
+      "notifications": "Кабарлоо",
+      "logout": "Чыгуу"
+    },
+    "overview": {
+      "title": "Менин тақтам",
+      "subtitle": "Арыздарыңызды, документтериңизди жана билдирүүлөрүңүздү көзөмөлдөңүз.",
+      "applications": "Арыздар",
+      "unreadMessages": "Окулбаган билдирүүлөр",
+      "status": "Учурдагы статусу",
+      "noApplications": "Арыз жок",
+      "recentNotifications": "Акыркы кабарлоо"
+    },
+    "applications": {
+      "title": "Менин арыздарым",
+      "empty": "Сизде арыздар жок.",
+      "viewDetail": "Маалыматты караңыз"
+    },
+    "detail": {
+      "consultant": "Кеңешчи",
+      "timeline": "Иш-аракет"
+    },
+    "documents": {
+      "title": "Менин документтерим",
+      "upload": "Документ жүктөө",
+      "uploadCta": "Жүктөө",
+      "uploadError": "Жүктөө ишке ашпады. Файл түрүн/өлчөмүн текшериңиз.",
+      "empty": "Документ жок.",
+      "verified": "Текшерилген",
+      "pending": "Күтүүдө",
+      "download": "Жүктөө"
+    },
+    "messages": {
+      "title": "Билдирүүлөр",
+      "empty": "Билдирүү жок.",
+      "placeholder": "Билдирүү жазыңыз…",
+      "send": "Жиберүү",
+      "consultant": "Кеңешчи",
+      "you": "Сиз"
+    },
+    "notifications": {
+      "title": "Кабарлоо",
+      "empty": "Кабарлоо жок.",
+      "statusChange": "Өтүнмө статусуңуз өзгөрдү.",
+      "assigned": "Сизге кеңешчи дайындалды.",
+      "message": "{name} -дан жаңы билдирүү",
+      "viewDetail": "Маалыматты караңыз"
+    },
+    "login": {
+      "title": "Студент кирүү (демо)",
+      "subtitle": "Улантуу үчүн демо студент профайлын тандаңыз.",
+      "choose": "Улантуу"
+    }
+  },
+  "ProgramCategory": {
+    "metaTitle": "{category} Түркияда — Университеттер, окуу акысы жана программалар",
+    "metaDescription": "Түркияда {category} боюнча окуңуз. Программа сунуш кылган {count} университетти, окуу акысын жана шаар варианттарын салыштырыңыз.",
+    "home": "Башкы",
+    "programs": "Программалар",
+    "title": "{category} Түркияда",
+    "subtitle": "Түркия боюнча {category} программаларын сунуш кылган университеттерди салыштырыңыз. Окуу акысын, даражаларды, тилдерди жана шаар варианттарын бир караганда көрүңүз.",
+    "programsLabel": "Программалар",
+    "universitiesLabel": "Университеттер",
+    "fromLabel": "Окуу акысы баштап",
+    "categoryLabel": "",
+    "citiesTitle": "{category} шаарлар боюнча окуу",
+    "universitiesInCity": "{count} университет",
+    "from": "баштап",
+    "programsTitle": "Сунушталган программалар",
+    "programName": "Программа",
+    "university": "Университет",
+    "city": "Шаар",
+    "degree": "Даража",
+    "language": "Тил",
+    "tuition": "Акы / жыл",
+    "universitiesTitle": "Университеттер",
+    "viewAll": "Бардык университеттер",
+    "degrees": {
+      "bachelor": "Бакалавр",
+      "master": "Магистр",
+      "phd": "Докторантура",
+      "associate": "Коллеж"
+    },
+    "annualCost": "Жылдык чыгым (окуу + жашоо)"
   }
 }

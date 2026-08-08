@@ -143,7 +143,16 @@
     "sortRanking": "Sıralama",
     "results": "{count, plural, =0 {Üniversite yok} one {# üniversite} other {# üniversite}}",
     "emptyTitle": "Üniversite bulunamadı",
-    "emptySubtitle": "Bazı filtreleri kaldırmayı deneyin.", "verified": "YÖK", "english": "İngilizce", "turkish": "Türkçe", "turkey": "Türkiye", "from": "-den başlayan", "tuition": "Öğrenim ücreti", "rank": "Sıralama", "founded": "Kuruluş", "close": "Kapat"
+    "emptySubtitle": "Bazı filtreleri kaldırmayı deneyin.",
+    "verified": "YÖK",
+    "english": "İngilizce",
+    "turkish": "Türkçe",
+    "turkey": "Türkiye",
+    "from": "-den başlayan",
+    "tuition": "Öğrenim ücreti",
+    "rank": "Sıralama",
+    "founded": "Kuruluş",
+    "close": "Kapat"
   },
   "UniversityDetail": {
     "metaTitle": "{name} — Ücretler, Bölümler ve Başvuru",
@@ -187,7 +196,12 @@
     "applyCta": "Hemen başvur",
     "whatsappCta": "WhatsApp'tan sor",
     "applyNote": "Ücretsiz danışmanlık · Vize desteği dahil",
-    "degrees": { "bachelor": "Lisans", "master": "Yüksek Lisans", "phd": "Doktora", "associate": "Önlisans" }
+    "degrees": {
+      "bachelor": "Lisans",
+      "master": "Yüksek Lisans",
+      "phd": "Doktora",
+      "associate": "Önlisans"
+    }
   },
   "ProgramsIndex": {
     "metaTitle": "Türkiye'de Bölümler — Alana ve Şehre Göre Göz Atın",
@@ -197,7 +211,22 @@
     "cities": "şehir",
     "universities": "{count, plural, one {# üniversite} other {# üniversite}}",
     "from": "başlangıç",
-    "filters": "Filtreler", "searchPlaceholder": "Alan veya şehre göre ara…", "category": "Alan", "allCategories": "Tüm alanlar", "city": "Şehir", "allCities": "Tüm şehirler", "reset": "Filtreleri sıfırla", "close": "Kapat", "activeFilters": "Aktif filtreler", "results": "{count, plural, =0 {Sonuç yok} one {# sonuç} other {# sonuç}}", "sort": "Sırala", "sortRelevance": "Alaka", "sortName": "Ad", "sortTuition": "Ücret", "emptyTitle": "Program bulunamadı", "emptySubtitle": "Bir filtreyi kaldırmayı veya başka bir alan ya da şehir aramayı deneyin."
+    "filters": "Filtreler",
+    "searchPlaceholder": "Alan veya şehre göre ara…",
+    "category": "Alan",
+    "allCategories": "Tüm alanlar",
+    "city": "Şehir",
+    "allCities": "Tüm şehirler",
+    "reset": "Filtreleri sıfırla",
+    "close": "Kapat",
+    "activeFilters": "Aktif filtreler",
+    "results": "{count, plural, =0 {Sonuç yok} one {# sonuç} other {# sonuç}}",
+    "sort": "Sırala",
+    "sortRelevance": "Alaka",
+    "sortName": "Ad",
+    "sortTuition": "Ücret",
+    "emptyTitle": "Program bulunamadı",
+    "emptySubtitle": "Bir filtreyi kaldırmayı veya başka bir alan ya da şehir aramayı deneyin."
   },
   "ProgramCombination": {
     "metaTitle": "{city}'da {category} — Üniversiteler, Ücretler ve Bölümler",
@@ -219,7 +248,12 @@
     "tuition": "Ücret / yıl",
     "universitiesTitle": "Üniversiteler",
     "viewAll": "Tüm üniversiteler",
-    "degrees": { "bachelor": "Lisans", "master": "Yüksek Lisans", "phd": "Doktora", "associate": "Önlisans" }
+    "degrees": {
+      "bachelor": "Lisans",
+      "master": "Yüksek Lisans",
+      "phd": "Doktora",
+      "associate": "Önlisans"
+    }
   },
   "CountryLanding": {
     "metaTitle": "{country} için Türkiye'de Eğitim — Tam Rehber",
@@ -283,7 +317,7 @@
     "country": "Ülke",
     "countryPlaceholder": "Ülkenizi seçin",
     "programInterest": "İlgilendiğiniz bölüm",
-    "programPlaceholder": "ör. Tıp, Bilgisayar Mühendisliği",
+    "programPlaceholder": "Bölüm seçin",
     "message": "Mesaj",
     "messagePlaceholder": "Hedeflerinizden bahsedin…",
     "optional": "isteğe bağlı",
@@ -302,7 +336,6 @@
     "university": "Üniversite",
     "universityPlaceholder": "Üniversite seçin",
     "program": "Bölüm",
-    "programPlaceholder": "Bölüm seçin",
     "programSelectUniversityFirst": "Önce üniversite seçin",
     "degreeLevel": "Derece seviyesi",
     "degreeBachelor": "Lisans",
@@ -384,7 +417,16 @@
     "profile": "Profil"
   },
   "Student": {
-    "auth": { "email": "E-posta", "code": "Doğrulama kodu", "sendLink": "Sihirli bağlantı gönder", "verify": "Kodu doğrula", "back": "Farklı e-posta kullan", "linkSent": "E-postanızı kontrol edin (veya kodu girin).", "error": "Bir şeyler ters gitti. Tekrar deneyin.", "googleLogin": "Google ile devam et" },
+    "auth": {
+      "email": "E-posta",
+      "code": "Doğrulama kodu",
+      "sendLink": "Sihirli bağlantı gönder",
+      "verify": "Kodu doğrula",
+      "back": "Farklı e-posta kullan",
+      "linkSent": "E-postanızı kontrol edin (veya kodu girin).",
+      "error": "Bir şeyler ters gitti. Tekrar deneyin.",
+      "googleLogin": "Google ile devam et"
+    },
     "drawer": {
       "applications": "Başvurular",
       "documents": "Belgeler",
@@ -393,14 +435,64 @@
       "profile": "Profil",
       "signOut": "Çıkış yap"
     },
-    "nav": { "overview": "Genel bakış", "profile": "Profil", "applications": "Başvurular", "documents": "Belgeler", "messages": "Mesajlar", "notifications": "Bildirimler", "logout": "Çıkış yap" },
-    "overview": { "title": "Panelim", "subtitle": "Başvurularınızı, belgelerinizi ve mesajlarınızı takip edin.", "applications": "Başvurular", "unreadMessages": "Okunmamış mesajlar", "status": "Mevcut durum", "noApplications": "Henüz başvuru yok", "recentNotifications": "Son bildirimler" },
-    "applications": { "title": "Başvurularım", "empty": "Henüz başvurunuz yok.", "viewDetail": "Detayları gör" },
-    "detail": { "consultant": "Danışman", "timeline": "Etkinlik" },
-    "documents": { "title": "Belgelerim", "upload": "Belge yükle", "uploadCta": "Yükle", "uploadError": "Yükleme başarısız. Dosya türünü/boyutunu kontrol edin.", "empty": "Henüz belge yok.", "verified": "Doğrulandı", "pending": "Bekliyor", "download": "İndir" },
-    "messages": { "title": "Mesajlar", "empty": "Henüz mesaj yok.", "placeholder": "Mesaj yazın…", "send": "Gönder", "consultant": "Danışman", "you": "Siz" },
-    "notifications": { "title": "Bildirimler", "empty": "Bildirim yok.", "statusChange": "Başvuru durumunuz değişti.", "assigned": "Size bir danışman atandı.", "message": "{name} adlı kişiden yeni mesaj", "viewDetail": "Detayları gör" },
-    "login": { "title": "Öğrenci girişi (demo)", "subtitle": "Devam etmek için bir demo öğrenci profili seçin.", "choose": "Devam et" }
+    "nav": {
+      "overview": "Genel bakış",
+      "profile": "Profil",
+      "applications": "Başvurular",
+      "documents": "Belgeler",
+      "messages": "Mesajlar",
+      "notifications": "Bildirimler",
+      "logout": "Çıkış yap"
+    },
+    "overview": {
+      "title": "Panelim",
+      "subtitle": "Başvurularınızı, belgelerinizi ve mesajlarınızı takip edin.",
+      "applications": "Başvurular",
+      "unreadMessages": "Okunmamış mesajlar",
+      "status": "Mevcut durum",
+      "noApplications": "Henüz başvuru yok",
+      "recentNotifications": "Son bildirimler"
+    },
+    "applications": {
+      "title": "Başvurularım",
+      "empty": "Henüz başvurunuz yok.",
+      "viewDetail": "Detayları gör"
+    },
+    "detail": {
+      "consultant": "Danışman",
+      "timeline": "Etkinlik"
+    },
+    "documents": {
+      "title": "Belgelerim",
+      "upload": "Belge yükle",
+      "uploadCta": "Yükle",
+      "uploadError": "Yükleme başarısız. Dosya türünü/boyutunu kontrol edin.",
+      "empty": "Henüz belge yok.",
+      "verified": "Doğrulandı",
+      "pending": "Bekliyor",
+      "download": "İndir"
+    },
+    "messages": {
+      "title": "Mesajlar",
+      "empty": "Henüz mesaj yok.",
+      "placeholder": "Mesaj yazın…",
+      "send": "Gönder",
+      "consultant": "Danışman",
+      "you": "Siz"
+    },
+    "notifications": {
+      "title": "Bildirimler",
+      "empty": "Bildirim yok.",
+      "statusChange": "Başvuru durumunuz değişti.",
+      "assigned": "Size bir danışman atandı.",
+      "message": "{name} adlı kişiden yeni mesaj",
+      "viewDetail": "Detayları gör"
+    },
+    "login": {
+      "title": "Öğrenci girişi (demo)",
+      "subtitle": "Devam etmek için bir demo öğrenci profili seçin.",
+      "choose": "Devam et"
+    }
   },
   "Geo": {
     "universityShortAnswer": "{name}, {city}, Türkiye'de {year} yılında kurulan bir {type} üniversitesidir. {languages} dilinde programlar sunar ve ücretler {tuition}/yıl'dan başlar. {accreditation} akreditasyonlu olup {students} öğrenciye ev sahipliği yapmaktadır.",
@@ -451,5 +543,36 @@
     "greeting": "Merhaba! Türkiye'de eğitim asistanınım. Üniversiteler, bölümler, ücretler veya başvuru süreci hakkında soru sor.",
     "error": "Üzgünüm, cevap veremedim. Tekrar deneyin veya WhatsApp üzerinden ulaşın.",
     "closed": "Sohbet kapatıldı"
+  },
+  "ProgramCategory": {
+    "metaTitle": "{category} Türkiye'de — Üniversiteler, Ücretler ve Bölümler",
+    "metaDescription": "{category} alanında Türkiye'de eğitim alın. Program sunan {count} üniversiteyi, ücretleri ve şehir seçeneklerini karşılaştırın.",
+    "home": "Anasayfa",
+    "programs": "Bölümler",
+    "title": "{category} Türkiye'de",
+    "subtitle": "{category} programları sunan üniversiteleri Türkiye genelinde karşılaştırın. Ücretler, dereceler, diller ve şehir seçeneklerini bir bakışta görün.",
+    "programsLabel": "Bölümler",
+    "universitiesLabel": "Üniversiteler",
+    "fromLabel": "Ücret başlangıç",
+    "categoryLabel": "Kategori",
+    "citiesTitle": "{category} şehirlere göre",
+    "universitiesInCity": "{count} üniversite",
+    "from": "başlayan",
+    "programsTitle": "Sunulan bölümler",
+    "programName": "Bölüm",
+    "university": "Üniversite",
+    "city": "Şehir",
+    "degree": "Derece",
+    "language": "Dil",
+    "tuition": "Ücret / yıl",
+    "universitiesTitle": "Üniversiteler",
+    "viewAll": "Tüm üniversiteler",
+    "degrees": {
+      "bachelor": "Lisans",
+      "master": "Yüksek Lisans",
+      "phd": "Doktora",
+      "associate": "Önlisans"
+    },
+    "annualCost": "Yıllık maliyet (eğitim + yaşam)"
   }
 }

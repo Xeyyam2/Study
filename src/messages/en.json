@@ -143,7 +143,16 @@
     "sortRanking": "Ranking",
     "results": "{count, plural, =0 {No universities} one {# university} other {# universities}}",
     "emptyTitle": "No universities found",
-    "emptySubtitle": "Try removing some filters or searching for something else.", "verified": "YÖK", "english": "English", "turkish": "Türkçe", "turkey": "Turkey", "from": "from", "tuition": "Tuition", "rank": "Rank", "founded": "Founded", "close": "Close"
+    "emptySubtitle": "Try removing some filters or searching for something else.",
+    "verified": "YÖK",
+    "english": "English",
+    "turkish": "Türkçe",
+    "turkey": "Turkey",
+    "from": "from",
+    "tuition": "Tuition",
+    "rank": "Rank",
+    "founded": "Founded",
+    "close": "Close"
   },
   "UniversityDetail": {
     "metaTitle": "{name} — Tuition, Programs & Admissions",
@@ -187,7 +196,12 @@
     "applyCta": "Apply now",
     "whatsappCta": "Ask on WhatsApp",
     "applyNote": "Free consultation · Visa support included",
-    "degrees": { "bachelor": "Bachelor", "master": "Master", "phd": "PhD", "associate": "Associate" }
+    "degrees": {
+      "bachelor": "Bachelor",
+      "master": "Master",
+      "phd": "PhD",
+      "associate": "Associate"
+    }
   },
   "ProgramsIndex": {
     "metaTitle": "Study Programs in Turkey — Browse by Field & City",
@@ -197,7 +211,22 @@
     "cities": "cities",
     "universities": "{count, plural, one {# university} other {# universities}}",
     "from": "from",
-    "filters": "Filters", "searchPlaceholder": "Search by field or city…", "category": "Field", "allCategories": "All fields", "city": "City", "allCities": "All cities", "reset": "Reset filters", "close": "Close", "activeFilters": "Active filters", "results": "{count, plural, =0 {No program combinations} one {# result} other {# results}}", "sort": "Sort", "sortRelevance": "Relevance", "sortName": "Name", "sortTuition": "Tuition", "emptyTitle": "No programs found", "emptySubtitle": "Try removing a filter or searching for another field or city."
+    "filters": "Filters",
+    "searchPlaceholder": "Search by field or city…",
+    "category": "Field",
+    "allCategories": "All fields",
+    "city": "City",
+    "allCities": "All cities",
+    "reset": "Reset filters",
+    "close": "Close",
+    "activeFilters": "Active filters",
+    "results": "{count, plural, =0 {No program combinations} one {# result} other {# results}}",
+    "sort": "Sort",
+    "sortRelevance": "Relevance",
+    "sortName": "Name",
+    "sortTuition": "Tuition",
+    "emptyTitle": "No programs found",
+    "emptySubtitle": "Try removing a filter or searching for another field or city."
   },
   "ProgramCombination": {
     "metaTitle": "{category} in {city} — Universities, Tuition & Programs",
@@ -219,7 +248,12 @@
     "tuition": "Tuition / year",
     "universitiesTitle": "Universities",
     "viewAll": "All universities",
-    "degrees": { "bachelor": "Bachelor", "master": "Master", "phd": "PhD", "associate": "Associate" }
+    "degrees": {
+      "bachelor": "Bachelor",
+      "master": "Master",
+      "phd": "PhD",
+      "associate": "Associate"
+    }
   },
   "CountryLanding": {
     "metaTitle": "Study in Turkey from {country} — Complete Guide",
@@ -283,7 +317,7 @@
     "country": "Country",
     "countryPlaceholder": "Select your country",
     "programInterest": "Program of interest",
-    "programPlaceholder": "e.g. Medicine, Computer Engineering",
+    "programPlaceholder": "Select a program",
     "message": "Message",
     "messagePlaceholder": "Tell us about your goals…",
     "optional": "optional",
@@ -302,7 +336,6 @@
     "university": "University",
     "universityPlaceholder": "Select a university",
     "program": "Program",
-    "programPlaceholder": "Select a program",
     "programSelectUniversityFirst": "Select a university first",
     "degreeLevel": "Degree level",
     "degreeBachelor": "Bachelor",
@@ -384,7 +417,16 @@
     "profile": "Profile"
   },
   "Student": {
-    "auth": { "email": "Email", "code": "Verification code", "sendLink": "Send magic link", "verify": "Verify code", "back": "Use a different email", "linkSent": "Check your email for the magic link (or enter the code).", "error": "Something went wrong. Try again.", "googleLogin": "Continue with Google" },
+    "auth": {
+      "email": "Email",
+      "code": "Verification code",
+      "sendLink": "Send magic link",
+      "verify": "Verify code",
+      "back": "Use a different email",
+      "linkSent": "Check your email for the magic link (or enter the code).",
+      "error": "Something went wrong. Try again.",
+      "googleLogin": "Continue with Google"
+    },
     "drawer": {
       "applications": "Applications",
       "documents": "Documents",
@@ -393,14 +435,64 @@
       "profile": "Profile",
       "signOut": "Sign out"
     },
-    "nav": { "overview": "Overview", "profile": "Profile", "applications": "Applications", "documents": "Documents", "messages": "Messages", "notifications": "Notifications", "logout": "Log out" },
-    "overview": { "title": "My dashboard", "subtitle": "Track your applications, documents and messages.", "applications": "Applications", "unreadMessages": "Unread messages", "status": "Current status", "noApplications": "No applications yet", "recentNotifications": "Recent notifications" },
-    "applications": { "title": "My applications", "empty": "You have no applications yet.", "viewDetail": "View details" },
-    "detail": { "consultant": "Consultant", "timeline": "Activity" },
-    "documents": { "title": "My documents", "upload": "Upload a document", "uploadCta": "Upload", "uploadError": "Upload failed. Check the file type/size.", "empty": "No documents yet.", "verified": "Verified", "pending": "Pending", "download": "Download" },
-    "messages": { "title": "Messages", "empty": "No messages yet.", "placeholder": "Write a message…", "send": "Send", "consultant": "Consultant", "you": "You" },
-    "notifications": { "title": "Notifications", "empty": "No notifications.", "statusChange": "Your application status changed.", "assigned": "A consultant was assigned to you.", "message": "New message from {name}", "viewDetail": "View details" },
-    "login": { "title": "Student login (demo)", "subtitle": "Pick a demo student profile to continue.", "choose": "Continue" }
+    "nav": {
+      "overview": "Overview",
+      "profile": "Profile",
+      "applications": "Applications",
+      "documents": "Documents",
+      "messages": "Messages",
+      "notifications": "Notifications",
+      "logout": "Log out"
+    },
+    "overview": {
+      "title": "My dashboard",
+      "subtitle": "Track your applications, documents and messages.",
+      "applications": "Applications",
+      "unreadMessages": "Unread messages",
+      "status": "Current status",
+      "noApplications": "No applications yet",
+      "recentNotifications": "Recent notifications"
+    },
+    "applications": {
+      "title": "My applications",
+      "empty": "You have no applications yet.",
+      "viewDetail": "View details"
+    },
+    "detail": {
+      "consultant": "Consultant",
+      "timeline": "Activity"
+    },
+    "documents": {
+      "title": "My documents",
+      "upload": "Upload a document",
+      "uploadCta": "Upload",
+      "uploadError": "Upload failed. Check the file type/size.",
+      "empty": "No documents yet.",
+      "verified": "Verified",
+      "pending": "Pending",
+      "download": "Download"
+    },
+    "messages": {
+      "title": "Messages",
+      "empty": "No messages yet.",
+      "placeholder": "Write a message…",
+      "send": "Send",
+      "consultant": "Consultant",
+      "you": "You"
+    },
+    "notifications": {
+      "title": "Notifications",
+      "empty": "No notifications.",
+      "statusChange": "Your application status changed.",
+      "assigned": "A consultant was assigned to you.",
+      "message": "New message from {name}",
+      "viewDetail": "View details"
+    },
+    "login": {
+      "title": "Student login (demo)",
+      "subtitle": "Pick a demo student profile to continue.",
+      "choose": "Continue"
+    }
   },
   "Geo": {
     "universityShortAnswer": "{name} is a {type} university in {city}, Turkey, founded in {year}. It offers programs in {languages} with tuition starting from {tuition}/year. Accredited by {accreditation}, it hosts over {students} students.",
@@ -451,5 +543,36 @@
     "greeting": "Hi! I'm your study-in-Turkey assistant. Ask me about universities, programs, tuition fees, or the application process.",
     "error": "Sorry, I couldn't respond. Please try again or contact us via WhatsApp.",
     "closed": "Chat closed"
+  },
+  "ProgramCategory": {
+    "metaTitle": "{category} in Turkey — Universities, Tuition & Programs",
+    "metaDescription": "Study {category} in Turkey. Compare {count} universities offering programs, tuition fees and city options.",
+    "home": "Home",
+    "programs": "Programs",
+    "title": "{category} in Turkey",
+    "subtitle": "Compare universities offering {category} programs across Turkey. See tuition, degrees, languages and city options at a glance.",
+    "programsLabel": "Programs",
+    "universitiesLabel": "Universities",
+    "fromLabel": "Tuition from",
+    "categoryLabel": "Category",
+    "citiesTitle": "Study {category} by city",
+    "universitiesInCity": "{count} universities",
+    "from": "from",
+    "programsTitle": "Programs offered",
+    "programName": "Program",
+    "university": "University",
+    "city": "City",
+    "degree": "Degree",
+    "language": "Language",
+    "tuition": "Tuition / year",
+    "universitiesTitle": "Universities",
+    "viewAll": "All universities",
+    "degrees": {
+      "bachelor": "Bachelor",
+      "master": "Master",
+      "phd": "PhD",
+      "associate": "Associate"
+    },
+    "annualCost": "Annual cost (tuition + living)"
   }
 }

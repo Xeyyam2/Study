@@ -143,7 +143,16 @@
     "sortRanking": "Classement",
     "results": "{count, plural, =0 {Aucune université} one {# université} other {# universités}}",
     "emptyTitle": "Aucune université trouvée",
-    "emptySubtitle": "Essayez de retirer des filtres ou de rechercher autre chose.", "verified": "YÖK", "english": "Anglais", "turkish": "Turc", "turkey": "Turquie", "from": "à partir de", "tuition": "Frais", "rank": "Classement", "founded": "Fondée", "close": "Fermer"
+    "emptySubtitle": "Essayez de retirer des filtres ou de rechercher autre chose.",
+    "verified": "YÖK",
+    "english": "Anglais",
+    "turkish": "Turc",
+    "turkey": "Turquie",
+    "from": "à partir de",
+    "tuition": "Frais",
+    "rank": "Classement",
+    "founded": "Fondée",
+    "close": "Fermer"
   },
   "UniversityDetail": {
     "metaTitle": "{name} — Frais, programmes & admissions",
@@ -186,7 +195,12 @@
     "applyCta": "Postuler maintenant",
     "whatsappCta": "Demander sur WhatsApp",
     "applyNote": "Consultation gratuite · Soutien visa inclus",
-    "degrees": { "bachelor": "Licence", "master": "Master", "phd": "Doctorat", "associate": "Associate" }
+    "degrees": {
+      "bachelor": "Licence",
+      "master": "Master",
+      "phd": "Doctorat",
+      "associate": "Associate"
+    }
   },
   "ProgramsIndex": {
     "metaTitle": "Programmes d'études en Turquie — Par domaine & ville",
@@ -196,7 +210,22 @@
     "cities": "villes",
     "universities": "{count, plural, one {# université} other {# universités}}",
     "from": "à partir de",
-    "filters": "Filtres", "searchPlaceholder": "Rechercher par domaine ou ville…", "category": "Domaine", "allCategories": "Tous les domaines", "city": "Ville", "allCities": "Toutes les villes", "reset": "Réinitialiser les filtres", "close": "Fermer", "activeFilters": "Filtres actifs", "results": "{count, plural, =0 {Aucun résultat} one {# résultat} other {# résultats}}", "sort": "Trier", "sortRelevance": "Pertinence", "sortName": "Nom", "sortTuition": "Frais", "emptyTitle": "Aucun programme trouvé", "emptySubtitle": "Essayez de supprimer un filtre ou de rechercher un autre domaine ou une autre ville."
+    "filters": "Filtres",
+    "searchPlaceholder": "Rechercher par domaine ou ville…",
+    "category": "Domaine",
+    "allCategories": "Tous les domaines",
+    "city": "Ville",
+    "allCities": "Toutes les villes",
+    "reset": "Réinitialiser les filtres",
+    "close": "Fermer",
+    "activeFilters": "Filtres actifs",
+    "results": "{count, plural, =0 {Aucun résultat} one {# résultat} other {# résultats}}",
+    "sort": "Trier",
+    "sortRelevance": "Pertinence",
+    "sortName": "Nom",
+    "sortTuition": "Frais",
+    "emptyTitle": "Aucun programme trouvé",
+    "emptySubtitle": "Essayez de supprimer un filtre ou de rechercher un autre domaine ou une autre ville."
   },
   "ProgramCombination": {
     "metaTitle": "{category} à {city} — Universités, frais & programmes",
@@ -216,7 +245,12 @@
     "tuition": "Frais / an",
     "universitiesTitle": "Universités",
     "viewAll": "Toutes les universités",
-    "degrees": { "bachelor": "Licence", "master": "Master", "phd": "Doctorat", "associate": "Associate" }
+    "degrees": {
+      "bachelor": "Licence",
+      "master": "Master",
+      "phd": "Doctorat",
+      "associate": "Associate"
+    }
   },
   "CountryLanding": {
     "metaTitle": "Étudier en Turquie depuis {country} — Guide complet",
@@ -280,7 +314,7 @@
     "country": "Pays",
     "countryPlaceholder": "Sélectionnez votre pays",
     "programInterest": "Programme d'intérêt",
-    "programPlaceholder": "ex. Médecine, Génie informatique",
+    "programPlaceholder": "Select a program",
     "message": "Message",
     "messagePlaceholder": "Parlez-nous de vos objectifs…",
     "optional": "optionnel",
@@ -299,7 +333,6 @@
     "university": "University",
     "universityPlaceholder": "Select a university",
     "program": "Program",
-    "programPlaceholder": "Select a program",
     "programSelectUniversityFirst": "Select a university first",
     "degreeLevel": "Degree level",
     "degreeBachelor": "Bachelor",
@@ -381,7 +414,16 @@
     "profile": "Profile"
   },
   "Student": {
-    "auth": { "email": "E-mail", "code": "Code de vérification", "sendLink": "Envoyer le lien magique", "verify": "Vérifier le code", "back": "Utiliser un autre e-mail", "linkSent": "Vérifiez votre e-mail pour le lien magique (ou saisissez le code).", "error": "Une erreur est survenue. Réessayez.", "googleLogin": "Continue with Google" },
+    "auth": {
+      "email": "E-mail",
+      "code": "Code de vérification",
+      "sendLink": "Envoyer le lien magique",
+      "verify": "Vérifier le code",
+      "back": "Utiliser un autre e-mail",
+      "linkSent": "Vérifiez votre e-mail pour le lien magique (ou saisissez le code).",
+      "error": "Une erreur est survenue. Réessayez.",
+      "googleLogin": "Continue with Google"
+    },
     "drawer": {
       "applications": "Applications",
       "documents": "Documents",
@@ -390,13 +432,94 @@
       "profile": "Profile",
       "signOut": "Sign out"
     },
-    "nav": { "overview": "Aperçu", "profile": "Profile", "applications": "Candidatures", "documents": "Documents", "messages": "Messages", "notifications": "Notifications", "logout": "Déconnexion" },
-    "overview": { "title": "Mon tableau de bord", "subtitle": "Suivez vos candidatures, documents et messages.", "applications": "Candidatures", "unreadMessages": "Messages non lus", "status": "Statut actuel", "noApplications": "Aucune candidature pour l'instant", "recentNotifications": "Notifications récentes" },
-    "applications": { "title": "Mes candidatures", "empty": "Vous n'avez pas encore de candidatures.", "viewDetail": "Voir les détails" },
-    "detail": { "consultant": "Consultant", "timeline": "Activité" },
-    "documents": { "title": "Mes documents", "upload": "Télécharger un document", "uploadCta": "Télécharger", "uploadError": "Échec du téléchargement. Vérifiez le type/taille du fichier.", "empty": "Aucun document pour l'instant.", "verified": "Vérifié", "pending": "En attente", "download": "Télécharger" },
-    "messages": { "title": "Messages", "empty": "Aucun message pour l'instant.", "placeholder": "Écrire un message…", "send": "Envoyer", "consultant": "Consultant", "you": "Vous" },
-    "notifications": { "title": "Notifications", "empty": "Aucune notification.", "statusChange": "Le statut de votre candidature a changé.", "assigned": "Un consultant vous a été attribué.", "message": "Nouveau message de {name}", "viewDetail": "Voir les détails" },
-    "login": { "title": "Connexion étudiant (démo)", "subtitle": "Choisissez un profil étudiant démo pour continuer.", "choose": "Continuer" }
+    "nav": {
+      "overview": "Aperçu",
+      "profile": "Profile",
+      "applications": "Candidatures",
+      "documents": "Documents",
+      "messages": "Messages",
+      "notifications": "Notifications",
+      "logout": "Déconnexion"
+    },
+    "overview": {
+      "title": "Mon tableau de bord",
+      "subtitle": "Suivez vos candidatures, documents et messages.",
+      "applications": "Candidatures",
+      "unreadMessages": "Messages non lus",
+      "status": "Statut actuel",
+      "noApplications": "Aucune candidature pour l'instant",
+      "recentNotifications": "Notifications récentes"
+    },
+    "applications": {
+      "title": "Mes candidatures",
+      "empty": "Vous n'avez pas encore de candidatures.",
+      "viewDetail": "Voir les détails"
+    },
+    "detail": {
+      "consultant": "Consultant",
+      "timeline": "Activité"
+    },
+    "documents": {
+      "title": "Mes documents",
+      "upload": "Télécharger un document",
+      "uploadCta": "Télécharger",
+      "uploadError": "Échec du téléchargement. Vérifiez le type/taille du fichier.",
+      "empty": "Aucun document pour l'instant.",
+      "verified": "Vérifié",
+      "pending": "En attente",
+      "download": "Télécharger"
+    },
+    "messages": {
+      "title": "Messages",
+      "empty": "Aucun message pour l'instant.",
+      "placeholder": "Écrire un message…",
+      "send": "Envoyer",
+      "consultant": "Consultant",
+      "you": "Vous"
+    },
+    "notifications": {
+      "title": "Notifications",
+      "empty": "Aucune notification.",
+      "statusChange": "Le statut de votre candidature a changé.",
+      "assigned": "Un consultant vous a été attribué.",
+      "message": "Nouveau message de {name}",
+      "viewDetail": "Voir les détails"
+    },
+    "login": {
+      "title": "Connexion étudiant (démo)",
+      "subtitle": "Choisissez un profil étudiant démo pour continuer.",
+      "choose": "Continuer"
+    }
+  },
+  "ProgramCategory": {
+    "metaTitle": "{category} en Turquie — Universités, frais et programmes",
+    "metaDescription": "Étudiez {category} en Turquie. Comparez {count} universités proposant des programmes, les frais et les options de villes.",
+    "home": "Accueil",
+    "programs": "Programmes",
+    "title": "{category} en Turquie",
+    "subtitle": "Comparez les universités proposant des programmes de {category} partout en Turquie. Voyez les frais, diplômes, langues et options de villes en un coup d'œil.",
+    "programsLabel": "Programmes",
+    "universitiesLabel": "Universités",
+    "fromLabel": "Frais à partir de",
+    "categoryLabel": "",
+    "citiesTitle": "Étudier {category} par ville",
+    "universitiesInCity": "{count} universités",
+    "from": "à partir de",
+    "programsTitle": "Programmes proposés",
+    "programName": "Programme",
+    "university": "Université",
+    "city": "Ville",
+    "degree": "Diplôme",
+    "language": "Langue",
+    "tuition": "Frais / an",
+    "universitiesTitle": "Universités",
+    "viewAll": "Toutes les universités",
+    "degrees": {
+      "bachelor": "Licence",
+      "master": "Master",
+      "phd": "Doctorat",
+      "associate": "Associate"
+    },
+    "annualCost": "Coût annuel (scolarité + logement)"
   }
 }

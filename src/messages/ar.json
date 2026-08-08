@@ -143,7 +143,16 @@
     "sortRanking": "التصنيف",
     "results": "{count, plural, =0 {لا جامعات} one {# جامعة} other {# جامعة}}",
     "emptyTitle": "لا جامعات",
-    "emptySubtitle": "جرّب إزالة بعض الفلاتر أو البحث عن شيء آخر.", "verified": "YÖK", "english": "الإنجليزية", "turkish": "التركية", "turkey": "تركيا", "from": "ابتداءً من", "tuition": "الرسوم", "rank": "التصنيف", "founded": "تأسست", "close": "إغلاق"
+    "emptySubtitle": "جرّب إزالة بعض الفلاتر أو البحث عن شيء آخر.",
+    "verified": "YÖK",
+    "english": "الإنجليزية",
+    "turkish": "التركية",
+    "turkey": "تركيا",
+    "from": "ابتداءً من",
+    "tuition": "الرسوم",
+    "rank": "التصنيف",
+    "founded": "تأسست",
+    "close": "إغلاق"
   },
   "UniversityDetail": {
     "metaTitle": "{name} — الرسوم والتخصصات والقبول",
@@ -186,7 +195,12 @@
     "applyCta": "تقدّم الآن",
     "whatsappCta": "اسأل على واتساب",
     "applyNote": "استشارة مجانية · دعم التأشيرة مشمول",
-    "degrees": { "bachelor": "بكالوريوس", "master": "ماجستير", "phd": "دكتوراه", "associate": "زمالة" }
+    "degrees": {
+      "bachelor": "بكالوريوس",
+      "master": "ماجستير",
+      "phd": "دكتوراه",
+      "associate": "زمالة"
+    }
   },
   "ProgramsIndex": {
     "metaTitle": "تخصصات الدراسة في تركيا — حسب المجال والمدينة",
@@ -196,7 +210,22 @@
     "cities": "مدن",
     "universities": "{count, plural, one {# جامعة} other {# جامعة}}",
     "from": "من",
-    "filters": "الفلاتر", "searchPlaceholder": "البحث حسب المجال أو المدينة…", "category": "المجال", "allCategories": "كل المجالات", "city": "المدينة", "allCities": "كل المدن", "reset": "إعادة ضبط الفلاتر", "close": "إغلاق", "activeFilters": "الفلاتر النشطة", "results": "{count, plural, =0 {لا توجد نتائج} one {# نتيجة} other {# نتائج}}", "sort": "ترتيب", "sortRelevance": "الأكثر صلة", "sortName": "الاسم", "sortTuition": "الرسوم", "emptyTitle": "لم يتم العثور على برامج", "emptySubtitle": "حاول إزالة فلتر أو البحث عن مجال أو مدينة أخرى."
+    "filters": "الفلاتر",
+    "searchPlaceholder": "البحث حسب المجال أو المدينة…",
+    "category": "المجال",
+    "allCategories": "كل المجالات",
+    "city": "المدينة",
+    "allCities": "كل المدن",
+    "reset": "إعادة ضبط الفلاتر",
+    "close": "إغلاق",
+    "activeFilters": "الفلاتر النشطة",
+    "results": "{count, plural, =0 {لا توجد نتائج} one {# نتيجة} other {# نتائج}}",
+    "sort": "ترتيب",
+    "sortRelevance": "الأكثر صلة",
+    "sortName": "الاسم",
+    "sortTuition": "الرسوم",
+    "emptyTitle": "لم يتم العثور على برامج",
+    "emptySubtitle": "حاول إزالة فلتر أو البحث عن مجال أو مدينة أخرى."
   },
   "ProgramCombination": {
     "metaTitle": "{category} في {city} — جامعات ورسوم وتخصصات",
@@ -216,7 +245,12 @@
     "tuition": "الرسوم / سنة",
     "universitiesTitle": "الجامعات",
     "viewAll": "كل الجامعات",
-    "degrees": { "bachelor": "بكالوريوس", "master": "ماجستير", "phd": "دكتوراه", "associate": "زمالة" }
+    "degrees": {
+      "bachelor": "بكالوريوس",
+      "master": "ماجستير",
+      "phd": "دكتوراه",
+      "associate": "زمالة"
+    }
   },
   "CountryLanding": {
     "metaTitle": "الدراسة في تركيا من {country} — دليل كامل",
@@ -280,7 +314,7 @@
     "country": "الدولة",
     "countryPlaceholder": "اختر دولتك",
     "programInterest": "التخصص المرغوب",
-    "programPlaceholder": "مثلاً: الطب، هندسة الحاسوب",
+    "programPlaceholder": "Select a program",
     "message": "رسالة",
     "messagePlaceholder": "أخبرنا عن أهدافك…",
     "optional": "اختياري",
@@ -299,7 +333,6 @@
     "university": "University",
     "universityPlaceholder": "Select a university",
     "program": "Program",
-    "programPlaceholder": "Select a program",
     "programSelectUniversityFirst": "Select a university first",
     "degreeLevel": "Degree level",
     "degreeBachelor": "Bachelor",
@@ -381,7 +414,16 @@
     "profile": "Profile"
   },
   "Student": {
-    "auth": { "email": "البريد الإلكتروني", "code": "رمز التحقق", "sendLink": "إرسال الرابط السحري", "verify": "تحقق من الرمز", "back": "استخدم بريداً آخر", "linkSent": "تحقق من بريدك للحصول على الرابط السحري (أو أدخل الرمز).", "error": "حدث خطأ. حاول مرة أخرى.", "googleLogin": "Continue with Google" },
+    "auth": {
+      "email": "البريد الإلكتروني",
+      "code": "رمز التحقق",
+      "sendLink": "إرسال الرابط السحري",
+      "verify": "تحقق من الرمز",
+      "back": "استخدم بريداً آخر",
+      "linkSent": "تحقق من بريدك للحصول على الرابط السحري (أو أدخل الرمز).",
+      "error": "حدث خطأ. حاول مرة أخرى.",
+      "googleLogin": "Continue with Google"
+    },
     "drawer": {
       "applications": "Applications",
       "documents": "Documents",
@@ -390,13 +432,94 @@
       "profile": "Profile",
       "signOut": "Sign out"
     },
-    "nav": { "overview": "نظرة عامة", "profile": "Profile", "applications": "الطلبات", "documents": "المستندات", "messages": "الرسائل", "notifications": "الإشعارات", "logout": "تسجيل خروج" },
-    "overview": { "title": "لوحتي", "subtitle": "تابع طلباتك ومستنداتك ورسائلك.", "applications": "الطلبات", "unreadMessages": "رسائل غير مقروءة", "status": "الحالة الحالية", "noApplications": "لا طلبات بعد", "recentNotifications": "إشعارات حديثة" },
-    "applications": { "title": "طلباتي", "empty": "ليس لديك طلبات بعد.", "viewDetail": "عرض التفاصيل" },
-    "detail": { "consultant": "المستشار", "timeline": "النشاط" },
-    "documents": { "title": "مستنداتي", "upload": "رفع مستند", "uploadCta": "رفع", "uploadError": "فشل الرفع. تحقق من نوع/حجم الملف.", "empty": "لا مستندات بعد.", "verified": "موثّق", "pending": "قيد الانتظار", "download": "تنزيل" },
-    "messages": { "title": "الرسائل", "empty": "لا رسائل بعد.", "placeholder": "اكتب رسالة…", "send": "إرسال", "consultant": "المستشار", "you": "أنت" },
-    "notifications": { "title": "الإشعارات", "empty": "لا إشعارات.", "statusChange": "تغيّر حالة طلبك.", "assigned": "تم تعيين مستشار لك.", "message": "رسالة جديدة من {name}", "viewDetail": "عرض التفاصيل" },
-    "login": { "title": "تسجيل دخول الطالب (تجريبي)", "subtitle": "اختر ملف طالب تجريبي للمتابعة.", "choose": "متابعة" }
+    "nav": {
+      "overview": "نظرة عامة",
+      "profile": "Profile",
+      "applications": "الطلبات",
+      "documents": "المستندات",
+      "messages": "الرسائل",
+      "notifications": "الإشعارات",
+      "logout": "تسجيل خروج"
+    },
+    "overview": {
+      "title": "لوحتي",
+      "subtitle": "تابع طلباتك ومستنداتك ورسائلك.",
+      "applications": "الطلبات",
+      "unreadMessages": "رسائل غير مقروءة",
+      "status": "الحالة الحالية",
+      "noApplications": "لا طلبات بعد",
+      "recentNotifications": "إشعارات حديثة"
+    },
+    "applications": {
+      "title": "طلباتي",
+      "empty": "ليس لديك طلبات بعد.",
+      "viewDetail": "عرض التفاصيل"
+    },
+    "detail": {
+      "consultant": "المستشار",
+      "timeline": "النشاط"
+    },
+    "documents": {
+      "title": "مستنداتي",
+      "upload": "رفع مستند",
+      "uploadCta": "رفع",
+      "uploadError": "فشل الرفع. تحقق من نوع/حجم الملف.",
+      "empty": "لا مستندات بعد.",
+      "verified": "موثّق",
+      "pending": "قيد الانتظار",
+      "download": "تنزيل"
+    },
+    "messages": {
+      "title": "الرسائل",
+      "empty": "لا رسائل بعد.",
+      "placeholder": "اكتب رسالة…",
+      "send": "إرسال",
+      "consultant": "المستشار",
+      "you": "أنت"
+    },
+    "notifications": {
+      "title": "الإشعارات",
+      "empty": "لا إشعارات.",
+      "statusChange": "تغيّر حالة طلبك.",
+      "assigned": "تم تعيين مستشار لك.",
+      "message": "رسالة جديدة من {name}",
+      "viewDetail": "عرض التفاصيل"
+    },
+    "login": {
+      "title": "تسجيل دخول الطالب (تجريبي)",
+      "subtitle": "اختر ملف طالب تجريبي للمتابعة.",
+      "choose": "متابعة"
+    }
+  },
+  "ProgramCategory": {
+    "metaTitle": "{category} في تركيا — الجامعات والرسوم والتخصصات",
+    "metaDescription": "ادرس {category} في تركيا. قارن {count} جامعات تقدم برامج، الرسوم وخيارات المدن.",
+    "home": "الرئيسية",
+    "programs": "التخصصات",
+    "title": "{category} في تركيا",
+    "subtitle": "قارن الجامعات التي تقدم برامج {category} في جميع أنحاء تركيا. شاهد الرسوم والدرجات واللغات وخيارات المدن في لمحة.",
+    "programsLabel": "التخصصات",
+    "universitiesLabel": "الجامعات",
+    "fromLabel": "الرسوم من",
+    "categoryLabel": "",
+    "citiesTitle": "ادرس {category} حسب المدينة",
+    "universitiesInCity": "{count} جامعات",
+    "from": "من",
+    "programsTitle": "التخصصات المعروضة",
+    "programName": "التخصص",
+    "university": "الجامعة",
+    "city": "المدينة",
+    "degree": "الدرجة",
+    "language": "اللغة",
+    "tuition": "الرسوم / سنة",
+    "universitiesTitle": "الجامعات",
+    "viewAll": "كل الجامعات",
+    "degrees": {
+      "bachelor": "بكالوريوس",
+      "master": "ماجستير",
+      "phd": "دكتوراه",
+      "associate": "زمالة"
+    },
+    "annualCost": "التكلفة السنوية (الرسوم + المعيشة)"
   }
 }

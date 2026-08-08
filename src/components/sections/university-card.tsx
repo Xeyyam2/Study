@@ -27,6 +27,7 @@ interface UniversityCardProps {
   minTuition?: number;
   listingMetadata?: UniversityListingMetadata;
   labels?: UniversityCardLabels;
+  footer?: React.ReactNode;
 }
 
 const DEFAULT_LABELS: UniversityCardLabels = {
@@ -47,6 +48,7 @@ export async function UniversityCard({
   minTuition: suppliedMinTuition,
   listingMetadata,
   labels = DEFAULT_LABELS,
+  footer,
 }: UniversityCardProps) {
   const [city, minTuition, rating, count] = listingMetadata
     ? [
@@ -134,6 +136,8 @@ export async function UniversityCard({
             <Stat label={labels.rank} value={`#${university.ranking}`} />
             <Stat label={labels.founded} value={String(university.foundedYear)} />
           </div>
+
+          {footer}
         </div>
       </Card>
     </Link>

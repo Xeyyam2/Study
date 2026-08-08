@@ -143,7 +143,15 @@
     "sortRanking": "Reýting",
     "results": "{count, plural, =0 {Uniwersvet ýok} one {# uniwersvet} other {# uniwersvetler}}",
     "emptyTitle": "Uniwersvet tapylmady",
-    "verified": "YÖK", "english": "Iňlisçe", "turkish": "Türkçe", "turkey": "Türkiýe", "from": "-den", "tuition": "Okuw tölegi", "rank": "Dereje", "founded": "Döredilen", "close": "Ýap",
+    "verified": "YÖK",
+    "english": "Iňlisçe",
+    "turkish": "Türkçe",
+    "turkey": "Türkiýe",
+    "from": "-den",
+    "tuition": "Okuw tölegi",
+    "rank": "Dereje",
+    "founded": "Döredilen",
+    "close": "Ýap",
     "emptySubtitle": "Süzgüçleriň birnäni aýyraň ýa-dabaşga zadyh göräň."
   },
   "UniversityDetail": {
@@ -187,7 +195,12 @@
     "applyCta": "Häzir başla",
     "whatsappCta": "WhatsApp-da sora",
     "applyNote": "Mugt maslahat · Wiza goldawy goşuldy",
-    "degrees": { "bachelor": "Bakalawr", "master": "Magistr", "phd": "Doktora", "associate": "Orta hünär" }
+    "degrees": {
+      "bachelor": "Bakalawr",
+      "master": "Magistr",
+      "phd": "Doktora",
+      "associate": "Orta hünär"
+    }
   },
   "ProgramsIndex": {
     "metaTitle": "Türkiýa okuw hünärleri — Ugur we şäher boýunça",
@@ -197,7 +210,22 @@
     "cities": "şäherler",
     "universities": "{count, plural, one {# uniwersvet} other {# uniwersvetler}}",
     "from": "şeýleden",
-    "filters": "Süzgüçler", "searchPlaceholder": "Ugur ýa-da şäher boýunça gözle…", "category": "Ugur", "allCategories": "Ähli ugurlar", "city": "Şäher", "allCities": "Ähli şäherler", "reset": "Süzgüçleri aýyr", "close": "Ýap", "activeFilters": "Işjeň süzgüçler", "results": "{count, plural, =0 {Netije ýok} one {# netije} other {# netije}}", "sort": "Tertiple", "sortRelevance": "Degişlilik", "sortName": "At", "sortTuition": "Töleg", "emptyTitle": "Okuw hünäri tapylmady", "emptySubtitle": "Süzgüji aýryp ýa-da başga ugur ýa-da şäher gözläp görüň."
+    "filters": "Süzgüçler",
+    "searchPlaceholder": "Ugur ýa-da şäher boýunça gözle…",
+    "category": "Ugur",
+    "allCategories": "Ähli ugurlar",
+    "city": "Şäher",
+    "allCities": "Ähli şäherler",
+    "reset": "Süzgüçleri aýyr",
+    "close": "Ýap",
+    "activeFilters": "Işjeň süzgüçler",
+    "results": "{count, plural, =0 {Netije ýok} one {# netije} other {# netije}}",
+    "sort": "Tertiple",
+    "sortRelevance": "Degişlilik",
+    "sortName": "At",
+    "sortTuition": "Töleg",
+    "emptyTitle": "Okuw hünäri tapylmady",
+    "emptySubtitle": "Süzgüji aýryp ýa-da başga ugur ýa-da şäher gözläp görüň."
   },
   "ProgramCombination": {
     "metaTitle": "{city} - {category} — Uniwersvetler, töleg we hünärler",
@@ -217,7 +245,12 @@
     "tuition": "Töleg / ýyl",
     "universitiesTitle": "Uniwersvetler",
     "viewAll": "Ähli uniwersvetler",
-    "degrees": { "bachelor": "Bakalawr", "master": "Magistr", "phd": "Doktora", "associate": "Orta hünär" }
+    "degrees": {
+      "bachelor": "Bakalawr",
+      "master": "Magistr",
+      "phd": "Doktora",
+      "associate": "Orta hünär"
+    }
   },
   "CountryLanding": {
     "metaTitle": "{country} ýurdundan Türkiýada okuw — Doly görkezme",
@@ -281,7 +314,7 @@
     "country": "Ýurt",
     "countryPlaceholder": "Ýurduňyzy saýlaň",
     "programInterest": "Hünär gyzyk",
-    "programPlaceholder": "meselem: Lukmançylyk, Kompýuter inenerýoly",
+    "programPlaceholder": "Select a program",
     "message": "Habar",
     "messagePlaceholder": " maksadlaryňyz barada aýdyň…",
     "optional": "islege görä",
@@ -300,7 +333,6 @@
     "university": "University",
     "universityPlaceholder": "Select a university",
     "program": "Program",
-    "programPlaceholder": "Select a program",
     "programSelectUniversityFirst": "Select a university first",
     "degreeLevel": "Degree level",
     "degreeBachelor": "Bachelor",
@@ -382,7 +414,16 @@
     "profile": "Profile"
   },
   "Student": {
-    "auth": { "email": "E-poçta", "code": "Tassyklama kody", "sendLink": "Seýr link iber", "verify": "Kody tassyk", "back": "Başka e-poçta ulan", "linkSent": "Seýr linki üçin e-poçtaňyzy barlaň (ya-da kody giriziň).", "error": "Hätiş bolmez bolýar. Täzeden synanyşyň.", "googleLogin": "Continue with Google" },
+    "auth": {
+      "email": "E-poçta",
+      "code": "Tassyklama kody",
+      "sendLink": "Seýr link iber",
+      "verify": "Kody tassyk",
+      "back": "Başka e-poçta ulan",
+      "linkSent": "Seýr linki üçin e-poçtaňyzy barlaň (ya-da kody giriziň).",
+      "error": "Hätiş bolmez bolýar. Täzeden synanyşyň.",
+      "googleLogin": "Continue with Google"
+    },
     "drawer": {
       "applications": "Applications",
       "documents": "Documents",
@@ -391,13 +432,94 @@
       "profile": "Profile",
       "signOut": "Sign out"
     },
-    "nav": { "overview": "Önümýet", "profile": "Profile", "applications": "Başnamalar", "documents": "Resminamalar", "messages": "Habarlar", "notifications": "Bildirişler", "logout": "Çyk" },
-    "overview": { "title": "Dashboardym", "subtitle": "Başnamalaryňyzy, resminamalaryňyzy we habarlaryňyzy eýer.", "applications": "Başnamalar", "unreadMessages": "Okanokan habarlar", "status": "Häzirki hýulyk", "noApplications": "Başnama ýok", "recentNotifications": "Soňky bildirişler" },
-    "applications": { "title": "Başnamalarym", "empty": "Heniz başnamaňyz ýok.", "viewDetail": "Goşmaçalary gör" },
-    "detail": { "consultant": "Maslahatça", "timeline": "Etkinlik" },
-    "documents": { "title": "Resminamalarym", "upload": "Resminama ükle", "uploadCta": "Ükle", "uploadError": "Üklemelde bolmady. Dil tipini / ululygy barlaň.", "empty": "Heniz resminama ýok.", "verified": "Tassyklandy", "pending": "Garşylýar", "download": "Ýük al" },
-    "messages": { "title": "Habarlar", "empty": "Heniz habar ýok.", "placeholder": "Habar ýaz…", "send": "Iber", "consultant": "Maslahatça", "you": "Siz" },
-    "notifications": { "title": "Bildirişler", "empty": "Bildiriş ýok.", "statusChange": "Başnama hýulügiňiz üýtgedi.", "assigned": "Size maslahatça tafyýyn edildi.", "message": "{name} -dan täze habar", "viewDetail": "Goşmaçalary gör" },
-    "login": { "title": "Okuwçy girmegi (demo)", "subtitle": "Dowam etmek üçin demo okuwçy profiline saýlaň.", "choose": "Dowam et" }
+    "nav": {
+      "overview": "Önümýet",
+      "profile": "Profile",
+      "applications": "Başnamalar",
+      "documents": "Resminamalar",
+      "messages": "Habarlar",
+      "notifications": "Bildirişler",
+      "logout": "Çyk"
+    },
+    "overview": {
+      "title": "Dashboardym",
+      "subtitle": "Başnamalaryňyzy, resminamalaryňyzy we habarlaryňyzy eýer.",
+      "applications": "Başnamalar",
+      "unreadMessages": "Okanokan habarlar",
+      "status": "Häzirki hýulyk",
+      "noApplications": "Başnama ýok",
+      "recentNotifications": "Soňky bildirişler"
+    },
+    "applications": {
+      "title": "Başnamalarym",
+      "empty": "Heniz başnamaňyz ýok.",
+      "viewDetail": "Goşmaçalary gör"
+    },
+    "detail": {
+      "consultant": "Maslahatça",
+      "timeline": "Etkinlik"
+    },
+    "documents": {
+      "title": "Resminamalarym",
+      "upload": "Resminama ükle",
+      "uploadCta": "Ükle",
+      "uploadError": "Üklemelde bolmady. Dil tipini / ululygy barlaň.",
+      "empty": "Heniz resminama ýok.",
+      "verified": "Tassyklandy",
+      "pending": "Garşylýar",
+      "download": "Ýük al"
+    },
+    "messages": {
+      "title": "Habarlar",
+      "empty": "Heniz habar ýok.",
+      "placeholder": "Habar ýaz…",
+      "send": "Iber",
+      "consultant": "Maslahatça",
+      "you": "Siz"
+    },
+    "notifications": {
+      "title": "Bildirişler",
+      "empty": "Bildiriş ýok.",
+      "statusChange": "Başnama hýulügiňiz üýtgedi.",
+      "assigned": "Size maslahatça tafyýyn edildi.",
+      "message": "{name} -dan täze habar",
+      "viewDetail": "Goşmaçalary gör"
+    },
+    "login": {
+      "title": "Okuwçy girmegi (demo)",
+      "subtitle": "Dowam etmek üçin demo okuwçy profiline saýlaň.",
+      "choose": "Dowam et"
+    }
+  },
+  "ProgramCategory": {
+    "metaTitle": "{category} Türkiýede — Uniwersitetler, tölegler we hünärler",
+    "metaDescription": "{category} ugry boýunça Türkiýede okuň. Programma hödürleýän {count} uniwersiteti, tölegleri we şäher wariantlaryny deňeşdiriň.",
+    "home": "Esasy",
+    "programs": "Hünärler",
+    "title": "{category} Türkiýede",
+    "subtitle": "{category} programmalaryny hödürleýän uniwersitetleri Türkiýäniň hemme ýerinde deňeşdiriň. Tölegleri, derejeleri, dilleri we şäher wariantlaryny bir göz aýlamda görüň.",
+    "programsLabel": "Hünärler",
+    "universitiesLabel": "Uniwersvetler",
+    "fromLabel": "Töleg şeýleden",
+    "categoryLabel": "",
+    "citiesTitle": "{category} şäherler boýunça",
+    "universitiesInCity": "{count} uniwersitet",
+    "from": "başlap",
+    "programsTitle": "Görkezilen hünärler",
+    "programName": "Hünär",
+    "university": "Uniwersvet",
+    "city": "Şäher",
+    "degree": "Dereje",
+    "language": "Dil",
+    "tuition": "Töleg / ýyl",
+    "universitiesTitle": "Uniwersvetler",
+    "viewAll": "Ähli uniwersvetler",
+    "degrees": {
+      "bachelor": "Bakalawr",
+      "master": "Magistr",
+      "phd": "Doktora",
+      "associate": "Orta hünär"
+    },
+    "annualCost": "Ýyllyk çykdajy (okuw + ýaşaýyş)"
   }
 }
