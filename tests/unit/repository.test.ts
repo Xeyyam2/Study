@@ -107,6 +107,14 @@ describe('Supporting repositories', () => {
     expect((await data.countries.list()).length).toBeGreaterThan(0);
   });
 
+  it('exposes monthly living cost per city', async () => {
+    const cities = await data.cities.list();
+    expect(cities.length).toBeGreaterThan(0);
+    expect(cities.every((c) => typeof c.monthlyLivingCostUSD === 'number')).toBe(true);
+    const istanbul = cities.find((c) => c.slug === 'istanbul');
+    expect(istanbul?.monthlyLivingCostUSD).toBe(700);
+  });
+
   it('returns general FAQs', async () => {
     expect((await data.faqs.general()).length).toBeGreaterThan(0);
   });

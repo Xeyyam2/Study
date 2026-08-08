@@ -39,6 +39,7 @@ export interface City {
   slug: string;
   name: LocalizedString;
   countryId: string;
+  monthlyLivingCostUSD?: number;
 }
 
 export interface University {
