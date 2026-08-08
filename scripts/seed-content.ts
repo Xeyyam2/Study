@@ -71,9 +71,9 @@ async function insertAll(client: import('pg').PoolClient) {
   // cities
   for (const c of seedCities) {
     await client.query(
-      `insert into public.cities (id, slug, country_code, name_i18n) values ($1, $2, $3, $4::jsonb)
+      `insert into public.cities (id, slug, country_code, name_i18n, monthly_living_cost_usd) values ($1, $2, $3, $4::jsonb, $5)
        on conflict (id) do nothing`,
-      [c.id, c.slug, c.countryId, JSON.stringify(c.name)],
+      [c.id, c.slug, c.countryId, JSON.stringify(c.name), c.monthlyLivingCostUSD ?? null],
     );
   }
 

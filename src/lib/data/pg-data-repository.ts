@@ -64,6 +64,9 @@ function rowCity(r: Record<string, unknown>): City {
     slug: r.slug as string,
     countryId: r.country_code as string,
     name: i18n(r.name_i18n),
+    monthlyLivingCostUSD: r.monthly_living_cost_usd
+      ? Number(r.monthly_living_cost_usd)
+      : undefined,
   };
 }
 
