@@ -237,7 +237,10 @@
       "master": "Magistr",
       "phd": "Doktorantura",
       "associate": "Orta ixtisas"
-    }
+    },
+    "prev": "Əvvəlki",
+    "next": "Növbəti",
+    "pageOf": "Səhifə {page} / {total}"
   },
   "ProgramCombination": {
     "metaTitle": "{city} şəhərində {category} — Universitetlər, Qiymətlər və Proqramlar",

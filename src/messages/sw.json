@@ -236,7 +236,10 @@
       "master": "Uzamili",
       "phd": "Uzifu",
       "associate": "Cheti"
-    }
+    },
+    "prev": "Iliyopita",
+    "next": "Inayofuata",
+    "pageOf": "Ukurasa {page} kati ya {total}"
   },
   "ProgramCombination": {
     "metaTitle": "{category} katika {city} — Vyuo, ada na programu",

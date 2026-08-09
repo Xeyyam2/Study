@@ -236,7 +236,10 @@
       "master": "Магистър",
       "phd": "Докторантура",
       "associate": "Асистент"
-    }
+    },
+    "prev": "Назад",
+    "next": "Напред",
+    "pageOf": "Страница {page} от {total}"
   },
   "ProgramCombination": {
     "metaTitle": "{category} в {city} — Университети, такси и програми",

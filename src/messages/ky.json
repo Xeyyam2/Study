@@ -236,7 +236,10 @@
       "master": "Магистр",
       "phd": "Докторантура",
       "associate": "Коллеж"
-    }
+    },
+    "prev": "Мурунку",
+    "next": "Кийинки",
+    "pageOf": "{page} / {total} барак"
   },
   "ProgramCombination": {
     "metaTitle": "{city} шаарындагы {category} — Университеттер, окуу акысы жана программалар",

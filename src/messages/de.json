@@ -236,7 +236,10 @@
       "master": "Master",
       "phd": "Promotion",
       "associate": "Associate"
-    }
+    },
+    "prev": "Zurück",
+    "next": "Weiter",
+    "pageOf": "Seite {page} von {total}"
   },
   "ProgramCombination": {
     "metaTitle": "{category} in {city} — Universitäten, Studiengebühren & Studiengänge",

@@ -236,7 +236,10 @@
       "master": "کارشناسی ارشد",
       "phd": "دکترا",
       "associate": "کاردانی"
-    }
+    },
+    "prev": "قبلی",
+    "next": "بعدی",
+    "pageOf": "صفحهٔ {page} از {total}"
   },
   "ProgramCombination": {
     "metaTitle": "{category} در {city} — دانشگاه‌ها، شهریه و رشته‌ها",

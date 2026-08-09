@@ -237,7 +237,10 @@
       "master": "Yüksek Lisans",
       "phd": "Doktora",
       "associate": "Önlisans"
-    }
+    },
+    "prev": "Önceki",
+    "next": "Sonraki",
+    "pageOf": "Sayfa {page} / {total}"
   },
   "ProgramCombination": {
     "metaTitle": "{city}'da {category} — Üniversiteler, Ücretler ve Bölümler",

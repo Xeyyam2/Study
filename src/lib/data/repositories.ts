@@ -72,6 +72,12 @@ export interface ProgramListingPage {
   totalPages: number;
 }
 
+export interface ProgramListingFilters {
+  category?: string;
+  city?: string;
+  search?: string;
+}
+
 export interface ProgramRepository {
   list(): Promise<Program[]>;
   getCategories(): Promise<ProgramCategory[]>;
@@ -96,10 +102,14 @@ export interface ProgramRepository {
     universityCount: number;
     minTuitionUSD: number;
   }>;
-  /** Count of all university×program rows for pagination. */
-  countAll(): Promise<number>;
+  /** Count of university×program rows (optionally filtered) for pagination. */
+  countAll(filters?: ProgramListingFilters): Promise<number>;
   /** Page of university×program rows ordered by tuition asc, with total. */
-  listPage(page: number, perPage: number): Promise<ProgramListingPage>;
+  listPage(
+    page: number,
+    perPage: number,
+    filters?: ProgramListingFilters,
+  ): Promise<ProgramListingPage>;
 }
 
 export interface ReviewRepository {

@@ -236,7 +236,10 @@
       "master": "Magistr",
       "phd": "Doktorantura",
       "associate": "Kollej"
-    }
+    },
+    "prev": "Oldingi",
+    "next": "Keyingi",
+    "pageOf": "{page} / {total} sahifa"
   },
   "ProgramCombination": {
     "metaTitle": "{city} shahrida {category} — Universitetlar, to‘lov va dasturlar",

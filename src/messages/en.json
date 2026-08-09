@@ -237,7 +237,10 @@
       "master": "Master",
       "phd": "PhD",
       "associate": "Associate"
-    }
+    },
+    "prev": "Previous",
+    "next": "Next",
+    "pageOf": "Page {page} of {total}"
   },
   "ProgramCombination": {
     "metaTitle": "{category} in {city} — Universities, Tuition & Programs",

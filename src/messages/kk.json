@@ -236,7 +236,10 @@
       "master": "Магистр",
       "phd": "Докторантура",
       "associate": "Колледж"
-    }
+    },
+    "prev": "Алдыңғы",
+    "next": "Келесі",
+    "pageOf": "{page} / {total} бет"
   },
   "ProgramCombination": {
     "metaTitle": "{city} қаласындағы {category} — Университеттер, оқу ақысы мен бағдарлар",

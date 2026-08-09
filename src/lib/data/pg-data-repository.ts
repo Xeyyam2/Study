@@ -23,6 +23,7 @@ import type {
   CountryRepository,
   DataLayer,
   FaqRepository,
+  ProgramListingFilters,
   ProgramRepository,
   ReviewRepository,
   ScholarshipRepository,
@@ -158,6 +159,41 @@ function mapProgramItem(r: Record<string, unknown>) {
     language: r.up_language as InstructionLanguage,
     scholarshipAvailable: Boolean(r.up_scholarship),
   };
+}
+
+/**
+ * Builds the shared WHERE clause + parameter list for program listing
+ * queries (countAll / listPage). Filters:
+ *  - category: exact program category slug (p.category_slug)
+ *  - city: university city resolved by city slug (u.city_id)
+ *  - search: case-insensitive match on program i18n name, university name
+ *    or city i18n name
+ */
+function buildProgramListingWhere(filters?: ProgramListingFilters) {
+  const where: string[] = [];
+  const params: unknown[] = [];
+  let pi = 1;
+  if (filters?.category) {
+    where.push(`p.category_slug = $${pi}`);
+    params.push(filters.category);
+    pi++;
+  }
+  if (filters?.city) {
+    where.push(
+      `u.city_id = (select id from public.cities where slug = $${pi})`,
+    );
+    params.push(filters.city);
+    pi++;
+  }
+  if (filters?.search) {
+    const q = filters.search;
+    where.push(
+      `(p.name_i18n::text ilike '%'||$${pi}||'%' or lower(u.name) like '%'||lower($${pi})||'%' or c.name_i18n::text ilike '%'||$${pi}||'%')`,
+    );
+    params.push(q);
+    pi++;
+  }
+  return { where, params };
 }
 
 function rowScholarship(r: Record<string, unknown>): Scholarship {
@@ -557,16 +593,31 @@ export function createPgDataLayer(getPool: () => Pool): DataLayer {
       };
     },
 
-    async countAll(): Promise<number> {
-      const res = await getPool().query(
-        `select count(*)::int c from public.university_programs`,
-      );
+    async countAll(filters?: ProgramListingFilters): Promise<number> {
+      const { where, params } = buildProgramListingWhere(filters);
+      const sql =
+        `select count(*)::int c from public.university_programs up
+         join public.programs p on p.id = up.program_id
+         join public.universities u on u.id = up.university_id
+         join public.cities c on c.id = u.city_id` +
+        (where.length ? ` where ${where.join(' and ')}` : '');
+      const res = await getPool().query(sql, params);
       return Number(res.rows[0]?.c ?? 0);
     },
-    async listPage(page: number, perPage: number) {
+    async listPage(
+      page: number,
+      perPage: number,
+      filters?: ProgramListingFilters,
+    ) {
       const offset = (page - 1) * perPage;
+      const { where, params } = buildProgramListingWhere(filters);
+      const whereSql = where.length ? ` where ${where.join(' and ')}` : '';
       const countRes = await getPool().query(
-        `select count(*)::int c from public.university_programs`,
+        `select count(*)::int c from public.university_programs up
+         join public.programs p on p.id = up.program_id
+         join public.universities u on u.id = up.university_id
+         join public.cities c on c.id = u.city_id${whereSql}`,
+        params,
       );
       const total = Number(countRes.rows[0]?.c ?? 0);
       const res = await getPool().query(
@@ -582,10 +633,10 @@ export function createPgDataLayer(getPool: () => Pool): DataLayer {
          from public.university_programs up
          join public.programs p on p.id = up.program_id
          join public.universities u on u.id = up.university_id
-         join public.cities c on c.id = u.city_id
-         order by up.tuition_fee asc
-         limit $1 offset $2`,
-        [perPage, offset],
+         join public.cities c on c.id = u.city_id${whereSql}
+         order by up.tuition_fee asc, up.id asc
+         limit $${params.length + 1} offset $${params.length + 2}`,
+        [...params, perPage, offset],
       );
       return {
         programs: res.rows.map(mapProgramItem),

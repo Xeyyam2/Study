@@ -236,7 +236,10 @@
       "master": "Magistr",
       "phd": "Doktora",
       "associate": "Orta hünär"
-    }
+    },
+    "prev": "Öňki",
+    "next": "Indiki",
+    "pageOf": "{page} / {total} sahypa"
   },
   "ProgramCombination": {
     "metaTitle": "{city} - {category} — Uniwersvetler, töleg we hünärler",

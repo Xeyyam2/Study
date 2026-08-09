@@ -236,7 +236,10 @@
       "master": "ماسٹر",
       "phd": "پی ایچ ڈی",
       "associate": "ایسوسی ایٹ"
-    }
+    },
+    "prev": "پچھلا",
+    "next": "اگلا",
+    "pageOf": "صفحہ {page} از {total}"
   },
   "ProgramCombination": {
     "metaTitle": "{city} میں {category} — جامعات، فیس اور پروگرام",

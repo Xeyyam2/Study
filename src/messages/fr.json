@@ -236,7 +236,10 @@
       "master": "Master",
       "phd": "Doctorat",
       "associate": "Associate"
-    }
+    },
+    "prev": "Précédent",
+    "next": "Suivant",
+    "pageOf": "Page {page} sur {total}"
   },
   "ProgramCombination": {
     "metaTitle": "{category} à {city} — Universités, frais & programmes",

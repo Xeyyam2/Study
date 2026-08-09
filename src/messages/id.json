@@ -236,7 +236,10 @@
       "master": "Magister",
       "phd": "Doktor",
       "associate": "Diploma"
-    }
+    },
+    "prev": "Sebelumnya",
+    "next": "Berikutnya",
+    "pageOf": "Halaman {page} dari {total}"
   },
   "ProgramCombination": {
     "metaTitle": "{category} di {city} — Universitas, Biaya & Program",

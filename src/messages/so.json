@@ -236,7 +236,10 @@
       "master": "Mastar",
       "phd": "Doktorat",
       "associate": "Asosiyaat"
-    }
+    },
+    "prev": "Kii hore",
+    "next": "Kii xiga",
+    "pageOf": "Bogga {page} ee {total}"
   },
   "ProgramCombination": {
     "metaTitle": "{category} ee {city} — Jaamacado, lacagta iyo barnaamijyada",

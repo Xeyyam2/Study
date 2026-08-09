@@ -236,7 +236,10 @@
       "master": "ماجستير",
       "phd": "دكتوراه",
       "associate": "زمالة"
-    }
+    },
+    "prev": "السابق",
+    "next": "التالي",
+    "pageOf": "صفحة {page} من {total}"
   },
   "ProgramCombination": {
     "metaTitle": "{category} في {city} — جامعات ورسوم وتخصصات",

@@ -33,6 +33,7 @@ import type {
   CountryRepository,
   DataLayer,
   FaqRepository,
+  ProgramListingFilters,
   ProgramRepository,
   ReviewRepository,
   ScholarshipRepository,
@@ -384,20 +385,28 @@ class SeedProgramRepository implements ProgramRepository {
     };
   }
 
-  async countAll(): Promise<number> {
-    return Promise.resolve(seedUniversityPrograms.length);
+  async countAll(filters?: ProgramListingFilters): Promise<number> {
+    const items = this._filtered(filters);
+    return Promise.resolve(items.length);
   }
-  async listPage(page: number, perPage: number) {
-    const total = seedUniversityPrograms.length;
+  async listPage(
+    page: number,
+    perPage: number,
+    filters?: ProgramListingFilters,
+  ) {
+    const items = this._filtered(filters);
+    const total = items.length;
     const start = (page - 1) * perPage;
-    const ordered = [...seedUniversityPrograms].sort(
+    const ordered = [...items].sort(
       (a, b) => a.tuitionFee - b.tuitionFee || a.id.localeCompare(b.id),
     );
     const slice = ordered
       .slice(start, start + perPage)
       .map((up) => {
         const program = seedPrograms.find((p) => p.id === up.programId);
-        const university = seedUniversities.find((u) => u.id === up.universityId);
+        const university = seedUniversities.find(
+          (u) => u.id === up.universityId,
+        );
         const city = university
           ? seedCities.find((c) => c.id === university.cityId)
           : undefined;
@@ -420,6 +429,46 @@ class SeedProgramRepository implements ProgramRepository {
       perPage,
       totalPages: Math.max(1, Math.ceil(total / perPage)),
     };
+  }
+
+  /**
+   * Applies the ProgramListingFilters (category / city / search) to the seed
+   * university×program rows. Mirrors the WHERE clause of the pg repository.
+   */
+  private _filtered(filters?: ProgramListingFilters) {
+    if (!filters || (!filters.category && !filters.city && !filters.search)) {
+      return seedUniversityPrograms;
+    }
+    const cityBySlug = new Map(seedCities.map((c) => [c.slug, c.id]));
+    const cityId = filters.city ? cityBySlug.get(filters.city) : undefined;
+    const search = filters.search?.toLowerCase();
+    return seedUniversityPrograms.filter((up) => {
+      if (filters.category) {
+        const program = seedPrograms.find((p) => p.id === up.programId);
+        if (program?.categorySlug !== filters.category) return false;
+      }
+      if (cityId !== undefined) {
+        const university = seedUniversities.find(
+          (u) => u.id === up.universityId,
+        );
+        if (university?.cityId !== cityId) return false;
+      }
+      if (search) {
+        const program = seedPrograms.find((p) => p.id === up.programId);
+        const university = seedUniversities.find(
+          (u) => u.id === up.universityId,
+        );
+        const name =
+          program?.name.en ?? program?.slug ?? '';
+        if (
+          !name.toLowerCase().includes(search) &&
+          !(university?.name.toLowerCase().includes(search) ?? false)
+        ) {
+          return false;
+        }
+      }
+      return true;
+    });
   }
 }
 
