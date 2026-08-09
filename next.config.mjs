@@ -5,6 +5,28 @@ import path from 'node:path';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
 
+// Fail fast at BUILD time so a misconfigured production deploy throws here
+// instead of 500-ing on the first DB/auth request at runtime. Gated on
+// production so `next dev` / `next lint` in CI stay lenient without a DB.
+function assertEnv() {
+  if (process.env.NODE_ENV !== 'production') return;
+  const missing = [];
+  if (!process.env.DATABASE_URL) missing.push('DATABASE_URL');
+  // Supabase keys are only required when the app actually uses Supabase.
+  if (process.env.SUPABASE_ENABLED === 'true') {
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL) missing.push('NEXT_PUBLIC_SUPABASE_URL');
+    if (!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) missing.push('NEXT_PUBLIC_SUPABASE_ANON_KEY');
+    if (!process.env.SUPABASE_SERVICE_ROLE_KEY) missing.push('SUPABASE_SERVICE_ROLE_KEY');
+  }
+  if (missing.length) {
+    throw new Error(
+      `Missing required environment variables: ${missing.join(', ')}. ` +
+        'Copy .env.example to .env.local and fill in the values.',
+    );
+  }
+}
+assertEnv();
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
@@ -42,8 +64,9 @@ const nextConfig = {
             process.env.NODE_ENV === 'development' ? " 'unsafe-eval'" : ''
           }`,
           "style-src 'self' 'unsafe-inline'",
-          // next/image öz originindən xidmət edir; uzaq Unsplash/Pexels/Supabase + data URI-lar
-          "img-src 'self' data: blob: https:",
+          // next/image öz originindən xidmət edir; uzaq şəkillər yalnız məlum
+          // mənbələrdən (Unsplash/Pexels/Supabase) + data/blob URI-lar.
+          "img-src 'self' data: blob: https://images.unsplash.com https://images.pexels.com https://*.supabase.co",
           "font-src 'self' data:",
           // Supabase client (auth/realtime/storage) + GA/Clarity
           "connect-src 'self' https://*.supabase.co https://www.google-analytics.com https://www.googletagmanager.com https://*.clarity.ms",

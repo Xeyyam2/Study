@@ -1,9 +1,22 @@
 import { NextResponse } from 'next/server';
 import { data } from '@/lib/data';
+import { rateLimit, getIpFromHeaders } from '@/lib/rate-limit';
 
 export const dynamic = 'force-dynamic';
 
+// 30 searches per minute per IP — search does ILIKE scans, so this throttles
+// cheap scripted abuse while staying generous for real users.
+const searchLimiter = rateLimit({ windowMs: 60_000, max: 30 });
+
 export async function GET(req: Request) {
+  const ip = getIpFromHeaders((name) => req.headers.get(name));
+  if (!searchLimiter.check(ip)) {
+    return NextResponse.json(
+      { results: [], error: 'Too many requests. Please try again shortly.' },
+      { status: 429 },
+    );
+  }
+
   const { searchParams } = new URL(req.url);
   const q = searchParams.get('q') ?? '';
   const limit = Math.min(Number(searchParams.get('limit') ?? 10), 25);
