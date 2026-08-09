@@ -9,6 +9,14 @@ import type { AppLocale } from '@/i18n/routing';
 
 type JsonLd = Record<string, unknown>;
 
+/** Brand logo as a schema.org ImageObject with explicit dimensions. */
+const LOGO_IMAGE = {
+  '@type': 'ImageObject',
+  url: `${siteConfig.url}/icon.svg`,
+  width: 512,
+  height: 512,
+} as const;
+
 function L(key: string, value: unknown) {
   return { '@type': key, ...((value as object) ?? {}) };
 }
@@ -19,7 +27,7 @@ export function organizationJsonLd(): JsonLd {
     '@type': 'EducationalOrganization',
     name: siteConfig.name,
     url: siteConfig.url,
-    logo: `${siteConfig.url}/icon.svg`,
+    logo: LOGO_IMAGE,
     description: siteConfig.description.en,
     sameAs: Object.values(siteConfig.social),
     contactPoint: {
@@ -43,7 +51,7 @@ export function websiteJsonLd(locale: AppLocale): JsonLd {
       '@type': 'SearchAction',
       target: {
         '@type': 'EntryPoint',
-        urlTemplate: `${siteConfig.url}/${locale}/universities?q={search_term_string}`,
+        urlTemplate: `${siteConfig.url}/${locale}/universities?search={search_term_string}`,
       },
       'query-input': 'required name=search_term_string',
     },
@@ -54,7 +62,11 @@ export function websiteJsonLd(locale: AppLocale): JsonLd {
 export function collegeOrUniversityJsonLd(
   university: University,
   locale: AppLocale,
-  rating: { rating: number; count: number },
+  // Rating is intentionally unused: Google's structured-data guidelines
+  // prohibit self-serving aggregate ratings (the site rates itself), which
+  // risks a manual action. Kept in the signature so callers don't have to
+  // change; remove when a third-party source (e.g. Trustpilot) is wired up.
+  _rating: { rating: number; count: number },
 ): JsonLd {
   return {
     '@context': 'https://schema.org',
@@ -62,21 +74,11 @@ export function collegeOrUniversityJsonLd(
     name: university.name,
     url: `${siteConfig.url}/${locale}/universities/${university.slug}`,
     image: university.heroImage,
-    logo: `${siteConfig.url}/icon.svg`,
+    logo: LOGO_IMAGE,
     foundingDate: String(university.foundedYear),
     award: university.accreditation,
     description: university.description[locale],
     inLanguage: university.languages,
-    aggregateRating:
-      rating.count > 0
-        ? {
-            '@type': 'AggregateRating',
-            ratingValue: rating.rating,
-            reviewCount: rating.count,
-            bestRating: 5,
-            worstRating: 1,
-          }
-        : undefined,
   };
 }
 

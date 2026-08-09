@@ -19,12 +19,13 @@ function chunk<T>(arr: T[], size: number): T[][] {
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = siteConfig.url;
-  const now = new Date();
 
-  const [universities, posts, combinations] = await Promise.all([
+  const [universities, posts, combinations, countries, categories] = await Promise.all([
     data.universities.list(),
     data.blog.list(),
     data.programs.getCombinations(),
+    data.countries.list(),
+    data.programs.getCategories(),
   ]);
 
   const staticPaths = [
@@ -38,14 +39,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { path: '/apply', priority: 0.8, change: 'monthly' as const },
   ];
 
+  // `lastModified` is intentionally omitted for content without a real
+  // `updatedAt` column (universities/categories/combinations/countries/static
+  // paths). Emitting `new Date()` makes every deploy look like a full-site
+  // change; Google ignores such churn and may devalue the field. Only blog
+  // posts carry a real publish date.
   const makeEntry = (
     path: string,
-    lastModified: Date,
     changeFrequency: MetadataRoute.Sitemap[number]['changeFrequency'],
     priority: number,
+    lastModified?: Date,
   ): MetadataRoute.Sitemap[number] => ({
     url: `${base}${path}`,
-    lastModified,
+    ...(lastModified ? { lastModified } : {}),
     changeFrequency,
     priority,
   });
@@ -58,22 +64,38 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // for "thin content" and hurt the ranking of complete locales too.
   for (const locale of fullyTranslatedLocales) {
     for (const { path, priority, change } of staticPaths) {
-      urls.push(makeEntry(locPrefix(locale, path), now, change, priority));
+      urls.push(makeEntry(locPrefix(locale, path), change, priority));
     }
 
     for (const u of universities) {
-      urls.push(makeEntry(locPrefix(locale, `/universities/${u.slug}`), now, 'monthly', 0.85));
+      urls.push(makeEntry(locPrefix(locale, `/universities/${u.slug}`), 'monthly', 0.85));
+    }
+
+    for (const cat of categories) {
+      urls.push(makeEntry(locPrefix(locale, `/programs/${cat.slug}`), 'monthly', 0.7));
     }
 
     for (const c of combinations) {
       urls.push(
-        makeEntry(locPrefix(locale, `/programs/${c.categorySlug}/${c.citySlug}`), now, 'monthly', 0.65),
+        makeEntry(locPrefix(locale, `/programs/${c.categorySlug}/${c.citySlug}`), 'monthly', 0.65),
+      );
+    }
+
+    // "Study in Turkey from {country}" landing pages — high-intent geo funnels.
+    for (const c of countries) {
+      urls.push(
+        makeEntry(locPrefix(locale, `/study-in-turkey-from/${c.slug}`), 'monthly', 0.7),
       );
     }
 
     for (const post of posts) {
       urls.push(
-        makeEntry(locPrefix(locale, `/blog/${post.slug}`), new Date(post.publishedAt), 'monthly', 0.7),
+        makeEntry(
+          locPrefix(locale, `/blog/${post.slug}`),
+          'monthly',
+          0.7,
+          new Date(post.publishedAt),
+        ),
       );
     }
   }

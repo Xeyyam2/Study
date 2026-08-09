@@ -1,4 +1,5 @@
 import { getTranslations } from 'next-intl/server';
+import type { Metadata } from 'next';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { GoogleSignInButton } from '@/components/auth/GoogleSignInButton';
 import { Button } from '@/components/ui/button';
@@ -6,6 +7,11 @@ import { crm } from '@/lib/crm';
 import { isDevAuthEnabled } from '@/lib/crm/student-session';
 
 export const dynamic = 'force-dynamic';
+
+// Auth pages must never appear in search results.
+export const metadata: Metadata = {
+  robots: { index: false, follow: false },
+};
 
 export default async function StudentLoginPage({
   params,

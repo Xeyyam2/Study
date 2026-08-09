@@ -3,6 +3,36 @@ import { routing } from '@/i18n/routing';
 import { siteConfig, fullyTranslatedLocales } from '@/config/site';
 
 /**
+ * Map a bare language code to an RFC 5646/BCP-47 language-region tag for
+ * `og:locale` (e.g. `en` → `en_US`). Facebook/OG consumers expect the region
+ * suffix; a bare code is treated as invalid by some scrapers.
+ */
+const OG_LOCALE_MAP: Record<string, string> = {
+  en: 'en_US',
+  tr: 'tr_TR',
+  az: 'az_AZ',
+  ru: 'ru_RU',
+  de: 'de_DE',
+  fr: 'fr_FR',
+  fa: 'fa_IR',
+  ar: 'ar_SA',
+  tk: 'tk_TM',
+  kk: 'kk_KZ',
+  ky: 'ky_KG',
+  zh: 'zh_CN',
+  bg: 'bg_BG',
+  ur: 'ur_PK',
+  uz: 'uz_UZ',
+  sw: 'sw_TZ',
+  so: 'so_SO',
+  id: 'id_ID',
+};
+
+function ogLocale(locale: string): string {
+  return OG_LOCALE_MAP[locale] ?? `${locale}_${locale.toUpperCase()}`;
+}
+
+/**
  * Path is the URL path WITHOUT the locale prefix, always starting with '/'.
  * e.g. '/', '/universities', '/universities/bahcesehir-university'
  */
@@ -47,7 +77,6 @@ export function buildPageMetadata({
   noIndex,
   keywords,
 }: PageMetaInput): Metadata {
-  const ogImage = image ?? siteConfig.ogImage;
   const url = canonical(locale, path);
 
   const defaultKeywords = [
@@ -57,6 +86,14 @@ export function buildPageMetadata({
     'university admission turkey',
     'scholarships turkey',
   ];
+
+  // Only set explicit OG/Twitter images when a real per-page image is supplied.
+  // Otherwise omit them so the file-based `opengraph-image.tsx` generator
+  // applies (Next uses it for both og:image and twitter:image). Hardcoding
+  // siteConfig.ogImage here previously pointed every share at a 404.
+  const ogImage = image
+    ? { images: [{ url: image, width: 1200, height: 630, alt: title }] }
+    : {};
 
   return {
     title,
@@ -73,14 +110,14 @@ export function buildPageMetadata({
       title,
       description,
       siteName: siteConfig.name,
-      locale,
-      images: [{ url: ogImage, width: 1200, height: 630, alt: title }],
+      locale: ogLocale(locale),
+      ...ogImage,
     },
     twitter: {
       card: 'summary_large_image',
       title,
       description,
-      images: [ogImage],
+      ...(image ? { images: [image] } : {}),
     },
   };
 }
