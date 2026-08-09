@@ -50,7 +50,7 @@ export interface CrmRepository {
   getProfile(id: string): Promise<Profile | null>;
   findOrCreateStudent(input: StudentProfileInput): Promise<Profile>;
   getProfileByAuthUid(authUid: string): Promise<Profile | null>;
-  upsertStudentByAuthUid(input: { authUid: string; email: string; fullName: string }): Promise<Profile>;
+  upsertStudentByAuthUid(input: { authUid: string; email: string; fullName: string }): Promise<Profile | null>;
   getStaffProfileByAuthUid(authUid: string, email: string): Promise<Profile | null>;
   updateProfileRole(id: string, role: 'admin' | 'consultant', actorId: string): Promise<Profile>;
   // stats

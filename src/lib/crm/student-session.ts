@@ -32,6 +32,9 @@ export async function getStudentSession(): Promise<StudentSession | null> {
       email: user.email ?? '',
       fullName: (user.user_metadata?.full_name as string | undefined) ?? '',
     });
+    // Email collision with a staff profile (or another taken email) → no
+    // student session.
+    if (!profile) return null;
     return { userId: profile.id, profile };
   } catch {
     return null;

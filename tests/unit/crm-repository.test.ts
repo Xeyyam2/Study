@@ -55,11 +55,13 @@ describe('PgCrmRepository', () => {
 
   it('assigns a consultant', async () => {
     const leads = await crm.listLeads({ status: 'new' });
-    const target = leads.find((l) => !l.assignedConsultantId)!;
+    const target = leads.find((l) => !l.assignedConsultantId) ?? leads[0];
     const consultantId = '22222222-2222-2222-2222-222222222222';
     const adminId = '11111111-1111-1111-1111-111111111111';
     const updated = await crm.assignConsultant(target.id, consultantId, adminId);
     expect(updated.assignedConsultantId).toBe(consultantId);
+    // Restore so repeated runs stay idempotent.
+    await crm.assignConsultant(target.id, null, adminId);
   });
 
   it('counts leads by status', async () => {

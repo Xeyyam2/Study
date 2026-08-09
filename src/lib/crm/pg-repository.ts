@@ -440,7 +440,7 @@ export function createPgCrm(getPool: () => Pool): CrmRepository {
       return res.rowCount ? rowToProfile(res.rows[0]) : null;
     },
 
-    async upsertStudentByAuthUid(input: { authUid: string; email: string; fullName: string }): Promise<Profile> {
+    async upsertStudentByAuthUid(input: { authUid: string; email: string; fullName: string }): Promise<Profile | null> {
       const byUid = await q('select * from public.profiles where auth_uid = $1', [input.authUid]);
       if (byUid.rowCount) return rowToProfile(byUid.rows[0]);
       // Merge an existing profile by email ONLY if it is a student. Linking to a
@@ -452,12 +452,16 @@ export function createPgCrm(getPool: () => Pool): CrmRepository {
         [input.authUid, input.email, 'student'],
       );
       if (linked.rowCount) return rowToProfile(linked.rows[0]);
+      // Email already belongs to a staff profile (or another student): do not
+      // create a duplicate. Return null so the caller treats signup as taken.
       const created = await q(
         `insert into public.profiles (email, full_name, role, auth_uid)
-         values ($1, $2, 'student', $3) returning *`,
+         values ($1, $2, 'student', $3)
+         on conflict (email) do nothing
+         returning *`,
         [input.email, input.fullName || '', input.authUid],
       );
-      return rowToProfile(created.rows[0]);
+      return created.rowCount ? rowToProfile(created.rows[0]) : null;
     },
 
     async getStaffProfileByAuthUid(authUid: string, _email: string): Promise<Profile | null> {

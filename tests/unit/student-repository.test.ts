@@ -96,10 +96,11 @@ describe('auth_uid profile linking', () => {
     const uid = randomUUID();
     const email = `otp-${uid.slice(0,8)}@example.com`;
     const p = await crm.upsertStudentByAuthUid({ authUid: uid, email, fullName: 'OTP User' });
-    expect(p.role).toBe('student');
-    expect(p.email).toBe(email);
+    expect(p).not.toBeNull();
+    expect(p!.role).toBe('student');
+    expect(p!.email).toBe(email);
     const byUid = await crm.getProfileByAuthUid(uid);
-    expect(byUid?.id).toBe(p.id);
+    expect(byUid?.id).toBe(p!.id);
   });
 
   it('merges an existing email profile by setting its auth_uid', async () => {
@@ -108,7 +109,8 @@ describe('auth_uid profile linking', () => {
     expect(before).not.toBeNull();
     const uid = randomUUID();
     const merged = await crm.upsertStudentByAuthUid({ authUid: uid, email: before!.email, fullName: before!.fullName });
-    expect(merged.id).toBe(STUDENT2);
+    expect(merged).not.toBeNull();
+    expect(merged!.id).toBe(STUDENT2);
     const byUid = await crm.getProfileByAuthUid(uid);
     expect(byUid?.id).toBe(STUDENT2);
   });
@@ -134,13 +136,13 @@ describe('auth_uid profile linking', () => {
     const before = await crm.getProfile(CONSULTANT);
     expect(before).not.toBeNull();
     // An attacker signs up under the consultant's email — must NOT bind to the
-    // staff profile (role guard in upsertStudentByAuthUid).
+    // staff profile (role guard in upsertStudentByAuthUid) and must NOT create
+    // a duplicate student profile under the staff email (unique constraint).
     const poisoned = await crm.upsertStudentByAuthUid({
       authUid: randomUUID(),
       email: before!.email,
       fullName: 'Attacker',
     });
-    expect(poisoned.id).not.toBe(CONSULTANT);
-    expect(poisoned.role).toBe('student');
+    expect(poisoned).toBeNull();
   });
 });
