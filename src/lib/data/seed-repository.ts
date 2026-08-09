@@ -272,9 +272,6 @@ class SeedProgramRepository implements ProgramRepository {
   async getAllPrograms(): Promise<
     import('@/lib/data/repositories').ProgramCategoryDetail['programs']
   > {
-    type Item = NonNullable<
-      import('@/lib/data/repositories').ProgramCategoryDetail['programs'][number]
-    >;
     const items = seedUniversityPrograms
       .map((up) => {
         const program = seedPrograms.find((p) => p.id === up.programId);
@@ -290,11 +287,12 @@ class SeedProgramRepository implements ProgramRepository {
           university,
           city,
           tuitionFee: up.tuitionFee,
+          originalFee: up.originalFee,
           language: up.language,
           scholarshipAvailable: up.scholarshipAvailable,
         };
       })
-      .filter((item): item is Item => item !== null)
+      .filter((item): item is NonNullable<typeof item> => item !== null)
       .sort((a, b) => a.tuitionFee - b.tuitionFee);
     return items;
   }
@@ -318,6 +316,7 @@ class SeedProgramRepository implements ProgramRepository {
           university,
           city,
           tuitionFee: up.tuitionFee,
+          originalFee: up.originalFee,
           language: up.language,
           scholarshipAvailable: up.scholarshipAvailable,
         };
@@ -340,7 +339,7 @@ class SeedProgramRepository implements ProgramRepository {
   async getByCategoryAndCity(category: string, citySlug: string): Promise<{
     category: ProgramCategory | null;
     city: City | null;
-    programs: Array<Program & { university: University; tuitionFee: number; language: import('@/types').InstructionLanguage }>;
+    programs: Array<Program & { university: University; tuitionFee: number; originalFee?: number; language: import('@/types').InstructionLanguage }>;
     universityCount: number;
     minTuitionUSD: number;
   }> {
@@ -370,6 +369,7 @@ class SeedProgramRepository implements ProgramRepository {
           ...program,
           university,
           tuitionFee: up.tuitionFee,
+          originalFee: up.originalFee,
           language: up.language,
         };
       })
@@ -381,6 +381,41 @@ class SeedProgramRepository implements ProgramRepository {
       programs: items,
       universityCount: new Set(items.map((i) => i.university.id)).size,
       minTuitionUSD: items.length ? items[0].tuitionFee : 0,
+    };
+  }
+
+  async countAll(): Promise<number> {
+    return Promise.resolve(seedUniversityPrograms.length);
+  }
+  async listPage(page: number, perPage: number) {
+    const total = seedUniversityPrograms.length;
+    const start = (page - 1) * perPage;
+    const slice = seedUniversityPrograms
+      .slice(start, start + perPage)
+      .map((up) => {
+        const program = seedPrograms.find((p) => p.id === up.programId);
+        const university = seedUniversities.find((u) => u.id === up.universityId);
+        const city = university
+          ? seedCities.find((c) => c.id === university.cityId)
+          : undefined;
+        if (!program || !university || !city) return null;
+        return {
+          ...program,
+          university,
+          city,
+          tuitionFee: up.tuitionFee,
+          originalFee: up.originalFee,
+          language: up.language,
+          scholarshipAvailable: up.scholarshipAvailable,
+        };
+      })
+      .filter((i): i is NonNullable<typeof i> => i !== null);
+    return {
+      programs: slice,
+      total,
+      page,
+      perPage,
+      totalPages: Math.max(1, Math.ceil(total / perPage)),
     };
   }
 }

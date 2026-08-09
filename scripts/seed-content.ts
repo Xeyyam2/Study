@@ -116,10 +116,10 @@ async function insertAll(client: import('pg').PoolClient) {
   for (const up of seedUniversityPrograms) {
     await client.query(
       `insert into public.university_programs
-         (id, university_id, program_id, language, tuition_fee, currency, scholarship_available)
-       values ($1, $2, $3, $4, $5, $6, $7)
+         (id, university_id, program_id, language, tuition_fee, original_fee, currency, scholarship_available)
+       values ($1, $2, $3, $4, $5, $6, $7, $8)
        on conflict (id) do nothing`,
-      [up.id, up.universityId, up.programId, up.language, up.tuitionFee, up.currency, up.scholarshipAvailable],
+      [up.id, up.universityId, up.programId, up.language, up.tuitionFee, up.originalFee ?? null, up.currency, up.scholarshipAvailable],
     );
   }
 

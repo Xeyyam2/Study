@@ -53,6 +53,7 @@ export interface ProgramCategoryDetail {
       university: University;
       city: City;
       tuitionFee: number;
+      originalFee?: number;
       language: InstructionLanguage;
       scholarshipAvailable: boolean;
     }
@@ -61,6 +62,14 @@ export interface ProgramCategoryDetail {
   universityCount: number;
   minTuitionUSD: number;
   uniqueLanguages: string[];
+}
+
+export interface ProgramListingPage {
+  programs: ProgramCategoryDetail['programs'];
+  total: number;
+  page: number;
+  perPage: number;
+  totalPages: number;
 }
 
 export interface ProgramRepository {
@@ -76,10 +85,21 @@ export interface ProgramRepository {
   ): Promise<{
     category: ProgramCategory | null;
     city: City | null;
-    programs: Array<Program & { university: University; tuitionFee: number; language: InstructionLanguage }>;
+    programs: Array<
+      Program & {
+        university: University;
+        tuitionFee: number;
+        originalFee?: number;
+        language: InstructionLanguage;
+      }
+    >;
     universityCount: number;
     minTuitionUSD: number;
   }>;
+  /** Count of all university×program rows for pagination. */
+  countAll(): Promise<number>;
+  /** Page of university×program rows ordered by tuition asc, with total. */
+  listPage(page: number, perPage: number): Promise<ProgramListingPage>;
 }
 
 export interface ReviewRepository {
