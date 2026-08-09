@@ -19,21 +19,49 @@ import {
 } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  filterProgramCombinations,
-  parseProgramListingQuery,
-} from "@/lib/programs/listing-query";
+import { parseProgramListingQuery } from "@/lib/programs/listing-query";
+
+const PER_PAGE = 10;
+
+export async function generateStaticParams() {
+  try {
+    const total = await data.programs.countAll();
+    const pages = Math.max(1, Math.ceil(total / PER_PAGE));
+    return Array.from({ length: pages }, (_, i) => ({
+      page: String(i + 1),
+    }));
+  } catch {
+    return [];
+  }
+}
+
+function buildPageHref(
+  targetPage: number,
+  query: { search?: string; category?: string; city?: string; sort?: string },
+) {
+  const params = new URLSearchParams();
+  if (targetPage > 1) params.set("page", String(targetPage));
+  if (query.search) params.set("search", query.search);
+  if (query.category) params.set("category", query.category);
+  if (query.city) params.set("city", query.city);
+  if (query.sort && query.sort !== "relevance") params.set("sort", query.sort);
+  const qs = params.toString();
+  return qs ? `/programs?${qs}` : "/programs";
+}
 
 export async function generateMetadata({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }): Promise<Metadata> {
-  const { locale } = await params;
+  const [{ locale }, sp] = await Promise.all([params, searchParams]);
   const t = await getTranslations({ locale, namespace: "ProgramsIndex" });
+  const page = Math.max(1, Number(sp.page) || 1);
   return buildPageMetadata({
     locale,
-    path: "/programs",
+    path: page > 1 ? `/programs?page=${page}` : "/programs",
     title: t("metaTitle"),
     description: t("metaDescription"),
   });
@@ -52,27 +80,20 @@ export default async function ProgramsPage({
   const sp = await searchParams;
   const t = await getTranslations({ locale, namespace: "ProgramsIndex" });
 
-  const [categories, combinations, cities, allPrograms] = await Promise.all([
-    data.programs.getCategories(),
-    data.programs.getCombinations(),
-    data.cities.list(),
-    data.programs.getAllPrograms(),
-  ]);
   const query = parseProgramListingQuery(sp);
-  // Reuse the combination filter logic (category + city) to narrow programs.
-  const activeCombos = filterProgramCombinations(
-    combinations,
-    categories,
-    cities,
-    query,
-    appLocale,
-  );
-  const comboKeys = new Set(
-    activeCombos.map((c) => `${c.categorySlug}|${c.citySlug}`),
-  );
-  const listedPrograms = allPrograms.filter((p) =>
-    comboKeys.has(`${p.categorySlug}|${p.city.slug}`),
-  );
+  const page = Math.max(1, Number(sp.page) || 1);
+  const filters = {
+    ...(query.category ? { category: query.category } : {}),
+    ...(query.city ? { city: query.city } : {}),
+    ...(query.search ? { search: query.search } : {}),
+  };
+
+  const [categories, cities, listing] = await Promise.all([
+    data.programs.getCategories(),
+    data.cities.list(),
+    data.programs.listPage(page, PER_PAGE, filters),
+  ]);
+  const listedPrograms = listing.programs;
 
   return (
     <div className="container-page py-section-md">
@@ -108,7 +129,7 @@ export default async function ProgramsPage({
         </Suspense>
         <main>
           <div className="mb-4 flex items-center justify-between text-sm text-muted-foreground">
-            <span>{t("results", { count: listedPrograms.length })}</span>
+            <span>{t("results", { count: listing.total })}</span>
           </div>
 
           {listedPrograms.length > 0 ? (
@@ -178,8 +199,15 @@ export default async function ProgramsPage({
                       <TableCell className="uppercase">
                         {p.language}
                       </TableCell>
-                      <TableCell className="text-right font-semibold tabular-nums text-foreground">
-                        {formatCurrency(p.tuitionFee, "USD", locale)}
+                      <TableCell className="text-right">
+                        <span className="font-semibold tabular-nums text-foreground">
+                          {formatCurrency(p.tuitionFee, "USD", locale)}
+                        </span>
+                        {p.originalFee && p.originalFee > p.tuitionFee && (
+                          <span className="ml-1.5 text-xs text-muted-foreground line-through">
+                            {formatCurrency(p.originalFee, "USD", locale)}
+                          </span>
+                        )}
                         <span className="block text-xs font-normal text-muted-foreground">
                           / year
                         </span>
@@ -205,6 +233,33 @@ export default async function ProgramsPage({
                 {t("emptySubtitle")}
               </p>
             </div>
+          )}
+
+          {listing.totalPages > 1 && (
+            <nav
+              className="mt-6 flex items-center justify-center gap-2"
+              aria-label="Pagination"
+            >
+              {page > 1 && (
+                <Link
+                  href={buildPageHref(page - 1, query)}
+                  className="rounded-md border border-border px-3 py-2 text-sm hover:bg-surface-low"
+                >
+                  ← {t("prev")}
+                </Link>
+              )}
+              <span className="px-3 py-2 text-sm text-muted-foreground">
+                {t("pageOf", { page, total: listing.totalPages })}
+              </span>
+              {page < listing.totalPages && (
+                <Link
+                  href={buildPageHref(page + 1, query)}
+                  className="rounded-md border border-border px-3 py-2 text-sm hover:bg-surface-low"
+                >
+                  {t("next")} →
+                </Link>
+              )}
+            </nav>
           )}
         </main>
       </div>

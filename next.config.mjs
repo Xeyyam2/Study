@@ -38,6 +38,7 @@ const nextConfig = {
       { protocol: 'https', hostname: 'images.unsplash.com' },
       { protocol: 'https', hostname: 'images.pexels.com' },
       { protocol: 'https', hostname: '*.supabase.co' },
+      { protocol: 'https', hostname: 'studyleo-production-bucket.s3.eu-north-1.amazonaws.com' },
     ],
   },
   async headers() {
@@ -66,7 +67,7 @@ const nextConfig = {
           "style-src 'self' 'unsafe-inline'",
           // next/image öz originindən xidmət edir; uzaq şəkillər yalnız məlum
           // mənbələrdən (Unsplash/Pexels/Supabase) + data/blob URI-lar.
-          "img-src 'self' data: blob: https://images.unsplash.com https://images.pexels.com https://*.supabase.co",
+          "img-src 'self' data: blob: https://images.unsplash.com https://images.pexels.com https://*.supabase.co https://studyleo-production-bucket.s3.eu-north-1.amazonaws.com",
           "font-src 'self' data:",
           // Supabase client (auth/realtime/storage) + GA/Clarity
           "connect-src 'self' https://*.supabase.co https://www.google-analytics.com https://www.googletagmanager.com https://*.clarity.ms",
