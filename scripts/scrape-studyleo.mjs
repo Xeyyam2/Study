@@ -33,13 +33,13 @@ const CATEGORY_KEYWORDS = [
 const DEFAULT_CATEGORY = 'social-sciences';
 
 function slugify(s) {
-  return s
+  return String(s)
+    .replace(/ı/g, 'i') // dotless ı (U+0131) has no NFKD decomposition — transliterate first
     .normalize('NFKD')
-    .replace(/[\u0300-\u036f]/g, '') // Ç→C, Ö→O, Ş→S, Ğ→G, İ→I (decomposed)
+    .replace(/[\u0300-\u036f]/g, '') // Ç→C, Ö→O, Ş→S, Ğ→G, İ→I (decomposed), é→e, etc.
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-    .replace(/[çğıöşü]/g, (c) => ({ ç: 'c', ğ: 'g', ı: 'i', ö: 'o', ş: 's', ü: 'u' })[c]); // only dotless ı survives NFKD
+    .replace(/^-+|-+$/g, '');
 }
 
 function categorize(name) {
