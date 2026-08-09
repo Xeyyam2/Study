@@ -1,0 +1,38 @@
+ ⚠ You are using a non-standard "NODE_ENV" value in your environment. This creates inconsistencies in the project and is strongly advised against. Read more: https://nextjs.org/docs/messages/non-standard-node-env
+   ▲ Next.js 15.5.22
+   - Local:        http://localhost:3100
+   - Network:      http://172.19.160.1:3100
+   - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 3.1s
+ ○ Compiling /middleware ...
+ ✓ Compiled /middleware in 976ms (205 modules)
+ ⨯ EvalError: Code generation from strings disallowed for this context
+    at <unknown> (C:\Users\Asus\OneDrive\Desktop\study\.next\server\middleware.js:887)
+    at (middleware)/./node_modules/next/dist/build/webpack/loaders/next-middleware-loader.js?absolutePagePath=C%3A%5CUsers%5CAsus%5COneDrive%5CDesktop%5Cstudy%5Csrc%5Cmiddleware.ts&page=%2Fmiddleware&rootDir=C%3A%5CUsers%5CAsus%5COneDrive%5CDesktop%5Cstudy&matchers=&preferredRegion=&middlewareConfig=e30%3D! (C:\Users\Asus\OneDrive\Desktop\study\.next\server\middleware.js:887:1)
+    at __webpack_require__ (C:\Users\Asus\OneDrive\Desktop\study\.next\server\edge-runtime-webpack.js:37:33)
+    at __webpack_exec__ (C:\Users\Asus\OneDrive\Desktop\study\.next\server\middleware.js:2022:48)
+    at <unknown> (C:\Users\Asus\OneDrive\Desktop\study\.next\server\middleware.js:2023:37)
+    at webpackJsonpCallback (C:\Users\Asus\OneDrive\Desktop\study\.next\server\edge-runtime-webpack.js:1128:39)
+    at <unknown> (C:\Users\Asus\OneDrive\Desktop\study\.next\server\middleware.js:9:61)
+ ○ Compiling /_error ...
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (106kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (258kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+ ✓ Compiled /_error in 1407ms (380 modules)
+ GET /en/programs/architecture 404 in 9ms
+ ○ Compiling /_not-found ...
+ ⨯ src\app\not-found.tsx
+not-found.tsx doesn't have a root layout. To fix this error, make sure every page has a root layout.
+[Error: ENOENT: no such file or directory, open 'C:\Users\Asus\OneDrive\Desktop\study\.next\required-server-files.json'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\Users\\Asus\\OneDrive\\Desktop\\study\\.next\\required-server-files.json'
+}
+[Error: ENOENT: no such file or directory, open 'C:\Users\Asus\OneDrive\Desktop\study\.next\required-server-files.json'] {
+  errno: -4058,
+  code: 'ENOENT',
+  syscall: 'open',
+  path: 'C:\\Users\\Asus\\OneDrive\\Desktop\\study\\.next\\required-server-files.json'
+}

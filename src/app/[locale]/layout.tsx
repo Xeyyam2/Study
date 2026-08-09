@@ -9,7 +9,7 @@ import {
   setRequestLocale,
 } from 'next-intl/server';
 import { routing, isRtl, isLocale, type AppLocale } from '@/i18n/routing';
-import { siteConfig } from '@/config/site';
+import { siteConfig, isIncompleteLocale } from '@/config/site';
 import { JsonLd } from '@/components/seo/json-ld';
 import { Analytics } from '@/components/seo/analytics';
 import { organizationJsonLd, websiteJsonLd } from '@/lib/seo/json-ld';
@@ -40,6 +40,10 @@ export async function generateMetadata({
     },
     description: t('description'),
     metadataBase: new URL(siteConfig.url),
+    // Stub locales (~10% translated) would be flagged as thin content if
+    // indexed. They still render if visited directly, but stay noindex until
+    // fully translated (see INCOMPLETE_LOCALES in config/site.ts).
+    ...(isIncompleteLocale(locale) ? { robots: { index: false, follow: false } } : {}),
   };
 }
 

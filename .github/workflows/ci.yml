@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # Fast gate: type errors and lint problems never reach main. No DB needed.
+  lint-typecheck:
+    name: Lint & Typecheck
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run typecheck
+
+  # Migrate + seed a real Postgres, run unit tests, then production build.
+  test-build:
+    name: Test & Build
+    runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: postgresql://study:study@localhost:5432/study_crm
+      SUPABASE_ENABLED: 'false'
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: study_crm
+          POSTGRES_USER: study
+          POSTGRES_PASSWORD: study
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U study -d study_crm"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - run: npm ci
+      - name: Migrate + seed database
+        run: npm run db:migrate -- --seed
+      - name: Unit tests
+        run: npm run test
+      - name: Production build
+        run: npm run build

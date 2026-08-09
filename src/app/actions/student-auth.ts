@@ -3,10 +3,11 @@
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { crm } from '@/lib/crm';
-import { STUDENT_SESSION_COOKIE } from '@/lib/crm/student-session';
+import { STUDENT_SESSION_COOKIE, isDevAuthEnabled } from '@/lib/crm/student-session';
 import { devStudentLoginSchema } from '@/lib/validations/student';
 
 export async function devStudentLogin(input: unknown) {
+  if (!isDevAuthEnabled()) return { ok: false as const };
   const parsed = devStudentLoginSchema.safeParse(input);
   if (!parsed.success) return { ok: false as const };
   const profile = await crm.getProfile(parsed.data.profileId);

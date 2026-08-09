@@ -31,7 +31,17 @@ const SKIP_LOCAL = [
   '0006_auth_trigger.sql',
   '0007_link_profiles_to_auth_users.sql',
   '0009_storage_bucket.sql',
+  '0013_role_guard.sql',
 ];
+
+// A destructive reset is only safe against a local/dev database. Refuse if
+// DATABASE_URL points anywhere else to prevent catastrophic data loss.
+function isLocalDatabase(url: string): boolean {
+  return /localhost|127\.0\.0\.1|0\.0\.0\.0|\.local|DEV/i.test(url);
+}
+
+// Per-run advisory lock so two concurrent `db:migrate` invocations can't race.
+const MIGRATION_LOCK_ID = 0x5354554459; // 'STUDY'
 
 async function main() {
   const args = new Set(process.argv.slice(2));
@@ -41,9 +51,18 @@ async function main() {
   const url = process.env.DATABASE_URL;
   if (!url) throw new Error('DATABASE_URL is not set');
 
+  if (reset && !isLocalDatabase(url)) {
+    throw new Error(
+      'Refusing to reset: DATABASE_URL does not look local (no localhost/127.0.0.1/.local/DEV). ' +
+        'Reset would DROP the public schema and destroy all data.',
+    );
+  }
+
   const pool = new Pool({ connectionString: url });
   const client = await pool.connect();
   try {
+    await client.query('select pg_advisory_lock($1)', [MIGRATION_LOCK_ID]);
+
     if (reset) {
       console.log('→ resetting schema');
       await client.query(`
@@ -52,16 +71,43 @@ async function main() {
       `);
     }
 
+    // Migration ledger: record applied files so each migration runs exactly once,
+    // and a future non-idempotent migration can't silently re-execute.
+    await client.query(`
+      create table if not exists public.schema_migrations (
+        filename text primary key,
+        applied_at timestamptz not null default now()
+      );
+    `);
+
     const files = readdirSync(migrationsDir)
       .filter((f) => f.endsWith('.sql'))
       .sort();
 
     for (const file of files) {
-      const skip = SKIP_LOCAL.includes(file);
-      console.log(`${skip ? '↩ skip (supabase-only)' : '→ applying'} ${file}`);
-      if (skip) continue;
+      if (SKIP_LOCAL.includes(file)) {
+        console.log(`↩ skip (supabase-only) ${file}`);
+        continue;
+      }
+      const { rowCount } = await client.query(
+        'select 1 from public.schema_migrations where filename = $1',
+        [file],
+      );
+      if (rowCount) {
+        console.log(`✓ already applied ${file}`);
+        continue;
+      }
+      console.log(`→ applying ${file}`);
       const sql = readFileSync(join(migrationsDir, file), 'utf8');
-      await client.query(sql);
+      await client.query('begin');
+      try {
+        await client.query(sql);
+        await client.query('insert into public.schema_migrations (filename) values ($1)', [file]);
+        await client.query('commit');
+      } catch (err) {
+        await client.query('rollback');
+        throw err;
+      }
     }
 
     if (seed) {
@@ -72,6 +118,7 @@ async function main() {
 
     console.log('✓ done (migrations + CRM seed)');
   } finally {
+    await client.query('select pg_advisory_unlock($1)', [MIGRATION_LOCK_ID]).catch(() => {});
     client.release();
     await pool.end();
   }

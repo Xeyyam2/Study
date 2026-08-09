@@ -113,16 +113,34 @@ describe('auth_uid profile linking', () => {
     expect(byUid?.id).toBe(STUDENT2);
   });
 
-  it('resolves a staff profile by auth_uid without creating new rows', async () => {
+  it('resolves a staff profile by auth_uid only (never by email)', async () => {
     const CONSULTANT = '22222222-2222-2222-2222-222222222222'; // Ayşe (seed)
     const before = await crm.getProfile(CONSULTANT);
     expect(before).not.toBeNull();
-    // link by email (simulating first real login of a pre-provisioned staff member)
-    const linked = await crm.getStaffProfileByAuthUid(randomUUID(), before!.email);
-    expect(linked?.id).toBe(CONSULTANT);
-    expect(['admin', 'consultant', 'editor']).toContain(linked?.role);
-    // unknown email → null (no auto-create)
-    const unknown = await crm.getStaffProfileByAuthUid(randomUUID(), `nope-${randomUUID().slice(0, 8)}@example.com`);
-    expect(unknown).toBeNull();
+    // Pre-provision: an admin sets the staff member's auth_uid explicitly.
+    const uid = randomUUID();
+    await pool.query('update public.profiles set auth_uid = $1 where id = $2', [uid, CONSULTANT]);
+    const resolved = await crm.getStaffProfileByAuthUid(uid, before!.email);
+    expect(resolved?.id).toBe(CONSULTANT);
+    expect(['admin', 'consultant', 'editor']).toContain(resolved?.role);
+    // SECURITY: an unknown auth_uid with a known staff email must NOT link —
+    // otherwise an attacker who controls that email escalates to staff.
+    const attacker = await crm.getStaffProfileByAuthUid(randomUUID(), before!.email);
+    expect(attacker).toBeNull();
+  });
+
+  it('does not link a student auth_uid onto a staff profile by email', async () => {
+    const CONSULTANT = '22222222-2222-2222-2222-222222222222'; // Ayşe (seed)
+    const before = await crm.getProfile(CONSULTANT);
+    expect(before).not.toBeNull();
+    // An attacker signs up under the consultant's email — must NOT bind to the
+    // staff profile (role guard in upsertStudentByAuthUid).
+    const poisoned = await crm.upsertStudentByAuthUid({
+      authUid: randomUUID(),
+      email: before!.email,
+      fullName: 'Attacker',
+    });
+    expect(poisoned.id).not.toBe(CONSULTANT);
+    expect(poisoned.role).toBe('student');
   });
 });

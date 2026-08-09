@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
-import { useSearchParams, useRouter } from 'next/navigation';
 import { GraduationCap, Menu, X } from 'lucide-react';
 import { Link, usePathname } from '@/i18n/navigation';
 import { type AppLocale } from '@/i18n/routing';
@@ -26,34 +25,84 @@ interface HeaderSession {
   profile: Profile;
 }
 
-export function Header({ session }: { session: HeaderSession | null }) {
+// Session is resolved CLIENT-SIDE via /api/me so the marketing layout never
+// reads cookies() — keeping every marketing page statically renderable (ISR).
+// A small placeholder avoids a sign-in flash while the session is loading.
+export function Header() {
   const t = useTranslations('Nav');
   const tCommon = useTranslations('Common');
   const locale = useLocale() as AppLocale;
   const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [session, setSession] = useState<HeaderSession | null>(null);
+  const [loading, setLoading] = useState(true);
 
   const redirectTo = `${siteConfig.url}/${locale}?auth=success`;
   const initial = (session?.profile.fullName.trim().charAt(0) || '?').toUpperCase();
+
+  // Resolve the student session client-side (Supabase + dev fallback handled
+  // server-side in /api/me). Runs once on mount.
+  useEffect(() => {
+    let active = true;
+    fetch('/api/me', { cache: 'no-store' })
+      .then((r) => r.json())
+      .then((data) => {
+        if (!active) return;
+        if (data && data.profile) setSession({ userId: data.userId, profile: data.profile });
+        setLoading(false);
+      })
+      .catch(() => {
+        if (active) setLoading(false);
+      });
+    return () => {
+      active = false;
+    };
+  }, []);
 
   useEffect(() => {
     setOpen(false);
   }, [pathname]);
 
-  // Auto-open drawer after Google OAuth redirect
+  // Auto-open the profile drawer after a Google OAuth redirect (?auth=success).
+  // Uses window.location (not useSearchParams) to avoid the Suspense boundary
+  // requirement during static rendering.
   useEffect(() => {
-    if (searchParams.get('auth') === 'success' && session) {
-      setDrawerOpen(true);
-      // Clean URL — remove ?auth=success
-      const params = new URLSearchParams(searchParams.toString());
-      params.delete('auth');
-      const clean = params.toString();
-      router.replace(clean ? `?${clean}` : pathname);
+    if (typeof window === 'undefined' || !session) return;
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('auth') !== 'success') return;
+    setDrawerOpen(true);
+    params.delete('auth');
+    const clean = params.toString();
+    const path = window.location.pathname;
+    window.history.replaceState({}, '', clean ? `${path}?${clean}` : path);
+  }, [session]);
+
+  // Compact auth control: avatar (signed in) or Google sign-in (signed out).
+  // Rendered both in the desktop bar and the mobile menu.
+  function AuthControl() {
+    if (loading) {
+      return <span className="inline-block h-8 w-8 rounded-full bg-muted" aria-hidden />;
     }
-  }, [searchParams, session, router, pathname]);
+    if (session) {
+      return (
+        <button
+          type="button"
+          onClick={() => setDrawerOpen(true)}
+          className="flex items-center gap-2 rounded-full p-1 pr-3 text-sm font-medium text-foreground transition-colors hover:bg-accent"
+          aria-label={session.profile.fullName}
+        >
+          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground">
+            {initial}
+          </span>
+          <span className="hidden max-w-[8rem] truncate md:inline">
+            {session.profile.fullName}
+          </span>
+        </button>
+      );
+    }
+    return <GoogleSignInButton redirectTo={redirectTo} />;
+  }
 
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-card/85 backdrop-blur-md">
@@ -87,25 +136,9 @@ export function Header({ session }: { session: HeaderSession | null }) {
           <Button asChild variant="cta" size="sm" className="hidden sm:inline-flex">
             <Link href="/dashboard/login">{t('apply')}</Link>
           </Button>
-          {session ? (
-            <button
-              type="button"
-              onClick={() => setDrawerOpen(true)}
-              className="hidden items-center gap-2 rounded-full p-1 pr-3 text-sm font-medium text-foreground transition-colors hover:bg-accent sm:flex"
-              aria-label={session.profile.fullName}
-            >
-              <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground">
-                {initial}
-              </span>
-              <span className="hidden max-w-[8rem] truncate md:inline">
-                {session.profile.fullName}
-              </span>
-            </button>
-          ) : (
-            <div className="hidden shrink-0 sm:block">
-              <GoogleSignInButton redirectTo={redirectTo} />
-            </div>
-          )}
+          <div className="hidden shrink-0 sm:block">
+            {AuthControl()}
+          </div>
           <button
             type="button"
             className="inline-flex h-10 w-10 items-center justify-center rounded text-foreground hover:bg-accent md:hidden"
@@ -140,6 +173,10 @@ export function Header({ session }: { session: HeaderSession | null }) {
             <Button asChild variant="cta" className="mt-2">
               <Link href="/apply">{t('apply')}</Link>
             </Button>
+            {/* Sign-in / profile entry on mobile (was missing). */}
+            <div className="mt-3">
+              {AuthControl()}
+            </div>
             <div className="mt-3">
               <LocaleSwitcher />
             </div>

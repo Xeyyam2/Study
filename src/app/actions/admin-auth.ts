@@ -5,11 +5,13 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { crm } from '@/lib/crm';
 import { SESSION_COOKIE } from '@/lib/crm/session';
+import { isDevAuthEnabled } from '@/lib/crm/student-session';
 import { devLoginSchema } from '@/lib/validations/crm';
 
 const STAFF_ROLES = ['admin', 'consultant', 'editor'];
 
 export async function devLogin(input: unknown) {
+  if (!isDevAuthEnabled()) return { ok: false as const };
   const parsed = devLoginSchema.safeParse(input);
   if (!parsed.success) return { ok: false as const };
   const profile = await crm.getProfile(parsed.data.profileId);

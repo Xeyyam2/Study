@@ -443,9 +443,13 @@ export function createPgCrm(getPool: () => Pool): CrmRepository {
     async upsertStudentByAuthUid(input: { authUid: string; email: string; fullName: string }): Promise<Profile> {
       const byUid = await q('select * from public.profiles where auth_uid = $1', [input.authUid]);
       if (byUid.rowCount) return rowToProfile(byUid.rows[0]);
+      // Merge an existing profile by email ONLY if it is a student. Linking to a
+      // staff/admin profile here would let an attacker who controls that email
+      // bind their auth_uid to a privileged profile and then resolve it via the
+      // staff session path (privilege escalation).
       const linked = await q(
-        'update public.profiles set auth_uid = $1 where email = $2 returning *',
-        [input.authUid, input.email],
+        'update public.profiles set auth_uid = $1 where email = $2 and role = $3 returning *',
+        [input.authUid, input.email, 'student'],
       );
       if (linked.rowCount) return rowToProfile(linked.rows[0]);
       const created = await q(
@@ -456,16 +460,12 @@ export function createPgCrm(getPool: () => Pool): CrmRepository {
       return rowToProfile(created.rows[0]);
     },
 
-    async getStaffProfileByAuthUid(authUid: string, email: string): Promise<Profile | null> {
-      // Staff must be pre-provisioned (seed/SQL-elevated). Resolve by auth_uid, else
-      // link by email if a profile already exists; never create a new one here.
+    async getStaffProfileByAuthUid(authUid: string, _email: string): Promise<Profile | null> {
+      // Staff must be pre-provisioned with an auth_uid (set by an admin). Resolve
+      // by auth_uid ONLY — never auto-link by email, otherwise an attacker who
+      // signs up under a staff member's email would gain staff access.
       const byUid = await q('select * from public.profiles where auth_uid = $1', [authUid]);
-      if (byUid.rowCount) return rowToProfile(byUid.rows[0]);
-      const linked = await q(
-        'update public.profiles set auth_uid = $1 where email = $2 returning *',
-        [authUid, email],
-      );
-      return linked.rowCount ? rowToProfile(linked.rows[0]) : null;
+      return byUid.rowCount ? rowToProfile(byUid.rows[0]) : null;
     },
 
     async countByStatus(): Promise<Record<string, number>> {

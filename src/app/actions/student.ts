@@ -2,7 +2,7 @@
 
 import { revalidateTag } from 'next/cache';
 import { crm } from '@/lib/crm';
-import { getStudentSession } from '@/lib/crm/student-session';
+import { getStudentSessionAny } from '@/lib/crm/student-session';
 import { uploadDocumentObject } from '@/lib/storage';
 import { sendMessageSchema } from '@/lib/validations/student';
 
@@ -11,7 +11,7 @@ export type ActionResult = { ok: true } | { ok: false; error: string };
 export async function sendStudentMessage(input: unknown): Promise<ActionResult> {
   const parsed = sendMessageSchema.safeParse(input);
   if (!parsed.success) return { ok: false, error: 'Invalid input' };
-  const session = await getStudentSession();
+  const session = await getStudentSessionAny();
   if (!session) return { ok: false, error: 'Not authenticated' };
   const lead = await crm.getLead(parsed.data.leadId);
   if (!lead || lead.userId !== session.userId) return { ok: false, error: 'Not allowed' };
@@ -23,7 +23,7 @@ const MAX_BYTES = 10 * 1024 * 1024;
 const ALLOWED_MIME = ['application/pdf', 'image/png', 'image/jpeg'];
 
 export async function uploadStudentDocument(formData: FormData): Promise<ActionResult> {
-  const session = await getStudentSession();
+  const session = await getStudentSessionAny();
   if (!session) return { ok: false, error: 'Not authenticated' };
 
   const applicationId = String(formData.get('applicationId') ?? '');
@@ -53,7 +53,7 @@ export async function uploadStudentDocument(formData: FormData): Promise<ActionR
 }
 
 export async function markThreadReadAction(leadId: string): Promise<ActionResult> {
-  const session = await getStudentSession();
+  const session = await getStudentSessionAny();
   if (!session) return { ok: false, error: 'Not authenticated' };
   const lead = await crm.getLead(leadId);
   if (!lead || lead.userId !== session.userId) return { ok: false, error: 'Not allowed' };

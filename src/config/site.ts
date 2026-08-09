@@ -3,7 +3,9 @@ export const siteConfig = {
   name: 'StudyHub',
   shortName: 'StudyHub',
   legalName: 'StudyHub',
-  url: 'https://studyhub.example',
+  // Canonical/OG/sitemap/JSON-LD URLs derive from this. Override in production
+  // via NEXT_PUBLIC_SITE_URL; the placeholder is a dev-only fallback.
+  url: (process.env.NEXT_PUBLIC_SITE_URL ?? 'https://studyhub.example').replace(/\/$/, ''),
   ogImage: '/og.png',
   tagline: {
     en: 'Study in Turkey — Your guided path from application to arrival',
@@ -77,3 +79,9 @@ const INCOMPLETE_LOCALES: ReadonlySet<string> = new Set([
 export const fullyTranslatedLocales: readonly Locale[] = locales.filter(
   (l) => !INCOMPLETE_LOCALES.has(l),
 );
+
+/** True for the near-empty stub locales. Such pages render if visited directly
+ *  but must be marked noindex so they aren't flagged as thin content. */
+export function isIncompleteLocale(locale: string): boolean {
+  return INCOMPLETE_LOCALES.has(locale);
+}

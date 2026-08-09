@@ -18,9 +18,10 @@ Only `/programs` and `/programs/[category]/[city]` routes exist; the
 cost, USD).
 
 - `src/types/index.ts` — add field to `City` interface.
-- `src/lib/seed/cities.ts` — per-city values (all 7 cities):
+- `src/lib/seed/cities.ts` — per-city values (all 13 cities):
   - Istanbul ~700, Ankara ~450, Izmir ~500, Bursa ~350, Antalya ~400,
-    Konya ~300, Trabzon ~320.
+    Konya ~300, Trabzon ~320, Mersin ~280, Gaziantep ~250, Kayseri ~280,
+    Nevsehir ~250, Kocaeli ~330, Alanya ~400.
 - `supabase/migrations/0014_city_living_cost.sql` — new migration:
   `alter table public.cities add column if not exists monthly_living_cost_usd numeric(12,2);`
 - `scripts/seed-content.ts` — include `monthly_living_cost_usd` in the cities insert.

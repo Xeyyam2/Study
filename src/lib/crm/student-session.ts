@@ -7,9 +7,13 @@ import type { Profile } from '@/types/crm';
 
 export const STUDENT_SESSION_COOKIE = 'student_session';
 
-/** Dev-auth fallback is OFF by default. Enable only by setting DEV_AUTH_ENABLED=1. */
+/** Dev-auth fallback is OFF by default. Enable only by setting DEV_AUTH_ENABLED=1
+ *  AND running outside production. The NODE_ENV gate is hard: even if the flag
+ *  leaks into a production env, the entire dev-auth subsystem (cookie readers
+ *  and the devLogin actions) stays inert — neutralizing both the unsigned
+ *  cookie and the predictable seed UUIDs in one place. */
 export function isDevAuthEnabled(): boolean {
-  return process.env.DEV_AUTH_ENABLED === '1';
+  return process.env.DEV_AUTH_ENABLED === '1' && process.env.NODE_ENV !== 'production';
 }
 
 export interface StudentSession {
@@ -38,6 +42,13 @@ export async function requireStudent(locale: AppLocale): Promise<StudentSession>
   const session = await getStudentSession();
   if (!session) redirect(`/${locale}/dashboard/login`);
   return session;
+}
+
+/** Resolve the student session via either path (Supabase or dev fallback),
+ *  WITHOUT redirecting. For use in server actions that must return a result
+ *  instead of redirecting — mirrors requireStudentAny's resolution. */
+export async function getStudentSessionAny(): Promise<StudentSession | null> {
+  return (await getStudentSession()) ?? (await getDevStudentSession());
 }
 
 // Dev fallback (DEV_AUTH_ENABLED=1): resolve a seeded demo student via legacy cookie.
