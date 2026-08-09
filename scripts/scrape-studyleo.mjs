@@ -18,11 +18,11 @@ const CATEGORY_KEYWORDS = [
   ['medicine', ['medicine', 'medical', 'doctor', 'tıp', 'hekim']],
   ['engineering', ['engineering', 'mühendislik', 'mühendisliği']],
   ['computer-science', ['computer', 'software', 'data', 'cyber', 'artificial intelligence', 'yazılım', 'bilgisayar']],
-  ['business', ['business', 'management', 'marketing', 'finance', 'economics', 'trade', 'administration', 'işletme', 'ekonomi']],
+  ['business', ['business', 'management', 'marketing', 'finance', 'economics', 'trade', 'administration', 'accounting', 'logistics', 'işletme', 'ekonomi']],
   ['law', ['law', 'hukuk', 'justice']],
-  ['architecture', ['architecture', 'mimarlık', 'mimarlik']],
+  ['architecture', ['architecture', 'mimarlık', 'mimarlik', 'restoration']],
   ['arts', ['design', 'art', 'fashion', 'music', 'cinema', 'graphic', 'interior', 'sanat', 'tasarım']],
-  ['health-sciences', ['health', 'nursing', 'physiotherapy', 'pharmacy', 'nutrition', 'psychology', 'midwifery', 'audiology', 'paramedic', 'hemşire', 'fizyoterapi', 'eczacılık', 'beslenme']],
+  ['health-sciences', ['health', 'nursing', 'physiotherapy', 'pharmacy', 'nutrition', 'psychology', 'midwifery', 'audiology', 'paramedic', 'dialysis', 'opticianry', 'audiometry', 'speech and language therapy', 'hemşire', 'fizyoterapi', 'eczacılık', 'beslenme']],
   ['tourism', ['tourism', 'hotel', 'gastronomy', 'turizm', 'otel']],
   ['agriculture', ['agriculture', 'food', 'tarım', 'gıda']],
   ['natural-sciences', ['mathematics', 'physics', 'chemistry', 'biology', 'matematik', 'fizik', 'kimya', 'biyoloji']],
@@ -34,11 +34,12 @@ const DEFAULT_CATEGORY = 'social-sciences';
 
 function slugify(s) {
   return s
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '') // Ç→C, Ö→O, Ş→S, Ğ→G, İ→I (decomposed)
     .toLowerCase()
-    .trim()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '')
-    .replace(/[çğıöşü]/g, (c) => ({ ç: 'c', ğ: 'g', ı: 'i', ö: 'o', ş: 's', ü: 'u' })[c]);
+    .replace(/[çğıöşü]/g, (c) => ({ ç: 'c', ğ: 'g', ı: 'i', ö: 'o', ş: 's', ü: 'u' })[c]); // only dotless ı survives NFKD
 }
 
 function categorize(name) {
@@ -51,8 +52,8 @@ function categorize(name) {
 
 function parseTimeToComplete(s) {
   if (!s) return 4;
-  const m = /(\d+)Y/.exec(s);
-  return m ? Number(m[1]) : 4;
+  const m = /(\d+(?:\.\d+)?)Y/.exec(s);
+  return m ? Math.round(Number(m[1])) : 4;
 }
 
 function degreeLevel(s) {
@@ -99,13 +100,18 @@ function extractJsonLd(html) {
 const programs = new Map(); // key: `${uniSlug}|${programName}`
 const universities = new Map(); // key: slug
 let seen = 0;
-let unmatched = [];
+const unmatched = new Set();
 
 async function main() {
   for (let page = START_PAGE; page <= MAX_PAGES; page++) {
     const html = await fetchPage(page);
     const items = extractJsonLd(html);
-    if (!items.length) break; // past last page
+    if (!items.length) {
+      if (page === 1) {
+        throw new Error('No JSON-LD items on page 1 — StudyLeo markup likely changed');
+      }
+      break; // past last page
+    }
     for (const item of items) {
       seen++;
       const name = item.name;
@@ -119,7 +125,7 @@ async function main() {
       const high = parsePrice(offers.highPrice);
       const category = categorize(name);
       if (category === DEFAULT_CATEGORY && !CATEGORY_KEYWORDS.some(([, ks]) => ks.some((k) => name.toLowerCase().includes(k)))) {
-        unmatched.push(name);
+        unmatched.add(name);
       }
       if (!universities.has(uniSlug)) {
         universities.set(uniSlug, {
@@ -140,7 +146,7 @@ async function main() {
           universitySlug: uniSlug,
           language: 'en', // refined in Task 5 from card HTML
           tuitionFee: low ?? 0,
-          originalFee: high && high > low ? high : null,
+          originalFee: low && high && high > low ? high : null,
           currency: offers.priceCurrency || 'USD',
         });
       }
@@ -153,14 +159,14 @@ async function main() {
     generatedAt: new Date().toISOString(),
     universities: [...universities.values()],
     programs: [...programs.values()],
-    unmatchedPrograms: unmatched,
+    unmatchedPrograms: [...unmatched],
   };
   mkdirSync(dirname(OUT), { recursive: true });
   writeFileSync(OUT, JSON.stringify(catalog, null, 2));
   console.log(`✓ wrote ${OUT}`);
   console.log(`universities: ${catalog.universities.length}, programs: ${catalog.programs.length}`);
-  console.log(`unmatched (defaulted to ${DEFAULT_CATEGORY}): ${unmatched.length}`);
-  if (unmatched.length) console.log('first 20 unmatched:', unmatched.slice(0, 20).join('; '));
+  console.log(`unmatched (defaulted to ${DEFAULT_CATEGORY}): ${unmatched.size}`);
+  if (unmatched.size) console.log('first 20 unmatched:', [...unmatched].slice(0, 20).join('; '));
 
   // Download logos (best effort; log failures, don't crash).
   for (const uni of catalog.universities) {

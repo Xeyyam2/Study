@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-09T12:21:46.776Z",
+  "generatedAt": "2026-08-09T12:31:49.319Z",
   "universities": [
     {
       "name": "Istanbul Medipol University",
@@ -135,7 +135,7 @@
       "slug": "opticianry",
       "degreeLevel": "associate",
       "durationYears": 2,
-      "categorySlug": "social-sciences",
+      "categorySlug": "health-sciences",
       "universitySlug": "istanbul-medipol-university",
       "language": "en",
       "tuitionFee": 3250,
@@ -147,7 +147,7 @@
       "slug": "audiometry",
       "degreeLevel": "associate",
       "durationYears": 2,
-      "categorySlug": "social-sciences",
+      "categorySlug": "health-sciences",
       "universitySlug": "istanbul-medipol-university",
       "language": "en",
       "tuitionFee": 3250,
@@ -159,7 +159,7 @@
       "slug": "architectural-restoration",
       "degreeLevel": "associate",
       "durationYears": 2,
-      "categorySlug": "social-sciences",
+      "categorySlug": "architecture",
       "universitySlug": "istanbul-medipol-university",
       "language": "en",
       "tuitionFee": 3250,
@@ -207,7 +207,7 @@
       "slug": "dialysis",
       "degreeLevel": "associate",
       "durationYears": 2,
-      "categorySlug": "social-sciences",
+      "categorySlug": "health-sciences",
       "universitySlug": "istanbul-medipol-university",
       "language": "en",
       "tuitionFee": 3250,
@@ -315,7 +315,7 @@
       "slug": "accounting-and-tax-applications",
       "degreeLevel": "associate",
       "durationYears": 2,
-      "categorySlug": "social-sciences",
+      "categorySlug": "business",
       "universitySlug": "istanbul-medipol-university",
       "language": "en",
       "tuitionFee": 3250,
@@ -339,7 +339,7 @@
       "slug": "logistics",
       "degreeLevel": "associate",
       "durationYears": 2,
-      "categorySlug": "social-sciences",
+      "categorySlug": "business",
       "universitySlug": "istanbul-medipol-university",
       "language": "en",
       "tuitionFee": 3250,
@@ -373,15 +373,9 @@
   ],
   "unmatchedPrograms": [
     "Civil Aviation Cabin Services",
-    "Opticianry",
-    "Audiometry",
-    "Architectural Restoration",
     "Construction Technology",
     "Electroneurophysiology",
-    "Dialysis",
     "Child Development",
-    "Operating Room Services",
-    "Accounting and Tax Applications",
-    "Logistics"
+    "Operating Room Services"
   ]
 }
