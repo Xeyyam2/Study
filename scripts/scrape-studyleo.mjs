@@ -43,7 +43,7 @@ function slugify(s) {
 }
 
 function categorize(name) {
-  const n = name.toLowerCase();
+  const n = (name || '').toLowerCase();
   for (const [category, keywords] of CATEGORY_KEYWORDS) {
     if (keywords.some((k) => n.includes(k))) return category;
   }
@@ -71,11 +71,82 @@ function parsePrice(raw) {
   return Number.isFinite(n) && n > 0 ? n : null;
 }
 
+async function fetchWithRetry(url, attempts = 3) {
+  let lastErr;
+  for (let i = 1; i <= attempts; i++) {
+    try {
+      const res = await fetch(url, { headers: { 'user-agent': 'Mozilla/5.0' } });
+      if (res.ok) return await res.text();
+      lastErr = new Error(`HTTP ${res.status} for ${url}`);
+    } catch (e) {
+      lastErr = e;
+    }
+    // transient network errors happen; back off briefly and retry
+    await new Promise((r) => setTimeout(r, 800 * i));
+  }
+  throw lastErr;
+}
+
 async function fetchPage(page) {
-  const url = `https://www.studyleo.com/en/programs?page=${page}`;
-  const res = await fetch(url, { headers: { 'user-agent': 'Mozilla/5.0' } });
-  if (!res.ok) throw new Error(`HTTP ${res.status} for ${url}`);
-  return res.text();
+  return fetchWithRetry(`https://www.studyleo.com/en/programs?page=${page}`);
+}
+
+// Program cards show their teaching language as
+// `<span class="text-grey text-xs">Languages</span><div class="font-medium text-black-text text-sm flex flex-col"><span>English</span></div>`
+// Cards on a page line up 1:1 with the JSON-LD ItemList items (verified against live HTML).
+function extractLanguages(html) {
+  const langs = [];
+  const re = /Languages<\/span><div[^>]*><span>([^<]+)<\/span>/g;
+  let m;
+  while ((m = re.exec(html))) langs.push(m[1].trim());
+  return langs;
+}
+
+// Normalise a card language label to our canonical codes. Real labels seen in the wild:
+// "English", "Turkish", "30% English" (Turkish-taught programs with partial English content).
+// Anything unrecognised falls back to 'en' rather than dropping the program.
+// Note: the plan's `startsWith('tr')` check never matched "Turkish" (t-u-r…), so we match
+// full words — verified: "Turkish"→tr, "English"/"30% English"→en.
+function normalizeLanguage(label) {
+  const l = (label || '').toLowerCase();
+  if (l.startsWith('en') || l.includes('english')) return 'en';
+  if (l.startsWith('tr') || l.includes('turkish')) return 'tr';
+  if (l.startsWith('ar') || l.includes('arabic')) return 'ar';
+  if (l.startsWith('ru') || l.includes('russian')) return 'ru';
+  return 'en';
+}
+
+// University cities come from the /en/universities listing's JSON-LD
+// (CollegeOrUniversity -> PostalAddress.addressLocality), which is far more robust than
+// matching card markup. The list paginates ?page=1..7 (12 per page, 76 universities total).
+async function fetchUniversityCities() {
+  const map = new Map();
+  for (let page = 1; page <= 20; page++) {
+    const url = page === 1 ? 'https://www.studyleo.com/en/universities' : `https://www.studyleo.com/en/universities?page=${page}`;
+    const html = await fetchWithRetry(url);
+    let found = 0;
+    const re = /<script type="application\/ld\+json">([\s\S]*?)<\/script>/g;
+    let m;
+    while ((m = re.exec(html))) {
+      try {
+        const parsed = JSON.parse(m[1]);
+        if (parsed['@type'] === 'ItemList' && Array.isArray(parsed.itemListElement)) {
+          for (const el of parsed.itemListElement) {
+            const item = el.item;
+            if (item?.['@type'] !== 'CollegeOrUniversity' || !item.name) continue;
+            const slug = (item.url || item['@id'] || '').split('/').filter(Boolean).pop()?.replace(/#.*$/, '');
+            if (!slug) continue;
+            const city = item.address?.addressLocality;
+            if (city) map.set(slug, city);
+            found++;
+          }
+        }
+      } catch { /* skip malformed blocks */ }
+    }
+    if (!found) break; // past the last page
+    await new Promise((r) => setTimeout(r, 300));
+  }
+  return map;
 }
 
 function extractJsonLd(html) {
@@ -112,11 +183,12 @@ async function main() {
       }
       break; // past last page
     }
+    const langs = extractLanguages(html); // card languages line up 1:1 with JSON-LD items
     for (const item of items) {
       seen++;
       const name = item.name;
       const provider = item.provider?.[0];
-      if (!provider) continue;
+      if (!name || !provider) continue;
       const uniName = provider.name;
       const uniSlug = slugify(uniName);
       const logoUrl = provider.logo;
@@ -132,7 +204,7 @@ async function main() {
           name: uniName,
           slug: uniSlug,
           logoUrl: logoUrl || null,
-          cityName: null, // filled in Task 5 from the universities page
+          cityName: null, // backfilled from the universities page in Task 5
         });
       }
       const key = `${uniSlug}|${name}`;
@@ -144,20 +216,38 @@ async function main() {
           durationYears: parseTimeToComplete(item.timeToComplete),
           categorySlug: category,
           universitySlug: uniSlug,
-          language: 'en', // refined in Task 5 from card HTML
+          language: 'en', // replaced below with the real language from card HTML
           tuitionFee: low ?? 0,
           originalFee: low && high && high > low ? high : null,
           currency: offers.priceCurrency || 'USD',
         });
       }
     }
+    // Language for program at index i corresponds to langs[i] (same DOM order as the JSON-LD).
+    items.forEach((item, i) => {
+      const provider = item.provider?.[0];
+      if (!provider || !item.name) return;
+      const key = `${slugify(provider.name)}|${item.name}`;
+      const prog = programs.get(key);
+      if (prog) prog.language = normalizeLanguage(langs[i]);
+    });
     console.log(`page ${page}: ${items.length} items (total seen ${seen})`);
     await new Promise((r) => setTimeout(r, 300)); // be polite
   }
 
+  // Backfill university cities from the /en/universities listing (only the ~76 listed
+  // universities have one; the rest stay null and are logged).
+  const cityMap = await fetchUniversityCities();
+  console.log(`university city map: ${cityMap.size} cities`);
+  const unis = [...universities.values()];
+  for (const uni of unis) {
+    uni.cityName = cityMap.get(uni.slug) ?? null;
+    if (!uni.cityName) console.warn(`⚠ no city found for ${uni.name}`);
+  }
+
   const catalog = {
     generatedAt: new Date().toISOString(),
-    universities: [...universities.values()],
+    universities: unis,
     programs: [...programs.values()],
     unmatchedPrograms: [...unmatched],
   };
@@ -176,9 +266,7 @@ async function main() {
     const ext = uni.logoUrl.includes('.svg') ? 'svg' : 'webp';
     const outPath = join(dir, `logo.${ext}`);
     try {
-      const res = await fetch(uni.logoUrl, { headers: { 'user-agent': 'Mozilla/5.0' } });
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const buf = Buffer.from(await res.arrayBuffer());
+      const buf = Buffer.from(await fetchWithRetry(uni.logoUrl, 2).then((t) => t));
       writeFileSync(outPath, buf);
       uni.logoLocalPath = `/images/universities/${uni.slug}/logo.${ext}`;
     } catch (e) {
@@ -205,4 +293,4 @@ if (invokedDirect) {
   });
 }
 
-export { categorize, parsePrice, degreeLevel, parseTimeToComplete, slugify };
+export { categorize, parsePrice, degreeLevel, parseTimeToComplete, slugify, extractLanguages, normalizeLanguage };
