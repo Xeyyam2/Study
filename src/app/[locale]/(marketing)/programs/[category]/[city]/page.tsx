@@ -261,8 +261,16 @@ export default async function ProgramCombinationPage({
                       </Badge>
                     </TableCell>
                     <TableCell className="uppercase">{p.language}</TableCell>
-                    <TableCell className="text-right font-semibold tabular-nums">
+                    <TableCell className="text-right font-semibold tabular-nums text-foreground">
                       {formatCurrency(p.tuitionFee, 'USD', locale)}
+                      {p.originalFee && p.originalFee > p.tuitionFee && (
+                        <span className="ml-1.5 text-xs font-normal text-muted-foreground line-through">
+                          {formatCurrency(p.originalFee, 'USD', locale)}
+                        </span>
+                      )}
+                      <span className="block text-xs font-normal text-muted-foreground">
+                        / year
+                      </span>
                     </TableCell>
                   </TableRow>
                 ))}
