@@ -291,7 +291,9 @@ for (const p of programs) {
     studyLeoPrograms.push({
       id: programId,
       slug,
-      name: { en: p.name }, // only EN available from the catalog
+      // Only EN is available from the catalog; mirror it to all 17 locales so
+      // every language shows the real name instead of an empty/fallback value.
+      name: Object.fromEntries(LOCALES.map((l) => [l, p.name])),
       degreeLevel: p.degreeLevel,
       categorySlug: p.categorySlug,
       durationYears: p.durationYears,
