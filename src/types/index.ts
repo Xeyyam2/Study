@@ -78,7 +78,8 @@ export interface UniversityProgram {
   universityId: string;
   programId: string;
   language: InstructionLanguage;
-  tuitionFee: number;
+  tuitionFee: number;        // discounted (scholarship) price
+  originalFee?: number;      // list price; undefined when no discount
   currency: 'USD' | 'TRY';
   scholarshipAvailable: boolean;
 }
