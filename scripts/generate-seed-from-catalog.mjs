@@ -6,10 +6,13 @@
 //   npm run scrape:studyleo && node scripts/generate-seed-from-catalog.mjs
 //
 // Design decisions (see Task 6):
-//  - Dedupe against the hand-written seed by NAME (programs: EN name only;
-//    universities: exact lowercased name). Slug-only matches count as a match
-//    too, because `public.programs.slug` / `public.universities.slug` are
-//    globally UNIQUE in Postgres — inserting a same-slug duplicate would fail.
+//  - Programs dedupe against the hand-written seed by EN name: when a catalog
+//    program's EN name matches a seedPrograms row, we REUSE that program's id
+//    in the university_programs rows instead of creating a duplicate program.
+//    Only genuinely-new program names create new `programs` rows. Universities
+//    dedupe by exact lowercased name. Slug-only matches count as a match too,
+//    because `public.programs.slug` / `public.universities.slug` are globally
+//    UNIQUE in Postgres — inserting a same-slug duplicate would fail.
 //  - `programs.slug` is globally unique in the DB, but the catalog repeats the
 //    same slug across universities (e.g. `nutrition-and-dietetics` ×42). We
 //    disambiguate: first occurrence keeps the catalog slug; later ones get a
@@ -111,12 +114,27 @@ try {
   console.warn('warn: could not parse universities.ts for id map:', err.message);
 }
 // programs.ts names are LocalizedString objects — extract the EN name only.
-const existingProgEn = new Set();
+// Sequential scan: every `id: 'p-...'` is followed by its `name: { en: '...' }`
+// within the same Program object, so an `en:` directly after a program id
+// belongs to that program's name. (The `seedCategories` block above also has
+// `en:` keys — they are never preceded by a program id, so they are excluded.)
+const progIdByEnName = new Map(); // lowercase EN name → seed program id
 const existingProgSlugs = new Set();
 try {
   const src = readFileSync(join(seedDir, 'programs.ts'), 'utf8');
-  for (const m of src.matchAll(/en: '([^']+)'/g)) existingProgEn.add(m[1].toLowerCase());
-  for (const m of src.matchAll(/slug: '([^']+)'/g)) existingProgSlugs.add(m[1]);
+  let lastId = null;
+  for (const m of src.matchAll(/id: '(p-[^']+)'|en: '([^']+)'|slug: '([^']+)'/g)) {
+    if (m[1]) {
+      lastId = m[1];
+    } else if (m[2]) {
+      if (lastId && !progIdByEnName.has(m[2].toLowerCase())) {
+        progIdByEnName.set(m[2].toLowerCase(), lastId);
+      }
+      lastId = null; // name consumed; next en: belongs to a new program
+    } else if (m[3]) {
+      existingProgSlugs.add(m[3]);
+    }
+  }
 } catch {}
 
 // Existing seedCities, keyed by normalized EN name → id.
@@ -231,32 +249,54 @@ for (const uni of universities) {
   if (uni.logoLocalPath) studyLeoLogoImages[uni.slug] = uni.logoLocalPath;
 }
 
-// Programs — dedupe against the hand-written seed by EN name AND slug.
-// (Name is the primary signal — Turkish names differ; slug is secondary
-// because public.programs.slug is globally UNIQUE in Postgres, so a catalog
-// program whose slug collides with a seeded slug must be skipped or suffixed.)
-const seenProgNames = new Set();
+// Programs — reuse existing seed program ids by EN name; create a new Program
+// row only for genuinely-new names. EVERY catalog entry still gets a
+// university_programs row (this is the Task 6 fix: previously any catalog
+// program whose EN name matched the seed was skipped entirely, dropping
+// ~3,144 university_programs rows).
+// (Slug collisions are still handled: `public.programs.slug` is globally
+// UNIQUE in Postgres, so repeated catalog slugs get a '-<universitySlug>'
+// suffix after the first use, and slugs owned by hand-written seed programs
+// get the same suffix.)
 const usedSlugs = new Map(); // slug → count (disambiguate globally-unique slug)
+const newProgIdByName = new Map(); // lowercase EN name → created program id (new names only)
+const usedUpKeys = new Set(); // 'universityId|programId' → dedupe within catalog
 const studyLeoPrograms = [];
 const studyLeoUniversityPrograms = [];
 
 for (const p of programs) {
   const nameKey = p.name.toLowerCase();
-  if (existingProgEn.has(nameKey) || seenProgNames.has(nameKey)) {
-    seenProgNames.add(nameKey);
-    continue; // already seeded by name — skip program + university_program row
+  const existingProgramId = progIdByEnName.get(nameKey);
+  let programId;
+  if (existingProgramId) {
+    // Name already seeded — reuse the existing program row.
+    programId = existingProgramId;
+  } else if (newProgIdByName.has(nameKey)) {
+    // Genuinely-new name already created earlier in the catalog — reuse it.
+    programId = newProgIdByName.get(nameKey);
+  } else {
+    // First sighting of a genuinely-new name — create a program row with a
+    // unique id/slug.
+    const seedSlugTaken = existingProgSlugs.has(p.slug);
+    const count = (usedSlugs.get(p.slug) ?? 0) + 1;
+    usedSlugs.set(p.slug, count);
+    // First occurrence keeps the catalog slug; duplicates get a university
+    // disambiguator because public.programs.slug is globally UNIQUE. A slug
+    // that already belongs to a hand-written seed program is treated as a
+    // collision too (different EN name, e.g. catalog "Artificial Intelligence"
+    // vs seed "Artificial Intelligence (MSc)") and gets the same suffix.
+    const slug = count === 1 && !seedSlugTaken ? p.slug : `${p.slug}-${p.universitySlug}`;
+    programId = `p-${p.universitySlug}-${slug}`;
+    newProgIdByName.set(nameKey, programId);
+    studyLeoPrograms.push({
+      id: programId,
+      slug,
+      name: { en: p.name }, // only EN available from the catalog
+      degreeLevel: p.degreeLevel,
+      categorySlug: p.categorySlug,
+      durationYears: p.durationYears,
+    });
   }
-  seenProgNames.add(nameKey);
-
-  const seedSlugTaken = existingProgSlugs.has(p.slug);
-  const count = (usedSlugs.get(p.slug) ?? 0) + 1;
-  usedSlugs.set(p.slug, count);
-  // First occurrence keeps the catalog slug; duplicates get a university
-  // disambiguator because public.programs.slug is globally UNIQUE. A slug that
-  // already belongs to a hand-written seed program is treated as a collision
-  // too (different EN name, e.g. catalog "Artificial Intelligence" vs seed
-  // "Artificial Intelligence (MSc)") and gets the same suffix.
-  const slug = count === 1 && !seedSlugTaken ? p.slug : `${p.slug}-${p.universitySlug}`;
 
   // Resolve the canonical university id (existing seed row or a new u-<slug>).
   // Prefer the exact slug map; fall back to the normalized-name map (handles
@@ -266,17 +306,20 @@ for (const p of programs) {
     uniIdBySlug.get(p.universitySlug) ??
     (uni ? uniIdByNormName.get(norm(uni.name)) : undefined) ??
     `u-${p.universitySlug}`;
-  const programId = `p-${universityId}-${slug}`;
-  studyLeoPrograms.push({
-    id: programId,
-    slug,
-    name: { en: p.name }, // only EN available from the catalog
-    degreeLevel: p.degreeLevel,
-    categorySlug: p.categorySlug,
-    durationYears: p.durationYears,
-  });
+
+  // EVERY catalog entry gets a university_programs row. Dedupe only exact
+  // universityId|programId repeats within the catalog itself (same program at
+  // the same university listed twice) — a program whose name matches the seed
+  // is NOT dropped.
+  const upKey = `${universityId}|${programId}`;
+  if (usedUpKeys.has(upKey)) continue;
+  usedUpKeys.add(upKey);
+
+  // up id is derived from universityId|programId so it is stable and can never
+  // collide with the hand-written seed's `up-1`..`up-34` ids.
+  const upId = `up-${universityId}-${programId}`;
   studyLeoUniversityPrograms.push({
-    id: `up-${studyLeoUniversityPrograms.length + 1}`,
+    id: upId,
     universityId,
     programId,
     language: p.language, // 'en' | 'tr' | 'ar' | 'ru'
@@ -315,16 +358,23 @@ import type { City, Program, University, UniversityProgram } from '../../types';
 export const studyLeoUniversities: University[] = ${ser(studyLeoUniversities, 2)};
 
 /**
- * StudyLeo-only programs (EN name only). Program rows whose EN name already
- * exists in seedPrograms are skipped. Slugs are globally unique in the DB, so
- * repeated catalog slugs get a '-<universitySlug>' suffix after the first use.
+ * StudyLeo-only programs (EN name only). A catalog program whose EN name
+ * already exists in seedPrograms is NOT emitted here — its university_programs
+ * rows reference the existing seed program id instead. Only genuinely-new
+ * program names create rows in this array. Slugs are globally unique in the
+ * DB, so repeated catalog slugs get a '-<universitySlug>' suffix after the
+ * first use.
  */
 export const studyLeoPrograms: Program[] = ${ser(studyLeoPrograms, 2)};
 
 /**
- * StudyLeo university↔program rows with real tuition data. Only the non-en locales
- * need the UI; name localization falls back to the EN name (name[locale] renders
- * the missing locale as the raw key — see the university detail table).
+ * StudyLeo university↔program rows with real tuition data. ONE row per
+ * catalog entry (all ~4,134 university×program pairs), deduped only by exact
+ * universityId|programId repeats within the catalog. programId references
+ * either an existing seedPrograms row or a new studyLeoPrograms row.
+ * Only the non-en locales need the UI; name localization falls back to the EN
+ * name (name[locale] renders the missing locale as the raw key — see the
+ * university detail table).
  */
 export const studyLeoUniversityPrograms: UniversityProgram[] = ${ser(studyLeoUniversityPrograms, 2)};
 
@@ -352,7 +402,7 @@ console.log(`✓ wrote ${target}`);
 console.log(`  universities kept (new):   ${studyLeoUniversities.length}`);
 console.log(`  universities skipped:      ${universities.length - studyLeoUniversities.length}`);
 console.log(`  programs kept (new):       ${studyLeoPrograms.length}`);
-console.log(`  programs skipped (seeded): ${programs.length - studyLeoPrograms.length}`);
+console.log(`  programs reusing seed id:  ${programs.length - studyLeoPrograms.length}`);
 console.log(`  university_programs:       ${studyLeoUniversityPrograms.length}`);
 console.log(`  new cities:                ${newCities.length}`);
 console.log(`  logo images mapped:        ${Object.keys(studyLeoLogoImages).length}`);
