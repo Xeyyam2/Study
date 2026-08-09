@@ -18,24 +18,8 @@ import { CTASection } from '@/components/sections/cta-section';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 
-export async function generateStaticParams() {
-  // DB əlçatan deyilsə (dev seed əvvəli, DB çöküb və ya boşdur) bütün
-  // [locale] route tree-nin çökməsinin qarşısını al: xəta halında params-ı
-  // boş qaytar — səhifə on-demand render olunacaq. generateStaticParams
-  // qohum marşrutları (məs. /en/universities) aşağı çəkməməlidir.
-  try {
-    const countries = await data.countries.list();
-    return countries.map((c) => ({ country: c.slug }));
-  } catch (error) {
-    console.error(
-      '[study-in-turkey generateStaticParams] DB xətası, [] qaytarılır:',
-      error,
-    );
-    return [];
-  }
-}
-
 // ISR — content rarely changes; rebuild only every hour.
+// No generateStaticParams: pages are rendered on-demand (first visit) and cached.
 export const revalidate = 3600;
 
 export async function generateMetadata({

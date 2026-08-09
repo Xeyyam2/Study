@@ -32,6 +32,11 @@ const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   outputFileTracingRoot: __dirname,
+  experimental: {
+    // Throttle parallel static-generation workers so the local Postgres pool
+    // isn't overwhelmed during `next build` (7,600+ prerendered pages).
+    staticGenerationMaxConcurrency: 2,
+  },
   images: {
     formats: ['image/avif', 'image/webp'],
     remotePatterns: [

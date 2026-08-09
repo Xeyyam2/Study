@@ -36,20 +36,8 @@ import { Badge } from '@/components/ui/badge';
 import { formatCurrency } from '@/lib/utils';
 import { annualTotalCost } from '@/lib/programs/costs';
 
-export async function generateStaticParams() {
-  try {
-    const categories = await data.programs.getCategories();
-    return categories.map((c) => ({ category: c.slug }));
-  } catch (error) {
-    console.error(
-      '[programs/[category] generateStaticParams] DB xətası, [] qaytarılır:',
-      error,
-    );
-    return [];
-  }
-}
-
 // ISR — content rarely changes; rebuild every hour (or on-demand revalidation).
+// No generateStaticParams: pages are rendered on-demand (first visit) and cached.
 export const revalidate = 3600;
 
 export async function generateMetadata({

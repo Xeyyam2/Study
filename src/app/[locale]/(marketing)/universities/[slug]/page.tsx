@@ -51,23 +51,8 @@ import {
 import { UniversityCard } from '@/components/sections/university-card';
 import { formatCurrency, formatNumber } from '@/lib/utils';
 
-export async function generateStaticParams() {
-  // DB əlçatan deyilsə (dev seed əvvəli, DB çöküb və ya boşdur) bütün
-  // [locale] route tree-nin çökməsinin qarşısını al: xəta halında params-ı
-  // boş qaytar — səhifə on-demand render olunacaq.
-  try {
-    const universities = await data.universities.list();
-    return universities.map((u) => ({ slug: u.slug }));
-  } catch (error) {
-    console.error(
-      '[universities/[slug] generateStaticParams] DB xətası, [] qaytarılır:',
-      error,
-    );
-    return [];
-  }
-}
-
 // ISR — content rarely changes; rebuild only every hour (or on-demand revalidation).
+// No generateStaticParams: pages are rendered on-demand (first visit) and cached.
 export const revalidate = 3600;
 
 export async function generateMetadata({
