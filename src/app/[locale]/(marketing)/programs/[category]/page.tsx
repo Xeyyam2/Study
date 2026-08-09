@@ -231,7 +231,7 @@ export default async function ProgramCategoryPage({
         {/* City sections — each city has its own combination page */}
         <section className="mb-section-md">
           <h2 className="mb-4 font-display text-headline-md text-foreground">
-            {t('citiesTitle')}
+            {t('citiesTitle', { category: cat.name[appLocale] })}
           </h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {[...programsByCity.entries()].map(([cityId, cityPrograms]) => {
