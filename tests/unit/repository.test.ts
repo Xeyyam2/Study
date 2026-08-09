@@ -42,6 +42,13 @@ describe('UniversityRepository (seed)', () => {
     expect(detail!.city?.slug).toBe('istanbul');
   });
 
+  it('uses a locally-hosted campus image for mapped universities', async () => {
+    const uni = await data.universities.getBySlug('bahcesehir-university');
+    expect(uni?.heroImage).toBe(
+      '/images/universities/bahcesehir-university/hero.webp',
+    );
+  });
+
   it('computes min tuition', async () => {
     expect(await data.universities.getMinTuitionUSD('u-bahcesehir')).toBeGreaterThan(0);
   });
