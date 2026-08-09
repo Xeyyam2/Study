@@ -1,4 +1,5 @@
 export * from './images';
+export * from './studyleo-catalog';
 export * from './countries';
 export * from './cities';
 export * from './programs';

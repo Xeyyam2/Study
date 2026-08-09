@@ -16,6 +16,10 @@ import {
   seedReviews,
   seedFaqs,
   seedBlog,
+  studyLeoUniversities,
+  studyLeoPrograms,
+  studyLeoUniversityPrograms,
+  studyLeoCities,
 } from '../src/lib/seed';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -37,7 +41,7 @@ for (const file of ['.env.local', '.env']) {
 
 // Re-export so tsx picks the .ts imports from src/lib/seed (ESM-compatible via tsconfig paths
 // are NOT resolved here — import via relative path).
-void [seedCountries, seedCities, seedPrograms, seedCategories, seedUniversities, seedUniversityPrograms, seedScholarships, seedDormitories, seedReviews, seedFaqs, seedBlog];
+void [seedCountries, seedCities, seedPrograms, seedCategories, seedUniversities, seedUniversityPrograms, seedScholarships, seedDormitories, seedReviews, seedFaqs, seedBlog, studyLeoUniversities, studyLeoPrograms, studyLeoUniversityPrograms, studyLeoCities];
 
 async function truncateAll(client: import('pg').PoolClient) {
   const tables = [
@@ -69,7 +73,7 @@ async function insertAll(client: import('pg').PoolClient) {
   }
 
   // cities
-  for (const c of seedCities) {
+  for (const c of [...seedCities, ...studyLeoCities]) {
     await client.query(
       `insert into public.cities (id, slug, country_code, name_i18n, monthly_living_cost_usd) values ($1, $2, $3, $4::jsonb, $5)
        on conflict (id) do nothing`,
@@ -87,7 +91,7 @@ async function insertAll(client: import('pg').PoolClient) {
   }
 
   // programs
-  for (const p of seedPrograms) {
+  for (const p of [...seedPrograms, ...studyLeoPrograms]) {
     await client.query(
       `insert into public.programs (id, slug, name_i18n, degree_level, category_slug, duration_years)
        values ($1, $2, $3::jsonb, $4, $5, $6)
@@ -97,7 +101,7 @@ async function insertAll(client: import('pg').PoolClient) {
   }
 
   // universities
-  for (const u of seedUniversities) {
+  for (const u of [...seedUniversities, ...studyLeoUniversities]) {
     await client.query(
       `insert into public.universities
          (id, slug, city_id, name, founded_year, student_count, ranking, accreditation,
@@ -113,7 +117,7 @@ async function insertAll(client: import('pg').PoolClient) {
   }
 
   // university_programs
-  for (const up of seedUniversityPrograms) {
+  for (const up of [...seedUniversityPrograms, ...studyLeoUniversityPrograms]) {
     await client.query(
       `insert into public.university_programs
          (id, university_id, program_id, language, tuition_fee, original_fee, currency, scholarship_available)

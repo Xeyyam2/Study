@@ -4,7 +4,7 @@ import { extractLanguages, normalizeLanguage } from '../../scripts/scrape-studyl
 // Fixture mirrors the exact card markup observed on live StudyLeo pages:
 // <div class="flex flex-col"><span class="text-grey text-xs">Languages</span>
 // <div class="font-medium text-black-text text-sm flex flex-col"><span>English</span></div></div>
-const CARD = (lang) =>
+const CARD = (lang: string) =>
   `<div class="flex flex-col"><span class="text-grey text-xs">Languages</span><div class="font-medium text-black-text text-sm flex flex-col"><span>${lang}</span></div></div>`;
 
 describe('extractLanguages', () => {
