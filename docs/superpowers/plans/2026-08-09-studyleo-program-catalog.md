@@ -24,9 +24,6 @@
 -- holds the list price when a discount exists, NULL otherwise.
 alter table public.university_programs
   add column if not exists original_fee numeric(12,2);
-
-create index if not exists up_program_id_idx
-  on public.university_programs (program_id);
 ```
 
 - [ ] **Step 2: Apply the migration**
