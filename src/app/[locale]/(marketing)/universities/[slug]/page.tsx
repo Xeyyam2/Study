@@ -111,6 +111,9 @@ export default async function UniversityDetailPage({
     data.faqs.byUniversity(detail.id),
     data.faqs.general(),
   ]);
+  const relatedMetadata = await data.universities.getListingMetadata(
+    related.map((r) => r.id),
+  );
   const faqs = [...uniFaqs, ...generalFaqs].slice(0, 8);
   const [rating, minTuition] = await Promise.all([
     data.universities.getRating(detail.id),
@@ -501,6 +504,7 @@ export default async function UniversityDetailPage({
                     key={u.id}
                     university={u}
                     locale={appLocale}
+                    listingMetadata={relatedMetadata.get(u.id)}
                   />
                 ))}
               </div>

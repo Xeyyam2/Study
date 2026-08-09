@@ -33,6 +33,16 @@ export function ChatWidget() {
     scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight, behavior: 'smooth' });
   }, [messages, loading]);
 
+  // Close on Escape while the panel is open (dialog semantics).
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setOpen(false);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [open]);
+
   async function send() {
     const text = input.trim();
     if (!text || loading) return;
@@ -72,6 +82,8 @@ export function ChatWidget() {
       <button
         onClick={() => setOpen((v) => !v)}
         aria-label={open ? t('closed') : t('title')}
+        aria-expanded={open}
+        aria-controls="chat-widget-panel"
         className="fixed bottom-5 left-5 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-flat-hover transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
       >
         {open ? <X className="h-6 w-6" /> : <MessageCircle className="h-6 w-6" />}
@@ -79,10 +91,16 @@ export function ChatWidget() {
 
       {/* Chat panel */}
       {open && (
-        <div className="fixed bottom-24 left-5 z-50 flex h-[420px] w-[340px] max-w-[calc(100vw-2.5rem)] flex-col overflow-hidden rounded-lg border border-border bg-card shadow-flat-plus">
+        <div
+          id="chat-widget-panel"
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="chat-widget-title"
+          className="fixed bottom-24 left-5 z-50 flex h-[420px] w-[340px] max-w-[calc(100vw-2.5rem)] flex-col overflow-hidden rounded-lg border border-border bg-card shadow-flat-plus"
+        >
           {/* Header */}
           <div className="border-b border-border bg-surface-low p-4">
-            <p className="font-display font-semibold text-foreground">{t('title')}</p>
+            <p id="chat-widget-title" className="font-display font-semibold text-foreground">{t('title')}</p>
             <p className="text-xs text-muted-foreground">{t('subtitle')}</p>
           </div>
 

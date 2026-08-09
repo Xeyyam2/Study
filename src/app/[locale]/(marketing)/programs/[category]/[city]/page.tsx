@@ -98,6 +98,9 @@ export default async function ProgramCombinationPage({
   const universities = Array.from(
     new Map(programs.map((p) => [p.university.id, p.university])).values(),
   );
+  const universitiesMetadata = await data.universities.getListingMetadata(
+    universities.map((u) => u.id),
+  );
   const uniqueLanguages = [...new Set(programs.map((p) => p.language))]
     .map((l) => l.toUpperCase())
     .join(', ');
@@ -284,7 +287,12 @@ export default async function ProgramCombinationPage({
           </div>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {universities.map((u) => (
-              <UniversityCard key={u.id} university={u} locale={appLocale} />
+              <UniversityCard
+                key={u.id}
+                university={u}
+                locale={appLocale}
+                listingMetadata={universitiesMetadata.get(u.id)}
+              />
             ))}
           </div>
         </section>

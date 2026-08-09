@@ -50,7 +50,7 @@ export async function generateMetadata({
   const name = c.name[locale as AppLocale];
   return buildPageMetadata({
     locale,
-    path: `/study-in-turkey-from-${country}`,
+    path: `/study-in-turkey-from/${country}`,
     title: t('metaTitle', { country: name }),
     description: t('metaDescription', { country: name }),
   });
@@ -75,7 +75,10 @@ export default async function CountryLandingPage({
 
   const name = c.name[appLocale] ?? '';
   const featured = await data.universities.getFeatured(3);
-  const path = `/study-in-turkey-from-${country}`;
+  const featuredMetadata = await data.universities.getListingMetadata(
+    featured.map((f) => f.id),
+  );
+  const path = `/study-in-turkey-from/${country}`;
 
   const visaSteps = tg
     ? [
@@ -216,7 +219,12 @@ export default async function CountryLandingPage({
           </h2>
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {featured.map((u) => (
-              <UniversityCard key={u.id} university={u} locale={appLocale} />
+              <UniversityCard
+                key={u.id}
+                university={u}
+                locale={appLocale}
+                listingMetadata={featuredMetadata.get(u.id)}
+              />
             ))}
           </div>
         </div>

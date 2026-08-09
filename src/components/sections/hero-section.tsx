@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { Search, ArrowRight, ShieldCheck } from 'lucide-react';
@@ -177,14 +178,13 @@ export function HeroSection() {
 
         <div className="relative hidden lg:block">
           <div className="relative aspect-[4/5] overflow-hidden rounded-xl border border-border shadow-flat-hover">
-            <div
-              className="h-full w-full bg-cover bg-center"
-              style={{
-                backgroundImage:
-                  'url(https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=1200&q=80)',
-              }}
-              role="img"
-              aria-label={t('imageAlt')}
+            <Image
+              src="https://images.unsplash.com/photo-1562774053-701939374585?auto=format&fit=crop&w=1200&q=80"
+              alt={t('imageAlt')}
+              fill
+              priority
+              sizes="(max-width: 1200px) 50vw, 480px"
+              className="object-cover"
             />
           </div>
           <div className="absolute -bottom-5 -left-5 rounded-lg border border-border bg-card p-4 shadow-flat-hover">

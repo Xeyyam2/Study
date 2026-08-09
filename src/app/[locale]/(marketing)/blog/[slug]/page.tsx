@@ -122,14 +122,7 @@ export default async function BlogPostPage({
         </div>
 
         <div className="prose mt-8 max-w-none">
-          {lx(post.content, appLocale)
-            .split('\n')
-            .filter(Boolean)
-            .map((para, i) => (
-              <p key={i} className="mb-4 leading-relaxed text-foreground">
-                {para}
-              </p>
-            ))}
+          <RichContent content={lx(post.content, appLocale)} />
         </div>
 
         <div className="mt-12 rounded-lg border border-primary-container bg-surface-low p-6 text-center">
@@ -142,5 +135,102 @@ export default async function BlogPostPage({
         </div>
       </div>
     </article>
+  );
+}
+
+/**
+ * Lightweight blog content renderer.
+ *
+ * Supports the content format used in the seed: plain paragraphs separated by
+ * blank lines, `## ` / `### ` headings, `- ` bullet lists, and inline
+ * `[text](/path)` links (rendered as internal `Link`s).
+ */
+function RichContent({ content }: { content: string }) {
+  const blocks = content.split('\n');
+  const out: React.ReactNode[] = [];
+  let list: string[] = [];
+  let key = 0;
+
+  const flushList = () => {
+    if (!list.length) return;
+    out.push(
+      <ul key={key++} className="my-4 list-disc space-y-1 pl-6 text-foreground">
+        {list.map((item, i) => (
+          <li key={i} className="leading-relaxed">
+            <InlineContent text={item} />
+          </li>
+        ))}
+      </ul>,
+    );
+    list = [];
+  };
+
+  for (const raw of blocks) {
+    const line = raw.trim();
+    if (!line) {
+      flushList();
+      continue;
+    }
+    if (line.startsWith('## ')) {
+      flushList();
+      out.push(
+        <h2
+          key={key++}
+          className="mt-8 mb-3 font-display text-headline-md font-semibold text-foreground"
+        >
+          <InlineContent text={line.slice(3)} />
+        </h2>,
+      );
+      continue;
+    }
+    if (line.startsWith('### ')) {
+      flushList();
+      out.push(
+        <h3
+          key={key++}
+          className="mt-6 mb-2 font-display text-lg font-semibold text-foreground"
+        >
+          <InlineContent text={line.slice(4)} />
+        </h3>,
+      );
+      continue;
+    }
+    if (line.startsWith('- ')) {
+      list.push(line.slice(2));
+      continue;
+    }
+    flushList();
+    out.push(
+      <p key={key++} className="mb-4 leading-relaxed text-foreground">
+        <InlineContent text={line} />
+      </p>,
+    );
+  }
+  flushList();
+
+  return <>{out}</>;
+}
+
+/** Renders inline `[text](/path)` links inside a plain-text run. */
+function InlineContent({ text }: { text: string }) {
+  const segments = text.split(/\[([^\]]+)\]\(([^)]+)\)/);
+  return (
+    <>
+      {segments.map((part, j) => {
+        if (j % 3 === 1) {
+          return (
+            <Link
+              key={j}
+              href={segments[j + 1]}
+              className="font-semibold text-primary underline-offset-4 hover:underline"
+            >
+              {part}
+            </Link>
+          );
+        }
+        if (j % 3 === 2) return null;
+        return <span key={j}>{part}</span>;
+      })}
+    </>
   );
 }

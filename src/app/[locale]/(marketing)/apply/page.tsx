@@ -43,6 +43,20 @@ export default async function ApplyPage({
     data.programs.list(),
   ]);
 
+  // F3: minimize the payload sent to the client — the form only needs
+  // id/slug/name (+ degreeLevel/universityId for the program select).
+  const universityOptions = universities.map((u) => ({
+    id: u.id,
+    slug: u.slug,
+    name: u.name,
+  }));
+  const programOptions = programs.map((p) => ({
+    id: p.id,
+    slug: p.slug,
+    name: p.name,
+    degreeLevel: p.degreeLevel,
+  }));
+
   const howToSteps = tg
     ? [
         { name: tg('step1Name'), text: tg('step1Text') },
@@ -112,8 +126,8 @@ export default async function ApplyPage({
         <ApplyForm
           locale={appLocale}
           countries={countries}
-          universities={universities}
-          programs={programs}
+          universities={universityOptions}
+          programs={programOptions}
         />
       </div>
     </div>

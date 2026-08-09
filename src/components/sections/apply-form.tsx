@@ -34,14 +34,12 @@ import {
 /** Minimal university shape passed from the server. */
 type UniversityOption = { id: string; slug: string; name: string };
 
-/** Programs may or may not carry a `universityId`; when present the program
- *  select filters by the chosen university. */
+/** Programs carry the fields the select needs. */
 type ProgramOption = {
   id: string;
   slug: string;
   name: LocalizedString;
   degreeLevel?: DegreeLevel;
-  universityId?: string;
 };
 
 interface ApplyFormProps {
@@ -122,17 +120,13 @@ export function ApplyForm({
     },
   });
 
-  const selectedUniversityId = watch('universityId');
   const degreeLevel = watch('degreeLevel') ?? '';
   const instructionLanguage = watch('instructionLanguage') ?? '';
 
-  // When programs carry a university linkage the select is filtered by the
-  // chosen university; otherwise every program is offered.
-  const programsLinked = programs.some((p) => p.universityId);
-  const visiblePrograms = programsLinked
-    ? programs.filter((p) => p.universityId === selectedUniversityId)
-    : programs;
-  const programLocked = programsLinked && !selectedUniversityId;
+  // The program data layer has no university linkage, so every program is
+  // offered regardless of the chosen university.
+  const visiblePrograms = programs;
+  const programLocked = false;
 
   function resolveProgramName(p: ProgramOption): string {
     return p.name[locale] ?? p.name.en ?? p.slug;
