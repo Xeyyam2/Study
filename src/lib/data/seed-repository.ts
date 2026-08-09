@@ -390,7 +390,10 @@ class SeedProgramRepository implements ProgramRepository {
   async listPage(page: number, perPage: number) {
     const total = seedUniversityPrograms.length;
     const start = (page - 1) * perPage;
-    const slice = seedUniversityPrograms
+    const ordered = [...seedUniversityPrograms].sort(
+      (a, b) => a.tuitionFee - b.tuitionFee || a.id.localeCompare(b.id),
+    );
+    const slice = ordered
       .slice(start, start + perPage)
       .map((up) => {
         const program = seedPrograms.find((p) => p.id === up.programId);
