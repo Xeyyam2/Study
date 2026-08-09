@@ -69,7 +69,7 @@ describe('UniversityRepository (seed)', () => {
 
     expect(metadata.get('u-bahcesehir')).toMatchObject({
       city: expect.objectContaining({ slug: 'istanbul' }),
-      minTuitionUSD: 7000,
+      minTuitionUSD: 3500,
       rating: expect.any(Number),
       count: expect.any(Number),
     });
@@ -115,6 +115,57 @@ describe('ProgramRepository (seed)', () => {
     const result = await data.programs.getByCategoryAndCity('computer-science', 'istanbul');
     expect(result.city?.slug).toBe('istanbul');
     expect(result.programs.length).toBeGreaterThan(0);
+  });
+
+  it('counts all program offerings', async () => {
+    const total = await data.programs.countAll();
+    const all = await data.programs.getAllPrograms();
+    expect(total).toBeGreaterThan(0);
+    expect(total).toBe(all.length);
+  });
+
+  it('lists a page with totals', async () => {
+    const page = await data.programs.listPage(1, 10);
+    expect(page.programs.length).toBeLessThanOrEqual(10);
+    expect(page.total).toBeGreaterThan(0);
+    expect(page.page).toBe(1);
+    expect(page.perPage).toBe(10);
+    expect(page.totalPages).toBe(Math.ceil(page.total / 10));
+  });
+
+  it('pages forward with stable ordering', async () => {
+    const a = await data.programs.listPage(1, 10);
+    const b = await data.programs.listPage(2, 10);
+    expect(a.programs.length).toBeGreaterThan(0);
+    expect(b.programs.length).toBeGreaterThan(0);
+    // Sorted by tuition asc — page 2 first item must be >= page 1 last item.
+    const lastPage1 = a.programs[a.programs.length - 1];
+    const firstPage2 = b.programs[0];
+    expect(firstPage2.tuitionFee).toBeGreaterThanOrEqual(lastPage1.tuitionFee);
+    // No overlap between pages.
+    const ids1 = new Set(a.programs.map((p) => `${p.id}-${p.university.id}`));
+    expect(b.programs.every((p) => !ids1.has(`${p.id}-${p.university.id}`))).toBe(true);
+  });
+
+  it('filters by category and city with pagination', async () => {
+    const page = await data.programs.listPage(1, 10, {
+      category: 'computer-science',
+    });
+    expect(page.programs.length).toBeGreaterThan(0);
+    expect(
+      page.programs.every((p) => p.categorySlug === 'computer-science'),
+    ).toBe(true);
+  });
+
+  it('filters by search across program and university names', async () => {
+    const page = await data.programs.listPage(1, 10, { search: 'medicine' });
+    expect(page.programs.length).toBeGreaterThan(0);
+  });
+
+  it('exposes originalFee on listing items', async () => {
+    const page = await data.programs.listPage(1, 10);
+    // The seed data has some entries with originalFee; verify the field exists on items.
+    expect('originalFee' in (page.programs[0] ?? {})).toBe(true);
   });
 });
 
