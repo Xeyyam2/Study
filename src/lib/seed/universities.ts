@@ -1,6 +1,6 @@
 import type { University } from '@/types';
 import { seedImages } from './images';
-import { universityHeroImages } from './university-images';
+import { universityHeroImages, universityLogoImages } from './university-images';
 
 export const seedUniversities: University[] = [
   {
@@ -2654,4 +2654,6 @@ for (const u of seedUniversities) {
     // Put the real campus photo first in the gallery too.
     u.gallery = [hero, ...u.gallery.filter((g) => g !== hero)].slice(0, 3);
   }
+  const logo = universityLogoImages[u.slug];
+  if (logo) u.logoImage = logo;
 }

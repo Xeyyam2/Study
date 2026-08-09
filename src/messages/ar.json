@@ -225,7 +225,18 @@
     "sortName": "الاسم",
     "sortTuition": "الرسوم",
     "emptyTitle": "لم يتم العثور على برامج",
-    "emptySubtitle": "حاول إزالة فلتر أو البحث عن مجال أو مدينة أخرى."
+    "emptySubtitle": "حاول إزالة فلتر أو البحث عن مجال أو مدينة أخرى.",
+    "university": "الجامعة",
+    "programName": "التخصص",
+    "degree": "الدرجة",
+    "language": "اللغة",
+    "tuition": "الرسوم / سنة",
+    "degrees": {
+      "bachelor": "بكالوريوس",
+      "master": "ماجستير",
+      "phd": "دكتوراه",
+      "associate": "زمالة"
+    }
   },
   "ProgramCombination": {
     "metaTitle": "{category} في {city} — جامعات ورسوم وتخصصات",

@@ -269,6 +269,35 @@ class SeedProgramRepository implements ProgramRepository {
     }
     return uniIds.size;
   }
+  async getAllPrograms(): Promise<
+    import('@/lib/data/repositories').ProgramCategoryDetail['programs']
+  > {
+    type Item = NonNullable<
+      import('@/lib/data/repositories').ProgramCategoryDetail['programs'][number]
+    >;
+    const items = seedUniversityPrograms
+      .map((up) => {
+        const program = seedPrograms.find((p) => p.id === up.programId);
+        const university = seedUniversities.find(
+          (u) => u.id === up.universityId,
+        );
+        const city = university
+          ? seedCities.find((c) => c.id === university.cityId)
+          : undefined;
+        if (!program || !university || !city) return null;
+        return {
+          ...program,
+          university,
+          city,
+          tuitionFee: up.tuitionFee,
+          language: up.language,
+          scholarshipAvailable: up.scholarshipAvailable,
+        };
+      })
+      .filter((item): item is Item => item !== null)
+      .sort((a, b) => a.tuitionFee - b.tuitionFee);
+    return items;
+  }
   async getByCategory(
     category: string,
   ): Promise<import('@/lib/data/repositories').ProgramCategoryDetail> {

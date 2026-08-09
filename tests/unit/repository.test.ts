@@ -101,6 +101,16 @@ describe('ProgramRepository (seed)', () => {
     }
   });
 
+  it('lists every university×program row with university and city', async () => {
+    const all = await data.programs.getAllPrograms();
+    expect(all.length).toBeGreaterThan(0);
+    for (const p of all) {
+      expect(p.university).toBeDefined();
+      expect(p.city).toBeDefined();
+      expect(typeof p.tuitionFee).toBe('number');
+    }
+  });
+
   it('resolves a category+city combination', async () => {
     const result = await data.programs.getByCategoryAndCity('computer-science', 'istanbul');
     expect(result.city?.slug).toBe('istanbul');

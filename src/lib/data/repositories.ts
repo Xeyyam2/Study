@@ -67,6 +67,8 @@ export interface ProgramRepository {
   list(): Promise<Program[]>;
   getCategories(): Promise<ProgramCategory[]>;
   getCombinations(): Promise<ProgramCombination[]>;
+  /** Every university×program row (with city + tuition) — for the /programs listing. */
+  getAllPrograms(): Promise<ProgramCategoryDetail['programs']>;
   getByCategory(category: string): Promise<ProgramCategoryDetail>;
   getByCategoryAndCity(
     category: string,

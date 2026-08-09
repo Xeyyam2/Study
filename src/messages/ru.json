@@ -226,7 +226,18 @@
     "sortName": "Название",
     "sortTuition": "Стоимость",
     "emptyTitle": "Программы не найдены",
-    "emptySubtitle": "Попробуйте убрать фильтр или найти другое направление или город."
+    "emptySubtitle": "Попробуйте убрать фильтр или найти другое направление или город.",
+    "university": "Вуз",
+    "programName": "Программа",
+    "degree": "Степень",
+    "language": "Язык",
+    "tuition": "Стоимость / год",
+    "degrees": {
+      "bachelor": "Бакалавриат",
+      "master": "Магистратура",
+      "phd": "Аспирантура",
+      "associate": "Ассоциат"
+    }
   },
   "ProgramCombination": {
     "metaTitle": "{category} в {city} — вузы, стоимость и программы",

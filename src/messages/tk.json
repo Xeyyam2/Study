@@ -225,7 +225,18 @@
     "sortName": "At",
     "sortTuition": "Töleg",
     "emptyTitle": "Okuw hünäri tapylmady",
-    "emptySubtitle": "Süzgüji aýryp ýa-da başga ugur ýa-da şäher gözläp görüň."
+    "emptySubtitle": "Süzgüji aýryp ýa-da başga ugur ýa-da şäher gözläp görüň.",
+    "university": "Uniwersvet",
+    "programName": "Hünär",
+    "degree": "Dereje",
+    "language": "Dil",
+    "tuition": "Töleg / ýyl",
+    "degrees": {
+      "bachelor": "Bakalawr",
+      "master": "Magistr",
+      "phd": "Doktora",
+      "associate": "Orta hünär"
+    }
   },
   "ProgramCombination": {
     "metaTitle": "{city} - {category} — Uniwersvetler, töleg we hünärler",

@@ -53,6 +53,7 @@ export interface University {
   accreditation: string;
   isState: boolean;
   logoText: string;
+  logoImage?: string;
   heroImage: string;
   gallery: string[];
   tagline: LocalizedString;

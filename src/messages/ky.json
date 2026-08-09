@@ -225,7 +225,18 @@
     "sortName": "Аты",
     "sortTuition": "Баасы",
     "emptyTitle": "Программалар табылган жок",
-    "emptySubtitle": "Чыпканы алып салып же башка тармак же шаар издеп көрүңүз."
+    "emptySubtitle": "Чыпканы алып салып же башка тармак же шаар издеп көрүңүз.",
+    "university": "Университет",
+    "programName": "Программа",
+    "degree": "Даража",
+    "language": "Тил",
+    "tuition": "Акы / жыл",
+    "degrees": {
+      "bachelor": "Бакалавр",
+      "master": "Магистр",
+      "phd": "Докторантура",
+      "associate": "Коллеж"
+    }
   },
   "ProgramCombination": {
     "metaTitle": "{city} шаарындагы {category} — Университеттер, окуу акысы жана программалар",

@@ -1,4 +1,5 @@
 import { Pool } from 'pg';
+import { universityLogoImages } from '@/lib/seed/university-images';
 import type {
   BlogPost,
   City,
@@ -38,9 +39,10 @@ function i18n(raw: unknown): I18n {
 }
 
 function rowUniversity(r: Record<string, unknown>): University {
+  const slug = r.slug as string;
   return {
     id: r.id as string,
-    slug: r.slug as string,
+    slug,
     cityId: r.city_id as string,
     name: r.name as string,
     foundedYear: Number(r.founded_year),
@@ -49,6 +51,7 @@ function rowUniversity(r: Record<string, unknown>): University {
     accreditation: r.accreditation as string,
     isState: Boolean(r.is_state),
     logoText: r.logo_text as string,
+    logoImage: universityLogoImages[slug],
     heroImage: r.hero_image as string,
     gallery: (r.gallery as string[]) ?? [],
     tagline: i18n(r.tagline_i18n),
@@ -410,6 +413,63 @@ export function createPgDataLayer(getPool: () => Pool): DataLayer {
         programIds: (r.program_ids as string[]) ?? [],
         universityCount: Number(r.university_count),
         minTuitionUSD: Number(r.min_tuition),
+      }));
+    },
+    async getAllPrograms(): Promise<
+      import('@/lib/data/repositories').ProgramCategoryDetail['programs']
+    > {
+      const itemsRes = await getPool().query(
+        `select up.id up_id, up.university_id up_university_id, up.program_id up_program_id,
+                up.language up_language, up.tuition_fee up_tuition_fee, up.currency up_currency, up.scholarship_available up_scholarship,
+                p.id p_id, p.slug p_slug, p.name_i18n p_name, p.degree_level p_degree, p.category_slug p_category, p.duration_years p_duration,
+                u.id u_id, u.slug u_slug, u.city_id u_city_id, u.name u_name, u.founded_year u_founded, u.student_count u_students,
+                u.ranking u_ranking, u.accreditation u_accr, u.is_state u_state, u.logo_text u_logo, u.hero_image u_hero,
+                u.gallery u_gallery, u.tagline_i18n u_tagline, u.description_i18n u_desc, u.languages u_languages, u.featured u_featured,
+                c.id c_id, c.slug c_slug, c.name_i18n c_name, c.country_code c_country,
+                c.monthly_living_cost_usd c_monthly_living
+         from public.university_programs up
+         join public.programs p on p.id = up.program_id
+         join public.universities u on u.id = up.university_id
+         join public.cities c on c.id = u.city_id
+         order by up.tuition_fee asc`,
+      );
+      return itemsRes.rows.map((r) => ({
+        id: r.p_id as string,
+        slug: r.p_slug as string,
+        name: i18n(r.p_name),
+        degreeLevel: r.p_degree as DegreeLevel,
+        categorySlug: r.p_category as Program['categorySlug'],
+        durationYears: Number(r.p_duration),
+        university: {
+          id: r.u_id as string,
+          slug: r.u_slug as string,
+          cityId: r.u_city_id as string,
+          name: r.u_name as string,
+          foundedYear: Number(r.u_founded),
+          studentCount: Number(r.u_students),
+          ranking: Number(r.u_ranking),
+          accreditation: r.u_accr as string,
+          isState: Boolean(r.u_state),
+          logoText: r.u_logo as string,
+          heroImage: r.u_hero as string,
+          gallery: (r.u_gallery as string[]) ?? [],
+          tagline: i18n(r.u_tagline),
+          description: i18n(r.u_desc),
+          languages: (r.u_languages as string[]) ?? [],
+          featured: Boolean(r.u_featured),
+        },
+        city: {
+          id: r.c_id as string,
+          slug: r.c_slug as string,
+          name: i18n(r.c_name),
+          countryId: r.c_country as string,
+          monthlyLivingCostUSD: r.c_monthly_living
+            ? Number(r.c_monthly_living)
+            : undefined,
+        },
+        tuitionFee: Number(r.up_tuition_fee),
+        language: r.up_language as InstructionLanguage,
+        scholarshipAvailable: Boolean(r.up_scholarship),
       }));
     },
     async getByCategory(

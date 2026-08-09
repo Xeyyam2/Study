@@ -225,7 +225,18 @@
     "sortName": "Jina",
     "sortTuition": "Ada",
     "emptyTitle": "Hakuna programu zilizopatikana",
-    "emptySubtitle": "Jaribu kuondoa kichujio au kutafuta taaluma au jiji jingine."
+    "emptySubtitle": "Jaribu kuondoa kichujio au kutafuta taaluma au jiji jingine.",
+    "university": "Chuo",
+    "programName": "Programu",
+    "degree": "Shahada",
+    "language": "Lugha",
+    "tuition": "Ada / mwaka",
+    "degrees": {
+      "bachelor": "Shahada",
+      "master": "Uzamili",
+      "phd": "Uzifu",
+      "associate": "Cheti"
+    }
   },
   "ProgramCombination": {
     "metaTitle": "{category} katika {city} — Vyuo, ada na programu",

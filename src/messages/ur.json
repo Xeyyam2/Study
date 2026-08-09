@@ -225,7 +225,18 @@
     "sortName": "نام",
     "sortTuition": "فیس",
     "emptyTitle": "کوئی پروگرام نہیں ملا",
-    "emptySubtitle": "کچھ فلٹرز ہٹائیں یا کوئی دوسرا شعبہ یا شہر تلاش کریں۔"
+    "emptySubtitle": "کچھ فلٹرز ہٹائیں یا کوئی دوسرا شعبہ یا شہر تلاش کریں۔",
+    "university": "جامعہ",
+    "programName": "پروگرام",
+    "degree": "ڈگری",
+    "language": "زبان",
+    "tuition": "فیس / سال",
+    "degrees": {
+      "bachelor": "بیچلر",
+      "master": "ماسٹر",
+      "phd": "پی ایچ ڈی",
+      "associate": "ایسوسی ایٹ"
+    }
   },
   "ProgramCombination": {
     "metaTitle": "{city} میں {category} — جامعات، فیس اور پروگرام",

@@ -225,7 +225,18 @@
     "sortName": "Name",
     "sortTuition": "Gebühren",
     "emptyTitle": "Keine Programme gefunden",
-    "emptySubtitle": "Entferne einen Filter oder suche nach einem anderen Fach oder einer anderen Stadt."
+    "emptySubtitle": "Entferne einen Filter oder suche nach einem anderen Fach oder einer anderen Stadt.",
+    "university": "Universität",
+    "programName": "Studiengang",
+    "degree": "Abschluss",
+    "language": "Sprache",
+    "tuition": "Studiengebühren / Jahr",
+    "degrees": {
+      "bachelor": "Bachelor",
+      "master": "Master",
+      "phd": "Promotion",
+      "associate": "Associate"
+    }
   },
   "ProgramCombination": {
     "metaTitle": "{category} in {city} — Universitäten, Studiengebühren & Studiengänge",

@@ -225,7 +225,18 @@
     "sortName": "Magac",
     "sortTuition": "Waxbarashada",
     "emptyTitle": "Barnaamij lama helin",
-    "emptySubtitle": "Isku day inaad ka saarto shaandho ama raadi goob ama magaalo kale."
+    "emptySubtitle": "Isku day inaad ka saarto shaandho ama raadi goob ama magaalo kale.",
+    "university": "Jaamacadda",
+    "programName": "Barnaamij",
+    "degree": "Darajadda",
+    "language": "Luqadda",
+    "tuition": "Lacagta / sanno",
+    "degrees": {
+      "bachelor": "Bachelar",
+      "master": "Mastar",
+      "phd": "Doktorat",
+      "associate": "Asosiyaat"
+    }
   },
   "ProgramCombination": {
     "metaTitle": "{category} ee {city} — Jaamacado, lacagta iyo barnaamijyada",

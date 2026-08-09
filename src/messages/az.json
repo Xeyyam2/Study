@@ -226,7 +226,18 @@
     "sortName": "Ad",
     "sortTuition": "Qiymət",
     "emptyTitle": "Proqram tapılmadı",
-    "emptySubtitle": "Filtri silin və ya başqa sahə və şəhər axtarın."
+    "emptySubtitle": "Filtri silin və ya başqa sahə və şəhər axtarın.",
+    "university": "Universitet",
+    "programName": "Proqram",
+    "degree": "Dərəcə",
+    "language": "Dil",
+    "tuition": "Qiymət / il",
+    "degrees": {
+      "bachelor": "Bakalavr",
+      "master": "Magistr",
+      "phd": "Doktorantura",
+      "associate": "Orta ixtisas"
+    }
   },
   "ProgramCombination": {
     "metaTitle": "{city} şəhərində {category} — Universitetlər, Qiymətlər və Proqramlar",

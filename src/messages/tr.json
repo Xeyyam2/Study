@@ -226,7 +226,18 @@
     "sortName": "Ad",
     "sortTuition": "Ücret",
     "emptyTitle": "Program bulunamadı",
-    "emptySubtitle": "Bir filtreyi kaldırmayı veya başka bir alan ya da şehir aramayı deneyin."
+    "emptySubtitle": "Bir filtreyi kaldırmayı veya başka bir alan ya da şehir aramayı deneyin.",
+    "university": "Üniversite",
+    "programName": "Bölüm",
+    "degree": "Derece",
+    "language": "Dil",
+    "tuition": "Ücret / yıl",
+    "degrees": {
+      "bachelor": "Lisans",
+      "master": "Yüksek Lisans",
+      "phd": "Doktora",
+      "associate": "Önlisans"
+    }
   },
   "ProgramCombination": {
     "metaTitle": "{city}'da {category} — Üniversiteler, Ücretler ve Bölümler",

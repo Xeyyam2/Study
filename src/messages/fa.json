@@ -225,7 +225,18 @@
     "sortName": "نام",
     "sortTuition": "شهریه",
     "emptyTitle": "برنامه‌ای پیدا نشد",
-    "emptySubtitle": "فیلترها را حذف کنید یا حوزه یا شهر دیگری جستجو کنید."
+    "emptySubtitle": "فیلترها را حذف کنید یا حوزه یا شهر دیگری جستجو کنید.",
+    "university": "دانشگاه",
+    "programName": "رشته",
+    "degree": "مدرک",
+    "language": "زبان",
+    "tuition": "شهریه / سال",
+    "degrees": {
+      "bachelor": "کارشناسی",
+      "master": "کارشناسی ارشد",
+      "phd": "دکترا",
+      "associate": "کاردانی"
+    }
   },
   "ProgramCombination": {
     "metaTitle": "{category} در {city} — دانشگاه‌ها، شهریه و رشته‌ها",

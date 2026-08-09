@@ -225,7 +225,18 @@
     "sortName": "Nom",
     "sortTuition": "To‘lov",
     "emptyTitle": "Dastur topilmadi",
-    "emptySubtitle": "Filtrni olib tashlang yoki boshqa soha yoki shaharni qidiring."
+    "emptySubtitle": "Filtrni olib tashlang yoki boshqa soha yoki shaharni qidiring.",
+    "university": "Universitet",
+    "programName": "Dastur",
+    "degree": "Daraja",
+    "language": "Til",
+    "tuition": "To‘lov / yil",
+    "degrees": {
+      "bachelor": "Bakalavr",
+      "master": "Magistr",
+      "phd": "Doktorantura",
+      "associate": "Kollej"
+    }
   },
   "ProgramCombination": {
     "metaTitle": "{city} shahrida {category} — Universitetlar, to‘lov va dasturlar",

@@ -225,7 +225,18 @@
     "sortName": "Име",
     "sortTuition": "Такса",
     "emptyTitle": "Няма намерени програми",
-    "emptySubtitle": "Опитайте да премахнете филтър или да потърсите друга сфера или град."
+    "emptySubtitle": "Опитайте да премахнете филтър или да потърсите друга сфера или град.",
+    "university": "Университет",
+    "programName": "Програма",
+    "degree": "Степен",
+    "language": "Език",
+    "tuition": "Такса / година",
+    "degrees": {
+      "bachelor": "Бакалавър",
+      "master": "Магистър",
+      "phd": "Докторантура",
+      "associate": "Асистент"
+    }
   },
   "ProgramCombination": {
     "metaTitle": "{category} в {city} — Университети, такси и програми",

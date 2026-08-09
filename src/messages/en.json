@@ -226,7 +226,18 @@
     "sortName": "Name",
     "sortTuition": "Tuition",
     "emptyTitle": "No programs found",
-    "emptySubtitle": "Try removing a filter or searching for another field or city."
+    "emptySubtitle": "Try removing a filter or searching for another field or city.",
+    "university": "University",
+    "programName": "Program",
+    "degree": "Degree",
+    "language": "Language",
+    "tuition": "Tuition / year",
+    "degrees": {
+      "bachelor": "Bachelor",
+      "master": "Master",
+      "phd": "PhD",
+      "associate": "Associate"
+    }
   },
   "ProgramCombination": {
     "metaTitle": "{category} in {city} — Universities, Tuition & Programs",

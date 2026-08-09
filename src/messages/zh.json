@@ -225,7 +225,18 @@
     "sortName": "名称",
     "sortTuition": "学费",
     "emptyTitle": "未找到项目",
-    "emptySubtitle": "请尝试移除筛选条件，或搜索其他领域或城市。"
+    "emptySubtitle": "请尝试移除筛选条件，或搜索其他领域或城市。",
+    "university": "大学",
+    "programName": "项目",
+    "degree": "学位",
+    "language": "语言",
+    "tuition": "学费/年",
+    "degrees": {
+      "bachelor": "学士",
+      "master": "硕士",
+      "phd": "博士",
+      "associate": "副学士"
+    }
   },
   "ProgramCombination": {
     "metaTitle": "{city} 的 {category} —— 大学、学费与项目",

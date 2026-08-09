@@ -225,7 +225,18 @@
     "sortName": "Nom",
     "sortTuition": "Frais",
     "emptyTitle": "Aucun programme trouvé",
-    "emptySubtitle": "Essayez de supprimer un filtre ou de rechercher un autre domaine ou une autre ville."
+    "emptySubtitle": "Essayez de supprimer un filtre ou de rechercher un autre domaine ou une autre ville.",
+    "university": "Université",
+    "programName": "Programme",
+    "degree": "Diplôme",
+    "language": "Langue",
+    "tuition": "Frais / an",
+    "degrees": {
+      "bachelor": "Licence",
+      "master": "Master",
+      "phd": "Doctorat",
+      "associate": "Associate"
+    }
   },
   "ProgramCombination": {
     "metaTitle": "{category} à {city} — Universités, frais & programmes",

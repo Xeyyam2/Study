@@ -225,7 +225,18 @@
     "sortName": "Атауы",
     "sortTuition": "Төлем",
     "emptyTitle": "Бағдарлар табылмады",
-    "emptySubtitle": "Сүзгіні алып тастап немесе басқа сала не қала іздеп көріңіз."
+    "emptySubtitle": "Сүзгіні алып тастап немесе басқа сала не қала іздеп көріңіз.",
+    "university": "Университет",
+    "programName": "Бағдар",
+    "degree": "Дәреже",
+    "language": "Тіл",
+    "tuition": "Ақы / жыл",
+    "degrees": {
+      "bachelor": "Бакалавр",
+      "master": "Магистр",
+      "phd": "Докторантура",
+      "associate": "Колледж"
+    }
   },
   "ProgramCombination": {
     "metaTitle": "{city} қаласындағы {category} — Университеттер, оқу ақысы мен бағдарлар",

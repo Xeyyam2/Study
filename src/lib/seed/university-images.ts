@@ -5,8 +5,10 @@
  * universities (same institution, real building photos instead of generic
  * stock). Files live at:
  *   public/images/universities/{slug}/hero.webp
+ *   public/images/universities/{slug}/logo.svg
  *
- * A university whose slug is NOT in this map keeps its stock seedImages hero.
+ * A university whose slug is NOT in these maps keeps its stock seedImages hero
+ * and its `logoText` fallback.
  */
 export const universityHeroImages: Record<string, string> = {
   'bahcesehir-university': '/images/universities/bahcesehir-university/hero.webp',
@@ -85,4 +87,87 @@ export const universityHeroImages: Record<string, string> = {
   'nuh-naci-yazgan-university': '/images/universities/nuh-naci-yazgan-university/hero.webp',
   'cappadocia-university': '/images/universities/cappadocia-university/hero.webp',
   'kocaeli-university-of-health-and-technology': '/images/universities/kocaeli-university-of-health-and-technology/hero.webp',
+};
+
+/**
+ * University logo files downloaded from StudyLeo. A slug present here gets
+ * its `logoImage` set; others fall back to `logoText`. Files are SVG or WebP.
+ */
+export const universityLogoImages: Record<string, string> = {
+  'acibadem-mehmet-ali-aydinlar-university': '/images/universities/acibadem-mehmet-ali-aydinlar-university/logo.svg',
+  'alanya-university': '/images/universities/alanya-university/logo.webp',
+  'altinbas-university': '/images/universities/altinbas-university/logo.webp',
+  'ankara-bilim-university': '/images/universities/ankara-bilim-university/logo.svg',
+  'ankara-medipol-university': '/images/universities/ankara-medipol-university/logo.webp',
+  'antalya-belek-university': '/images/universities/antalya-belek-university/logo.webp',
+  'antalya-bilim-university': '/images/universities/antalya-bilim-university/logo.svg',
+  'atasehir-adiguzel-vocational-school': '/images/universities/atasehir-adiguzel-vocational-school/logo.svg',
+  'atilim-university': '/images/universities/atilim-university/logo.webp',
+  'avrasya-university': '/images/universities/avrasya-university/logo.svg',
+  'bahcesehir-university': '/images/universities/bahcesehir-university/logo.svg',
+  'baskent-university': '/images/universities/baskent-university/logo.webp',
+  'beykoz-university': '/images/universities/beykoz-university/logo.webp',
+  'bezmi-alem-university': '/images/universities/bezmi-alem-university/logo.webp',
+  'bilkent-university': '/images/universities/bilkent-university/logo.svg',
+  'biruni-university': '/images/universities/biruni-university/logo.webp',
+  'cag-university': '/images/universities/cag-university/logo.webp',
+  'cankaya-university': '/images/universities/cankaya-university/logo.svg',
+  'cappadocia-university': '/images/universities/cappadocia-university/logo.webp',
+  'demiroglu-bilim-university': '/images/universities/demiroglu-bilim-university/logo.svg',
+  'dogus-university': '/images/universities/dogus-university/logo.webp',
+  'fatih-sultan-mehmet-university': '/images/universities/fatih-sultan-mehmet-university/logo.webp',
+  'fenerbahce-university': '/images/universities/fenerbahce-university/logo.webp',
+  'halic-university': '/images/universities/halic-university/logo.svg',
+  'hasan-kalyoncu-university': '/images/universities/hasan-kalyoncu-university/logo.webp',
+  'ibn-haldun-university': '/images/universities/ibn-haldun-university/logo.svg',
+  'isik-university': '/images/universities/isik-university/logo.webp',
+  'istanbul-29-mayis-university': '/images/universities/istanbul-29-mayis-university/logo.svg',
+  'istanbul-arel-university': '/images/universities/istanbul-arel-university/logo.svg',
+  'istanbul-atlas-university': '/images/universities/istanbul-atlas-university/logo.svg',
+  'istanbul-aydin-university': '/images/universities/istanbul-aydin-university/logo.svg',
+  'istanbul-beykent-university': '/images/universities/istanbul-beykent-university/logo.svg',
+  'istanbul-commerce-university': '/images/universities/istanbul-commerce-university/logo.svg',
+  'istanbul-esenyurt-university': '/images/universities/istanbul-esenyurt-university/logo.webp',
+  'istanbul-galata-university': '/images/universities/istanbul-galata-university/logo.svg',
+  'istanbul-gedik-university': '/images/universities/istanbul-gedik-university/logo.webp',
+  'istanbul-gelisim-university': '/images/universities/istanbul-gelisim-university/logo.svg',
+  'istanbul-health-and-technology-university': '/images/universities/istanbul-health-and-technology-university/logo.svg',
+  'istanbul-kent-university': '/images/universities/istanbul-kent-university/logo.webp',
+  'istanbul-kultur-university': '/images/universities/istanbul-kultur-university/logo.svg',
+  'istanbul-medipol-university': '/images/universities/istanbul-medipol-university/logo.webp',
+  'istanbul-nisantasi-university': '/images/universities/istanbul-nisantasi-university/logo.webp',
+  'istanbul-okan-university': '/images/universities/istanbul-okan-university/logo.svg',
+  'istanbul-rumeli-university': '/images/universities/istanbul-rumeli-university/logo.webp',
+  'istanbul-sabahattin-zaim-university': '/images/universities/istanbul-sabahattin-zaim-university/logo.webp',
+  'istanbul-sisli-vocational-school': '/images/universities/istanbul-sisli-vocational-school/logo.svg',
+  'istanbul-topkapi-university': '/images/universities/istanbul-topkapi-university/logo.webp',
+  'istanbul-vocational-school-of-health-and-social-sciences': '/images/universities/istanbul-vocational-school-of-health-and-social-sciences/logo.webp',
+  'istanbul-yeni-yuzyil-university': '/images/universities/istanbul-yeni-yuzyil-university/logo.webp',
+  'istinye-university': '/images/universities/istinye-university/logo.webp',
+  'izmir-kavram-vocational-school': '/images/universities/izmir-kavram-vocational-school/logo.svg',
+  'izmir-tinaztepe-university': '/images/universities/izmir-tinaztepe-university/logo.svg',
+  'izmir-university-of-economics': '/images/universities/izmir-university-of-economics/logo.svg',
+  'kadir-has-university': '/images/universities/kadir-has-university/logo.svg',
+  'koc-university': '/images/universities/koc-university/logo.svg',
+  'kocaeli-university-of-health-and-technology': '/images/universities/kocaeli-university-of-health-and-technology/logo.webp',
+  'konya-food-and-agriculture-university': '/images/universities/konya-food-and-agriculture-university/logo.svg',
+  'kto-karatay-university': '/images/universities/kto-karatay-university/logo.webp',
+  'lokman-hekim-university': '/images/universities/lokman-hekim-university/logo.svg',
+  'maltepe-university': '/images/universities/maltepe-university/logo.svg',
+  'mef-university': '/images/universities/mef-university/logo.svg',
+  'nuh-naci-yazgan-university': '/images/universities/nuh-naci-yazgan-university/logo.webp',
+  'ostim-technical-university': '/images/universities/ostim-technical-university/logo.webp',
+  'ozyegin-university': '/images/universities/ozyegin-university/logo.webp',
+  'piri-reis-university': '/images/universities/piri-reis-university/logo.svg',
+  'sabanci-university': '/images/universities/sabanci-university/logo.svg',
+  'sanko-university': '/images/universities/sanko-university/logo.svg',
+  'ted-university': '/images/universities/ted-university/logo.webp',
+  'tobb-university-of-economics-and-technology': '/images/universities/tobb-university-of-economics-and-technology/logo.svg',
+  'toros-university': '/images/universities/toros-university/logo.svg',
+  'turkish-aeronautical-association-university': '/images/universities/turkish-aeronautical-association-university/logo.webp',
+  'ufuk-university': '/images/universities/ufuk-university/logo.svg',
+  'uskudar-university': '/images/universities/uskudar-university/logo.webp',
+  'yasar-university': '/images/universities/yasar-university/logo.webp',
+  'yeditepe-university': '/images/universities/yeditepe-university/logo.webp',
+  'yuksek-ihtisas-university': '/images/universities/yuksek-ihtisas-university/logo.svg',
 };

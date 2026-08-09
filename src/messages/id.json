@@ -225,7 +225,18 @@
     "sortName": "Nama",
     "sortTuition": "Biaya",
     "emptyTitle": "Program tidak ditemukan",
-    "emptySubtitle": "Coba hapus filter atau cari bidang atau kota lain."
+    "emptySubtitle": "Coba hapus filter atau cari bidang atau kota lain.",
+    "university": "Universitas",
+    "programName": "Program",
+    "degree": "Gelar",
+    "language": "Bahasa",
+    "tuition": "Biaya / tahun",
+    "degrees": {
+      "bachelor": "Sarjana",
+      "master": "Magister",
+      "phd": "Doktor",
+      "associate": "Diploma"
+    }
   },
   "ProgramCombination": {
     "metaTitle": "{category} di {city} — Universitas, Biaya & Program",
