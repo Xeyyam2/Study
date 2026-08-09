@@ -17,6 +17,10 @@ export default defineConfig({
       name: 'chromium',
       use: { ...devices['Desktop Chrome'] },
     },
+    {
+      name: 'chromium-rtl-ar',
+      use: { ...devices['Desktop Chrome'], locale: 'ar' },
+    },
   ],
   webServer: {
     command: 'npm run build && npm run start',

@@ -6,7 +6,6 @@ import { data } from "@/lib/data";
 import type { AppLocale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { buildPageMetadata } from "@/lib/seo/alternates";
-import { JsonLd } from "@/components/seo/json-ld";
 import { formatCurrency } from "@/lib/utils";
 import { ProgramFilters } from "@/components/sections/program-filters";
 import { ProgramSortSelect } from "@/components/sections/program-sort-select";

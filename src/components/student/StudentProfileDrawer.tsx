@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Link from 'next/link';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { type LucideIcon } from 'lucide-react';
-import { Bell, ChevronRight, ExternalLink, FileText, GraduationCap, LogOut, MessageSquare, User, X } from 'lucide-react';
+import { Bell, ChevronRight, ExternalLink, FileText, GraduationCap, LogOut, MessageSquare, X } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
 import { Dialog, DialogOverlay, DialogPortal } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
