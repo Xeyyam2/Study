@@ -1,5 +1,0 @@
-
-URL=http://localhost:3000/en/universities STATUS=200 TITLE=StudyHub — Study in Turkey H1=NO_H1 NF=LOCALIZED_NF UNI=HAS_UNI
-URL=http://localhost:3000/en/universities/bahcesehir-university STATUS=200 TITLE=Bahçesehir University — Tuition, Programs &amp; Admissions | StudyHub H1=Bahçesehir University NF=LOCALIZED_NF UNI=HAS_UNI
-URL=http://localhost:3000/en STATUS=200 TITLE=Study in Turkey — Compare Universities, Programs &amp; Scholarships | StudyHub H1=Study in Turkey with expert guidance NF=LOCALIZED_NF UNI=HAS_UNI
-DONE

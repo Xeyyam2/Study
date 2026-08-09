@@ -42,3 +42,13 @@ yarn-error.log*
 
 # os / onedrive
 ~$*
+
+# repo hygiene — debug/scrape/backup artifacts
+/*.txt
+/*.html
+/*.cjs
+/test-*.{ts,ps1,cjs}
+/_*-backup.*
+/faza*.md
+/design/**/*.html
+/design/**/*.png

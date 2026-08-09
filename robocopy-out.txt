@@ -1,343 +1,0 @@
-
--------------------------------------------------------------------------------
-   ROBOCOPY     ::     Robust File Copy for Windows                              
--------------------------------------------------------------------------------
-
-  Started : Sunday, August 2, 2026 11:33:28 PM
-   Source : C:\Users\Asus\OneDrive\Desktop\study\
-     Dest : C:\temp\study-test\
-
-    Files : *.*
-	    
-Exc Files : *.txt
-	    *.html
-	    
- Exc Dirs : node_modules
-	    .next
-	    .git
-	    playwright-report
-	    
-  Options : *.* /S /E /DCOPY:DA /COPY:DAT /R:1000000 /W:30 
-
-------------------------------------------------------------------------------
-
-	  New Dir         38	C:\Users\Asus\OneDrive\Desktop\study\
-	    New File  		    1528	.env.example100%  
-	    New File  		    1530	.env.local100%  
-	    New File  		     205	.eslintrc.json100%  
-	    New File  		     422	.gitignore100%  
-	    New File  		   20264	a.md100%  
-	    New File  		     374	docker-compose.yml100%  
-	    New File  		    5379	faza3.md100%  
-	    New File  		    2085	faza4.md100%  
-	    New File  		    1290	faza5.md100%  
-	    New File  		    1035	fetch-test.ps1100%  
-	    New File  		     268	next-env.d.ts100%  
-	    New File  		    2463	next.config.mjs100%  
-	    New File  		  374016	package-lock.json100%  
-	    New File  		    1977	package.json100%  
-	    New File  		     704	playwright.config.ts100%  
-	    New File  		     157	postcss.config.mjs100%  
-	    New File  		   10903	README.md100%  
-	    New File  		   20058	Study.md100%  
-	    New File  		    4596	tailwind.config.ts100%  
-	    New File  		    1304	test-browser.cjs100%  
-	    New File  		     925	test-pg.ts100%  
-	    New File  		    1093	test-routes.cjs100%  
-	    New File  		     576	tsconfig.json100%  
-	    New File  		  199848	tsconfig.tsbuildinfo100%  
-	    New File  		     982	vitest.config.ts100%  
-	    New File  		    4785	_uni-page-backup.tsx100%  
-	  New Dir          0	C:\Users\Asus\OneDrive\Desktop\study\design\
-	  New Dir          2	C:\Users\Asus\OneDrive\Desktop\study\design\ana_s_hif_x_t_rkiy_d_t_hsil\
-	    New File  		  177698	screen.png 99%  100%  
-	  New Dir          1	C:\Users\Asus\OneDrive\Desktop\study\design\kinetic_horizon\
-	    New File  		    8762	DESIGN.md 98%  100%  
-	  New Dir          2	C:\Users\Asus\OneDrive\Desktop\study\design\proqram_axtar_v_kataloq\
-	    New File  		  704008	screen.png 99%  100%  
-	  New Dir          2	C:\Users\Asus\OneDrive\Desktop\study\design\t_l_b_paneli_dashboard\
-	    New File  		  317909	screen.png 99%  100%  
-	  New Dir          2	C:\Users\Asus\OneDrive\Desktop\study\design\universitet_detal_s_hif_si\
-	    New File  		  703884	screen.png 99%  100%  
-	  New Dir          1	C:\Users\Asus\OneDrive\Desktop\study\design\x_education_platform_logo\
-	    New File  		  530663	screen.png 99%  100%  
-	  New Dir          0	C:\Users\Asus\OneDrive\Desktop\study\docs\
-	  New Dir          0	C:\Users\Asus\OneDrive\Desktop\study\docs\superpowers\
-	  New Dir          3	C:\Users\Asus\OneDrive\Desktop\study\docs\superpowers\plans\
-	    New File  		   88260	2026-07-30-phase2-admin-backend.md100%  
-	    New File  		   28392	2026-07-31-phase2b-real-auth.md100%  
-	    New File  		   71715	2026-07-31-phase2c-student-dashboard.md100%  
-	  New Dir          8	C:\Users\Asus\OneDrive\Desktop\study\docs\superpowers\specs\
-	    New File  		    6513	2026-07-30-study-platform-phase1-design.md100%  
-	    New File  		   16421	2026-07-30-study-platform-phase2-admin-backend-design.md100%  
-	    New File  		    6428	2026-07-31-phase3a-i18n-17-languages-design.md100%  
-	    New File  		   10147	2026-07-31-phase3b-seed-to-db-content-design.md100%  
-	    New File  		    6990	2026-07-31-study-platform-phase2b-real-auth-design.md100%  
-	    New File  		   14955	2026-07-31-study-platform-phase2c-student-dashboard-design.md100%  
-	    New File  		    8651	2026-08-01-phase4-geo-aeo-perf-design.md100%  
-	    New File  		    3577	2026-08-01-phase5-ai-analytics-launch-design.md100%  
-	  New Dir          1	C:\Users\Asus\OneDrive\Desktop\study\public\
-	  New Dir          2	C:\Users\Asus\OneDrive\Desktop\study\scripts\
-	    New File  		    2881	migrate.ts100%  
-	    New File  		    7728	seed-content.ts100%  
-	  New Dir          1	C:\Users\Asus\OneDrive\Desktop\study\src\
-	    New File  		     927	middleware.ts100%  
-	  New Dir          6	C:\Users\Asus\OneDrive\Desktop\study\src\app\
-	    New File  		    1270	globals.css100%  
-	    New File  		     317	icon.svg100%  
-	    New File  		     494	manifest.ts100%  
-	    New File  		    1465	not-found.tsx100%  
-	    New File  		     404	robots.ts100%  
-	    New File  		    3479	sitemap.ts100%  
-	  New Dir          5	C:\Users\Asus\OneDrive\Desktop\study\src\app\actions\
-	    New File  		    1308	admin-auth.ts100%  
-	    New File  		    1409	crm.ts 94%  100%  
-	    New File  		    1738	leads.ts100%  
-	    New File  		    1224	student-auth.ts100%  
-	    New File  		    2816	student.ts100%  
-	  New Dir          1	C:\Users\Asus\OneDrive\Desktop\study\src\app\admin\
-	    New File  		     428	layout.tsx 82%  100%  
-	  New Dir          2	C:\Users\Asus\OneDrive\Desktop\study\src\app\admin\(dashboard)\
-	    New File  		     653	layout.tsx 88%  100%  
-	    New File  		    3703	page.tsx 97%  100%  
-	  New Dir          0	C:\Users\Asus\OneDrive\Desktop\study\src\app\admin\(dashboard)\applications\
-	  New Dir          1	C:\Users\Asus\OneDrive\Desktop\study\src\app\admin\(dashboard)\applications\[id]\
-	    New File  		    2895	page.tsx 97%  100%  
-	  New Dir          1	C:\Users\Asus\OneDrive\Desktop\study\src\app\admin\(dashboard)\audit\
-	    New File  		    1523	page.tsx 94%  100%  
-	  New Dir          1	C:\Users\Asus\OneDrive\Desktop\study\src\app\admin\(dashboard)\leads\
-	    New File  		    2997	page.tsx 97%  100%  
-	  New Dir          1	C:\Users\Asus\OneDrive\Desktop\study\src\app\admin\(dashboard)\leads\[id]\
-	    New File  		    3991	page.tsx 97%  100%  
-	  New Dir          1	C:\Users\Asus\OneDrive\Desktop\study\src\app\admin\(dashboard)\users\
-	    New File  		    1735	page.tsx 95%  100%  
-	  New Dir          1	C:\Users\Asus\OneDrive\Desktop\study\src\app\admin\login\
-	    New File  		    2170	page.tsx100%  
-	  New Dir          0	C:\Users\Asus\OneDrive\Desktop\study\src\app\api\
-	  New Dir          1	C:\Users\Asus\OneDrive\Desktop\study\src\app\api\chat\
-	    New File  		    3589	route.ts100%  
-	  New Dir          1	C:\Users\Asus\OneDrive\Desktop\study\src\app\api\search\
-	    New File  		     664	route.ts100%  
-	  New Dir          0	C:\Users\Asus\OneDrive\Desktop\study\src\app\auth\
-	  New Dir          1	C:\Users\Asus\OneDrive\Desktop\study\src\app\auth\callback\
-	    New File  		    1602	route.ts100%  
-	  New Dir          1	C:\Users\Asus\OneDrive\Desktop\study\src\app\[locale]\
-	    New File  		    2527	layout.tsx100%  
-	  New Dir          5	C:\Users\Asus\OneDrive\Desktop\study\src\app\[locale]\(marketing)\
-	    New File  		     954	error.tsx100%  
-	    New File  		     764	layout.tsx100%  
-	    New File  		     858	loading.tsx100%  
-	    New File  		    1195	not-found.tsx100%  
-	    New File  		    1705	page.tsx100%  
-	  New Dir          1	C:\Users\Asus\OneDrive\Desktop\study\src\app\[locale]\(marketing)\about\
-	    New File  		    2880	page.tsx100%  
-	  New Dir          1	C:\Users\Asus\OneDrive\Desktop\study\src\app\[locale]\(marketing)\apply\
-	    New File  		    4237	page.tsx100%  
-	  New Dir          1	C:\Users\Asus\OneDrive\Desktop\study\src\app\[locale]\(marketing)\blog\
-	    New File  		    3882	page.tsx100%  
-	  New Dir          1	C:\Users\Asus\OneDrive\Desktop\study\src\app\[locale]\(marketing)\blog\[slug]\
-	    New File  		    4729	page.tsx100%  
-	  New Dir          1	C:\Users\Asus\OneDrive\Desktop\study\src\app\[locale]\(marketing)\compare\
-	    New File  		    2121	page.tsx100%  
-	  New Dir          1	C:\Users\Asus\OneDrive\Desktop\study\src\app\[locale]\(marketing)\contact\
-	    New File  		    4349	page.tsx100%  
-	  New Dir          1	C:\Users\Asus\OneDrive\Desktop\study\src\app\[locale]\(marketing)\programs\
-	    New File  		    3865	page.tsx100%  
-	  New Dir          0	C:\Users\Asus\OneDrive\Desktop\study\src\app\[locale]\(marketing)\programs\[category]\
-	  New Dir          1	C:\Users\Asus\OneDrive\Desktop\study\src\app\[locale]\(marketing)\programs\[category]\[city]\
-	    New File  		   11434	page.tsx100%  
-	  New Dir          1	C:\Users\Asus\OneDrive\Desktop\study\src\app\[locale]\(marketing)\study-in-turkey-from-[country]\
-	    New File  		    8317	page.tsx100%  
-	  New Dir          1	C:\Users\Asus\OneDrive\Desktop\study\src\app\[locale]\(marketing)\testuni\
-	    New File  		     158	page.tsx100%  
-	  New Dir          1	C:\Users\Asus\OneDrive\Desktop\study\src\app\[locale]\(marketing)\universities\
-	    New File  		     226	page.tsx100%  
-	  New Dir          1	C:\Users\Asus\OneDrive\Desktop\study\src\app\[locale]\(marketing)\universities\[slug]\
-	    New File  		   23910	page.tsx100%  
-	  New Dir          0	C:\Users\Asus\OneDrive\Desktop\study\src\app\[locale]\dashboard\
-	  New Dir          2	C:\Users\Asus\OneDrive\Desktop\study\src\app\[locale]\dashboard\(app)\
-	    New File  		     873	layout.tsx100%  
-	    New File  		    3055	page.tsx100%  
-	  New Dir          1	C:\Users\Asus\OneDrive\Desktop\study\src\app\[locale]\dashboard\(app)\applications\
-	    New File  		    1895	page.tsx100%  
-	  New Dir          1	C:\Users\Asus\OneDrive\Desktop\study\src\app\[locale]\dashboard\(app)\applications\[id]\
-	    New File  		    1813	page.tsx100%  
-	  New Dir          1	C:\Users\Asus\OneDrive\Desktop\study\src\app\[locale]\dashboard\(app)\documents\
-	    New File  		    2384	page.tsx100%  
-	  New Dir          1	C:\Users\Asus\OneDrive\Desktop\study\src\app\[locale]\dashboard\(app)\messages\
-	    New File  		    2357	page.tsx100%  
-	  New Dir          1	C:\Users\Asus\OneDrive\Desktop\study\src\app\[locale]\dashboard\(app)\notifications\
-	    New File  		    2109	page.tsx100%  
-	  New Dir          1	C:\Users\Asus\OneDrive\Desktop\study\src\app\[locale]\dashboard\login\
-	    New File  		    2497	page.tsx100%  
-	  New Dir          0	C:\Users\Asus\OneDrive\Desktop\study\src\components\
-	  New Dir          7	C:\Users\Asus\OneDrive\Desktop\study\src\components\admin\
-	    New File  		    1434	AdminSidebar.tsx 94%  100%  
-	    New File  		    1058	AdminTopbar.tsx100%  
-	    New File  		    1873	AssignConsultant.tsx 95%  100%  
-	    New File  		    3311	KanbanBoard.tsx 97%  100%  
-	    New File  		    1005	KpiCard.tsx 91%  100%  
-	    New File  		     696	LeadStatusBadge.tsx 88%  100%  
-	    New File  		    1128	PipelineStepper.tsx 92%  100%  
-	  New Dir          1	C:\Users\Asus\OneDrive\Desktop\study\src\components\auth\
-	    New File  		    2513	EmailOtpForm.tsx100%  
-	  New Dir          5	C:\Users\Asus\OneDrive\Desktop\study\src\components\layout\
-	    New File  		    5634	chat-widget.tsx100%  
-	    New File  		    4918	footer.tsx100%  
-	    New File  		    3550	header.tsx100%  
-	    New File  		    1857	locale-switcher.tsx100%  
-	    New File  		    1827	whatsapp-float.tsx100%  
-	  New Dir          1	C:\Users\Asus\OneDrive\Desktop\study\src\components\motion\
-	    New File  		     958	fade-in.tsx100%  
-	  New Dir         12	C:\Users\Asus\OneDrive\Desktop\study\src\components\sections\
-	    New File  		    6147	apply-form.tsx100%  
-	    New File  		    3711	category-section.tsx100%  
-	    New File  		    6104	compare-tool.tsx100%  
-	    New File  		    5741	cost-calculator.tsx100%  
-	    New File  		    1831	cta-section.tsx100%  
-	    New File  		    1803	faq-section.tsx100%  
-	    New File  		    1822	featured-universities.tsx100%  
-	    New File  		    8050	hero-section.tsx100%  
-	    New File  		    1514	stats-section.tsx100%  
-	    New File  		    3033	success-stories.tsx100%  
-	    New File  		    3798	university-card.tsx100%  
-	    New File  		    4959	university-filters.tsx100%  
-	  New Dir          3	C:\Users\Asus\OneDrive\Desktop\study\src\components\seo\
-	    New File  		    1631	analytics.tsx100%  
-	    New File  		    3531	geo-block.tsx100%  
-	    New File  		     321	json-ld.tsx100%  
-	  New Dir          4	C:\Users\Asus\OneDrive\Desktop\study\src\components\student\
-	    New File  		    1929	DocumentUploadForm.tsx100%  
-	    New File  		    1021	MessageComposer.tsx100%  
-	    New File  		    1360	StudentSidebar.tsx100%  
-	    New File  		     830	StudentTopbar.tsx100%  
-	  New Dir         14	C:\Users\Asus\OneDrive\Desktop\study\src\components\ui\
-	    New File  		    2100	accordion.tsx100%  
-	    New File  		    1509	avatar.tsx100%  
-	    New File  		    1268	badge.tsx100%  
-	    New File  		    2268	button.tsx100%  
-	    New File  		    1908	card.tsx100%  
-	    New File  		    3659	dialog.tsx100%  
-	    New File  		    3056	dropdown-menu.tsx100%  
-	    New File  		     789	input.tsx100%  
-	    New File  		     625	label.tsx100%  
-	    New File  		    5362	select.tsx100%  
-	    New File  		     773	separator.tsx100%  
-	    New File  		    2513	table.tsx100%  
-	    New File  		    1941	tabs.tsx100%  
-	    New File  		     708	textarea.tsx100%  
-	  New Dir          1	C:\Users\Asus\OneDrive\Desktop\study\src\config\
-	    New File  		    2492	site.ts100%  
-	  New Dir          3	C:\Users\Asus\OneDrive\Desktop\study\src\i18n\
-	    New File  		     195	navigation.ts100%  
-	    New File  		     397	request.ts100%  
-	    New File  		    1584	routing.ts100%  
-	  New Dir          2	C:\Users\Asus\OneDrive\Desktop\study\src\lib\
-	    New File  		     874	storage.ts100%  
-	    New File  		    1227	utils.ts100%  
-	  New Dir          7	C:\Users\Asus\OneDrive\Desktop\study\src\lib\crm\
-	    New File  		     306	db.ts 77%  100%  
-	    New File  		     474	index.ts 84%  100%  
-	    New File  		   20105	pg-repository.ts100%  
-	    New File  		    2862	repositories.ts100%  
-	    New File  		    2147	session.ts100%  
-	    New File  		    2100	student-session.ts100%  
-	    New File  		     483	supabase-repository.ts 84%  100%  
-	  New Dir          4	C:\Users\Asus\OneDrive\Desktop\study\src\lib\data\
-	    New File  		    1526	index.ts100%  
-	    New File  		   19625	pg-data-repository.ts100%  
-	    New File  		    3037	repositories.ts100%  
-	    New File  		   12448	seed-repository.ts100%  
-	  New Dir          1	C:\Users\Asus\OneDrive\Desktop\study\src\lib\i18n\
-	    New File  		     651	lx.ts100%  
-	  New Dir         12	C:\Users\Asus\OneDrive\Desktop\study\src\lib\seed\
-	    New File  		   10087	blog.ts100%  
-	    New File  		     997	cities.ts100%  
-	    New File  		    1879	countries.ts100%  
-	    New File  		     984	dormitories.ts100%  
-	    New File  		    7394	faqs.ts100%  
-	    New File  		    1876	images.ts100%  
-	    New File  		     327	index.ts100%  
-	    New File  		    5818	programs.ts100%  
-	    New File  		    7308	reviews.ts100%  
-	    New File  		    3183	scholarships.ts100%  
-	    New File  		   14875	universities.ts100%  
-	    New File  		    5743	university-programs.ts100%  
-	  New Dir          3	C:\Users\Asus\OneDrive\Desktop\study\src\lib\seo\
-	    New File  		    1838	alternates.ts100%  
-	    New File  		     931	geo.ts100%  
-	    New File  		    8447	json-ld.ts100%  
-	  New Dir          3	C:\Users\Asus\OneDrive\Desktop\study\src\lib\supabase\
-	    New File  		     360	client.ts100%  
-	    New File  		    1028	server-session.ts100%  
-	    New File  		     783	server.ts100%  
-	  New Dir          3	C:\Users\Asus\OneDrive\Desktop\study\src\lib\validations\
-	    New File  		     448	crm.ts 83%  100%  
-	    New File  		     828	lead.ts100%  
-	    New File  		     265	student.ts100%  
-	  New Dir         18	C:\Users\Asus\OneDrive\Desktop\study\src\messages\
-	    New File  		   20198	ar.json100%  
-	    New File  		   21475	az.json100%  
-	    New File  		   22684	bg.json100%  
-	    New File  		   18169	de.json100%  
-	    New File  		   19839	en.json100%  
-	    New File  		   22633	fa.json100%  
-	    New File  		   18040	fr.json100%  
-	    New File  		   15214	id.json100%  
-	    New File  		   24413	kk.json100%  
-	    New File  		   25105	ky.json100%  
-	    New File  		   27909	ru.json100%  
-	    New File  		   15884	so.json100%  
-	    New File  		   14715	sw.json100%  
-	    New File  		   17317	tk.json100%  
-	    New File  		   20415	tr.json100%  
-	    New File  		   20324	ur.json100%  
-	    New File  		   16602	uz.json100%  
-	    New File  		   15378	zh.json100%  
-	  New Dir          3	C:\Users\Asus\OneDrive\Desktop\study\src\types\
-	    New File  		     510	analytics.d.ts100%  
-	    New File  		    4741	crm.ts100%  
-	    New File  		    3217	index.ts100%  
-	  New Dir          1	C:\Users\Asus\OneDrive\Desktop\study\supabase\
-	    New File  		    4580	seed.sql 98%  100%  
-	  New Dir         12	C:\Users\Asus\OneDrive\Desktop\study\supabase\migrations\
-	    New File  		     590	0001_enums.sql 87%  100%  
-	    New File  		    3004	0002_tables.sql 97%  100%  
-	    New File  		     870	0003_indexes.sql 90%  100%  
-	    New File  		     743	0004_functions_triggers.sql 89%  100%  
-	    New File  		    3422	0005_rls.sql100%  
-	    New File  		     569	0006_auth_trigger.sql 86%  100%  
-	    New File  		     847	0007_link_profiles_to_auth_users.sql 90%  100%  
-	    New File  		     593	0008_messages.sql100%  
-	    New File  		     900	0009_storage_bucket.sql100%  
-	    New File  		     239	0010_profiles_auth_uid.sql100%  
-	    New File  		    5250	0011_content_tables.sql100%  
-	    New File  		    2166	0012_search_indexes.sql100%  
-	  New Dir          1	C:\Users\Asus\OneDrive\Desktop\study\test-results\
-	    New File  		      45	.last-run.json100%  
-	  New Dir          0	C:\Users\Asus\OneDrive\Desktop\study\tests\
-	  New Dir          3	C:\Users\Asus\OneDrive\Desktop\study\tests\e2e\
-	    New File  		     699	admin.spec.ts100%  
-	    New File  		    1202	smoke.spec.ts100%  
-	    New File  		     578	student-dashboard.spec.ts100%  
-	  New Dir          6	C:\Users\Asus\OneDrive\Desktop\study\tests\unit\
-	    New File  		    2942	crm-repository.test.ts 97%  100%  
-	    New File  		     821	i18n.test.ts100%  
-	    New File  		    3390	repository.test.ts100%  
-	    New File  		    1368	search-repository.test.ts100%  
-	    New File  		    5181	student-repository.test.ts100%  
-	    New File  		    1005	utils.test.ts100%  
-
-------------------------------------------------------------------------------
-
-               Total    Copied   Skipped  Mismatch    FAILED    Extras
-    Dirs :        85        81         4         0         0         0
-   Files :       242       225        17         0         0         0
-   Bytes :    4.33 m    3.99 m   346.8 k         0         0         0
-   Times :   0:00:01   0:00:00                       0:00:00   0:00:00
-
-
-   Speed :           5,764,929 Bytes/sec.
-   Speed :             329.872 MegaBytes/min.
-   Ended : Sunday, August 2, 2026 11:33:30 PM
-

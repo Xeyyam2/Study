@@ -1,8 +1,0 @@
-<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (106kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
-<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (258kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
- ⨯ upstream image response failed for https://images.unsplash.com/photo-1568438350562-876d1b6c3c40?auto=format&fit=crop&w=1600&q=80 404
- ⨯ upstream image response failed for https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1600&q=80 404
- ⨯ src\app\not-found.tsx
-not-found.tsx doesn't have a root layout. To fix this error, make sure every page has a root layout.
- ⨯ src\app\not-found.tsx
-not-found.tsx doesn't have a root layout. To fix this error, make sure every page has a root layout.

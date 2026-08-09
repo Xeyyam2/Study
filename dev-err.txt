@@ -1,7 +1,0 @@
-<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (106kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
-<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (258kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
- ⚠ Found a change in next.config.mjs. Restarting the server to apply the changes...
- ⚠ Found a change in next.config.mjs. Restarting the server to apply the changes...
- ⨯ upstream image response failed for https://images.unsplash.com/photo-1568438350562-876d1b6c3c40?auto=format&fit=crop&w=1600&q=80 404
-<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (106kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
-<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (258kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
