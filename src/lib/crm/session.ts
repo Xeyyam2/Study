@@ -3,6 +3,7 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { crm } from './index';
 import { getSessionUser } from '@/lib/supabase/server-session';
+import { verifySessionPayload } from './cookie-signature';
 import { isDevAuthEnabled } from './student-session';
 import type { Profile, UserRole } from '@/types/crm';
 
@@ -33,20 +34,17 @@ async function getStaffSession(): Promise<AdminSession | null> {
   }
 }
 
-/** Dev fallback (DEV_AUTH_ENABLED): seeded demo staff via legacy cookie. */
+/** Dev fallback (DEV_AUTH_ENABLED): seeded demo staff via signed cookie. */
 async function getDevStaffSession(): Promise<AdminSession | null> {
   if (!isDevAuthEnabled()) return null;
   const store = await cookies();
   const raw = store.get(SESSION_COOKIE)?.value;
-  if (!raw) return null;
-  try {
-    const { userId } = JSON.parse(raw) as { userId: string };
-    const profile = await crm.getProfile(userId);
-    if (!profile || !STAFF_ROLES.includes(profile.role)) return null;
-    return { userId: profile.id, role: profile.role, fullName: profile.fullName, profile };
-  } catch {
-    return null;
-  }
+  // verifySessionPayload rejects unsigned/forged cookies (HMAC check).
+  const payload = verifySessionPayload<{ userId: string }>(raw);
+  if (!payload) return null;
+  const profile = await crm.getProfile(payload.userId);
+  if (!profile || !STAFF_ROLES.includes(profile.role)) return null;
+  return { userId: profile.id, role: profile.role, fullName: profile.fullName, profile };
 }
 
 export async function getSession(): Promise<AdminSession | null> {

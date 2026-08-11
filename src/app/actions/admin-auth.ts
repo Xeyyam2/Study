@@ -5,6 +5,7 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { crm } from '@/lib/crm';
 import { SESSION_COOKIE } from '@/lib/crm/session';
+import { signSessionPayload } from '@/lib/crm/cookie-signature';
 import { isDevAuthEnabled } from '@/lib/crm/student-session';
 import { devLoginSchema } from '@/lib/validations/crm';
 
@@ -18,7 +19,7 @@ export async function devLogin(input: unknown) {
   // Dev fallback must never grant staff access to a non-staff profile.
   if (!profile || !STAFF_ROLES.includes(profile.role)) return { ok: false as const };
   const store = await cookies();
-  store.set(SESSION_COOKIE, JSON.stringify({ userId: profile.id, role: profile.role, fullName: profile.fullName }), {
+  store.set(SESSION_COOKIE, signSessionPayload({ userId: profile.id, role: profile.role, fullName: profile.fullName }), {
     httpOnly: true,
     sameSite: 'lax',
     path: '/',

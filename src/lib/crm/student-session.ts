@@ -3,6 +3,7 @@ import { cookies } from 'next/headers';
 import type { AppLocale } from '@/i18n/routing';
 import { crm } from './index';
 import { getSessionUser } from '@/lib/supabase/server-session';
+import { verifySessionPayload } from './cookie-signature';
 import type { Profile } from '@/types/crm';
 
 export const STUDENT_SESSION_COOKIE = 'student_session';
@@ -54,19 +55,16 @@ export async function getStudentSessionAny(): Promise<StudentSession | null> {
   return (await getStudentSession()) ?? (await getDevStudentSession());
 }
 
-// Dev fallback (DEV_AUTH_ENABLED=1): resolve a seeded demo student via legacy cookie.
+// Dev fallback (DEV_AUTH_ENABLED=1): resolve a seeded demo student via signed cookie.
 export async function getDevStudentSession(): Promise<StudentSession | null> {
   if (!isDevAuthEnabled()) return null;
   const store = await cookies();
   const raw = store.get(STUDENT_SESSION_COOKIE)?.value;
-  if (!raw) return null;
-  try {
-    const { userId } = JSON.parse(raw) as { userId: string };
-    const profile = await crm.getProfile(userId);
-    return profile ? { userId: profile.id, profile } : null;
-  } catch {
-    return null;
-  }
+  // verifySessionPayload rejects unsigned/forged cookies (HMAC check).
+  const payload = verifySessionPayload<{ userId: string }>(raw);
+  if (!payload) return null;
+  const profile = await crm.getProfile(payload.userId);
+  return profile ? { userId: profile.id, profile } : null;
 }
 
 export async function requireStudentAny(locale: AppLocale): Promise<StudentSession> {

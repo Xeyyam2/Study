@@ -4,6 +4,7 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { crm } from '@/lib/crm';
 import { STUDENT_SESSION_COOKIE, isDevAuthEnabled } from '@/lib/crm/student-session';
+import { signSessionPayload } from '@/lib/crm/cookie-signature';
 import { devStudentLoginSchema } from '@/lib/validations/student';
 
 export async function devStudentLogin(input: unknown) {
@@ -15,7 +16,7 @@ export async function devStudentLogin(input: unknown) {
   const store = await cookies();
   store.set(
     STUDENT_SESSION_COOKIE,
-    JSON.stringify({ userId: profile.id, fullName: profile.fullName }),
+    signSessionPayload({ userId: profile.id, fullName: profile.fullName }),
     {
       httpOnly: true,
       sameSite: 'lax',
