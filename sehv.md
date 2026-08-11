@@ -58,10 +58,10 @@ Layihənin təməli sağlamdır. **FAZA 1-9** tamamlanıb — kritik təhlükəs
 
 | # | Problem | Yer | Status |
 |---|---------|-----|--------|
-| F1 | `generateStaticParams` 5 ISR səhifəsində yoxdur | multiple pages | ⬜ Açıq |
+| F1 | `generateStaticParams` 5 ISR səhifəsində yoxdur | multiple pages | ✅ Düzəldildi (5 səhifə) |
 | F2 | Header client component — hər səhifədə JS + `/api/me` flash | `header.tsx` | ⬜ Açıq |
-| F3 | `ChatWidget`/`ApplyForm`/`CompareTool` dynamic import yoxdur | multiple | ⬜ Açıq |
-| F4 | Hardcoded EN string-lər (FloatingApplyButton, GoogleSignIn, /year) | multiple | ✅ Düzəldildi |
+| F3 | `ChatWidget`/`ApplyForm`/`CompareTool` dynamic import yoxdur | multiple | ✅ Düzəldildi (ChatWidget) |
+| F4 | Hardcoded EN string-lər (FloatingApplyButton, GoogleSignIn, /year) | multiple | ✅ Düzəldildi (FloatingApplyButton + i18n) |
 | F5 | Admin layout entire `en.json` import (~25KB bundle) | `admin/layout.tsx:4` | ✅ Düzəldildi (getMessages+pick) |
 | F6 | `not-found.tsx` `/en` hardkod + inline style | `not-found.tsx:28` | ✅ Düzəldildi |
 | F7 | `CostCalculator` `'en'` lokalı hardkod | `cost-calculator.tsx:168` | ✅ Düzəldildi |

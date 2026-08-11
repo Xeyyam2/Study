@@ -37,8 +37,14 @@ import { formatCurrency } from '@/lib/utils';
 import { annualTotalCost } from '@/lib/programs/costs';
 
 // ISR — content rarely changes; rebuild every hour (or on-demand revalidation).
-// No generateStaticParams: pages are rendered on-demand (first visit) and cached.
 export const revalidate = 3600;
+
+// F1: Pre-render all category pages at build time.
+export async function generateStaticParams() {
+  const categories = await data.programs.getCategories();
+  const locales = (await import('@/i18n/routing')).routing.locales;
+  return locales.flatMap((locale) => categories.map((c) => ({ locale, category: c.slug })));
+}
 
 export async function generateMetadata({
   params,

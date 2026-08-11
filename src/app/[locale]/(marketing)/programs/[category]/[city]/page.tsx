@@ -31,8 +31,16 @@ import { Badge } from '@/components/ui/badge';
 import { formatCurrency } from '@/lib/utils';
 
 // ISR — content rarely changes; rebuild only every hour (or on-demand revalidation).
-// No generateStaticParams: pages are rendered on-demand (first visit) and cached.
 export const revalidate = 3600;
+
+// F1: Pre-render all program×city combination pages at build time.
+export async function generateStaticParams() {
+  const combos = await data.programs.getCombinations();
+  const locales = (await import('@/i18n/routing')).routing.locales;
+  return locales.flatMap((locale) =>
+    combos.map((c) => ({ locale, category: c.categorySlug, city: c.citySlug })),
+  );
+}
 
 export async function generateMetadata({
   params,
