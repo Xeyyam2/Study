@@ -11,14 +11,15 @@ import type { DataLayer } from './repositories';
  * Otherwise it falls back to the in-memory seed layer (useful for quick tests).
  */
 let _pool: Pool | null = null;
-function getSharedPool(): Pool {
+export function getSharedPool(): Pool {
   if (!_pool) {
     if (!process.env.DATABASE_URL) throw new Error('DATABASE_URL is not set');
-    // Cap concurrent connections: during `next build` many worker processes each
-    // create their own pool; lowering `max` per worker keeps us under Postgres'
-    // `max_connections` (default 100). Override via `PGPOOL_MAX` if needed.
     const max = Number(process.env.PGPOOL_MAX ?? 2);
     _pool = new Pool({ connectionString: process.env.DATABASE_URL, max });
+    // 4.1: Prevent unhandled EventEmitter errors from crashing the process.
+    _pool.on('error', (err) => {
+      console.error('[data pool error]', err);
+    });
   }
   return _pool;
 }

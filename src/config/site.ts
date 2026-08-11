@@ -42,6 +42,9 @@ export const siteConfig = {
       ru: 'Стамбул, Турция',
     },
   },
+  // TODO(5.1): These are placeholder URLs that resolve to 404 pages. Replace
+  // with the real social media profile URLs before going live — they are
+  // surfaced as sameAs links in the Organization JSON-LD and in the footer.
   social: {
     instagram: 'https://instagram.com/',
     youtube: 'https://youtube.com/',

@@ -142,12 +142,28 @@ export function createPgCrm(getPool: () => Pool): CrmRepository {
     },
 
     async updateLeadStatus(id: string, status: LeadStatus, actorId: string): Promise<Lead> {
-      const prev = await q('select status from public.leads where id = $1', [id]);
-      if (prev.rowCount === 0) throw new NotFoundError('lead', id);
-      const from = prev.rows[0].status;
-      const res = await q('update public.leads set status = $1 where id = $2 returning *', [status, id]);
-      await audit({ userId: actorId, action: 'lead.update_status', entity: 'lead', entityId: id, metadata: { from, to: status } });
-      return rowToLead(res.rows[0]);
+      // 4.2: Wrap status update + audit log in a transaction so a partial
+      // failure can't leave the status changed without an audit trail.
+      const client = await getPool().connect();
+      try {
+        await client.query('BEGIN');
+        const prev = await client.query('select status from public.leads where id = $1', [id]);
+        if (prev.rowCount === 0) throw new NotFoundError('lead', id);
+        const from = prev.rows[0].status;
+        const res = await client.query('update public.leads set status = $1 where id = $2 returning *', [status, id]);
+        await client.query(
+          `insert into public.audit_logs (user_id, action, entity, entity_id, metadata)
+           values ($1, 'lead.update_status', 'lead', $2, $3)`,
+          [actorId, id, JSON.stringify({ from, to: status })],
+        );
+        await client.query('COMMIT');
+        return rowToLead(res.rows[0]);
+      } catch (err) {
+        await client.query('ROLLBACK');
+        throw err;
+      } finally {
+        client.release();
+      }
     },
 
     async assignConsultant(leadId: string, consultantId: string | null, actorId: string): Promise<Lead> {
@@ -425,14 +441,19 @@ export function createPgCrm(getPool: () => Pool): CrmRepository {
     },
 
     async findOrCreateStudent(input: StudentProfileInput): Promise<Profile> {
-      const found = await q('select * from public.profiles where email = $1', [input.email]);
-      if (found.rowCount) return rowToProfile(found.rows[0]);
+      // 4.4: Use INSERT ... ON CONFLICT to avoid the check-then-insert race
+      // condition where two parallel requests with the same email both insert.
       const res = await q(
-        `insert into public.profiles (email, full_name, role, phone, whatsapp, country_code)
-         values ($1, $2, 'student', $3, $4, $5) returning *`,
+        `insert into public.profiles (email, full_name, phone, whatsapp, country_code, role)
+         values ($1, $2, $3, $4, $5, 'student')
+         on conflict (email) do nothing
+         returning *`,
         [input.email, input.fullName, input.phone ?? null, input.whatsapp ?? null, input.countryCode ?? null],
       );
-      return rowToProfile(res.rows[0]);
+      if (res.rowCount) return rowToProfile(res.rows[0]);
+      // Row already existed — fetch it.
+      const found = await q('select * from public.profiles where email = $1', [input.email]);
+      return rowToProfile(found.rows[0]);
     },
 
     async getProfileByAuthUid(authUid: string): Promise<Profile | null> {

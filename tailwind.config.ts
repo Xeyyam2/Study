@@ -58,7 +58,7 @@ const config: Config = {
 
         // Kinetic Horizon brand extensions
         cta: {
-          DEFAULT: '#fb7800',
+          DEFAULT: '#c95c00',
           foreground: '#FFFFFF',
           container: '#994700',
         },
@@ -114,8 +114,6 @@ const config: Config = {
       spacing: {
         'section-lg': '80px',
         'section-md': '48px',
-        'stack-sm': '8px',
-        'stack-md': '16px',
       },
       boxShadow: {
         // Flat-Plus elevation (DESIGN.md): tonal layers + low-contrast outlines

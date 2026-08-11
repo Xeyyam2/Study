@@ -16,7 +16,14 @@ export async function devStudentLogin(input: unknown) {
   store.set(
     STUDENT_SESSION_COOKIE,
     JSON.stringify({ userId: profile.id, fullName: profile.fullName }),
-    { httpOnly: true, sameSite: 'lax', path: '/', maxAge: 60 * 60 * 8 },
+    {
+      httpOnly: true,
+      sameSite: 'lax',
+      path: '/',
+      maxAge: 60 * 60 * 8,
+      // 3.4: Secure flag in production so the cookie isn't sent over HTTP.
+      secure: process.env.NODE_ENV === 'production',
+    },
   );
   redirect(`/${parsed.data.locale}/dashboard`);
 }

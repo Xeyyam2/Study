@@ -23,6 +23,8 @@ export async function devLogin(input: unknown) {
     sameSite: 'lax',
     path: '/',
     maxAge: 60 * 60 * 8,
+    // 3.4: Secure flag in production so the cookie isn't sent over HTTP.
+    secure: process.env.NODE_ENV === 'production',
   });
   redirect('/admin');
 }

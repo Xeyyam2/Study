@@ -25,6 +25,7 @@ export function organizationJsonLd(): JsonLd {
   return {
     '@context': 'https://schema.org',
     '@type': 'EducationalOrganization',
+    '@id': `${siteConfig.url}/#organization`,
     name: siteConfig.name,
     url: siteConfig.url,
     logo: LOGO_IMAGE,
@@ -44,6 +45,7 @@ export function websiteJsonLd(locale: AppLocale): JsonLd {
   return {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
+    '@id': `${siteConfig.url}/${locale}/#website`,
     name: siteConfig.name,
     url: `${siteConfig.url}/${locale}`,
     inLanguage: locale,
@@ -71,6 +73,7 @@ export function collegeOrUniversityJsonLd(
   return {
     '@context': 'https://schema.org',
     '@type': ['CollegeOrUniversity', 'EducationalOrganization'],
+    '@id': `${siteConfig.url}/${locale}/universities/${university.slug}#collegeoruniversity`,
     name: university.name,
     url: `${siteConfig.url}/${locale}/universities/${university.slug}`,
     image: university.heroImage,
@@ -111,7 +114,7 @@ export function articleJsonLd(post: BlogPost, locale: AppLocale): JsonLd {
     dateModified: post.publishedAt,
     mainEntityOfPage: url,
     author: { '@type': 'Organization', name: post.author },
-    publisher: { '@type': 'Organization', name: siteConfig.name },
+    publisher: { '@type': 'Organization', name: siteConfig.name, logo: LOGO_IMAGE },
     inLanguage: locale,
   };
 }

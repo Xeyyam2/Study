@@ -7,7 +7,13 @@ export function getPool(): Pool {
   if (!pool) {
     const url = process.env.DATABASE_URL;
     if (!url) throw new Error('DATABASE_URL is not set');
-    pool = new Pool({ connectionString: url, max: 5 });
+    const max = Number(process.env.PGPOOL_MAX ?? 5);
+    pool = new Pool({ connectionString: url, max });
+    // 4.1: Prevent unhandled EventEmitter errors from crashing the process
+    // when an idle client encounters a connection error.
+    pool.on('error', (err) => {
+      console.error('[crm pool error]', err);
+    });
   }
   return pool;
 }

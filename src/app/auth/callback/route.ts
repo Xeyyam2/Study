@@ -10,7 +10,14 @@ export async function GET(req: NextRequest) {
   const errorParam = requestUrl.searchParams.get('error');
   const errorDescription = requestUrl.searchParams.get('error_description');
   let next = requestUrl.searchParams.get('next') ?? `/${routing.defaultLocale}/dashboard`;
+  // 3.1: Open redirect protection — reject non-relative paths and protocol-relative URLs.
   if (!next.startsWith('/') || next.startsWith('//')) {
+    next = `/${routing.defaultLocale}/dashboard`;
+  }
+  // 3.1: Additional origin-equality check — resolve against request origin
+  // and verify the redirect target's origin matches.
+  const redirectTarget = new URL(next, requestUrl.origin);
+  if (redirectTarget.origin !== requestUrl.origin) {
     next = `/${routing.defaultLocale}/dashboard`;
   }
 
@@ -22,7 +29,6 @@ export async function GET(req: NextRequest) {
     );
   }
 
-  const redirectTarget = new URL(next, requestUrl.origin);
   const res = NextResponse.redirect(redirectTarget);
 
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;

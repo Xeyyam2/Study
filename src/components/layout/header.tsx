@@ -122,7 +122,7 @@ export function Header() {
             <Link
               key={item.key}
               href={item.href}
-              className="rounded px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground"
+              className="rounded px-3 py-2 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
             >
               {t(item.key)}
             </Link>
@@ -157,7 +157,7 @@ export function Header() {
           <nav className="container-page flex flex-col gap-1 py-3">
             <Link
               href="/"
-              className="rounded px-3 py-2.5 text-sm font-medium text-foreground hover:bg-accent"
+              className="rounded px-3 py-2.5 text-sm font-medium text-foreground hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
             >
               {t('home')}
             </Link>
@@ -165,7 +165,7 @@ export function Header() {
               <Link
                 key={item.key}
                 href={item.href}
-                className="rounded px-3 py-2.5 text-sm font-medium text-foreground hover:bg-accent"
+                className="rounded px-3 py-2.5 text-sm font-medium text-foreground hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
               >
                 {t(item.key)}
               </Link>

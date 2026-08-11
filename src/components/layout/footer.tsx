@@ -21,7 +21,7 @@ export async function Footer() {
         <div className="space-y-4">
           <Link
             href="/"
-            className="flex items-center gap-2 font-display text-lg font-bold text-primary"
+            className="flex items-center gap-2 font-display text-lg font-bold text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
           >
             <span className="flex h-9 w-9 items-center justify-center rounded-md bg-primary text-primary-foreground">
               <GraduationCap className="h-5 w-5" aria-hidden />
@@ -35,7 +35,7 @@ export async function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Instagram"
-              className="text-muted-foreground transition-colors hover:text-primary"
+              className="text-muted-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
             >
               <Instagram className="h-5 w-5" />
             </a>
@@ -44,7 +44,7 @@ export async function Footer() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="YouTube"
-              className="text-muted-foreground transition-colors hover:text-primary"
+              className="text-muted-foreground transition-colors hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
             >
               <Youtube className="h-5 w-5" />
             </a>
@@ -57,17 +57,17 @@ export async function Footer() {
           </h3>
           <ul className="mt-4 space-y-2 text-sm">
             <li>
-              <Link href="/about" className="text-foreground hover:text-primary">
+              <Link href="/about" className="text-foreground hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">
                 {tNav('about')}
               </Link>
             </li>
             <li>
-              <Link href="/contact" className="text-foreground hover:text-primary">
+              <Link href="/contact" className="text-foreground hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">
                 {tNav('contact')}
               </Link>
             </li>
             <li>
-              <Link href="/compare" className="text-foreground hover:text-primary">
+              <Link href="/compare" className="text-foreground hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">
                 {tNav('compare')}
               </Link>
             </li>
@@ -83,7 +83,7 @@ export async function Footer() {
               <li key={item.key}>
                 <Link
                   href={item.href}
-                  className="text-foreground hover:text-primary"
+                  className="text-foreground hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
                 >
                   {tNav(item.key)}
                 </Link>
@@ -100,7 +100,7 @@ export async function Footer() {
             <li>
               <a
                 href={`mailto:${siteConfig.contact.email}`}
-                className="flex items-center gap-2 text-foreground hover:text-primary"
+                className="flex items-center gap-2 text-foreground hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
               >
                 <Mail className="h-4 w-4 text-muted-foreground" aria-hidden />
                 {siteConfig.contact.email}
@@ -109,7 +109,7 @@ export async function Footer() {
             <li>
               <a
                 href={`tel:${siteConfig.contact.phone.replace(/\s/g, '')}`}
-                className="flex items-center gap-2 text-foreground hover:text-primary"
+                className="flex items-center gap-2 text-foreground hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
               >
                 <Phone className="h-4 w-4 text-muted-foreground" aria-hidden />
                 {siteConfig.contact.phone}
