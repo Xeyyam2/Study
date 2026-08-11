@@ -37,14 +37,8 @@ import { formatCurrency } from '@/lib/utils';
 import { annualTotalCost } from '@/lib/programs/costs';
 
 // ISR — content rarely changes; rebuild every hour (or on-demand revalidation).
+// No generateStaticParams: pages render on-demand (first visit) and are cached.
 export const revalidate = 3600;
-
-// F1: Pre-render all category pages at build time.
-export async function generateStaticParams() {
-  const categories = await data.programs.getCategories();
-  const locales = (await import('@/i18n/routing')).routing.locales;
-  return locales.flatMap((locale) => categories.map((c) => ({ locale, category: c.slug })));
-}
 
 export async function generateMetadata({
   params,
@@ -55,7 +49,7 @@ export async function generateMetadata({
   const result = await data.programs.getByCategory(category);
   if (!result.category || result.programs.length === 0) return {};
   const t = await getTranslations({ locale, namespace: 'ProgramCategory' });
-  const categoryName = result.category.name[locale as AppLocale];
+  const categoryName = result.category.name[locale as AppLocale] ?? '';
   return buildPageMetadata({
     locale,
     path: `/programs/${category}`,
@@ -124,7 +118,7 @@ export default async function ProgramCategoryPage({
     : [];
 
   const path = `/programs/${category}`;
-  const title = t('title', { category: cat.name[appLocale] });
+  const title = t('title', { category: cat.name[appLocale] ?? '' });
 
   return (
     <div>
@@ -163,7 +157,7 @@ export default async function ProgramCategoryPage({
           </h1>
           <p className="mt-3 max-w-2xl text-muted-foreground">
             {t('subtitle', {
-              category: cat.name[appLocale],
+              category: cat.name[appLocale] ?? '',
               count: String(programs.length),
             })}
           </p>
@@ -225,7 +219,7 @@ export default async function ProgramCategoryPage({
         {/* City sections — each city has its own combination page */}
         <section className="mb-section-md">
           <h2 className="mb-4 font-display text-headline-md text-foreground">
-            {t('citiesTitle', { category: cat.name[appLocale] })}
+            {t('citiesTitle', { category: cat.name[appLocale] ?? '' })}
           </h2>
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {[...programsByCity.entries()].map(([cityId, cityPrograms]) => {

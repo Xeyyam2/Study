@@ -1,5 +1,5 @@
 import { createServerClient } from '@supabase/ssr';
-import createIntlMiddleware from 'next-intl/middleware';
+import createMiddleware from 'next-intl/middleware';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 import { routing } from './i18n/routing';
@@ -9,7 +9,7 @@ import { routing } from './i18n/routing';
 // ("Code generation from strings disallowed for this context").
 const SESSION_COOKIE = 'admin_session';
 
-const intlMiddleware = createIntlMiddleware(routing);
+const intlMiddleware = createMiddleware(routing);
 
 export default async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;

@@ -15,14 +15,8 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 
 // ISR — blog posts rarely change after publishing; rebuild hourly.
+// No generateStaticParams: pages render on-demand (first visit) and are cached.
 export const revalidate = 3600;
-
-// F1: Pre-render all blog posts at build time instead of on-demand.
-export async function generateStaticParams() {
-  const posts = await data.blog.list();
-  const locales = (await import('@/i18n/routing')).routing.locales;
-  return locales.flatMap((locale) => posts.map((post) => ({ locale, slug: post.slug })));
-}
 
 export async function generateMetadata({
   params,

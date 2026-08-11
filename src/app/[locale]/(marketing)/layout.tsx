@@ -3,11 +3,11 @@ import { Footer } from '@/components/layout/footer';
 import { FloatingChatButtons } from '@/components/layout/whatsapp-float';
 import { FloatingApplyButton } from '@/components/layout/FloatingApplyButton';
 // F3: Lazy-load ChatWidget — it's a heavy client component (OpenAI API,
-// message state) only used in 4 GEO locales. Don't ship it in every page bundle.
+// message state) only used in 4 GEO locales. `ssr: false` is not allowed in
+// Server Components (Next.js 15), so lazy-load via Suspense instead.
+import { Suspense } from 'react';
 import dynamic from 'next/dynamic';
-const ChatWidget = dynamic(() => import('@/components/layout/chat-widget').then((m) => m.ChatWidget), {
-  ssr: false,
-});
+const ChatWidget = dynamic(() => import('@/components/layout/chat-widget').then((m) => m.ChatWidget));
 import { isGeoLocale } from '@/lib/seo/geo';
 
 export default async function MarketingLayout({
@@ -28,7 +28,11 @@ export default async function MarketingLayout({
       <FloatingApplyButton />
       <FloatingChatButtons />
       {/* AI chatbot — only in 4 GEO locales (en/tr/az/ru) */}
-      {showChat && <ChatWidget />}
+      {showChat && (
+        <Suspense fallback={null}>
+          <ChatWidget />
+        </Suspense>
+      )}
     </>
   );
 }

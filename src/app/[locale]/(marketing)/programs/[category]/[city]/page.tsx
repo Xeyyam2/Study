@@ -31,16 +31,8 @@ import { Badge } from '@/components/ui/badge';
 import { formatCurrency } from '@/lib/utils';
 
 // ISR — content rarely changes; rebuild only every hour (or on-demand revalidation).
+// No generateStaticParams: pages render on-demand (first visit) and are cached.
 export const revalidate = 3600;
-
-// F1: Pre-render all program×city combination pages at build time.
-export async function generateStaticParams() {
-  const combos = await data.programs.getCombinations();
-  const locales = (await import('@/i18n/routing')).routing.locales;
-  return locales.flatMap((locale) =>
-    combos.map((c) => ({ locale, category: c.categorySlug, city: c.citySlug })),
-  );
-}
 
 export async function generateMetadata({
   params,
@@ -52,16 +44,16 @@ export async function generateMetadata({
   if (!result.category || !result.city) return {};
   const t = await getTranslations({ locale, namespace: 'ProgramCombination' });
   const title = t('metaTitle', {
-    category: result.category.name[locale as AppLocale],
-    city: result.city.name[locale as AppLocale],
+    category: result.category.name[locale as AppLocale] ?? '',
+    city: result.city.name[locale as AppLocale] ?? '',
   });
   return buildPageMetadata({
     locale,
     path: `/programs/${category}/${city}`,
     title,
     description: t('metaDescription', {
-      category: result.category.name[locale as AppLocale],
-      city: result.city.name[locale as AppLocale],
+      category: result.category.name[locale as AppLocale] ?? '',
+      city: result.city.name[locale as AppLocale] ?? '',
     }),
   });
 }
@@ -114,8 +106,8 @@ export default async function ProgramCombinationPage({
 
   const path = `/programs/${category}/${city}`;
   const title = t('title', {
-    category: cat.name[appLocale],
-    city: cityObj.name[appLocale],
+    category: cat.name[appLocale] ?? '',
+    city: cityObj.name[appLocale] ?? '',
   });
 
   return (
@@ -155,8 +147,8 @@ export default async function ProgramCombinationPage({
           </h1>
           <p className="mt-3 max-w-2xl text-muted-foreground">
             {t('subtitle', {
-              category: cat.name[appLocale],
-              city: cityObj.name[appLocale],
+              category: cat.name[appLocale] ?? '',
+              city: cityObj.name[appLocale] ?? '',
             })}
           </p>
 

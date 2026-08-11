@@ -19,14 +19,8 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 
 // ISR — content rarely changes; rebuild only every hour.
+// No generateStaticParams: pages render on-demand (first visit) and are cached.
 export const revalidate = 3600;
-
-// F1: Pre-render all country landing pages at build time.
-export async function generateStaticParams() {
-  const countries = await data.countries.list();
-  const locales = (await import('@/i18n/routing')).routing.locales;
-  return locales.flatMap((locale) => countries.map((c) => ({ locale, country: c.slug })));
-}
 
 export async function generateMetadata({
   params,
@@ -37,7 +31,7 @@ export async function generateMetadata({
   const c = await data.countries.getBySlug(country);
   if (!c) return {};
   const t = await getTranslations({ locale, namespace: 'CountryLanding' });
-  const name = c.name[locale as AppLocale];
+  const name = c.name[locale as AppLocale] ?? '';
   return buildPageMetadata({
     locale,
     path: `/study-in-turkey-from/${country}`,
