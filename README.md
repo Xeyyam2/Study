@@ -205,3 +205,19 @@ Localized, student-facing dashboard at `/[locale]/dashboard` (e.g. `/en/dashboar
   keyboard navigation.
 - `DataLayer.search` lives next to the other read repositories (`src/lib/data`); swap to
   Meilisearch/Typesense later by implementing the same interface.
+
+## Deployment (Vercel)
+
+- **Build runs without a database.** All dynamic routes (`/programs`, `/programs/[category]`,
+  `/universities/[slug]`, `/blog/[slug]`, …) are on-demand + ISR (`revalidate = 3600`), so
+  `next build` never touches Postgres. Vercel's build environment needs no `DATABASE_URL`.
+- **Required env:** `NEXT_PUBLIC_SITE_URL` (canonical/hreflang/sitemap — the build fails
+  without it). When Supabase auth/storage is enabled: `NEXT_PUBLIC_SUPABASE_URL`,
+  `NEXT_PUBLIC_SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`.
+- **Runtime env:** `DATABASE_URL` (Supabase Postgres direct/pooled), `SESSION_SECRET`,
+  optional `OPENAI_API_KEY`, `NEXT_PUBLIC_GA_ID`, `NEXT_PUBLIC_CLARITY_ID`.
+- **Migrations:** apply `supabase/migrations/` to Supabase once (SQL editor or
+  `supabase db push`). `0005/0006/0007/0009/0013/0018` are Supabase-only (auth/RLS) and are
+  skipped by the local migrator.
+- First request to each page hits Postgres and caches for an hour; content changes appear
+  within the revalidation window (or via `revalidatePath` on admin writes).

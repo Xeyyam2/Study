@@ -23,17 +23,11 @@ import { parseProgramListingQuery } from "@/lib/programs/listing-query";
 
 const PER_PAGE = 10;
 
-export async function generateStaticParams() {
-  try {
-    const total = await data.programs.countAll();
-    const pages = Math.max(1, Math.ceil(total / PER_PAGE));
-    return Array.from({ length: pages }, (_, i) => ({
-      page: String(i + 1),
-    }));
-  } catch {
-    return [];
-  }
-}
+// ISR — catalog content rarely changes; rebuild hourly. No generateStaticParams:
+// pages render on-demand (first visit) and are cached, so `next build` works
+// without a reachable DB (Vercel build has none). Pagination count is resolved
+// at request time via listPage.
+export const revalidate = 3600;
 
 function buildPageHref(
   targetPage: number,

@@ -6,12 +6,19 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
 
 // Fail fast at BUILD time so a misconfigured production deploy throws here
-// instead of 500-ing on the first DB/auth request at runtime. Gated on
-// production so `next dev` / `next lint` in CI stay lenient without a DB.
+// instead of 500-ing on the first request at runtime. Gated on production so
+// `next dev` / `next lint` in CI stay lenient without a DB.
+//
+// D4: DATABASE_URL is deliberately NOT required at build time — all dynamic
+// pages are on-demand (ISR), so `next build` runs without a reachable DB
+// (Vercel's build environment has none). The app falls back to the in-memory
+// seed layer until the first request hits the real DB.
 function assertEnv() {
   if (process.env.NODE_ENV !== 'production') return;
   const missing = [];
-  if (!process.env.DATABASE_URL) missing.push('DATABASE_URL');
+  // SEO canonical/hreflang/sitemap all depend on the public site URL — a
+  // placeholder here silently emits wrong canonicals.
+  if (!process.env.NEXT_PUBLIC_SITE_URL) missing.push('NEXT_PUBLIC_SITE_URL');
   // Supabase keys are only required when the app actually uses Supabase.
   if (process.env.SUPABASE_ENABLED === 'true') {
     if (!process.env.NEXT_PUBLIC_SUPABASE_URL) missing.push('NEXT_PUBLIC_SUPABASE_URL');
@@ -32,11 +39,6 @@ const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   outputFileTracingRoot: __dirname,
-  experimental: {
-    // Throttle parallel static-generation workers so the local Postgres pool
-    // isn't overwhelmed during `next build` (7,600+ prerendered pages).
-    staticGenerationMaxConcurrency: 2,
-  },
   images: {
     formats: ['image/avif', 'image/webp'],
     remotePatterns: [
