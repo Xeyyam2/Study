@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { Suspense } from 'react';
 import { setRequestLocale, getTranslations } from 'next-intl/server';
 import { data } from '@/lib/data';
 import { buildPageMetadata } from '@/lib/seo/alternates';
@@ -62,7 +63,10 @@ export default async function ComparePage({
         <p className="mt-2 max-w-2xl text-muted-foreground">{t('subtitle')}</p>
       </header>
 
-      <CompareTool items={items} />
+      {/* F8: Suspense required for useSearchParams in CompareTool */}
+      <Suspense fallback={<div className="min-h-[300px]" />}>
+        <CompareTool items={items} />
+      </Suspense>
     </div>
   );
 }

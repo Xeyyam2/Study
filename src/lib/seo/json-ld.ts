@@ -82,6 +82,13 @@ export function collegeOrUniversityJsonLd(
     award: university.accreditation,
     description: university.description[locale],
     inLanguage: university.languages,
+    // S3: Address + telephone for rich results eligibility.
+    address: {
+      '@type': 'PostalAddress',
+      addressCountry: 'TR',
+      addressLocality: (siteConfig.contact.address as Record<string, string>)[locale] ?? siteConfig.contact.address.en,
+    },
+    telephone: siteConfig.contact.phone,
   };
 }
 

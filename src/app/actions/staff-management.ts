@@ -26,15 +26,24 @@ export async function updateRoleAction(input: unknown): Promise<ActionResult> {
 }
 
 export async function changePasswordAction(input: unknown): Promise<ActionResult> {
+  // C4/H6: Require staff session — was missing auth guard.
+  const session = await requireStaff();
   const parsed = changePasswordSchema.safeParse(input);
   if (!parsed.success) {
     const firstError = parsed.error.errors[0];
     return { ok: false, error: firstError?.message ?? 'Invalid input' };
   }
-  const { newPassword } = parsed.data;
+  const { currentPassword, newPassword } = parsed.data;
   try {
     const { getSupabaseSessionClient } = await import('@/lib/supabase/server-session');
     const supabase = await getSupabaseSessionClient();
+    // C4: Verify current password before updating — prevents session hijack
+    // from silently changing the password without knowing the old one.
+    const { error: verifyError } = await supabase.auth.signInWithPassword({
+      email: session.profile.email,
+      password: currentPassword,
+    });
+    if (verifyError) return { ok: false, error: 'Current password is incorrect' };
     const { error: updateError } = await supabase.auth.updateUser({ password: newPassword });
     if (updateError) return { ok: false, error: updateError.message };
     return { ok: true };

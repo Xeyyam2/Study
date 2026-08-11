@@ -35,7 +35,7 @@ Layihənin təməli sağlamdır. **FAZA 1-9** tamamlanıb — kritik təhlükəs
 | H3 | `nanoid`, `postcss`, `sharp` CVE-ləri (npm audit) | `package-lock.json` | ⬜ Açıq |
 | H4 | Session cookie `secure` flag yoxdur; dev-auth cookie imzasızdır | `admin-auth.ts:22`, `session.ts:56` | ✅ Secure flag düzəldildi (HMAC hələ açıq) |
 | H5 | `auth/callback` open redirect — `next` parametri | `auth/callback/route.ts:13` | ✅ Düzəldildi |
-| H6 | Admin API-lərdə per-endpoint `requireRole` yoxdur | `staff-management.ts` | ⬜ Açıq |
+| H6 | Admin API-lərdə per-endpoint `requireRole` yoxdur | `staff-management.ts` | ✅ Düzəldildi (changePasswordAction) |
 | H7 | RLS write policy-ləri "any staff" açıqdır, `with check` yoxdur | `0005_rls.sql:28` | ⬜ Açıq |
 | H8 | App RLS-i tamamilə bypass edir (pg + service-role) | `crm/db.ts` | ⬜ Açıq (arxitektura qərarı) |
 | H9 | JSON-LD `dangerouslySetInnerHTML` — `</script>` escaping yoxdur | `json-ld.tsx:10` | ✅ Düzəldildi |
@@ -50,7 +50,7 @@ Layihənin təməli sağlamdır. **FAZA 1-9** tamamlanıb — kritik təhlükəs
 | B3 | Connection pool `max=2`, error handler yoxdur, 2 ayrı pool | `index.ts:13`, `crm/db.ts:10` | ✅ Düzəldildi |
 | B4 | `/api/health` DB-yə toxunmur | `api/health/route.ts:10` | ✅ Düzəldildi |
 | B5 | CRM write path-lərində transaction yoxdur | `pg-repository.ts:144` | ✅ Düzəldildi (updateLeadStatus) |
-| B6 | `getDetail` 5 ardıcıl sorğu, `React.cache` yoxdur | `pg-data-repository.ts:315` | ⬜ Açıq |
+| B6 | `getDetail` 5 ardıcıl sorğu, `React.cache` yoxdur | `pg-data-repository.ts:315` | ✅ Düzəldildi (React.cache) |
 | B7 | `studyleo-catalog.ts` 68K sətir hər build-də yüklənir | `src/lib/seed/` | ✅ Düzəldildi (scripts/data/-ə köçürülüb) |
 | B8 | `findOrCreateStudent` race condition (check-then-insert) | `pg-repository.ts:427` | ✅ Düzəldildi (ON CONFLICT) |
 
@@ -65,7 +65,7 @@ Layihənin təməli sağlamdır. **FAZA 1-9** tamamlanıb — kritik təhlükəs
 | F5 | Admin layout entire `en.json` import (~25KB bundle) | `admin/layout.tsx:4` | ✅ Düzəldildi (getMessages+pick) |
 | F6 | `not-found.tsx` `/en` hardkod + inline style | `not-found.tsx:28` | ✅ Düzəldildi |
 | F7 | `CostCalculator` `'en'` lokalı hardkod | `cost-calculator.tsx:168` | ✅ Düzəldildi |
-| F8 | CompareTool seçimi URL-də saxlanılmır | `compare-tool.tsx` | ⬜ Açıq |
+| F8 | CompareTool seçimi URL-də saxlanılmır | `compare-tool.tsx` | ✅ Düzəldildi (?u= params) |
 | F9 | CTA rəng kontrastı WCAG AA-ya uyğun deyil (~2.7:1) | `tailwind.config.ts` | ✅ Düzəldildi (#c95c00) |
 | F10 | RTL 30+ pozuntu — fiziki utility-lər məntiqi yerinə | ~15 komponent | ⬜ Açıq |
 | F11 | Locale label-ləri kod göstərir ('EN' deyil 'English') | `routing.ts:12` | ✅ Düzəldildi |
@@ -78,13 +78,13 @@ Layihənin təməli sağlamdır. **FAZA 1-9** tamamlanıb — kritik təhlükəs
 |---|---------|-----|--------|
 | S1 | `sameAs` placeholder linkləri (404) | `json-ld.ts:40`, `site.ts:45` | ✅ TODO comment əlavə edildi |
 | S2 | `reviewJsonLd` self-serving review | `json-ld.ts:203` | ✅ Düzəldildi (silindi) |
-| S3 | `CollegeOrUniversity` `address`/`telephone` yoxdur | `json-ld.ts:74` | ⬜ Açıq |
+| S3 | `CollegeOrUniversity` `address`/`telephone` yoxdur | `json-ld.ts:74` | ✅ Düzəldildi |
 | S4 | `Article` `dateModified` yoxdur | `json-ld.ts:102` | ✅ Artıq mövcud idi |
 | S5 | Sitemap `chunk()` dead code (no-op) | `sitemap.ts:105` | ✅ Düzəldildi |
 | S6 | JSON-LD `@id` identifier-ləri yoxdur | `json-ld.ts` | ✅ Düzəldildi |
 | S7 | Article publisher `logo` yoxdur | `json-ld.ts:102` | ✅ Düzəldildi |
 | S8 | Sitemap `host` parametri + robots disallow yanlış | `sitemap.ts`, `robots.ts` | ✅ Düzəldildi (host silindi) |
-| S9 | Hreflang region-qualify olunmamışdır | `alternates.ts` | ⬜ Açıq |
+| S9 | Hreflang region-qualify olunmamışdır | `alternates.ts` | ✅ Düzəldildi |
 
 ## QA / DevOps
 
@@ -221,7 +221,7 @@ Layihənin təməli sağlamdır. **FAZA 1-9** tamamlanıb — kritik təhlükəs
 | Q8 | docker-compose zəif password + healthcheck yoxdur | `docker-compose.yml:9` | ✅ Düzəldildi |
 | Q9 | Unit test-lər DB-yə bağlı, rollback yoxdur | `crm-repository.test.ts:53` | ⬜ Açıq |
 | Q10 | Migration checksum verification yoxdur | `migrate.ts:76` | ⬜ Açıq |
-| C4 | `changePasswordAction` — `requireStaff()` çağırmır | Security | `staff-management.ts:28` | ⬜ Açıq |
+| C4 | `changePasswordAction` — `requireStaff()` çağırmır | Security | `staff-management.ts:28` | ✅ Düzəldildi |
 | C5 | Seed prosesi atomik deyil — truncate+insert transaction-siz | Backend | `seed-content.ts:191` | ✅ Düzəldildi |
 | C6 | `/compare` N+1 — hər universitet üçün ayrıca sorğu | Frontend | `compare/page.tsx:38` | ✅ Düzəldildi |
 | C7 | `UniversityCard` listingMetadata olmadıqda 3 DB sorğusu | Frontend | `university-card.tsx:60` | ✅ Düzəldildi |

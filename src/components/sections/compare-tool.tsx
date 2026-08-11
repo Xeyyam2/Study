@@ -1,6 +1,7 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
+import { useSearchParams, useRouter, usePathname } from 'next/navigation';
 import { useTranslations } from 'next-intl';
 import { Search, X } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
@@ -23,8 +24,25 @@ const MAX = 3;
 
 export function CompareTool({ items }: { items: CompareItem[] }) {
   const t = useTranslations('Compare');
-  const [selected, setSelected] = useState<string[]>([]);
+  // F8: Persist selection in URL query params (?u=id1,id2) so back-button
+  // and shareable links work.
+  const searchParams = useSearchParams();
+  const router = useRouter();
+  const pathname = usePathname();
+  const urlIds = (searchParams.get('u') ?? '')
+    .split(',')
+    .filter((id) => items.some((i) => i.id === id));
+  const [selected, setSelected] = useState<string[]>(urlIds);
   const [query, setQuery] = useState('');
+
+  // Sync selection changes back to URL.
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams.toString());
+    if (selected.length) params.set('u', selected.join(','));
+    else params.delete('u');
+    const qs = params.toString();
+    router.replace(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
+  }, [selected, pathname, router, searchParams]);
 
   const filtered = useMemo(() => {
     const q = query.toLowerCase().trim();

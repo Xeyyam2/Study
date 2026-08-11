@@ -1,4 +1,5 @@
 import { Pool } from 'pg';
+import { cache } from 'react';
 import { universityLogoImages } from '@/lib/seed/university-images';
 import type {
   BlogPost,
@@ -312,8 +313,11 @@ export function createPgDataLayer(getPool: () => Pool): DataLayer {
       return res.rows[0] ? rowUniversity(res.rows[0]) : null;
     },
 
-    async getDetail(slug: string): Promise<UniversityDetail | null> {
-      const uni = await this.getBySlug(slug);
+    // B6: React.cache deduplicates getDetail calls within a single request —
+    // generateMetadata and the page component both call it for the same slug.
+    getDetail: cache(async (slug: string): Promise<UniversityDetail | null> => {
+      const uniRes = await getPool().query(`select * from public.universities where slug = $1`, [slug]);
+      const uni = uniRes.rows[0] ? rowUniversity(uniRes.rows[0]) : null;
       if (!uni) return null;
       const cityRes = await getPool().query(`select * from public.cities where id = $1`, [uni.cityId]);
       const city = cityRes.rows[0] ? rowCity(cityRes.rows[0]) : undefined;
@@ -358,7 +362,7 @@ export function createPgDataLayer(getPool: () => Pool): DataLayer {
           photos: (r.photos as string[]) ?? [],
         })),
       };
-    },
+    }),
 
     async getRelated(slug: string, limit = 3): Promise<University[]> {
       const current = await this.getBySlug(slug);

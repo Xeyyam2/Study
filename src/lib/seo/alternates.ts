@@ -48,7 +48,11 @@ export function buildAlternates(path: string): Pick<Metadata, 'alternates'> {
   // as alternates, which is a "thin content" signal that can hurt the complete
   // locales' rankings.
   for (const locale of fullyTranslatedLocales) {
-    languages[locale] = localizedUrl(locale, path);
+    // S9: Region-qualify hreflang tags (en → en-US) so Google can pick the
+    // right variant for region-targeted searches. Bare language codes still
+    // work, but BCP-47 language-region tags are the recommended format.
+    const regionTag = OG_LOCALE_MAP[locale] ?? locale;
+    languages[regionTag] = localizedUrl(locale, path);
   }
   languages['x-default'] = localizedUrl(routing.defaultLocale, path);
   return { alternates: { languages } };
