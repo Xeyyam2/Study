@@ -616,14 +616,8 @@ export function createPgDataLayer(getPool: () => Pool): DataLayer {
       const offset = (page - 1) * perPage;
       const { where, params } = buildProgramListingWhere(filters);
       const whereSql = where.length ? ` where ${where.join(' and ')}` : '';
-      const countRes = await getPool().query(
-        `select count(*)::int c from public.university_programs up
-         join public.programs p on p.id = up.program_id
-         join public.universities u on u.id = up.university_id
-         join public.cities c on c.id = u.city_id${whereSql}`,
-        params,
-      );
-      const total = Number(countRes.rows[0]?.c ?? 0);
+      // B1: Single query with count(*) over() window function — eliminates
+      // the separate count query (was 2 round-trips, now 1).
       const res = await getPool().query(
         `select up.id up_id, up.university_id up_university_id, up.program_id up_program_id,
                 up.language up_language, up.tuition_fee up_tuition_fee, up.original_fee up_original_fee,
@@ -633,7 +627,8 @@ export function createPgDataLayer(getPool: () => Pool): DataLayer {
                 u.ranking u_ranking, u.accreditation u_accr, u.is_state u_state, u.logo_text u_logo, u.hero_image u_hero,
                 u.gallery u_gallery, u.tagline_i18n u_tagline, u.description_i18n u_desc, u.languages u_languages, u.featured u_featured,
                 c.id c_id, c.slug c_slug, c.name_i18n c_name, c.country_code c_country,
-                c.monthly_living_cost_usd c_monthly_living
+                c.monthly_living_cost_usd c_monthly_living,
+                count(*) over() as total_count
          from public.university_programs up
          join public.programs p on p.id = up.program_id
          join public.universities u on u.id = up.university_id
@@ -642,6 +637,7 @@ export function createPgDataLayer(getPool: () => Pool): DataLayer {
          limit $${params.length + 1} offset $${params.length + 2}`,
         [...params, perPage, offset],
       );
+      const total = Number(res.rows[0]?.total_count ?? 0);
       return {
         programs: res.rows.map(mapProgramItem),
         total,

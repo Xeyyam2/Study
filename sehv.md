@@ -45,7 +45,7 @@ Layihənin təməli sağlamdır. **FAZA 1-9** tamamlanıb — kritik təhlükəs
 
 | # | Problem | Yer | Status |
 |---|---------|-----|--------|
-| B1 | `listPage` count + page 2 ayrı sorğu | `pg-data-repository.ts:615` | ⬜ Açıq |
+| B1 | `listPage` count + page 2 ayrı sorğu | `pg-data-repository.ts:615` | ✅ Düzəldildi (count(*) over()) |
 | B2 | İndekslər yoxdur: `category_slug`, `tuition_fee`, `languages` GIN | `0011_content_tables.sql` | ✅ Düzəldildi (0016_indexes.sql) |
 | B3 | Connection pool `max=2`, error handler yoxdur, 2 ayrı pool | `index.ts:13`, `crm/db.ts:10` | ✅ Düzəldildi |
 | B4 | `/api/health` DB-yə toxunmur | `api/health/route.ts:10` | ✅ Düzəldildi |
@@ -99,7 +99,7 @@ Layihənin təməli sağlamdır. **FAZA 1-9** tamamlanıb — kritik təhlükəs
 | M2 | `uploadApplyDocument` magic-byte MIME yoxlaması | ✅ Düzəldildi (FAZA 1) |
 | M3 | Rate limit in-memory — serverless-də işləmir | ⬜ Açıq |
 | M4 | Dev-auth cookie middleware-də mövcudluq yoxlanışı (forgerə açıq) | ⬜ Açıq |
-| M5 | `/api/me` rate-limit yoxdur | ⬜ Açıq |
+| M5 | `/api/me` rate-limit yoxdur | ⬜ Açıq → ✅ Düzəldildi (30/min) |
 | M6 | `changePasswordAction` `currentPassword` yoxlamır | ⬜ Açıq |
 | M7 | Supabase project ref `.env.local`-də açıqdır | ⬜ Açıq |
 | M8 | Search query jsonb cast ilike — indeks işləmir | ⬜ Açıq |
