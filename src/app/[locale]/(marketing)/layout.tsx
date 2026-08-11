@@ -23,7 +23,7 @@ export default async function MarketingLayout({
   return (
     <>
       <Header />
-      <main id="main">{children}</main>
+      <main id="main" tabIndex={-1}>{children}</main>
       <Footer />
       <FloatingApplyButton />
       <FloatingChatButtons />

@@ -100,17 +100,17 @@ Layihənin təməli sağlamdır. **FAZA 1-9** tamamlanıb — kritik təhlükəs
 | M3 | Rate limit in-memory — serverless-də işləmir | ⬜ Açıq |
 | M4 | Dev-auth cookie middleware-də mövcudluq yoxlanışı (forgerə açıq) | ⬜ Açıq |
 | M5 | `/api/me` rate-limit yoxdur | ⬜ Açıq → ✅ Düzəldildi (30/min) |
-| M6 | `changePasswordAction` `currentPassword` yoxlamır | ⬜ Açıq |
+| M6 | `changePasswordAction` `currentPassword` yoxlamır | ✅ Düzəldildi (C4 ilə birlikdə) |
 | M7 | Supabase project ref `.env.local`-də açıqdır | ⬜ Açıq |
 | M8 | Search query jsonb cast ilike — indeks işləmir | ⬜ Açıq |
-| M9 | `updateLeadStatusAction` `as never` cast — type-unsafe | ⬜ Açıq |
+| M9 | `updateLeadStatusAction` `as never` cast — type-unsafe | ✅ Düzəldildi (`as LeadStatus`) |
 | M10 | Search PG city axtarır, seed yox (parity drift) | ⬜ Açıq |
 | M11 | `not-found.tsx`-də `setRequestLocale` çağırılmır | ⬜ Açıq |
 | M12 | Tailwind dead config (stack-sm, stack-md) | ✅ Düzəldildi |
 | M13 | Arbitrary hex value-lər token-laşdırılmayıb (`#25D366`) | ⬜ Açıq |
 | M14 | `StatCard`/`Stat` dublikat komponentlər | ⬜ Açıq |
-| M15 | Mobile cədvəllərə `overflow-x-auto` yoxdur | ⬜ Açıq |
-| M16 | `h-4.5 w-4.5` Tailwind-də mövcud deyil | ⬜ Açıq |
+| M15 | Mobile cədvəllərə `overflow-x-auto` yoxdur | ✅ Artıq var (`table.tsx:8`) |
+| M16 | `h-4.5 w-4.5` Tailwind-də mövcud deyil | ✅ Düzəldildi (h-4 w-4) |
 | M17 | Card padding inkonsistent | ⬜ Açıq |
 | M18 | `text-[10px]` type scale-i bypass edir | ⬜ Açıq |
 | M19 | JSON-LD `</script>` escaping | ✅ Düzəldildi (FAZA 3) |
@@ -125,7 +125,7 @@ Layihənin təməli sağlamdır. **FAZA 1-9** tamamlanıb — kritik təhlükəs
 |---|---------|--------|
 | L1 | `formatNumber(0)` → "0" göstərir | ⬜ Açıq |
 | L2 | `INITIAL_ADMIN_EMAIL` ölü config | ⬜ Açıq |
-| L3 | Skip link `main`-də `tabIndex={-1}` yoxdur | ⬜ Açıq |
+| L3 | Skip link `main`-də `tabIndex={-1}` yoxdur | ✅ Düzəldildi |
 | L4 | Gallery `priority={i===0}` LCP ilə rəqabət | ⬜ Açıq |
 | L5 | `getAllPrograms` lazımsız `description_i18n` yükləyir | ⬜ Açıq |
 | L6 | Seed regex-parsing fragile | ⬜ Açıq |

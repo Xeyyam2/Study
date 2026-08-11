@@ -121,7 +121,7 @@ export function StudentProfileDrawer({ session, open, onOpenChange }: StudentPro
                   className="group flex items-center gap-3 rounded-lg px-4 py-3.5 text-sm font-medium text-foreground transition hover:bg-accent"
                 >
                   <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-bg-subtle text-primary transition group-hover:bg-primary group-hover:text-primary-foreground">
-                    <Icon className="h-4.5 w-4.5" />
+                    <Icon className="h-4 w-4" />
                   </span>
                   <span className="flex-1">{item.label}</span>
                   <ChevronRight className="h-4 w-4 text-muted-foreground transition group-hover:translate-x-0.5 group-hover:text-foreground" />
@@ -138,7 +138,7 @@ export function StudentProfileDrawer({ session, open, onOpenChange }: StudentPro
                 className="flex w-full items-center gap-3 rounded-lg px-4 py-3.5 text-sm font-medium text-destructive transition hover:bg-destructive/10"
               >
                 <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-destructive/10">
-                  <LogOut className="h-4.5 w-4.5" />
+                  <LogOut className="h-4 w-4" />
                 </span>
                 <span className="flex-1 text-left">{t('nav.logout')}</span>
               </button>

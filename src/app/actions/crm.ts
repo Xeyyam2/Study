@@ -8,6 +8,7 @@ import {
   assignConsultantSchema,
   updateLeadStatusSchema,
 } from '@/lib/validations/crm';
+import type { LeadStatus } from '@/types/crm';
 
 export type ActionResult = { ok: true } | { ok: false; error: string };
 
@@ -16,7 +17,7 @@ export async function updateLeadStatusAction(input: unknown): Promise<ActionResu
   if (!parsed.success) return { ok: false, error: 'Invalid input' };
   const actor = await getActorProfile();
   if (!actor) return { ok: false, error: 'Not authenticated' };
-  await crm.updateLeadStatus(parsed.data.leadId, parsed.data.status as never, actor.id);
+  await crm.updateLeadStatus(parsed.data.leadId, parsed.data.status as LeadStatus, actor.id);
   revalidatePath('/admin/leads');
   revalidatePath(`/admin/leads/${parsed.data.leadId}`);
   revalidatePath('/admin');
