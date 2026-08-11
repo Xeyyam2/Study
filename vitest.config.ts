@@ -20,6 +20,9 @@ for (const file of ['.env.local', '.env']) {
 }
 
 export default defineConfig({
+  esbuild: {
+    jsx: 'automatic',
+  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
@@ -28,6 +31,7 @@ export default defineConfig({
   test: {
     environment: 'node',
     include: ['tests/unit/**/*.test.{ts,tsx}'],
+    setupFiles: ['tests/unit/setup.ts'],
     environmentMatchGlobs: [
       ['tests/unit/components/**', 'jsdom'],
     ],

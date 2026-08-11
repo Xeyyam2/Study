@@ -25,6 +25,8 @@ interface UniversityCardProps {
   locale: AppLocale;
   priority?: boolean;
   minTuition?: number;
+  /** List price — when > minTuition, render it strikethrough next to the fee. */
+  originalFee?: number;
   listingMetadata?: UniversityListingMetadata;
   labels?: UniversityCardLabels;
   footer?: React.ReactNode;
@@ -46,6 +48,7 @@ export async function UniversityCard({
   locale,
   priority,
   minTuition: suppliedMinTuition,
+  originalFee,
   listingMetadata,
   labels = DEFAULT_LABELS,
   footer,
@@ -133,6 +136,11 @@ export async function UniversityCard({
                   ? `${labels.from} ${formatCurrency(minTuition, 'USD', locale)}`
                   : '—'
               }
+              sub={
+                originalFee && minTuition && originalFee > minTuition
+                  ? formatCurrency(originalFee, 'USD', locale)
+                  : undefined
+              }
             />
             <Stat label={labels.rank} value={`#${university.ranking}`} />
             <Stat label={labels.founded} value={String(university.foundedYear)} />
@@ -145,11 +153,24 @@ export async function UniversityCard({
   );
 }
 
-function Stat({ label, value }: { label: string; value: string }) {
+function Stat({
+  label,
+  value,
+  sub,
+}: {
+  label: string;
+  value: string;
+  sub?: string;
+}) {
   return (
     <div className={cn('space-y-0.5')}>
       <div className="truncate text-xs font-semibold text-foreground">
         {value}
+        {sub && (
+          <span className="ml-1 text-[10px] font-normal text-muted-foreground line-through">
+            {sub}
+          </span>
+        )}
       </div>
       <div className="text-[10px] uppercase tracking-wide text-muted-foreground">
         {label}
