@@ -51,7 +51,7 @@ Layihənin təməli sağlamdır. **FAZA 1-9** tamamlanıb — kritik təhlükəs
 | B4 | `/api/health` DB-yə toxunmur | `api/health/route.ts:10` | ✅ Düzəldildi |
 | B5 | CRM write path-lərində transaction yoxdur | `pg-repository.ts:144` | ✅ Düzəldildi (updateLeadStatus) |
 | B6 | `getDetail` 5 ardıcıl sorğu, `React.cache` yoxdur | `pg-data-repository.ts:315` | ⬜ Açıq |
-| B7 | `studyleo-catalog.ts` 68K sətir hər build-də yüklənir | `src/lib/seed/` | ⬜ Açıq |
+| B7 | `studyleo-catalog.ts` 68K sətir hər build-də yüklənir | `src/lib/seed/` | ✅ Düzəldildi (scripts/data/-ə köçürülüb) |
 | B8 | `findOrCreateStudent` race condition (check-then-insert) | `pg-repository.ts:427` | ✅ Düzəldildi (ON CONFLICT) |
 
 ## Frontend / UI

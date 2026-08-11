@@ -2,9 +2,12 @@
 // Do not edit by hand. Regenerate with:
 //   npm run scrape:studyleo && node scripts/generate-seed-from-catalog.mjs
 //
-// Import is RELATIVE ('../../types') on purpose: scripts/seed-content.ts runs
-// under tsx, which does not resolve the '@/' path alias.
-import type { City, Program, University, UniversityProgram } from '../../types';
+// B7: This file was moved from src/lib/seed/ to scripts/data/ so that the
+// 68K-line (2.3MB) catalog is NOT parsed/bundled by `next build`. It is only
+// needed by `scripts/seed-content.ts` during `npm run db:reset`.
+//
+// Import path is RELATIVE to scripts/data/, pointing at src/types.
+import type { City, Program, University, UniversityProgram } from '../../src/types';
 
 /**
  * StudyLeo-only universities. Currently empty: every university in the catalog

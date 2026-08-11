@@ -42,7 +42,8 @@ const root = join(__dirname, '..');
 const catalog = JSON.parse(
   readFileSync(join(root, 'scripts', 'data', 'studyleo-catalog.json'), 'utf8'),
 );
-const seedDir = join(root, 'src', 'lib', 'seed');
+// B7: Output moved to scripts/data/ so next build doesn't parse 2.3MB of seed data.
+const seedDir = join(root, 'scripts', 'data');
 
 // The 17 AppLocale keys used by the hand-written seed files (src/i18n/routing).
 const LOCALES = [
@@ -342,9 +343,9 @@ let out = `// AUTO-GENERATED from the StudyLeo catalog (scripts/data/studyleo-ca
 // Do not edit by hand. Regenerate with:
 //   npm run scrape:studyleo && node scripts/generate-seed-from-catalog.mjs
 //
-// Import is RELATIVE ('../../types') on purpose: scripts/seed-content.ts runs
-// under tsx, which does not resolve the '@/' path alias.
-import type { City, Program, University, UniversityProgram } from '../../types';
+// B7: This file lives in scripts/data/ (not src/lib/seed/) so that the 68K-line
+// (2.3MB) catalog is NOT parsed/bundled by \`next build\`. Only seed-content.ts reads it.
+import type { City, Program, University, UniversityProgram } from '../../src/types';
 
 /**
  * StudyLeo-only universities. Currently empty: every university in the catalog

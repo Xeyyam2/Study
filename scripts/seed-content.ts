@@ -16,11 +16,15 @@ import {
   seedReviews,
   seedFaqs,
   seedBlog,
+} from '../src/lib/seed';
+// B7: StudyLeo catalog (68K lines) imported directly from scripts/data/ —
+// kept out of src/lib/seed/ so next build doesn't parse 2.3MB of seed data.
+import {
   studyLeoUniversities,
   studyLeoPrograms,
   studyLeoUniversityPrograms,
   studyLeoCities,
-} from '../src/lib/seed';
+} from './data/studyleo-catalog';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = join(__dirname, '..');
