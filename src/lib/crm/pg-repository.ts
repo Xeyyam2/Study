@@ -167,13 +167,29 @@ export function createPgCrm(getPool: () => Pool): CrmRepository {
     },
 
     async assignConsultant(leadId: string, consultantId: string | null, actorId: string): Promise<Lead> {
-      const res = await q(
-        'update public.leads set assigned_consultant_id = $1 where id = $2 returning *',
-        [consultantId, leadId],
-      );
-      if (res.rowCount === 0) throw new NotFoundError('lead', leadId);
-      await audit({ userId: actorId, action: 'lead.assign', entity: 'lead', entityId: leadId, metadata: { consultantId } });
-      return rowToLead(res.rows[0]);
+      // B5: wrap assign + audit in a transaction so a partial failure can't
+      // leave the lead assigned without an audit trail.
+      const client = await getPool().connect();
+      try {
+        await client.query('BEGIN');
+        const res = await client.query(
+          'update public.leads set assigned_consultant_id = $1 where id = $2 returning *',
+          [consultantId, leadId],
+        );
+        if (res.rowCount === 0) throw new NotFoundError('lead', leadId);
+        await client.query(
+          `insert into public.audit_logs (user_id, action, entity, entity_id, metadata)
+           values ($1, 'lead.assign', 'lead', $2, $3)`,
+          [actorId, leadId, JSON.stringify({ consultantId })],
+        );
+        await client.query('COMMIT');
+        return rowToLead(res.rows[0]);
+      } catch (err) {
+        await client.query('ROLLBACK');
+        throw err;
+      } finally {
+        client.release();
+      }
     },
 
     async listApplications(leadId: string): Promise<Application[]> {

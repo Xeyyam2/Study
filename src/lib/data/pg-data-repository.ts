@@ -319,16 +319,27 @@ export function createPgDataLayer(getPool: () => Pool): DataLayer {
       const uniRes = await getPool().query(`select * from public.universities where slug = $1`, [slug]);
       const uni = uniRes.rows[0] ? rowUniversity(uniRes.rows[0]) : null;
       if (!uni) return null;
-      const cityRes = await getPool().query(`select * from public.cities where id = $1`, [uni.cityId]);
+      // B6: run the four dependent queries in parallel instead of serially.
+      const [cityRes, upRes, scholarshipsRes, dormRes] = await Promise.all([
+        getPool().query(`select * from public.cities where id = $1`, [uni.cityId]),
+        getPool().query(
+          `select up.*, p.slug p_slug, p.name_i18n p_name, p.degree_level p_degree, p.category_slug p_category, p.duration_years p_duration
+           from public.university_programs up
+           join public.programs p on p.id = up.program_id
+           where up.university_id = $1
+           order by up.tuition_fee asc`,
+          [uni.id],
+        ),
+        getPool().query(
+          `select * from public.scholarships where university_id = $1`,
+          [uni.id],
+        ),
+        getPool().query(
+          `select * from public.dormitories where university_id = $1`,
+          [uni.id],
+        ),
+      ]);
       const city = cityRes.rows[0] ? rowCity(cityRes.rows[0]) : undefined;
-      const upRes = await getPool().query(
-        `select up.*, p.slug p_slug, p.name_i18n p_name, p.degree_level p_degree, p.category_slug p_category, p.duration_years p_duration
-         from public.university_programs up
-         join public.programs p on p.id = up.program_id
-         where up.university_id = $1
-         order by up.tuition_fee asc`,
-        [uni.id],
-      );
       const programs = upRes.rows.map((r) => ({
         ...rowUniversityProgram(r),
         program: {
@@ -340,14 +351,6 @@ export function createPgDataLayer(getPool: () => Pool): DataLayer {
           durationYears: Number(r.p_duration),
         },
       }));
-      const scholarshipsRes = await getPool().query(
-        `select * from public.scholarships where university_id = $1`,
-        [uni.id],
-      );
-      const dormRes = await getPool().query(
-        `select * from public.dormitories where university_id = $1`,
-        [uni.id],
-      );
       return {
         ...uni,
         city,

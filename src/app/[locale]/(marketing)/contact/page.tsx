@@ -16,7 +16,8 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: 'Contact' });
+  setRequestLocale(locale);
+  const t = await getTranslations('Contact');
   return buildPageMetadata({
     locale,
     path: '/contact',
@@ -32,8 +33,8 @@ export default async function ContactPage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const t = await getTranslations({ locale, namespace: 'Contact' });
-  const tc = await getTranslations({ locale, namespace: 'Footer' });
+  const t = await getTranslations('Contact');
+  const tc = await getTranslations('Footer');
   const appLocale = locale as AppLocale;
 
   const wa = `https://wa.me/${siteConfig.contact.whatsapp.number}`;

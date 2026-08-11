@@ -200,7 +200,8 @@
       "master": "Магистр",
       "phd": "Докторантура",
       "associate": "Коллеж"
-    }
+    },
+    "city": "City"
   },
   "ProgramsIndex": {
     "metaTitle": "Түркиядагы окуу программалары — Тармак жана шаар боюнча",
@@ -264,7 +265,9 @@
       "master": "Магистр",
       "phd": "Докторантура",
       "associate": "Коллеж"
-    }
+    },
+    "categoryLabel": "Category",
+    "cityLabel": "City"
   },
   "CountryLanding": {
     "metaTitle": "{country} өлкөсүнөн Түркияда окуу — Толук нускамалуу",
@@ -535,5 +538,55 @@
       "associate": "Коллеж"
     },
     "annualCost": "Жылдык чыгым (окуу + жашоо)"
+  },
+  "Geo": {
+    "universityShortAnswer": "{name} is a {type} university in {city}, Turkey, founded in {year}. It offers programs in {languages} with tuition starting from {tuition}/year. Accredited by {accreditation}, it hosts over {students} students.",
+    "programShortAnswer": "Study {category} in {city}, Turkey. Compare universities, tuition fees, and program details — all in one place. Programs available in English and Turkish with scholarships.",
+    "countryShortAnswer": "Students from {country} can study in Turkey with a student visa, affordable tuition from $1,500/year, and programs in English. Free application support and visa guidance included.",
+    "pros1": "YÖK-accredited — degree recognized worldwide",
+    "pros2": "English-medium programs available",
+    "pros3": "Affordable tuition compared to EU/US",
+    "pros4": "Scholarship opportunities for international students",
+    "cons1": "Turkish language useful for daily life",
+    "cons2": "Residence permit required after arrival",
+    "howToApplyTitle": "How to apply",
+    "step1Name": "Choose your program",
+    "step1Text": "Browse accredited universities and select a program that fits your goals and budget.",
+    "step2Name": "Submit your application",
+    "step2Text": "Fill out the free application form. Our consultants review it and guide you on required documents.",
+    "step3Name": "Get accepted",
+    "step3Text": "Receive your acceptance letter and pay the enrollment deposit to secure your place.",
+    "step4Name": "Apply for your visa",
+    "step4Text": "Apply for a Turkish student visa at your local consulate with your acceptance letter.",
+    "step5Name": "Arrive and register",
+    "step5Text": "Arrive in Turkey, convert your visa to a residence permit within 30 days, and start your studies.",
+    "visaTypeValue": "Student visa",
+    "tuitionFromValue": "from $1,500/year",
+    "languageValue": "English & Turkish",
+    "supportValue": "Free",
+    "countryLabel": "Country",
+    "supportLabel": "Application support",
+    "visaHowToTitle": "Visa & residence process",
+    "visaStep1Name": "Get your acceptance letter",
+    "visaStep1Text": "Once accepted, your university issues an official acceptance letter required for the visa application.",
+    "visaStep2Name": "Apply for a student visa",
+    "visaStep2Text": "Submit your visa application at the nearest Turkish consulate with your acceptance letter, passport, and financial proof.",
+    "visaStep3Name": "Travel to Turkey",
+    "visaStep3Text": "Enter Turkey with your student visa. Book your flight and arrange initial accommodation.",
+    "visaStep4Name": "Apply for a residence permit",
+    "visaStep4Text": "Within 30 days of arrival, apply for a student residence permit at the local immigration office.",
+    "visaStep5Name": "Register and start studying",
+    "visaStep5Text": "Complete university registration, get your student ID, and begin your studies.",
+    "whatIsUniversityTitle": "What is {name}?",
+    "whatIsProgramTitle": "What is {category} in {city}?"
+  },
+  "Chatbot": {
+    "title": "Study Assistant",
+    "subtitle": "Ask about universities, programs, tuition & visas",
+    "placeholder": "Type your question…",
+    "send": "Send",
+    "greeting": "Hi! I'm your study-in-Turkey assistant. Ask me about universities, programs, tuition fees, or the application process.",
+    "error": "Sorry, I couldn't respond. Please try again or contact us via WhatsApp.",
+    "closed": "Chat closed"
   }
 }

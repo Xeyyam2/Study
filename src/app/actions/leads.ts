@@ -4,6 +4,7 @@ import { headers } from 'next/headers';
 import { leadSchema, type LeadInput } from '@/lib/validations/lead';
 import { crm } from '@/lib/crm';
 import { rateLimit, getIpFromHeaders } from '@/lib/rate-limit';
+import { isAllowedOrigin } from '@/lib/security/origin';
 
 export type LeadResult =
   | { ok: true }
@@ -14,6 +15,12 @@ export type LeadResult =
 const leadLimiter = rateLimit({ windowMs: 60_000, max: 5 });
 
 export async function submitLead(input: unknown): Promise<LeadResult> {
+  // Reject cross-origin browser calls (spam bots often post from other sites).
+  const h = await headers();
+  if (!isAllowedOrigin(h.get('origin'))) {
+    return { ok: false, errors: { _form: ['Request rejected.'] } };
+  }
+
   const parsed = leadSchema.safeParse(input);
 
   if (!parsed.success) {
@@ -34,7 +41,6 @@ export async function submitLead(input: unknown): Promise<LeadResult> {
   }
 
   // Rate limit per IP before touching the DB so spam can't fill the leads table.
-  const h = await headers();
   const ip = getIpFromHeaders((name) => h.get(name));
   if (!leadLimiter.check(ip)) {
     return {

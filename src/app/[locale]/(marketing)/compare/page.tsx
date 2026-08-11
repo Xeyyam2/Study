@@ -12,6 +12,7 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
+  setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: 'Compare' });
   return buildPageMetadata({
     locale,
@@ -36,23 +37,27 @@ export default async function ComparePage({
   ]);
   const cityById = new Map(cities.map((c) => [c.id, c]));
 
-  const withTuition = await Promise.all(
-    universities.map(async (u) => [u.id, await data.universities.getMinTuitionUSD(u.id)] as const),
+  // C6: batch min-tuition in one query via getListingMetadata instead of an
+  // N+1 getMinTuitionUSD call per university.
+  const metadata = await data.universities.getListingMetadata(
+    universities.map((u) => u.id),
   );
-  const tuitionById = new Map(withTuition);
 
-  const items: CompareItem[] = universities.map((u) => ({
-    id: u.id,
-    name: u.name,
-    logoText: u.logoText,
-    cityName: cityById.get(u.cityId)?.name[locale as never] ?? '—',
-    tuition: formatCurrency(tuitionById.get(u.id) ?? 0, 'USD', locale),
-    ranking: u.ranking,
-    studentCount: u.studentCount,
-    isState: u.isState,
-    languages: u.languages,
-    foundedYear: u.foundedYear,
-  }));
+  const items: CompareItem[] = universities.map((u) => {
+    const m = metadata.get(u.id);
+    return {
+      id: u.id,
+      name: u.name,
+      logoText: u.logoText,
+      cityName: cityById.get(u.cityId)?.name[locale as never] ?? '—',
+      tuition: formatCurrency(m?.minTuitionUSD ?? 0, 'USD', locale),
+      ranking: u.ranking,
+      studentCount: u.studentCount,
+      isState: u.isState,
+      languages: u.languages,
+      foundedYear: u.foundedYear,
+    };
+  });
 
   return (
     <div className="container-page py-section-md">

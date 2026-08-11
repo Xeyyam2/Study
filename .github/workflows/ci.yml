@@ -23,6 +23,8 @@ jobs:
       - run: npm ci
       - run: npm run lint
       - run: npm run typecheck
+      - name: i18n key parity
+        run: npm run check:i18n
 
   # Migrate + seed a real Postgres, run unit tests, then production build.
   test-build:

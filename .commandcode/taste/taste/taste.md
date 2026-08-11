@@ -1,6 +1,7 @@
 # Taste
 - User communicates in Azerbaijani and expects assistant replies in Azerbaijani. Confidence: 0.9
 - Answers choice/confirmation prompts with terse single selections (e.g. "b", "1", "ok") and issues terse directives to proceed (e.g. "basla kodlamaya" — start coding), expecting the assistant to continue autonomously without further confirmation (including ignoring optional offers like a visual browser preview). Confidence: 0.9
+- When encountering a technical or audit finding they don't understand, asks for a plain-language explanation ("bu ne demeydi?") and expects the assistant to first verify against the actual code (read/grep), then explain simply with concrete facts — what the file is, where it's imported/used, and whether/how external data (e.g. StudyLeo) is involved — rather than repeating jargon. Confidence: 0.55
 - Prefers extending/reusing existing working code with additive changes over rewriting it from scratch, when the existing implementation already covers most requirements. Confidence: 0.6
 - For new content entries (universities, blog posts), images must be downloaded and stored locally as WebP (max 1600px, quality 80-85%) with local paths in the seed files — never hotlink external images (e.g. Unsplash) for new additions, and never use the remote-image seed helper for them. Confidence: 0.95
 - Downloaded images are permanent project assets: never delete or replace them without an explicit instruction, and they must not be gitignored; record every image source/license in a CREDITS.md file. Confidence: 0.9

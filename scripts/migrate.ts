@@ -32,12 +32,20 @@ const SKIP_LOCAL = [
   '0007_link_profiles_to_auth_users.sql',
   '0009_storage_bucket.sql',
   '0013_role_guard.sql',
+  '0018_rls_least_privilege.sql',
 ];
 
 // A destructive reset is only safe against a local/dev database. Refuse if
 // DATABASE_URL points anywhere else to prevent catastrophic data loss.
+// M9: parse the host from the URL and only allow loopback hosts — a substring
+// match on "DEV" could let a production host like "db-dev.example.com" through.
 function isLocalDatabase(url: string): boolean {
-  return /localhost|127\.0\.0\.1|0\.0\.0\.0|\.local|DEV/i.test(url);
+  try {
+    const host = new URL(url).hostname;
+    return ['localhost', '127.0.0.1', '::1', '0.0.0.0'].includes(host);
+  } catch {
+    return false;
+  }
 }
 
 // Per-run advisory lock so two concurrent `db:migrate` invocations can't race.

@@ -44,17 +44,22 @@ export function rateLimit(opts: { windowMs: number; max: number }): Limiter {
 }
 
 /**
- * Resolve the caller IP from request headers. Vercel (and most reverse
- * proxies) populate `x-forwarded-for` with the client IP first. Falls back to
- * a fixed string when no IP can be determined so the limiter still has a key.
+ * Resolve the caller IP from request headers. The `x-forwarded-for` header is
+ * client-spoofable, so we only trust it when the app is explicitly configured
+ * to sit behind a trusted proxy (`TRUST_PROXY=1` — e.g. Vercel). Otherwise we
+ * use `x-real-ip` (set by the proxy after validation) or fall back to a fixed
+ * string so the limiter still has a key.
  */
 export function getIpFromHeaders(
   headerLookup: (name: string) => string | null,
 ): string {
-  const forwarded = headerLookup('x-forwarded-for');
-  if (forwarded) {
-    // "client, proxy1, proxy2" — take the first (the original client).
-    return forwarded.split(',')[0].trim();
+  const trustProxy = process.env.TRUST_PROXY === '1';
+  if (trustProxy) {
+    const forwarded = headerLookup('x-forwarded-for');
+    if (forwarded) {
+      // "client, proxy1, proxy2" — take the first (the original client).
+      return forwarded.split(',')[0].trim();
+    }
   }
   return headerLookup('x-real-ip') ?? 'unknown';
 }

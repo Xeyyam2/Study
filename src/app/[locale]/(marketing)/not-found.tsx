@@ -1,9 +1,13 @@
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, getLocale, setRequestLocale } from 'next-intl/server';
 import { Home, Compass } from 'lucide-react';
 import { Link } from '@/i18n/navigation';
 import { Button } from '@/components/ui/button';
 
 export default async function NotFound() {
+  // Next.js does not pass params to not-found; resolve the locale from the
+  // request context instead.
+  const locale = await getLocale();
+  setRequestLocale(locale);
   const t = await getTranslations('NotFound');
 
   return (

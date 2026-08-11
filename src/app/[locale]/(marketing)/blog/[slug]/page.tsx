@@ -24,6 +24,7 @@ export async function generateMetadata({
   params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
   const { locale, slug } = await params;
+  setRequestLocale(locale);
   const post = await data.blog.getBySlug(slug);
   if (!post) return {};
   const t = await getTranslations({ locale, namespace: 'Blog' });

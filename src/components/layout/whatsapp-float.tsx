@@ -21,7 +21,7 @@ export function FloatingChatButtons() {
         target="_blank"
         rel="noopener noreferrer"
         aria-label="WhatsApp"
-        className="flex h-12 w-12 items-center justify-center rounded-full bg-[#25D366] text-white shadow-flat-hover transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+        className="flex h-12 w-12 items-center justify-center rounded-full bg-brand-whatsapp text-white shadow-flat-hover transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
       >
         <svg
           viewBox="0 0 24 24"
@@ -37,7 +37,7 @@ export function FloatingChatButtons() {
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Telegram"
-        className="flex h-12 w-12 items-center justify-center rounded-full bg-[#229ED9] text-white shadow-flat-hover transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+        className="flex h-12 w-12 items-center justify-center rounded-full bg-brand-telegram text-white shadow-flat-hover transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
       >
         <svg
           viewBox="0 0 24 24"

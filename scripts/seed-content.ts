@@ -199,8 +199,17 @@ async function main() {
   const client = await pool.connect();
   try {
     console.log('→ seeding content tables');
-    await truncateAll(client);
-    await insertAll(client);
+    // C5: truncate + insert must be atomic — a partial failure must not leave
+    // the content tables empty. Wrap both in a single transaction.
+    await client.query('begin');
+    try {
+      await truncateAll(client);
+      await insertAll(client);
+      await client.query('commit');
+    } catch (err) {
+      await client.query('rollback');
+      throw err;
+    }
     console.log('✓ content seeded');
   } finally {
     client.release();

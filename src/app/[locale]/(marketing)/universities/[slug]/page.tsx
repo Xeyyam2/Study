@@ -61,6 +61,7 @@ export async function generateMetadata({
   params: Promise<{ locale: string; slug: string }>;
 }): Promise<Metadata> {
   const { locale, slug } = await params;
+  setRequestLocale(locale);
   const university = await data.universities.getBySlug(slug);
   if (!university) return {};
   const t = await getTranslations({ locale, namespace: 'UniversityDetail' });
@@ -154,7 +155,11 @@ export default async function UniversityDetailPage({
             { name: t('universities'), url: `${siteConfig.url}/${locale}/universities` },
             { name: detail.name, url: `${siteConfig.url}/${locale}/universities/${slug}` },
           ]),
-          ...(reviews.length > 0 ? reviewJsonLd(reviews.slice(0, 5), appLocale, detail.name) : []),
+          // S2: self-serving Review markup is against Google guidelines — emit
+          // only when an independent review source is explicitly enabled.
+          ...(process.env.NEXT_PUBLIC_ENABLE_REVIEW_JSONLD === 'true' && reviews.length > 0
+            ? reviewJsonLd(reviews.slice(0, 5), appLocale, detail.name)
+            : []),
         ]}
       />
 

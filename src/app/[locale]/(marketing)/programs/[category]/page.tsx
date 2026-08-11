@@ -46,6 +46,7 @@ export async function generateMetadata({
   params: Promise<{ locale: string; category: string }>;
 }): Promise<Metadata> {
   const { locale, category } = await params;
+  setRequestLocale(locale);
   const result = await data.programs.getByCategory(category);
   if (!result.category || result.programs.length === 0) return {};
   const t = await getTranslations({ locale, namespace: 'ProgramCategory' });
@@ -262,7 +263,7 @@ export default async function ProgramCategoryPage({
           <h2 className="mb-4 font-display text-headline-md text-foreground">
             {t('programsTitle')}
           </h2>
-          <div className="overflow-hidden rounded-lg border border-border">
+          <div className="overflow-x-auto rounded-lg border border-border">
             <Table>
               <TableHeader>
                 <TableRow>

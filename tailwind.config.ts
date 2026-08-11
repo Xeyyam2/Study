@@ -88,6 +88,11 @@ const config: Config = {
         },
         'border-low': '#E5E7EB',
         'bg-subtle': '#F9FAFB',
+        // M15: social brand colors (were arbitrary hex values in components).
+        brand: {
+          whatsapp: '#25D366',
+          telegram: '#229ED9',
+        },
       },
       borderRadius: {
         sm: '0.25rem',

@@ -28,6 +28,7 @@ export async function generateMetadata({
   params: Promise<{ locale: string; country: string }>;
 }): Promise<Metadata> {
   const { locale, country } = await params;
+  setRequestLocale(locale);
   const c = await data.countries.getBySlug(country);
   if (!c) return {};
   const t = await getTranslations({ locale, namespace: 'CountryLanding' });

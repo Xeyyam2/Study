@@ -57,6 +57,7 @@ export async function generateMetadata({
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }): Promise<Metadata> {
   const [{ locale }, sp] = await Promise.all([params, searchParams]);
+  setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: "ProgramsIndex" });
   const page = Math.max(1, Number(sp.page) || 1);
   return buildPageMetadata({
@@ -133,7 +134,7 @@ export default async function ProgramsPage({
           </div>
 
           {listedPrograms.length > 0 ? (
-            <div className="overflow-hidden rounded-lg border border-border">
+            <div className="overflow-x-auto rounded-lg border border-border">
               <Table>
                 <TableHeader>
                   <TableRow>

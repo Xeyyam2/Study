@@ -142,10 +142,13 @@ export function breadcrumbJsonLd(items: Array<{ name: string; url: string }>): J
 export function courseListJsonLd(
   items: Array<{ name: string; url: string; fee: number }>,
 ): JsonLd {
+  // S4: drop zero-price rows — a 0-fee Course in structured data is a
+  // data-quality signal to Google.
+  const priced = items.filter((i) => i.fee > 0);
   return {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
-    itemListElement: items.map((item, i) =>
+    itemListElement: priced.map((item, i) =>
       L('ListItem', {
         position: i + 1,
         item: {

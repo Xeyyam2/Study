@@ -57,18 +57,19 @@ export async function UniversityCard({
         listingMetadata.rating,
         listingMetadata.count,
       ]
-    : await Promise.all([
-        data.cities.getByUniversityId(university.id),
-        suppliedMinTuition === undefined
-          ? data.universities.getMinTuitionUSD(university.id)
-          : Promise.resolve(suppliedMinTuition),
-        data.universities.getRating(university.id),
-      ]).then(([fallbackCity, fallbackMinTuition, fallbackRating]) => [
-        fallbackCity,
-        fallbackMinTuition,
-        fallbackRating.rating,
-        fallbackRating.count,
-      ] as const);
+    : // C7: batch the per-card metadata into one query (getListingMetadata)
+      // instead of three separate calls (city + minTuition + rating).
+      await data.universities
+        .getListingMetadata([university.id])
+        .then((m) => {
+          const meta = m.get(university.id);
+          return [
+            meta?.city ?? null,
+            suppliedMinTuition ?? meta?.minTuitionUSD,
+            meta?.rating ?? 0,
+            meta?.count ?? 0,
+          ] as const;
+        });
 
   return (
     <Link

@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { z } from 'zod';
 import { rateLimit, getIpFromHeaders } from '@/lib/rate-limit';
+import { isAllowedOrigin } from '@/lib/security/origin';
 
 /**
  * AI chatbot API route — Edge runtime for low latency.
@@ -47,6 +48,16 @@ const chatSchema = z.object({
 });
 
 export async function POST(req: NextRequest) {
+  // Reject cross-origin browser calls (prevents third-party sites from burning
+  // the OpenAI budget). Non-browser clients (curl, server-to-server) have no
+  // Origin header and pass through.
+  if (!isAllowedOrigin(req.headers.get('origin'))) {
+    return NextResponse.json(
+      { reply: '', error: 'Forbidden' },
+      { status: 403 },
+    );
+  }
+
   const apiKey = process.env.OPENAI_API_KEY;
 
   if (!apiKey) {

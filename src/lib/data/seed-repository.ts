@@ -233,6 +233,9 @@ class SeedProgramRepository implements ProgramRepository {
       const program = seedPrograms.find((p) => p.id === up.programId);
       const uni = seedUniversities.find((u) => u.id === up.universityId);
       if (!program || !uni) continue;
+      // M8: pg computes min_tuition over USD rows only — mirror that here so
+      // the seed layer's minTuitionUSD matches the pg layer.
+      if (up.currency !== 'USD') continue;
       const city = seedCities.find((c) => c.id === uni.cityId);
       if (!city) continue;
       const key = `${program.categorySlug}|${city.slug}`;
