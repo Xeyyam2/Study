@@ -403,7 +403,6 @@ export default async function UniversityDetailPage({
                       src={src}
                       alt={`${detail.name} ${i + 1}`}
                       fill
-                      priority={i === 0}
                       sizes="(max-width: 640px) 50vw, 33vw"
                       className="object-cover"
                     />
@@ -542,7 +541,7 @@ export default async function UniversityDetailPage({
 
       {/* 11. Sticky mobile CTA */}
       <div className="fixed inset-x-0 bottom-0 z-30 border-t border-border bg-card/95 p-3 backdrop-blur md:hidden">
-        <div className="container-page flex items-center gap-3 pr-20">
+        <div className="container-page flex items-center gap-3 pe-20">
           <div className="flex-1">
             <p className="text-xs text-muted-foreground">{t('tuitionFrom')}</p>
             <p className="font-display text-sm font-bold text-primary">

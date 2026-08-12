@@ -78,7 +78,7 @@ export function HeaderInteractive() {
         <button
           type="button"
           onClick={() => setDrawerOpen(true)}
-          className="flex items-center gap-2 rounded-full p-1 pr-3 text-sm font-medium text-foreground hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+          className="flex items-center gap-2 rounded-full p-1 pe-3 text-sm font-medium text-foreground hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
         >
           <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground font-display text-sm font-bold">
             {initial}

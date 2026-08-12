@@ -181,7 +181,7 @@ export default async function ProgramsPage({
                         <Badge variant="secondary">
                           {t(`degrees.${p.degreeLevel}`)}
                         </Badge>
-                        <span className="ml-1 text-xs text-muted-foreground">
+                        <span className="ms-1 text-xs text-muted-foreground">
                           · {p.durationYears}y
                         </span>
                       </TableCell>
@@ -199,7 +199,7 @@ export default async function ProgramsPage({
                           {formatCurrency(p.tuitionFee, "USD", locale)}
                         </span>
                         {p.originalFee && p.originalFee > p.tuitionFee && (
-                          <span className="ml-1.5 text-xs text-muted-foreground line-through">
+                          <span className="ms-1.5 text-xs text-muted-foreground line-through">
                             {formatCurrency(p.originalFee, "USD", locale)}
                           </span>
                         )}

@@ -182,9 +182,9 @@ export function UniversityFilters({
           </DialogTrigger>
           <DialogContent
             closeLabel={labels.close}
-            className="left-auto right-0 top-0 h-full max-h-none w-[min(22rem,calc(100%-1rem))] translate-x-0 translate-y-0 overflow-y-auto rounded-none p-5 sm:rounded-l-lg"
+            className="start-auto end-0 top-0 h-full max-h-none w-[min(22rem,calc(100%-1rem))] translate-x-0 translate-y-0 overflow-y-auto rounded-none p-5 sm:rounded-s-lg"
           >
-            <DialogHeader className="pr-8">
+            <DialogHeader className="pe-8">
               <DialogTitle>{labels.filtersTitle}</DialogTitle>
               <DialogDescription className="sr-only">
                 {labels.filtersTitle}

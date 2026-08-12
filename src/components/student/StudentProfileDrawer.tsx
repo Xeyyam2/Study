@@ -43,7 +43,7 @@ export function StudentProfileDrawer({ session, open, onOpenChange }: StudentPro
         <DialogOverlay />
         <DialogPrimitive.Content
           className={cn(
-            'fixed right-0 top-0 z-50 flex h-full w-full max-w-sm flex-col border-l border-border bg-card shadow-overlay',
+            'fixed end-0 top-0 z-50 flex h-full w-full max-w-sm flex-col border-l border-border bg-card shadow-overlay',
             'duration-300 data-[state=open]:animate-in data-[state=open]:slide-in-from-right',
             'data-[state=closed]:animate-out data-[state=closed]:slide-out-to-right',
           )}
@@ -103,7 +103,7 @@ export function StudentProfileDrawer({ session, open, onOpenChange }: StudentPro
               <Button asChild variant="outline" size="sm" className="mt-4 w-full">
                 <Link href={dash}>
                   {tCommon('viewDetails')}
-                  <ExternalLink className="ml-1.5 h-3.5 w-3.5" />
+                  <ExternalLink className="ms-1.5 h-3.5 w-3.5" />
                 </Link>
               </Button>
             </div>

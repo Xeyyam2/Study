@@ -2,20 +2,11 @@
 //
 // For now we emit the unified /sitemap.xml since url count (<50k) fits. When
 // routing + content grows (Phase 3C-full), this file should split into multiple
-// `sitemap-{group}.xml` routes and have /sitemap.xml act as an index file
-// pointing at them. The `chunk()` helper below sets up that pattern.
+// `sitemap-{group}.xml` routes and have /sitemap.xml act as an index file.
 
 import type { MetadataRoute } from 'next';
 import { data } from '@/lib/data';
 import { siteConfig, fullyTranslatedLocales } from '@/config/site';
-
-const CHUNK_SIZE = 45000; // keep a margin under the Google 50k-per-file limit
-
-function chunk<T>(arr: T[], size: number): T[][] {
-  const out: T[][] = [];
-  for (let i = 0; i < arr.length; i += size) out.push(arr.slice(i, i + size));
-  return out;
-}
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = siteConfig.url;
@@ -102,10 +93,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   // With <50k URLs we can emit a single file. When this grows, switch to the
   // index-file pattern documented in Next's `sitemaps` extension API.
-  if (urls.length <= CHUNK_SIZE) return urls;
-
-  // Future expansion: emit a sitemap index that lists each chunk as a child file.
-  // Single-file scenario is already under the limit; chunk() kept for that path.
-  chunk(urls, CHUNK_SIZE);
   return urls;
 }

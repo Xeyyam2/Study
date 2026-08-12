@@ -89,7 +89,7 @@ export async function UniversityCard({
             className="object-cover transition-transform duration-500 group-hover:scale-105"
             priority={priority}
           />
-          <div className="absolute right-3 top-3">
+          <div className="absolute end-3 top-3">
             <Badge
               variant="verified"
               className="gap-1 bg-card/90 backdrop-blur"
@@ -98,7 +98,7 @@ export async function UniversityCard({
               {labels.verified}
             </Badge>
           </div>
-          <div className="absolute left-3 top-3 flex h-10 w-10 items-center justify-center rounded-md bg-card/90 font-display text-sm font-bold text-primary backdrop-blur">
+          <div className="absolute start-3 top-3 flex h-10 w-10 items-center justify-center rounded-md bg-card/90 font-display text-sm font-bold text-primary backdrop-blur">
             {university.logoText}
           </div>
         </div>
@@ -167,7 +167,7 @@ function Stat({
       <div className="truncate text-xs font-semibold text-foreground">
         {value}
         {sub && (
-          <span className="ml-1 text-[10px] font-normal text-muted-foreground line-through">
+          <span className="ms-1 text-[10px] font-normal text-muted-foreground line-through">
             {sub}
           </span>
         )}

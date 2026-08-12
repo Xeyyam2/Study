@@ -13,3 +13,31 @@ test('unauthenticated /dashboard redirects to login', async ({ page }) => {
   await page.goto('/en/dashboard');
   await expect(page).toHaveURL(/\/dashboard\/login/);
 });
+
+test('login pages render (admin + student)', async ({ page }) => {
+  await page.goto('/admin/login');
+  await expect(page.getByRole('heading')).toBeVisible();
+
+  await page.goto('/en/dashboard/login');
+  await expect(page.getByRole('heading')).toBeVisible();
+});
+
+test('auth callback rejects external next param (open redirect guard)', async ({
+  page,
+}) => {
+  // A malicious next=//evil.com must NOT leave the origin — it falls back to
+  // the dashboard path.
+  await page.goto(
+    '/auth/callback?code=invalid&next=https%3A%2F%2Fevil.example.com%2Fphish',
+  );
+  // Supabase envs are absent in e2e → the callback just redirects to the
+  // fallback dashboard path, staying on our origin.
+  await expect(page).toHaveURL(/\/en\/dashboard$/);
+});
+
+test('auth callback with protocol-relative next stays on origin', async ({
+  page,
+}) => {
+  await page.goto('/auth/callback?code=invalid&next=//evil.example.com');
+  await expect(page).toHaveURL(/\/en\/dashboard$/);
+});

@@ -150,7 +150,7 @@ export default async function ApplicationsPage({
                       ? t('applications.general')
                       : lead.universityId}
                     {lead.programId && (
-                      <Badge variant="outline" className="ml-2 text-xs">
+                      <Badge variant="outline" className="ms-2 text-xs">
                         {lead.programId}
                       </Badge>
                     )}

@@ -33,6 +33,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
+import { StatCard } from '@/components/ui/stat-card';
 import { formatCurrency } from '@/lib/utils';
 import { annualTotalCost } from '@/lib/programs/costs';
 
@@ -301,7 +302,7 @@ export default async function ProgramCategoryPage({
                     <TableCell className="text-right font-semibold tabular-nums text-foreground">
                       {formatCurrency(p.tuitionFee, 'USD', locale)}
                       {p.originalFee && p.originalFee > p.tuitionFee && (
-                        <span className="ml-1.5 text-xs font-normal text-muted-foreground line-through">
+                        <span className="ms-1.5 text-xs font-normal text-muted-foreground line-through">
                           {formatCurrency(p.originalFee, 'USD', locale)}
                         </span>
                       )}
@@ -373,26 +374,6 @@ export default async function ProgramCategoryPage({
 
       <FaqSection locale={appLocale} />
       <CTASection />
-    </div>
-  );
-}
-
-function StatCard({
-  icon: Icon,
-  label,
-  value,
-}: {
-  icon: React.ElementType;
-  label: string;
-  value: string;
-}) {
-  return (
-    <div className="rounded-lg border border-border bg-card p-5">
-      <Icon className="h-5 w-5 text-primary" />
-      <p className="mt-2 font-display text-2xl font-bold text-foreground tabular-nums">
-        {value}
-      </p>
-      <p className="text-sm text-muted-foreground">{label}</p>
     </div>
   );
 }

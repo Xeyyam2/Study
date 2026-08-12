@@ -84,7 +84,7 @@ export function ChatWidget() {
         aria-label={open ? t('closed') : t('title')}
         aria-expanded={open}
         aria-controls="chat-widget-panel"
-        className="fixed bottom-5 left-5 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-flat-hover transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+        className="fixed bottom-5 start-5 z-50 flex h-14 w-14 items-center justify-center rounded-full bg-primary text-primary-foreground shadow-flat-hover transition-transform hover:scale-105 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
       >
         {open ? <X className="h-6 w-6" /> : <MessageCircle className="h-6 w-6" />}
       </button>
@@ -96,7 +96,7 @@ export function ChatWidget() {
           role="dialog"
           aria-modal="true"
           aria-labelledby="chat-widget-title"
-          className="fixed bottom-24 left-5 z-50 flex h-[420px] w-[340px] max-w-[calc(100vw-2.5rem)] flex-col overflow-hidden rounded-lg border border-border bg-card shadow-flat-plus"
+          className="fixed bottom-24 start-5 z-50 flex h-[420px] w-[340px] max-w-[calc(100vw-2.5rem)] flex-col overflow-hidden rounded-lg border border-border bg-card shadow-flat-plus"
         >
           {/* Header */}
           <div className="border-b border-border bg-surface-low p-4">
