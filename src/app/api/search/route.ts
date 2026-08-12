@@ -10,7 +10,7 @@ const searchLimiter = rateLimit({ windowMs: 60_000, max: 30 });
 
 export async function GET(req: Request) {
   const ip = getIpFromHeaders((name) => req.headers.get(name));
-  if (!searchLimiter.check(ip)) {
+  if (!(await searchLimiter.check(ip))) {
     return NextResponse.json(
       { results: [], error: 'Too many requests. Please try again shortly.' },
       { status: 429 },

@@ -42,7 +42,7 @@ export async function submitLead(input: unknown): Promise<LeadResult> {
 
   // Rate limit per IP before touching the DB so spam can't fill the leads table.
   const ip = getIpFromHeaders((name) => h.get(name));
-  if (!leadLimiter.check(ip)) {
+  if (!(await leadLimiter.check(ip))) {
     return {
       ok: false,
       errors: { _form: ['Too many submissions. Please wait a minute and try again.'] },

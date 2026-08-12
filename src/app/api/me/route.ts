@@ -16,7 +16,7 @@ export async function GET() {
   // M5: Rate check before any DB/auth work.
   const h = await headers();
   const ip = getIpFromHeaders((name) => h.get(name));
-  if (!meLimiter.check(ip)) {
+  if (!(await meLimiter.check(ip))) {
     return NextResponse.json({ error: 'Too many requests' }, { status: 429 });
   }
   const session = await getStudentSessionForLayout();

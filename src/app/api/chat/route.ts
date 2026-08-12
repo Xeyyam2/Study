@@ -70,7 +70,7 @@ export async function POST(req: NextRequest) {
 
   // Rate limit before any upstream call to protect the OpenAI budget.
   const ip = getIpFromHeaders((name) => req.headers.get(name));
-  if (!chatLimiter.check(ip)) {
+  if (!(await chatLimiter.check(ip))) {
     return NextResponse.json(
       { reply: '', error: 'Too many requests. Please try again shortly.' },
       { status: 429 },

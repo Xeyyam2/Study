@@ -1,36 +1,55 @@
 /**
- * In-memory sliding-window rate limiter.
+ * Rate limiter with a pluggable backend.
  *
- * Keeps a per-key array of request timestamps and drops the ones older than
- * the window. If the remaining count is under `max`, the request is allowed and
- * the timestamp is recorded; otherwise it's rejected.
+ * - When `UPSTASH_REDIS_REST_URL` / `UPSTASH_REDIS_REST_TOKEN` are set (Vercel
+ *   production), limits are enforced in Upstash Redis — shared across all
+ *   serverless function instances, so the effective limit is exactly `max`.
+ * - Otherwise it falls back to an in-memory sliding window (local dev, single
+ *   instance). In a multi-instance deploy without Redis the effective limit is
+ *   `max * instance_count` — acceptable first line of defence; Redis removes
+ *   that caveat.
  *
- * Runtime notes:
- * - Works in both Edge and Node runtimes (no Node-specific APIs).
- * - In a serverless deploy (Vercel), each function instance keeps its own
- *   counts, so the effective limit is `max * instance_count`. This is an
- *   acceptable first line of defence against casual abuse; for precise,
- *   instance-independent limiting migrate to `@upstash/ratelimit` + Redis
- *   (tracked as a follow-up).
- * - The store grows at most `max` entries per distinct key, and entries are
- *   pruned on every check, so memory stays bounded for typical traffic.
+ * `check()` is async because the Redis path performs a network round-trip.
  */
+import { Ratelimit } from '@upstash/ratelimit';
+import { Redis } from '@upstash/redis';
 
 interface Limiter {
   /** Returns true when the request is under the limit (allowed). */
-  check(key: string): boolean;
+  check(key: string): Promise<boolean>;
 }
+
+const redisConfigured =
+  !!process.env.UPSTASH_REDIS_REST_URL &&
+  !!process.env.UPSTASH_REDIS_REST_TOKEN;
 
 export function rateLimit(opts: { windowMs: number; max: number }): Limiter {
   const { windowMs, max } = opts;
-  const hits = new Map<string, number[]>();
 
+  // Redis-backed sliding window (Upstash supports slidingWindow on the edge).
+  if (redisConfigured) {
+    const redis = Redis.fromEnv();
+    const ratelimit = new Ratelimit({
+      redis,
+      limiter: Ratelimit.slidingWindow(max, `${windowMs} ms`),
+      analytics: false,
+      prefix: 'rl',
+    });
+    return {
+      async check(key: string): Promise<boolean> {
+        const { success } = await ratelimit.limit(key);
+        return success;
+      },
+    };
+  }
+
+  // In-memory sliding window fallback (local dev / single instance).
+  const hits = new Map<string, number[]>();
   return {
-    check(key: string): boolean {
+    async check(key: string): Promise<boolean> {
       const now = Date.now();
       const since = now - windowMs;
       const arr = hits.get(key);
-      // Keep only timestamps inside the sliding window.
       const recent = arr ? arr.filter((t) => t > since) : [];
       if (recent.length >= max) {
         hits.set(key, recent);
@@ -63,4 +82,3 @@ export function getIpFromHeaders(
   }
   return headerLookup('x-real-ip') ?? 'unknown';
 }
-﻿
