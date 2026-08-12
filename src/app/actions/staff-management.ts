@@ -45,10 +45,14 @@ export async function changePasswordAction(input: unknown): Promise<ActionResult
     });
     if (verifyError) return { ok: false, error: 'Current password is incorrect' };
     const { error: updateError } = await supabase.auth.updateUser({ password: newPassword });
-    if (updateError) return { ok: false, error: updateError.message };
+    if (updateError) {
+      // L1: log details server-side; keep the client message generic.
+      console.error('[change-password] update failed:', updateError.message);
+      return { ok: false, error: 'Failed to update password. Please try again.' };
+    }
     return { ok: true };
   } catch (err) {
-    const msg = err instanceof Error ? err.message : 'Failed to change password';
-    return { ok: false, error: msg };
+    console.error('[change-password] error:', err);
+    return { ok: false, error: 'Failed to update password. Please try again.' };
   }
 }

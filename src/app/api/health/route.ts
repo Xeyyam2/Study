@@ -9,7 +9,7 @@ export const dynamic = 'force-dynamic';
  * fails the check — `ok:true` must mean the app can serve requests.
  */
 export async function GET() {
-  let db = false;
+  let dbOk = false;
   if (process.env.DATABASE_URL) {
     const pool = new Pool({
       connectionString: process.env.DATABASE_URL,
@@ -18,15 +18,16 @@ export async function GET() {
     });
     try {
       await pool.query('select 1');
-      db = true;
+      dbOk = true;
     } catch {
-      db = false;
+      dbOk = false;
     } finally {
       await pool.end().catch(() => {});
     }
   }
-  if (!db) {
-    return NextResponse.json({ ok: false, db }, { status: 503 });
+  // L2: don't leak DB presence to the public — return only ok/status.
+  if (!dbOk) {
+    return NextResponse.json({ ok: false }, { status: 503 });
   }
-  return NextResponse.json({ ok: true, db }, { status: 200 });
+  return NextResponse.json({ ok: true }, { status: 200 });
 }

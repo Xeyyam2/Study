@@ -56,10 +56,15 @@ export async function uploadApplyDocument(formData: FormData): Promise<UploadRes
     const { error } = await supabase.storage
       .from(BUCKET)
       .upload(path, buffer, { contentType: file.type, upsert: false });
-    if (error) return { ok: false, error: `Storage upload failed: ${error.message}` };
+    if (error) {
+      // L1: don't leak Supabase internals to the client — log and return generic.
+      console.error('[upload-apply-document] storage error:', error.message);
+      return { ok: false, error: 'Upload failed. Please try again.' };
+    }
     return { ok: true, url: path };
   } catch (err) {
-    const msg = err instanceof Error ? err.message : 'Upload failed';
-    return { ok: false, error: msg };
+    // L1: log the real error server-side; return a generic message.
+    console.error('[upload-apply-document] error:', err);
+    return { ok: false, error: 'Upload failed. Please try again.' };
   }
 }

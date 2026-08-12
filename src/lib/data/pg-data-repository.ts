@@ -141,8 +141,10 @@ function mapProgramItem(r: Record<string, unknown>) {
       logoText: r.u_logo as string,
       heroImage: r.u_hero as string,
       gallery: (r.u_gallery as string[]) ?? [],
-      tagline: i18n(r.u_tagline),
-      description: i18n(r.u_desc),
+      // L5: listing items don't render tagline/description — omit the heavy
+      // JSONB blobs from the SELECT (columns stay, rows map to empty).
+      tagline: {},
+      description: {},
       languages: (r.u_languages as string[]) ?? [],
       featured: Boolean(r.u_featured),
     },
@@ -514,7 +516,7 @@ export function createPgDataLayer(getPool: () => Pool): DataLayer {
                 p.id p_id, p.slug p_slug, p.name_i18n p_name, p.degree_level p_degree, p.category_slug p_category, p.duration_years p_duration,
                 u.id u_id, u.slug u_slug, u.city_id u_city_id, u.name u_name, u.founded_year u_founded, u.student_count u_students,
                 u.ranking u_ranking, u.accreditation u_accr, u.is_state u_state, u.logo_text u_logo, u.hero_image u_hero,
-                u.gallery u_gallery, u.tagline_i18n u_tagline, u.description_i18n u_desc, u.languages u_languages, u.featured u_featured,
+                u.gallery u_gallery, u.languages u_languages, u.featured u_featured,
                 c.id c_id, c.slug c_slug, c.name_i18n c_name, c.country_code c_country,
                 c.monthly_living_cost_usd c_monthly_living
          from public.university_programs up
@@ -539,7 +541,7 @@ export function createPgDataLayer(getPool: () => Pool): DataLayer {
                 p.id p_id, p.slug p_slug, p.name_i18n p_name, p.degree_level p_degree, p.category_slug p_category, p.duration_years p_duration,
                 u.id u_id, u.slug u_slug, u.city_id u_city_id, u.name u_name, u.founded_year u_founded, u.student_count u_students,
                 u.ranking u_ranking, u.accreditation u_accr, u.is_state u_state, u.logo_text u_logo, u.hero_image u_hero,
-                u.gallery u_gallery, u.tagline_i18n u_tagline, u.description_i18n u_desc, u.languages u_languages, u.featured u_featured,
+                u.gallery u_gallery, u.languages u_languages, u.featured u_featured,
                 c.id c_id, c.slug c_slug, c.name_i18n c_name, c.country_code c_country,
                 c.monthly_living_cost_usd c_monthly_living
          from public.university_programs up
@@ -579,7 +581,7 @@ export function createPgDataLayer(getPool: () => Pool): DataLayer {
                 p.id p_id, p.slug p_slug, p.name_i18n p_name, p.degree_level p_degree, p.category_slug p_category, p.duration_years p_duration,
                 u.id u_id, u.slug u_slug, u.city_id u_city_id, u.name u_name, u.founded_year u_founded, u.student_count u_students,
                 u.ranking u_ranking, u.accreditation u_accr, u.is_state u_state, u.logo_text u_logo, u.hero_image u_hero,
-                u.gallery u_gallery, u.tagline_i18n u_tagline, u.description_i18n u_desc, u.languages u_languages, u.featured u_featured,
+                u.gallery u_gallery, u.languages u_languages, u.featured u_featured,
                 c.id c_id, c.slug c_slug, c.name_i18n c_name, c.country_code c_country,
                 c.monthly_living_cost_usd c_monthly_living
          from public.university_programs up
@@ -628,7 +630,7 @@ export function createPgDataLayer(getPool: () => Pool): DataLayer {
                 p.id p_id, p.slug p_slug, p.name_i18n p_name, p.degree_level p_degree, p.category_slug p_category, p.duration_years p_duration,
                 u.id u_id, u.slug u_slug, u.city_id u_city_id, u.name u_name, u.founded_year u_founded, u.student_count u_students,
                 u.ranking u_ranking, u.accreditation u_accr, u.is_state u_state, u.logo_text u_logo, u.hero_image u_hero,
-                u.gallery u_gallery, u.tagline_i18n u_tagline, u.description_i18n u_desc, u.languages u_languages, u.featured u_featured,
+                u.gallery u_gallery, u.languages u_languages, u.featured u_featured,
                 c.id c_id, c.slug c_slug, c.name_i18n c_name, c.country_code c_country,
                 c.monthly_living_cost_usd c_monthly_living,
                 count(*) over() as total_count

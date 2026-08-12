@@ -1,10 +1,10 @@
 # Taste
 
 ## Workflow
-- Strongly prefers strictly sequential execution: finish one unit (file, language, task) completely before starting the next; explicitly forbids parallel batch processing. Confidence: 0.9
+- Strongly prefers strictly sequential execution: finish one unit (file, language, task) completely before starting the next; explicitly forbids parallel batch processing. Confidence: 0.95
 - Wants a short summary after each completed unit of work and a final summary table at the end of a multi-step task. Confidence: 0.8
 - Prefers the assistant to make cultural/contextual judgment calls autonomously rather than interrupting with questions. Confidence: 0.9
-- Continues through the remaining steps of a multi-step task autonomously (e.g., next language/file) without waiting for an explicit "continue" command, unless the user explicitly stops. Explicitly instructs finishing the entire remaining backlog back-to-back with no per-item confirmation — "bitende sorusmadan digerine kec. hamisini bitir" (when done, move to the next without asking; finish everything). Confidence: 0.9
+- Continues through the remaining steps of a multi-step task autonomously (e.g., next language/file) without waiting for an explicit "continue" command, unless the user explicitly stops. Explicitly instructs finishing the entire remaining backlog back-to-back with no per-item confirmation — "bitende sorusmadan digerine kec. hamisini bitir" (when done, move to the next without asking; finish everything). Confidence: 0.95
 - Uses todo lists to track multi-step tasks and marks progress per step. Confidence: 0.7
 - Before starting a large multi-part task, wants a brief scope confirmation first (how many items, which cities/topics, source choices), then autonomous execution. Confidence: 0.8
 - Expects the brainstorming skill to be used to produce a plan/spec for content or design expansion tasks before implementation; explicitly asks for it ("brainstormingden istifadə edərək" / "brainstroming den istifade eliyerem") and expects brainstorming to precede coding. Confidence: 0.95
