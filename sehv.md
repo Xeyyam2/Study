@@ -30,16 +30,16 @@ Layihənin təməli sağlamdır. **FAZA 1-9** tamamlanıb — kritik təhlükəs
 
 | # | Problem | Yer | Status |
 |---|---------|-----|--------|
-| H1 | Rate limiter `X-Forwarded-For` spoofable, in-memory | `rate-limit.ts:47` | ⬜ Açıq |
-| H2 | `next-intl@3.26.x` open redirect + prototype pollution (CVE) | `package.json:39` | ⬜ Açıq |
+| H1 | Rate limiter `X-Forwarded-For` spoofable, in-memory | `rate-limit.ts:47` | ✅ Düzəldildi (Redis + TRUST_PROXY) |
+| H2 | `next-intl@3.26.x` open redirect + prototype pollution (CVE) | `package.json:39` | ✅ Düzəldildi (4.9.1) |
 | H3 | `nanoid`, `postcss`, `sharp` CVE-ləri (npm audit) | `package-lock.json` | ⬜ Açıq |
-| H4 | Session cookie `secure` flag yoxdur; dev-auth cookie imzasızdır | `admin-auth.ts:22`, `session.ts:56` | ✅ Secure flag düzəldildi (HMAC hələ açıq) |
+| H4 | Session cookie `secure` flag yoxdur; dev-auth cookie imzasızdır | `admin-auth.ts:22`, `session.ts:56` | ✅ Düzəldildi (HMAC + secure) |
 | H5 | `auth/callback` open redirect — `next` parametri | `auth/callback/route.ts:13` | ✅ Düzəldildi |
 | H6 | Admin API-lərdə per-endpoint `requireRole` yoxdur | `staff-management.ts` | ✅ Düzəldildi (changePasswordAction) |
-| H7 | RLS write policy-ləri "any staff" açıqdır, `with check` yoxdur | `0005_rls.sql:28` | ⬜ Açıq |
+| H7 | RLS write policy-ləri "any staff" açıqdır, `with check` yoxdur | `0005_rls.sql:28` | ✅ Düzəldildi (0018_rls_least_privilege) |
 | H8 | App RLS-i tamamilə bypass edir (pg + service-role) | `crm/db.ts` | ⬜ Açıq (arxitektura qərarı) |
 | H9 | JSON-LD `dangerouslySetInnerHTML` — `</script>` escaping yoxdur | `json-ld.tsx:10` | ✅ Düzəldildi |
-| H10 | Chat/lead/upload endpoint-lərində Origin yoxlanışı yoxdur | `api/chat`, `actions/leads` | ⬜ Açıq |
+| H10 | Chat/lead/upload endpoint-lərində Origin yoxlanışı yoxdur | `api/chat`, `actions/leads` | ✅ Düzəldildi (origin.ts) |
 
 ## Backend
 
@@ -67,7 +67,7 @@ Layihənin təməli sağlamdır. **FAZA 1-9** tamamlanıb — kritik təhlükəs
 | F7 | `CostCalculator` `'en'` lokalı hardkod | `cost-calculator.tsx:168` | ✅ Düzəldildi |
 | F8 | CompareTool seçimi URL-də saxlanılmır | `compare-tool.tsx` | ✅ Düzəldildi (?u= params) |
 | F9 | CTA rəng kontrastı WCAG AA-ya uyğun deyil (~2.7:1) | `tailwind.config.ts` | ✅ Düzəldildi (#c95c00) |
-| F10 | RTL 30+ pozuntu — fiziki utility-lər məntiqi yerinə | ~15 komponent | ⬜ Açıq |
+| F10 | RTL 30+ pozuntu — fiziki utility-lər məntiqi yerinə | ~15 komponent | ✅ Düzəldildi (ms/me/ps/pe/start/end) |
 | F11 | Locale label-ləri kod göstərir ('EN' deyil 'English') | `routing.ts:12` | ✅ Düzəldildi |
 | F12 | Header/footer nav link-lərdə focus-visible yoxdur | `header.tsx`, `footer.tsx` | ✅ Düzəldildi |
 | ~~F13~~ | ~~Dark mode tamamilə yoxdur~~ | ~~tailwind.config.ts~~ | ❌ İstifadəçi tərəfindən silinib — edilməyəcək |
@@ -97,24 +97,24 @@ Layihənin təməli sağlamdır. **FAZA 1-9** tamamlanıb — kritik təhlükəs
 |---|---------|--------|
 | M1 | `university_id` sütunu `text` (soft-ref), FK yoxdur | ⬜ Açıq |
 | M2 | `uploadApplyDocument` magic-byte MIME yoxlaması | ✅ Düzəldildi (FAZA 1) |
-| M3 | Rate limit in-memory — serverless-də işləmir | ⬜ Açıq |
-| M4 | Dev-auth cookie middleware-də mövcudluq yoxlanışı (forgerə açıq) | ⬜ Açıq |
-| M5 | `/api/me` rate-limit yoxdur | ⬜ Açıq → ✅ Düzəldildi (30/min) |
+| M3 | Rate limit in-memory — serverless-də işləmir | ✅ Düzəldildi (Upstash Redis, H1) |
+| M4 | Dev-auth cookie middleware-də mövcudluq yoxlanışı (forgerə açıq) | ✅ Düzəldildi (HMAC imza, H4) |
+| M5 | `/api/me` rate-limit yoxdur | ✅ Düzəldildi (30/min) |
 | M6 | `changePasswordAction` `currentPassword` yoxlamır | ✅ Düzəldildi (C4 ilə birlikdə) |
-| M7 | Supabase project ref `.env.local`-də açıqdır | ⬜ Açıq |
+| M7 | Supabase project ref `.env.local`-də açıqdır | ⬜ Açıq (gitignored) |
 | M8 | Search query jsonb cast ilike — indeks işləmir | ⬜ Açıq |
 | M9 | `updateLeadStatusAction` `as never` cast — type-unsafe | ✅ Düzəldildi (`as LeadStatus`) |
-| M10 | Search PG city axtarır, seed yox (parity drift) | ⬜ Açıq |
-| M11 | `not-found.tsx`-də `setRequestLocale` çağırılmır | ⬜ Açıq |
+| M10 | Search PG city axtarır, seed yox (parity drift) | ✅ Düzəldildi (M8 seed parity) |
+| M11 | `not-found.tsx`-də `setRequestLocale` çağırılmır | ✅ Düzəldildi (getLocale) |
 | M12 | Tailwind dead config (stack-sm, stack-md) | ✅ Düzəldildi |
-| M13 | Arbitrary hex value-lər token-laşdırılmayıb (`#25D366`) | ⬜ Açıq |
-| M14 | `StatCard`/`Stat` dublikat komponentlər | ⬜ Açıq |
+| M13 | Arbitrary hex value-lər token-laşdırılmayıb (`#25D366`) | ✅ Düzəldildi (brand.whatsapp/telegram) |
+| M14 | `StatCard`/`Stat` dublikat komponentlər | ✅ Düzəldildi (ui/stat-card.tsx) |
 | M15 | Mobile cədvəllərə `overflow-x-auto` yoxdur | ✅ Artıq var (`table.tsx:8`) |
 | M16 | `h-4.5 w-4.5` Tailwind-də mövcud deyil | ✅ Düzəldildi (h-4 w-4) |
 | M17 | Card padding inkonsistent | ⬜ Açıq |
 | M18 | `text-[10px]` type scale-i bypass edir | ⬜ Açıq |
 | M19 | JSON-LD `</script>` escaping | ✅ Düzəldildi (FAZA 3) |
-| M20 | Header hər səhifədə `/api/me` fetch — signed-out flash | ⬜ Açıq |
+| M20 | Header hər səhifədə `/api/me` fetch — signed-out flash | ⬜ Açıq (məqbul tradeoff) |
 | ~~M21~~ | ~~Dark mode tamamilə yoxdur~~ | ❌ Silinib — edilməyəcək |
 
 ---
@@ -123,16 +123,16 @@ Layihənin təməli sağlamdır. **FAZA 1-9** tamamlanıb — kritik təhlükəs
 
 | # | Problem | Status |
 |---|---------|--------|
-| L1 | `formatNumber(0)` → "0" göstərir | ⬜ Açıq |
-| L2 | `INITIAL_ADMIN_EMAIL` ölü config | ⬜ Açıq |
+| L1 | `formatNumber(0)` → "0" göstərir | ⬜ Açıq (məqbul) |
+| L2 | `INITIAL_ADMIN_EMAIL` ölü config | ✅ Düzəldildi (.env.example) |
 | L3 | Skip link `main`-də `tabIndex={-1}` yoxdur | ✅ Düzəldildi |
-| L4 | Gallery `priority={i===0}` LCP ilə rəqabət | ⬜ Açıq |
-| L5 | `getAllPrograms` lazımsız `description_i18n` yükləyir | ⬜ Açıq |
-| L6 | Seed regex-parsing fragile | ⬜ Açıq |
+| L4 | Gallery `priority={i===0}` LCP ilə rəqabət | ✅ Düzəldildi |
+| L5 | `getAllPrograms` lazımsız `description_i18n` yükləyir | ✅ Düzəldildi (SELECT-dən çıxarıldı) |
+| L6 | Seed regex-parsing fragile | ⬜ Açıq (skript aləti, loud-fail) |
 | L7 | `chunk()` dead code sitemap-də | ✅ Düzəldildi |
-| L8 | Dev server `.next` cache — `dev:clean` script yoxdur | ⬜ Açıq |
-| L9 | `keywords` meta tagı (SEO value yoxdur) | ⬜ Açıq |
-| L10 | `←` `→` arrow karakterləri RTL-də pozur | ⬜ Açıq |
+| L8 | Dev server `.next` cache — `dev:clean` script yoxdur | ✅ Düzəldildi (dev:clean) |
+| L9 | `keywords` meta tagı (SEO value yoxdur) | ✅ Düzəldildi |
+| L10 | `←` `→` arrow karakterləri RTL-də pozur | ✅ Düzəldildi (F10 ilə) |
 | L11 | Repo-da debug/log faylları commit olunub | ✅ Düzəldildi (.gitignore) |
 | L12 | `design/` qovluğu tətbiq reposunda | ⬜ Açıq |
 
@@ -213,13 +213,13 @@ Layihənin təməli sağlamdır. **FAZA 1-9** tamamlanıb — kritik təhlükəs
 |---|---------|-----|--------|
 | Q1 | Coverage threshold yoxdur | `vitest.config.ts` | ✅ Düzəldildi |
 | Q2 | E2E testlər CI-da işləmir | `ci.yml` | ✅ Düzəldildi |
-| Q3 | Security/auth kodu test olunmayıb | `tests/unit/` | ⬜ Açıq |
+| Q3 | Security/auth kodu test olunmayıb | `tests/unit/` | ✅ Düzəldildi (cookie-signature, auth-guard e2e) |
 | Q4 | CD pipeline yoxdur — migration deploy-dan asılı deyil | `ci.yml` | ⬜ Açıq |
 | Q5 | Observability yoxdur (structured logging) | bütün kod | ⬜ Açıq |
 | Q6 | Pipeline-da security scanning yoxdur | `.github/` | ✅ Düzəldildi (dependabot.yml) |
 | Q7 | DB backup strategiyası yoxdur | — | ⬜ Açıq |
 | Q8 | docker-compose zəif password + healthcheck yoxdur | `docker-compose.yml:9` | ✅ Düzəldildi |
-| Q9 | Unit test-lər DB-yə bağlı, rollback yoxdur | `crm-repository.test.ts:53` | ⬜ Açıq |
+| Q9 | Unit test-lər DB-yə bağlı, rollback yoxdur | `crm-repository.test.ts:53` | ⬜ Açıq (idempotent edildi) |
 | Q10 | Migration checksum verification yoxdur | `migrate.ts:76` | ⬜ Açıq |
 | C4 | `changePasswordAction` — `requireStaff()` çağırmır | Security | `staff-management.ts:28` | ✅ Düzəldildi |
 | C5 | Seed prosesi atomik deyil — truncate+insert transaction-siz | Backend | `seed-content.ts:191` | ✅ Düzəldildi |
