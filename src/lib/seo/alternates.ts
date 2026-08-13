@@ -1,6 +1,6 @@
-import type { Metadata } from 'next';
-import { routing } from '@/i18n/routing';
-import { siteConfig, fullyTranslatedLocales } from '@/config/site';
+import type { Metadata } from "next";
+import { routing } from "@/i18n/routing";
+import { siteConfig, fullyTranslatedLocales } from "@/config/site";
 
 /**
  * Map a bare language code to an RFC 5646/BCP-47 language-region tag for
@@ -8,28 +8,35 @@ import { siteConfig, fullyTranslatedLocales } from '@/config/site';
  * suffix; a bare code is treated as invalid by some scrapers.
  */
 const OG_LOCALE_MAP: Record<string, string> = {
-  en: 'en_US',
-  tr: 'tr_TR',
-  az: 'az_AZ',
-  ru: 'ru_RU',
-  de: 'de_DE',
-  fr: 'fr_FR',
-  fa: 'fa_IR',
-  ar: 'ar_SA',
-  tk: 'tk_TM',
-  kk: 'kk_KZ',
-  ky: 'ky_KG',
-  zh: 'zh_CN',
-  bg: 'bg_BG',
-  ur: 'ur_PK',
-  uz: 'uz_UZ',
-  sw: 'sw_TZ',
-  so: 'so_SO',
-  id: 'id_ID',
+  en: "en_US",
+  tr: "tr_TR",
+  az: "az_AZ",
+  ru: "ru_RU",
+  de: "de_DE",
+  fr: "fr_FR",
+  fa: "fa_IR",
+  ar: "ar_SA",
+  tk: "tk_TM",
+  kk: "kk_KZ",
+  ky: "ky_KG",
+  zh: "zh_CN",
+  bg: "bg_BG",
+  ur: "ur_PK",
+  uz: "uz_UZ",
+  sw: "sw_TZ",
+  so: "so_SO",
+  id: "id_ID",
 };
 
 function ogLocale(locale: string): string {
   return OG_LOCALE_MAP[locale] ?? `${locale}_${locale.toUpperCase()}`;
+}
+
+// SE-1: hreflang needs BCP-47 language-region tags with a hyphen (en-US).
+// The OG map uses underscores (en_US) because Facebook's scrapers require
+// that legacy format — the two must stay separate.
+function hreflangTag(locale: string): string {
+  return (OG_LOCALE_MAP[locale] ?? locale).replace("_", "-");
 }
 
 /**
@@ -37,24 +44,20 @@ function ogLocale(locale: string): string {
  * e.g. '/', '/universities', '/universities/bahcesehir-university'
  */
 function localizedUrl(locale: string, path: string): string {
-  const suffix = path === '/' ? '' : path;
+  const suffix = path === "/" ? "" : path;
   return `${siteConfig.url}/${locale}${suffix}`;
 }
 
-export function buildAlternates(path: string): Pick<Metadata, 'alternates'> {
+export function buildAlternates(path: string): Pick<Metadata, "alternates"> {
   const languages: Record<string, string> = {};
   // Only announce hreflang for fully-translated locales. Pointing crawlers at
   // the six stub locales (bg/id/so/ur/uz/sw) would advertise near-empty pages
   // as alternates, which is a "thin content" signal that can hurt the complete
   // locales' rankings.
   for (const locale of fullyTranslatedLocales) {
-    // S9: Region-qualify hreflang tags (en → en-US) so Google can pick the
-    // right variant for region-targeted searches. Bare language codes still
-    // work, but BCP-47 language-region tags are the recommended format.
-    const regionTag = OG_LOCALE_MAP[locale] ?? locale;
-    languages[regionTag] = localizedUrl(locale, path);
+    languages[hreflangTag(locale)] = localizedUrl(locale, path);
   }
-  languages['x-default'] = localizedUrl(routing.defaultLocale, path);
+  languages["x-default"] = localizedUrl(routing.defaultLocale, path);
   return { alternates: { languages } };
 }
 
@@ -84,11 +87,11 @@ export function buildPageMetadata({
   const url = canonical(locale, path);
 
   const defaultKeywords = [
-    'study in turkey',
-    'turkish universities',
-    'study abroad',
-    'university admission turkey',
-    'scholarships turkey',
+    "study in turkey",
+    "turkish universities",
+    "study abroad",
+    "university admission turkey",
+    "scholarships turkey",
   ];
 
   // Only set explicit OG/Twitter images when a real per-page image is supplied.
@@ -109,7 +112,7 @@ export function buildPageMetadata({
       languages: buildAlternates(path).alternates?.languages,
     },
     openGraph: {
-      type: 'website',
+      type: "website",
       url,
       title,
       description,
@@ -118,7 +121,7 @@ export function buildPageMetadata({
       ...ogImage,
     },
     twitter: {
-      card: 'summary_large_image',
+      card: "summary_large_image",
       title,
       description,
       ...(image ? { images: [image] } : {}),

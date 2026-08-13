@@ -13,11 +13,12 @@ import type {
   University,
   UniversityDetail,
   UniversityFilters,
-} from '@/types';
+} from "@/types";
 
 export interface UniversityListingMetadata {
   city: City | null;
   minTuitionUSD?: number;
+  originalFeeUSD?: number;
   rating: number;
   count: number;
 }
@@ -65,7 +66,7 @@ export interface ProgramCategoryDetail {
 }
 
 export interface ProgramListingPage {
-  programs: ProgramCategoryDetail['programs'];
+  programs: ProgramCategoryDetail["programs"];
   total: number;
   page: number;
   perPage: number;
@@ -83,7 +84,7 @@ export interface ProgramRepository {
   getCategories(): Promise<ProgramCategory[]>;
   getCombinations(): Promise<ProgramCombination[]>;
   /** Every university×program row (with city + tuition) — for the /programs listing. */
-  getAllPrograms(): Promise<ProgramCategoryDetail['programs']>;
+  getAllPrograms(): Promise<ProgramCategoryDetail["programs"]>;
   getByCategory(category: string): Promise<ProgramCategoryDetail>;
   getByCategoryAndCity(
     category: string,
@@ -136,7 +137,7 @@ export interface SearchRepository {
 }
 
 export interface SearchResult {
-  type: 'university' | 'program' | 'city';
+  type: "university" | "program" | "city";
   id: string;
   slug: string;
   /** Primary label (university name / program slug / city slug) — i18n resolved by the UI. */

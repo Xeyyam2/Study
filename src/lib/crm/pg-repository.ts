@@ -1,5 +1,5 @@
 // src/lib/crm/pg-repository.ts
-import type { Pool, QueryResult, QueryResultRow } from 'pg';
+import type { Pool, QueryResult, QueryResultRow } from "pg";
 import type {
   Application,
   ApplicationDetail,
@@ -22,8 +22,8 @@ import type {
   Profile,
   StudentNotification,
   StudentProfileInput,
-} from '@/types/crm';
-import { NotFoundError, type CrmRepository } from './repositories';
+} from "@/types/crm";
+import { NotFoundError, type CrmRepository } from "./repositories";
 
 function rowToProfile(r: QueryResultRow): Profile {
   return {
@@ -65,7 +65,13 @@ export function createPgCrm(getPool: () => Pool): CrmRepository {
     await q(
       `insert into public.audit_logs (user_id, action, entity, entity_id, metadata)
        values ($1, $2, $3, $4, $5::jsonb)`,
-      [entry.userId, entry.action, entry.entity, entry.entityId ?? null, JSON.stringify(entry.metadata ?? {})],
+      [
+        entry.userId,
+        entry.action,
+        entry.entity,
+        entry.entityId ?? null,
+        JSON.stringify(entry.metadata ?? {}),
+      ],
     );
   };
 
@@ -83,9 +89,14 @@ export function createPgCrm(getPool: () => Pool): CrmRepository {
       }
       if (filter.search) {
         params.push(`%${filter.search}%`);
-        where.push(`(s.full_name ilike $${params.length} or s.email ilike $${params.length} or l.university_id ilike $${params.length})`);
+        where.push(
+          `(s.full_name ilike $${params.length} or s.email ilike $${params.length} or l.university_id ilike $${params.length})`,
+        );
       }
-      const clause = where.length ? `where ${where.join(' and ')}` : '';
+      const clause = where.length ? `where ${where.join(" and ")}` : "";
+      const limit = Math.min(Math.max(filter.limit ?? 200, 1), 500);
+      const offset = Math.max(filter.offset ?? 0, 0);
+      params.push(limit, offset);
       const res = await q(
         `select l.*, s.id s_id, s.full_name s_name, s.email s_email, s.country_code s_country,
                 c.id c_id, c.full_name c_name
@@ -94,12 +105,19 @@ export function createPgCrm(getPool: () => Pool): CrmRepository {
          left join public.profiles c on c.id = l.assigned_consultant_id
          ${clause}
          order by l.created_at desc
-         limit 200`,
+         limit $${params.length - 1} offset $${params.length}`,
         params,
       );
       return res.rows.map((r) => ({
         ...rowToLead(r),
-        student: r.s_id ? { id: r.s_id, fullName: r.s_name, email: r.s_email, countryCode: r.s_country } : null,
+        student: r.s_id
+          ? {
+              id: r.s_id,
+              fullName: r.s_name,
+              email: r.s_email,
+              countryCode: r.s_country,
+            }
+          : null,
         consultant: r.c_id ? { id: r.c_id, fullName: r.c_name } : null,
       }));
     },
@@ -118,11 +136,16 @@ export function createPgCrm(getPool: () => Pool): CrmRepository {
       const r = res.rows[0];
       const [apps, timeline] = await Promise.all([
         this.listApplications(id),
-        this.listAudit({ entity: 'lead', entityId: id, limit: 50 }),
+        this.listAudit({ entity: "lead", entityId: id, limit: 50 }),
       ]);
       return {
         ...rowToLead(r),
-        student: { id: r.s_id, fullName: r.s_name, email: r.s_email, countryCode: r.s_country },
+        student: {
+          id: r.s_id,
+          fullName: r.s_name,
+          email: r.s_email,
+          countryCode: r.s_country,
+        },
         consultant: r.c_id ? { id: r.c_id, fullName: r.c_name } : null,
         applications: apps,
         timeline,
@@ -130,74 +153,136 @@ export function createPgCrm(getPool: () => Pool): CrmRepository {
     },
 
     async createLead(input: NewLeadInput, actorId?: string): Promise<Lead> {
-      const res = await q(
-        `insert into public.leads (user_id, university_id, program_id, source, assigned_consultant_id, notes)
-         values ($1,$2,$3,$4,$5,$6) returning *`,
-        [input.userId, input.universityId, input.programId ?? null, input.source ?? 'website',
-         input.assignedConsultantId ?? null, input.notes ?? ''],
-      );
-      const lead = rowToLead(res.rows[0]);
-      if (actorId) await audit({ userId: actorId, action: 'lead.create', entity: 'lead', entityId: lead.id });
-      return lead;
+      // BE-8: wrap insert + audit in a transaction so a partial failure can't
+      // create a lead with no audit trail.
+      const client = await getPool().connect();
+      try {
+        await client.query("BEGIN");
+        const res = await client.query(
+          `insert into public.leads (user_id, university_id, program_id, source, assigned_consultant_id, notes)
+           values ($1,$2,$3,$4,$5,$6) returning *`,
+          [
+            input.userId,
+            input.universityId,
+            input.programId ?? null,
+            input.source ?? "website",
+            input.assignedConsultantId ?? null,
+            input.notes ?? "",
+          ],
+        );
+        const lead = rowToLead(res.rows[0]);
+        if (actorId) {
+          await client.query(
+            `insert into public.audit_logs (user_id, action, entity, entity_id)
+             values ($1, 'lead.create', 'lead', $2)`,
+            [actorId, lead.id],
+          );
+        }
+        await client.query("COMMIT");
+        return lead;
+      } catch (err) {
+        await client.query("ROLLBACK");
+        throw err;
+      } finally {
+        client.release();
+      }
     },
 
-    async updateLeadStatus(id: string, status: LeadStatus, actorId: string): Promise<Lead> {
+    async updateLeadStatus(
+      id: string,
+      status: LeadStatus,
+      actorId: string,
+    ): Promise<Lead> {
       // 4.2: Wrap status update + audit log in a transaction so a partial
       // failure can't leave the status changed without an audit trail.
       const client = await getPool().connect();
       try {
-        await client.query('BEGIN');
-        const prev = await client.query('select status from public.leads where id = $1', [id]);
-        if (prev.rowCount === 0) throw new NotFoundError('lead', id);
+        await client.query("BEGIN");
+        const prev = await client.query(
+          "select status from public.leads where id = $1",
+          [id],
+        );
+        if (prev.rowCount === 0) throw new NotFoundError("lead", id);
         const from = prev.rows[0].status;
-        const res = await client.query('update public.leads set status = $1 where id = $2 returning *', [status, id]);
+        const res = await client.query(
+          "update public.leads set status = $1 where id = $2 returning *",
+          [status, id],
+        );
         await client.query(
           `insert into public.audit_logs (user_id, action, entity, entity_id, metadata)
            values ($1, 'lead.update_status', 'lead', $2, $3)`,
           [actorId, id, JSON.stringify({ from, to: status })],
         );
-        await client.query('COMMIT');
+        await client.query("COMMIT");
         return rowToLead(res.rows[0]);
       } catch (err) {
-        await client.query('ROLLBACK');
+        await client.query("ROLLBACK");
         throw err;
       } finally {
         client.release();
       }
     },
 
-    async assignConsultant(leadId: string, consultantId: string | null, actorId: string): Promise<Lead> {
+    async assignConsultant(
+      leadId: string,
+      consultantId: string | null,
+      actorId: string,
+    ): Promise<Lead> {
       // B5: wrap assign + audit in a transaction so a partial failure can't
       // leave the lead assigned without an audit trail.
       const client = await getPool().connect();
       try {
-        await client.query('BEGIN');
+        await client.query("BEGIN");
         const res = await client.query(
-          'update public.leads set assigned_consultant_id = $1 where id = $2 returning *',
+          "update public.leads set assigned_consultant_id = $1 where id = $2 returning *",
           [consultantId, leadId],
         );
-        if (res.rowCount === 0) throw new NotFoundError('lead', leadId);
+        if (res.rowCount === 0) throw new NotFoundError("lead", leadId);
         await client.query(
           `insert into public.audit_logs (user_id, action, entity, entity_id, metadata)
            values ($1, 'lead.assign', 'lead', $2, $3)`,
           [actorId, leadId, JSON.stringify({ consultantId })],
         );
-        await client.query('COMMIT');
+        await client.query("COMMIT");
         return rowToLead(res.rows[0]);
       } catch (err) {
-        await client.query('ROLLBACK');
+        await client.query("ROLLBACK");
         throw err;
       } finally {
         client.release();
       }
     },
 
+    async recordFailedLead(payload: unknown, error: string): Promise<void> {
+      // SEC-1: best-effort dead-letter write. If even this fails (DB fully
+      // down), the caller's console.error is the only trace — but the common
+      // case (constraint violation / transient error with DB reachable) is
+      // now durably recoverable.
+      try {
+        await q(
+          "insert into public.leads_dl (payload, error) values ($1::jsonb, $2)",
+          [JSON.stringify(payload ?? null), error],
+        );
+      } catch {
+        // Swallow — dead-letter must never throw back into submitLead's catch.
+      }
+    },
+
     async listApplications(leadId: string): Promise<Application[]> {
-      const res = await q('select * from public.applications where lead_id = $1 order by created_at', [leadId]);
+      const res = await q(
+        "select * from public.applications where lead_id = $1 order by created_at",
+        [leadId],
+      );
       return res.rows.map((r) => ({
-        id: r.id, leadId: r.lead_id, universityId: r.university_id, programId: r.program_id,
-        status: r.status, assignedConsultantId: r.assigned_consultant_id, notes: r.notes,
-        createdAt: r.created_at, updatedAt: r.updated_at,
+        id: r.id,
+        leadId: r.lead_id,
+        universityId: r.university_id,
+        programId: r.program_id,
+        status: r.status,
+        assignedConsultantId: r.assigned_consultant_id,
+        notes: r.notes,
+        createdAt: r.created_at,
+        updatedAt: r.updated_at,
       }));
     },
 
@@ -213,80 +298,149 @@ export function createPgCrm(getPool: () => Pool): CrmRepository {
       const r = res.rows[0];
       const docs = await this.listDocuments(id);
       return {
-        id: r.id, leadId: r.lead_id, universityId: r.university_id, programId: r.program_id,
-        status: r.status, assignedConsultantId: r.assigned_consultant_id, notes: r.notes,
-        createdAt: r.created_at, updatedAt: r.updated_at,
+        id: r.id,
+        leadId: r.lead_id,
+        universityId: r.university_id,
+        programId: r.program_id,
+        status: r.status,
+        assignedConsultantId: r.assigned_consultant_id,
+        notes: r.notes,
+        createdAt: r.created_at,
+        updatedAt: r.updated_at,
         consultant: r.c_id ? { id: r.c_id, fullName: r.c_name } : null,
         documents: docs,
       };
     },
 
-    async updateApplicationStatus(id: string, status: ApplicationStatus, actorId: string): Promise<Application> {
-      const res = await q('update public.applications set status = $1 where id = $2 returning *', [status, id]);
-      if (res.rowCount === 0) throw new NotFoundError('application', id);
-      await audit({ userId: actorId, action: 'application.update_status', entity: 'application', entityId: id, metadata: { to: status } });
-      const r = res.rows[0];
-      return {
-        id: r.id, leadId: r.lead_id, universityId: r.university_id, programId: r.program_id,
-        status: r.status, assignedConsultantId: r.assigned_consultant_id, notes: r.notes,
-        createdAt: r.created_at, updatedAt: r.updated_at,
-      };
+    async updateApplicationStatus(
+      id: string,
+      status: ApplicationStatus,
+      actorId: string,
+    ): Promise<Application> {
+      // BE-8: wrap status update + audit in a transaction.
+      const client = await getPool().connect();
+      try {
+        await client.query("BEGIN");
+        const res = await client.query(
+          "update public.applications set status = $1 where id = $2 returning *",
+          [status, id],
+        );
+        if (res.rowCount === 0) throw new NotFoundError("application", id);
+        await client.query(
+          `insert into public.audit_logs (user_id, action, entity, entity_id, metadata)
+           values ($1, 'application.update_status', 'application', $2, $3)`,
+          [actorId, id, JSON.stringify({ to: status })],
+        );
+        await client.query("COMMIT");
+        const r = res.rows[0];
+        return {
+          id: r.id,
+          leadId: r.lead_id,
+          universityId: r.university_id,
+          programId: r.program_id,
+          status: r.status,
+          assignedConsultantId: r.assigned_consultant_id,
+          notes: r.notes,
+          createdAt: r.created_at,
+          updatedAt: r.updated_at,
+        };
+      } catch (err) {
+        await client.query("ROLLBACK");
+        throw err;
+      } finally {
+        client.release();
+      }
     },
 
     async listDocuments(applicationId: string): Promise<ApplicationDocument[]> {
-      const res = await q('select * from public.application_documents where application_id = $1 order by created_at', [applicationId]);
+      const res = await q(
+        "select * from public.application_documents where application_id = $1 order by created_at",
+        [applicationId],
+      );
       return res.rows.map((r) => ({
-        id: r.id, applicationId: r.application_id, fileName: r.file_name, fileUrl: r.file_url,
-        mimeType: r.mime_type, sizeBytes: r.size_bytes, verified: r.verified,
-        uploadedBy: r.uploaded_by, createdAt: r.created_at,
+        id: r.id,
+        applicationId: r.application_id,
+        fileName: r.file_name,
+        fileUrl: r.file_url,
+        mimeType: r.mime_type,
+        sizeBytes: r.size_bytes,
+        verified: r.verified,
+        uploadedBy: r.uploaded_by,
+        createdAt: r.created_at,
       }));
     },
 
-    async addDocument(input: NewDocumentInput, actorId?: string): Promise<ApplicationDocument> {
+    async addDocument(
+      input: NewDocumentInput,
+      actorId?: string,
+    ): Promise<ApplicationDocument> {
       const res = await q(
         `insert into public.application_documents (application_id, file_name, file_url, mime_type, size_bytes, uploaded_by)
          values ($1,$2,$3,$4,$5,$6) returning *`,
-        [input.applicationId, input.fileName, input.fileUrl, input.mimeType ?? null,
-         input.sizeBytes ?? null, input.uploadedBy ?? actorId ?? null],
+        [
+          input.applicationId,
+          input.fileName,
+          input.fileUrl,
+          input.mimeType ?? null,
+          input.sizeBytes ?? null,
+          input.uploadedBy ?? actorId ?? null,
+        ],
       );
       const r = res.rows[0];
       return {
-        id: r.id, applicationId: r.application_id, fileName: r.file_name, fileUrl: r.file_url,
-        mimeType: r.mime_type, sizeBytes: r.size_bytes, verified: r.verified,
-        uploadedBy: r.uploaded_by, createdAt: r.created_at,
+        id: r.id,
+        applicationId: r.application_id,
+        fileName: r.file_name,
+        fileUrl: r.file_url,
+        mimeType: r.mime_type,
+        sizeBytes: r.size_bytes,
+        verified: r.verified,
+        uploadedBy: r.uploaded_by,
+        createdAt: r.created_at,
       };
     },
 
     async listStaff(): Promise<Profile[]> {
-      const res = await q(`select * from public.profiles where role in ('admin','consultant','editor') order by full_name`);
+      const res = await q(
+        `select * from public.profiles where role in ('admin','consultant','editor') order by full_name`,
+      );
       return res.rows.map(rowToProfile);
     },
 
     async getProfile(id: string): Promise<Profile | null> {
-      const res = await q('select * from public.profiles where id = $1', [id]);
+      const res = await q("select * from public.profiles where id = $1", [id]);
       return res.rowCount ? rowToProfile(res.rows[0]) : null;
     },
 
-    async updateProfileRole(id: string, role: 'admin' | 'consultant', actorId: string): Promise<Profile> {
+    async updateProfileRole(
+      id: string,
+      role: "admin" | "consultant",
+      actorId: string,
+    ): Promise<Profile> {
       // Last active admin protection: count remaining active admins if demoting an admin.
-      if (role !== 'admin') {
-        const current = await q('select role from public.profiles where id = $1', [id]);
-        if (current.rowCount && current.rows[0].role === 'admin') {
-          const adminCount = await q(`select count(*)::int as n from public.profiles where role = 'admin'`);
+      if (role !== "admin") {
+        const current = await q(
+          "select role from public.profiles where id = $1",
+          [id],
+        );
+        if (current.rowCount && current.rows[0].role === "admin") {
+          const adminCount = await q(
+            `select count(*)::int as n from public.profiles where role = 'admin'`,
+          );
           if (adminCount.rows[0].n <= 1) {
-            throw new Error('Cannot demote the last active admin');
+            throw new Error("Cannot demote the last active admin");
           }
         }
       }
       const res = await q(
-        'update public.profiles set role = $1, updated_at = now() where id = $2 returning *',
+        "update public.profiles set role = $1, updated_at = now() where id = $2 returning *",
         [role, id],
       );
-      if (!res.rowCount) throw new NotFoundError('Profile', id);
+      if (!res.rowCount) throw new NotFoundError("Profile", id);
       await audit({
         userId: actorId,
-        action: 'role_change',
-        entity: 'profile',
+        action: "role_change",
+        entity: "profile",
         entityId: id,
         metadata: { newRole: role },
       });
@@ -294,7 +448,9 @@ export function createPgCrm(getPool: () => Pool): CrmRepository {
     },
 
     async listStudents(): Promise<Profile[]> {
-      const res = await q(`select * from public.profiles where role = 'student' order by full_name`);
+      const res = await q(
+        `select * from public.profiles where role = 'student' order by full_name`,
+      );
       return res.rows.map(rowToProfile);
     },
 
@@ -311,7 +467,12 @@ export function createPgCrm(getPool: () => Pool): CrmRepository {
       );
       return res.rows.map((r) => ({
         ...rowToLead(r),
-        student: { id: r.s_id, fullName: r.s_name, email: r.s_email, countryCode: r.s_country },
+        student: {
+          id: r.s_id,
+          fullName: r.s_name,
+          email: r.s_email,
+          countryCode: r.s_country,
+        },
         consultant: r.c_id ? { id: r.c_id, fullName: r.c_name } : null,
       }));
     },
@@ -325,9 +486,15 @@ export function createPgCrm(getPool: () => Pool): CrmRepository {
         [userId],
       );
       return res.rows.map((r) => ({
-        id: r.id, leadId: r.lead_id, universityId: r.university_id, programId: r.program_id,
-        status: r.status, assignedConsultantId: r.assigned_consultant_id, notes: r.notes,
-        createdAt: r.created_at, updatedAt: r.updated_at,
+        id: r.id,
+        leadId: r.lead_id,
+        universityId: r.university_id,
+        programId: r.program_id,
+        status: r.status,
+        assignedConsultantId: r.assigned_consultant_id,
+        notes: r.notes,
+        createdAt: r.created_at,
+        updatedAt: r.updated_at,
       }));
     },
 
@@ -341,9 +508,15 @@ export function createPgCrm(getPool: () => Pool): CrmRepository {
         [userId],
       );
       return res.rows.map((r) => ({
-        id: r.id, applicationId: r.application_id, fileName: r.file_name, fileUrl: r.file_url,
-        mimeType: r.mime_type, sizeBytes: r.size_bytes, verified: r.verified,
-        uploadedBy: r.uploaded_by, createdAt: r.created_at,
+        id: r.id,
+        applicationId: r.application_id,
+        fileName: r.file_name,
+        fileUrl: r.file_url,
+        mimeType: r.mime_type,
+        sizeBytes: r.size_bytes,
+        verified: r.verified,
+        uploadedBy: r.uploaded_by,
+        createdAt: r.created_at,
       }));
     },
 
@@ -357,9 +530,14 @@ export function createPgCrm(getPool: () => Pool): CrmRepository {
         [leadId],
       );
       return res.rows.map((r) => ({
-        id: r.id, leadId: r.lead_id, senderId: r.sender_id, body: r.body,
-        createdAt: r.created_at, readAt: r.read_at,
-        senderName: r.sender_name, senderRole: r.sender_role,
+        id: r.id,
+        leadId: r.lead_id,
+        senderId: r.sender_id,
+        body: r.body,
+        createdAt: r.created_at,
+        readAt: r.read_at,
+        senderName: r.sender_name,
+        senderRole: r.sender_role,
       }));
     },
 
@@ -370,8 +548,12 @@ export function createPgCrm(getPool: () => Pool): CrmRepository {
       );
       const r = res.rows[0];
       return {
-        id: r.id, leadId: r.lead_id, senderId: r.sender_id, body: r.body,
-        createdAt: r.created_at, readAt: r.read_at,
+        id: r.id,
+        leadId: r.lead_id,
+        senderId: r.sender_id,
+        body: r.body,
+        createdAt: r.created_at,
+        readAt: r.read_at,
       };
     },
 
@@ -393,7 +575,10 @@ export function createPgCrm(getPool: () => Pool): CrmRepository {
       return res.rows[0]?.c ?? 0;
     },
 
-    async listNotifications(userId: string, limit = 20): Promise<StudentNotification[]> {
+    async listNotifications(
+      userId: string,
+      limit = 20,
+    ): Promise<StudentNotification[]> {
       const [auditRes, msgRes] = await Promise.all([
         q(
           `select a.id, a.action, a.metadata, a.created_at, l.id lead_id
@@ -417,7 +602,7 @@ export function createPgCrm(getPool: () => Pool): CrmRepository {
       const notes: StudentNotification[] = [
         ...auditRes.rows.map((r): StudentNotification => ({
           id: `audit-${r.id}`,
-          type: r.action === 'lead.assign' ? 'assigned' : 'status_change',
+          type: r.action === "lead.assign" ? "assigned" : "status_change",
           leadId: r.lead_id,
           metadata: r.metadata ?? {},
           createdAt: r.created_at,
@@ -425,34 +610,51 @@ export function createPgCrm(getPool: () => Pool): CrmRepository {
         })),
         ...msgRes.rows.map((r): StudentNotification => ({
           id: `msg-${r.id}`,
-          type: 'message',
+          type: "message",
           leadId: r.lead_id,
           metadata: { senderName: r.sender_name, body: r.body },
           createdAt: r.created_at,
           read: false,
         })),
       ];
-      return notes.sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1)).slice(0, limit);
+      return notes
+        .sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1))
+        .slice(0, limit);
     },
 
-    async addStudentDocument(input: NewDocumentUploadInput): Promise<ApplicationDocument> {
+    async addStudentDocument(
+      input: NewDocumentUploadInput,
+    ): Promise<ApplicationDocument> {
       const res = await q(
         `insert into public.application_documents
            (application_id, file_name, file_url, mime_type, size_bytes, uploaded_by)
          values ($1, $2, $3, $4, $5, $6) returning *`,
-        [input.applicationId, input.fileName, input.filePath, input.mimeType, input.sizeBytes, input.uploadedBy],
+        [
+          input.applicationId,
+          input.fileName,
+          input.filePath,
+          input.mimeType,
+          input.sizeBytes,
+          input.uploadedBy,
+        ],
       );
       const r = res.rows[0];
       await audit({
         userId: input.uploadedBy,
-        action: 'document.create',
-        entity: 'application',
+        action: "document.create",
+        entity: "application",
         entityId: input.applicationId,
       });
       return {
-        id: r.id, applicationId: r.application_id, fileName: r.file_name, fileUrl: r.file_url,
-        mimeType: r.mime_type, sizeBytes: r.size_bytes, verified: r.verified,
-        uploadedBy: r.uploaded_by, createdAt: r.created_at,
+        id: r.id,
+        applicationId: r.application_id,
+        fileName: r.file_name,
+        fileUrl: r.file_url,
+        mimeType: r.mime_type,
+        sizeBytes: r.size_bytes,
+        verified: r.verified,
+        uploadedBy: r.uploaded_by,
+        createdAt: r.created_at,
       };
     },
 
@@ -464,29 +666,46 @@ export function createPgCrm(getPool: () => Pool): CrmRepository {
          values ($1, $2, $3, $4, $5, 'student')
          on conflict (email) do nothing
          returning *`,
-        [input.email, input.fullName, input.phone ?? null, input.whatsapp ?? null, input.countryCode ?? null],
+        [
+          input.email,
+          input.fullName,
+          input.phone ?? null,
+          input.whatsapp ?? null,
+          input.countryCode ?? null,
+        ],
       );
       if (res.rowCount) return rowToProfile(res.rows[0]);
       // Row already existed — fetch it.
-      const found = await q('select * from public.profiles where email = $1', [input.email]);
+      const found = await q("select * from public.profiles where email = $1", [
+        input.email,
+      ]);
       return rowToProfile(found.rows[0]);
     },
 
     async getProfileByAuthUid(authUid: string): Promise<Profile | null> {
-      const res = await q('select * from public.profiles where auth_uid = $1', [authUid]);
+      const res = await q("select * from public.profiles where auth_uid = $1", [
+        authUid,
+      ]);
       return res.rowCount ? rowToProfile(res.rows[0]) : null;
     },
 
-    async upsertStudentByAuthUid(input: { authUid: string; email: string; fullName: string }): Promise<Profile | null> {
-      const byUid = await q('select * from public.profiles where auth_uid = $1', [input.authUid]);
+    async upsertStudentByAuthUid(input: {
+      authUid: string;
+      email: string;
+      fullName: string;
+    }): Promise<Profile | null> {
+      const byUid = await q(
+        "select * from public.profiles where auth_uid = $1",
+        [input.authUid],
+      );
       if (byUid.rowCount) return rowToProfile(byUid.rows[0]);
       // Merge an existing profile by email ONLY if it is a student. Linking to a
       // staff/admin profile here would let an attacker who controls that email
       // bind their auth_uid to a privileged profile and then resolve it via the
       // staff session path (privilege escalation).
       const linked = await q(
-        'update public.profiles set auth_uid = $1 where email = $2 and role = $3 returning *',
-        [input.authUid, input.email, 'student'],
+        "update public.profiles set auth_uid = $1 where email = $2 and role = $3 returning *",
+        [input.authUid, input.email, "student"],
       );
       if (linked.rowCount) return rowToProfile(linked.rows[0]);
       // Email already belongs to a staff profile (or another student): do not
@@ -496,21 +715,29 @@ export function createPgCrm(getPool: () => Pool): CrmRepository {
          values ($1, $2, 'student', $3)
          on conflict (email) do nothing
          returning *`,
-        [input.email, input.fullName || '', input.authUid],
+        [input.email, input.fullName || "", input.authUid],
       );
       return created.rowCount ? rowToProfile(created.rows[0]) : null;
     },
 
-    async getStaffProfileByAuthUid(authUid: string, _email: string): Promise<Profile | null> {
+    async getStaffProfileByAuthUid(
+      authUid: string,
+      _email: string,
+    ): Promise<Profile | null> {
       // Staff must be pre-provisioned with an auth_uid (set by an admin). Resolve
       // by auth_uid ONLY — never auto-link by email, otherwise an attacker who
       // signs up under a staff member's email would gain staff access.
-      const byUid = await q('select * from public.profiles where auth_uid = $1', [authUid]);
+      const byUid = await q(
+        "select * from public.profiles where auth_uid = $1",
+        [authUid],
+      );
       return byUid.rowCount ? rowToProfile(byUid.rows[0]) : null;
     },
 
     async countByStatus(): Promise<Record<string, number>> {
-      const res = await q('select status, count(*)::int c from public.leads group by status');
+      const res = await q(
+        "select status, count(*)::int c from public.leads group by status",
+      );
       const out: Record<string, number> = {};
       for (const r of res.rows) out[r.status] = r.c;
       return out;
@@ -523,23 +750,37 @@ export function createPgCrm(getPool: () => Pool): CrmRepository {
     async listAudit(filter: AuditFilter = {}): Promise<AuditLog[]> {
       const where: string[] = [];
       const params: unknown[] = [];
-      if (filter.entity) { params.push(filter.entity); where.push(`a.entity = $${params.length}`); }
-      if (filter.entityId) { params.push(filter.entityId); where.push(`a.entity_id = $${params.length}`); }
-      if (filter.userId) { params.push(filter.userId); where.push(`a.user_id = $${params.length}`); }
+      if (filter.entity) {
+        params.push(filter.entity);
+        where.push(`a.entity = $${params.length}`);
+      }
+      if (filter.entityId) {
+        params.push(filter.entityId);
+        where.push(`a.entity_id = $${params.length}`);
+      }
+      if (filter.userId) {
+        params.push(filter.userId);
+        where.push(`a.user_id = $${params.length}`);
+      }
       const limit = filter.limit ?? 100;
       params.push(limit);
       const res = await q(
         `select a.*, p.full_name actor_name
          from public.audit_logs a
          left join public.profiles p on p.id = a.user_id
-         ${where.length ? `where ${where.join(' and ')}` : ''}
+         ${where.length ? `where ${where.join(" and ")}` : ""}
          order by a.created_at desc
          limit $${params.length}`,
         params,
       );
       return res.rows.map((r) => ({
-        id: r.id, userId: r.user_id, action: r.action, entity: r.entity,
-        entityId: r.entity_id, metadata: r.metadata ?? {}, createdAt: r.created_at,
+        id: r.id,
+        userId: r.user_id,
+        action: r.action,
+        entity: r.entity,
+        entityId: r.entity_id,
+        metadata: r.metadata ?? {},
+        createdAt: r.created_at,
         actorName: r.actor_name,
       }));
     },

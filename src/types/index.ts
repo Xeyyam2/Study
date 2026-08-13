@@ -1,25 +1,25 @@
-import type { AppLocale } from '@/i18n/routing';
+import type { AppLocale } from "@/i18n/routing";
 
 export type LocalizedString = Partial<Record<AppLocale, string>>;
 
-export type DegreeLevel = 'bachelor' | 'master' | 'phd' | 'associate';
+export type DegreeLevel = "bachelor" | "master" | "phd" | "associate";
 
 export type ProgramCategorySlug =
-  | 'medicine'
-  | 'engineering'
-  | 'computer-science'
-  | 'business'
-  | 'law'
-  | 'architecture'
-  | 'dentistry'
-  | 'arts'
-  | 'social-sciences'
-  | 'health-sciences'
-  | 'natural-sciences'
-  | 'humanities'
-  | 'communication'
-  | 'tourism'
-  | 'agriculture';
+  | "medicine"
+  | "engineering"
+  | "computer-science"
+  | "business"
+  | "law"
+  | "architecture"
+  | "dentistry"
+  | "arts"
+  | "social-sciences"
+  | "health-sciences"
+  | "natural-sciences"
+  | "humanities"
+  | "communication"
+  | "tourism"
+  | "agriculture";
 
 export interface ProgramCategory {
   slug: ProgramCategorySlug;
@@ -60,6 +60,8 @@ export interface University {
   description: LocalizedString;
   languages: string[];
   featured?: boolean;
+  /** ISO timestamp of last content change (sitemap lastmod). */
+  updatedAt?: string;
 }
 
 export interface Program {
@@ -73,16 +75,16 @@ export interface Program {
 
 // Instruction languages taught at Turkish universities. The StudyLeo catalog
 // contains Arabic- and Russian-taught programs, so the union covers all four.
-export type InstructionLanguage = 'tr' | 'en' | 'ar' | 'ru';
+export type InstructionLanguage = "tr" | "en" | "ar" | "ru";
 
 export interface UniversityProgram {
   id: string;
   universityId: string;
   programId: string;
   language: InstructionLanguage;
-  tuitionFee: number;        // discounted (scholarship) price
-  originalFee?: number;      // list price; undefined when no discount
-  currency: 'USD' | 'TRY';
+  tuitionFee: number; // discounted (scholarship) price
+  originalFee?: number; // list price; undefined when no discount
+  currency: "USD" | "TRY";
   scholarshipAvailable: boolean;
 }
 
@@ -99,7 +101,7 @@ export interface Dormitory {
   universityId: string;
   capacity: number;
   pricePerMonth: number;
-  currency: 'USD' | 'TRY';
+  currency: "USD" | "TRY";
   photos: string[];
 }
 
@@ -116,7 +118,7 @@ export interface Review {
   year: number;
 }
 
-export type FaqEntityType = 'university' | 'general';
+export type FaqEntityType = "university" | "general";
 
 export interface Faq {
   id: string;
@@ -137,6 +139,8 @@ export interface BlogPost {
   coverImage: string;
   category: LocalizedString;
   readingMinutes: number;
+  /** ISO timestamp of last content change (Article dateModified, sitemap). */
+  updatedAt?: string;
 }
 
 export interface UniversityFilters {

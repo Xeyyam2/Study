@@ -1,6 +1,6 @@
-import { Pool } from 'pg';
-import { cache } from 'react';
-import { universityLogoImages } from '@/lib/seed/university-images';
+import { Pool } from "pg";
+import { cache } from "react";
+import { universityLogoImages } from "@/lib/seed/university-images";
 import type {
   BlogPost,
   City,
@@ -17,7 +17,7 @@ import type {
   UniversityProgram,
   DegreeLevel,
   InstructionLanguage,
-} from '@/types';
+} from "@/types";
 import type {
   BlogRepository,
   CityRepository,
@@ -31,12 +31,12 @@ import type {
   UniversityRepository,
   UniversityListingMetadata,
   SearchResult,
-} from './repositories';
+} from "./repositories";
 
 type I18n = Record<string, string>;
 
 function i18n(raw: unknown): I18n {
-  if (!raw || typeof raw !== 'object') return {};
+  if (!raw || typeof raw !== "object") return {};
   return raw as I18n;
 }
 
@@ -60,6 +60,7 @@ function rowUniversity(r: Record<string, unknown>): University {
     description: i18n(r.description_i18n),
     languages: (r.languages as string[]) ?? [],
     featured: Boolean(r.featured),
+    updatedAt: r.updated_at ? (r.updated_at as Date).toISOString() : undefined,
   };
 }
 
@@ -86,7 +87,7 @@ function rowCountry(r: Record<string, unknown>): Country {
 
 function rowCategory(r: Record<string, unknown>): ProgramCategory {
   return {
-    slug: r.slug as ProgramCategory['slug'],
+    slug: r.slug as ProgramCategory["slug"],
     name: i18n(r.name_i18n),
     icon: (r.icon as string) || undefined,
   };
@@ -98,7 +99,7 @@ function rowProgram(r: Record<string, unknown>): Program {
     slug: r.slug as string,
     name: i18n(r.name_i18n),
     degreeLevel: r.degree_level as DegreeLevel,
-    categorySlug: r.category_slug as Program['categorySlug'],
+    categorySlug: r.category_slug as Program["categorySlug"],
     durationYears: Number(r.duration_years),
   };
 }
@@ -111,7 +112,7 @@ function rowUniversityProgram(r: Record<string, unknown>): UniversityProgram {
     language: r.language as InstructionLanguage,
     tuitionFee: Number(r.tuition_fee),
     originalFee: r.original_fee == null ? undefined : Number(r.original_fee),
-    currency: r.currency as 'USD' | 'TRY',
+    currency: r.currency as "USD" | "TRY",
     scholarshipAvailable: Boolean(r.scholarship_available),
   };
 }
@@ -126,7 +127,7 @@ function mapProgramItem(r: Record<string, unknown>) {
     slug: r.p_slug as string,
     name: i18n(r.p_name),
     degreeLevel: r.p_degree as DegreeLevel,
-    categorySlug: r.p_category as Program['categorySlug'],
+    categorySlug: r.p_category as Program["categorySlug"],
     durationYears: Number(r.p_duration),
     university: {
       id: r.u_id as string,
@@ -158,7 +159,8 @@ function mapProgramItem(r: Record<string, unknown>) {
         : undefined,
     },
     tuitionFee: Number(r.up_tuition_fee),
-    originalFee: r.up_original_fee == null ? undefined : Number(r.up_original_fee),
+    originalFee:
+      r.up_original_fee == null ? undefined : Number(r.up_original_fee),
     language: r.up_language as InstructionLanguage,
     scholarshipAvailable: Boolean(r.up_scholarship),
   };
@@ -227,7 +229,7 @@ function rowReview(r: Record<string, unknown>): Review {
 function rowFaq(r: Record<string, unknown>): Faq {
   return {
     id: r.id as string,
-    entityType: r.entity_type as Faq['entityType'],
+    entityType: r.entity_type as Faq["entityType"],
     entityId: r.entity_id as string,
     question: i18n(r.question_i18n),
     answer: i18n(r.answer_i18n),
@@ -246,6 +248,7 @@ function rowBlogPost(r: Record<string, unknown>): BlogPost {
     coverImage: r.cover_image as string,
     category: i18n(r.category_i18n),
     readingMinutes: Number(r.reading_minutes),
+    updatedAt: r.updated_at ? (r.updated_at as Date).toISOString() : undefined,
   };
 }
 
@@ -256,11 +259,13 @@ export function createPgDataLayer(getPool: () => Pool): DataLayer {
       const params: unknown[] = [];
       let pi = 1;
       if (filters.citySlug) {
-        where.push(`u.city_id = (select id from public.cities where slug = $${pi})`);
+        where.push(
+          `u.city_id = (select id from public.cities where slug = $${pi})`,
+        );
         params.push(filters.citySlug);
         pi++;
       }
-      if (typeof filters.isState === 'boolean') {
+      if (typeof filters.isState === "boolean") {
         where.push(`u.is_state = $${pi}`);
         params.push(filters.isState);
         pi++;
@@ -287,14 +292,15 @@ export function createPgDataLayer(getPool: () => Pool): DataLayer {
       }
       // Min USD tədris haqqı — korrelyasiyalı subquery (filtr SQL-də tətbiq olunur, N+1 yoxdur).
       const minTuitionExpr = `(select min(tuition_fee) filter (where currency='USD' and tuition_fee > 0) from public.university_programs up where up.university_id = u.id)`;
-      const wantMaxTuition = filters.maxTuitionUSD !== undefined && filters.maxTuitionUSD > 0;
+      const wantMaxTuition =
+        filters.maxTuitionUSD !== undefined && filters.maxTuitionUSD > 0;
 
       let sql = `select u.*`;
       if (wantMaxTuition) sql += `, ${minTuitionExpr} as _min_tuition`;
       sql += ` from public.universities u`;
-      if (where.length) sql += ` where ` + where.join(' and ');
+      if (where.length) sql += ` where ` + where.join(" and ");
       if (wantMaxTuition) {
-        sql += `${where.length ? ' and ' : ' where '}${minTuitionExpr} is not null and ${minTuitionExpr} <= $${pi}`;
+        sql += `${where.length ? " and " : " where "}${minTuitionExpr} is not null and ${minTuitionExpr} <= $${pi}`;
         params.push(filters.maxTuitionUSD as number);
       }
       sql += ` order by u.name`;
@@ -311,19 +317,27 @@ export function createPgDataLayer(getPool: () => Pool): DataLayer {
     },
 
     async getBySlug(slug: string): Promise<University | null> {
-      const res = await getPool().query(`select * from public.universities where slug = $1`, [slug]);
+      const res = await getPool().query(
+        `select * from public.universities where slug = $1`,
+        [slug],
+      );
       return res.rows[0] ? rowUniversity(res.rows[0]) : null;
     },
 
     // B6: React.cache deduplicates getDetail calls within a single request —
     // generateMetadata and the page component both call it for the same slug.
     getDetail: cache(async (slug: string): Promise<UniversityDetail | null> => {
-      const uniRes = await getPool().query(`select * from public.universities where slug = $1`, [slug]);
+      const uniRes = await getPool().query(
+        `select * from public.universities where slug = $1`,
+        [slug],
+      );
       const uni = uniRes.rows[0] ? rowUniversity(uniRes.rows[0]) : null;
       if (!uni) return null;
       // B6: run the four dependent queries in parallel instead of serially.
       const [cityRes, upRes, scholarshipsRes, dormRes] = await Promise.all([
-        getPool().query(`select * from public.cities where id = $1`, [uni.cityId]),
+        getPool().query(`select * from public.cities where id = $1`, [
+          uni.cityId,
+        ]),
         getPool().query(
           `select up.*, p.slug p_slug, p.name_i18n p_name, p.degree_level p_degree, p.category_slug p_category, p.duration_years p_duration
            from public.university_programs up
@@ -349,7 +363,7 @@ export function createPgDataLayer(getPool: () => Pool): DataLayer {
           slug: r.p_slug as string,
           name: i18n(r.p_name),
           degreeLevel: r.p_degree as DegreeLevel,
-          categorySlug: r.p_category as Program['categorySlug'],
+          categorySlug: r.p_category as Program["categorySlug"],
           durationYears: Number(r.p_duration),
         },
       }));
@@ -363,7 +377,7 @@ export function createPgDataLayer(getPool: () => Pool): DataLayer {
           universityId: r.university_id as string,
           capacity: Number(r.capacity),
           pricePerMonth: Number(r.price_per_month),
-          currency: r.currency as 'USD' | 'TRY',
+          currency: r.currency as "USD" | "TRY",
           photos: (r.photos as string[]) ?? [],
         })),
       };
@@ -372,15 +386,22 @@ export function createPgDataLayer(getPool: () => Pool): DataLayer {
     async getRelated(slug: string, limit = 3): Promise<University[]> {
       const current = await this.getBySlug(slug);
       if (!current) return [];
-      const sameCity = await getPool().query(
-        `select * from public.universities where city_id = $1 and id <> $2 order by ranking limit $3`,
-        [current.cityId, current.id, limit],
-      );
-      const others = await getPool().query(
-        `select * from public.universities where city_id <> $1 and id <> $2 order by ranking limit $3`,
-        [current.cityId, current.id, limit],
-      );
-      return [...sameCity.rows.map(rowUniversity), ...others.rows.map(rowUniversity)].slice(0, limit);
+      // BE-6: run the same-city and other-city lookups in parallel instead of
+      // sequentially (2 round-trips → 1 round-trip window).
+      const [sameCity, others] = await Promise.all([
+        getPool().query(
+          `select * from public.universities where city_id = $1 and id <> $2 order by ranking limit $3`,
+          [current.cityId, current.id, limit],
+        ),
+        getPool().query(
+          `select * from public.universities where city_id <> $1 and id <> $2 order by ranking limit $3`,
+          [current.cityId, current.id, limit],
+        ),
+      ]);
+      return [
+        ...sameCity.rows.map(rowUniversity),
+        ...others.rows.map(rowUniversity),
+      ].slice(0, limit);
     },
 
     async getMinTuitionUSD(universityId: string): Promise<number> {
@@ -391,13 +412,18 @@ export function createPgDataLayer(getPool: () => Pool): DataLayer {
       return Number(res.rows[0]?.m ?? 0);
     },
 
-    async getRating(universityId: string): Promise<{ rating: number; count: number }> {
+    async getRating(
+      universityId: string,
+    ): Promise<{ rating: number; count: number }> {
       const res = await getPool().query(
         `select coalesce(avg(rating), 0) avg, count(*)::int c from public.reviews where university_id = $1`,
         [universityId],
       );
       const avg = Number(res.rows[0]?.avg ?? 0);
-      return { rating: Math.round(avg * 10) / 10, count: Number(res.rows[0]?.c ?? 0) };
+      return {
+        rating: Math.round(avg * 10) / 10,
+        count: Number(res.rows[0]?.c ?? 0),
+      };
     },
 
     async getListingMetadata(
@@ -406,10 +432,15 @@ export function createPgDataLayer(getPool: () => Pool): DataLayer {
       if (!universityIds.length) return new Map();
       const res = await getPool().query(
         `with tuition as (
-               select university_id, min(tuition_fee) filter (where currency = 'USD' and tuition_fee > 0) min_tuition
+               select distinct on (university_id)
+                      university_id,
+                      tuition_fee min_tuition,
+                      original_fee
                from public.university_programs
                where university_id = any($1::text[])
-               group by university_id
+                 and currency = 'USD'
+                 and tuition_fee > 0
+               order by university_id, tuition_fee asc, id asc
              ), review_stats as (
                select university_id, avg(rating) avg_rating, count(*)::int review_count
                from public.reviews
@@ -419,6 +450,7 @@ export function createPgDataLayer(getPool: () => Pool): DataLayer {
          select u.id,
                 c.id city_id, c.slug city_slug, c.country_code city_country_code, c.name_i18n city_name_i18n,
                 tuition.min_tuition,
+                tuition.original_fee,
                 coalesce(review_stats.avg_rating, 0) avg_rating,
                 coalesce(review_stats.review_count, 0) review_count
          from public.universities u
@@ -440,7 +472,14 @@ export function createPgDataLayer(getPool: () => Pool): DataLayer {
                 name: i18n(row.city_name_i18n),
               }
             : null,
-          minTuitionUSD: row.min_tuition == null ? undefined : Number(row.min_tuition),
+          minTuitionUSD:
+            row.min_tuition == null ? undefined : Number(row.min_tuition),
+          originalFeeUSD:
+            row.original_fee != null &&
+            row.min_tuition != null &&
+            Number(row.original_fee) > Number(row.min_tuition)
+              ? Number(row.original_fee)
+              : undefined,
           rating: Math.round(Number(row.avg_rating ?? 0) * 10) / 10,
           count: Number(row.review_count ?? 0),
         });
@@ -451,11 +490,16 @@ export function createPgDataLayer(getPool: () => Pool): DataLayer {
 
   const cities: CityRepository = {
     async list(): Promise<City[]> {
-      const res = await getPool().query(`select * from public.cities order by slug`);
+      const res = await getPool().query(
+        `select * from public.cities order by slug`,
+      );
       return res.rows.map(rowCity);
     },
     async getBySlug(slug: string): Promise<City | null> {
-      const res = await getPool().query(`select * from public.cities where slug = $1`, [slug]);
+      const res = await getPool().query(
+        `select * from public.cities where slug = $1`,
+        [slug],
+      );
       return res.rows[0] ? rowCity(res.rows[0]) : null;
     },
     async getByUniversityId(universityId: string): Promise<City | null> {
@@ -469,22 +513,31 @@ export function createPgDataLayer(getPool: () => Pool): DataLayer {
 
   const countries: CountryRepository = {
     async list(): Promise<Country[]> {
-      const res = await getPool().query(`select * from public.countries order by slug`);
+      const res = await getPool().query(
+        `select * from public.countries order by slug`,
+      );
       return res.rows.map(rowCountry);
     },
     async getBySlug(slug: string): Promise<Country | null> {
-      const res = await getPool().query(`select * from public.countries where slug = $1`, [slug]);
+      const res = await getPool().query(
+        `select * from public.countries where slug = $1`,
+        [slug],
+      );
       return res.rows[0] ? rowCountry(res.rows[0]) : null;
     },
   };
 
   const programs: ProgramRepository = {
     async list(): Promise<Program[]> {
-      const res = await getPool().query(`select * from public.programs order by slug`);
+      const res = await getPool().query(
+        `select * from public.programs order by slug`,
+      );
       return res.rows.map(rowProgram);
     },
     async getCategories(): Promise<ProgramCategory[]> {
-      const res = await getPool().query(`select * from public.program_categories order by slug`);
+      const res = await getPool().query(
+        `select * from public.program_categories order by slug`,
+      );
       return res.rows.map(rowCategory);
     },
     async getCombinations(): Promise<ProgramCombination[]> {
@@ -500,7 +553,7 @@ export function createPgDataLayer(getPool: () => Pool): DataLayer {
          group by p.category_slug, c.slug`,
       );
       return res.rows.map((r) => ({
-        categorySlug: r.category_slug as ProgramCombination['categorySlug'],
+        categorySlug: r.category_slug as ProgramCombination["categorySlug"],
         citySlug: r.city_slug as string,
         programIds: (r.program_ids as string[]) ?? [],
         universityCount: Number(r.university_count),
@@ -508,7 +561,7 @@ export function createPgDataLayer(getPool: () => Pool): DataLayer {
       }));
     },
     async getAllPrograms(): Promise<
-      import('@/lib/data/repositories').ProgramCategoryDetail['programs']
+      import("@/lib/data/repositories").ProgramCategoryDetail["programs"]
     > {
       const itemsRes = await getPool().query(
         `select up.id up_id, up.university_id up_university_id, up.program_id up_program_id,
@@ -529,7 +582,7 @@ export function createPgDataLayer(getPool: () => Pool): DataLayer {
     },
     async getByCategory(
       category: string,
-    ): Promise<import('@/lib/data/repositories').ProgramCategoryDetail> {
+    ): Promise<import("@/lib/data/repositories").ProgramCategoryDetail> {
       const catRes = await getPool().query(
         `select * from public.program_categories where slug = $1`,
         [category],
@@ -568,12 +621,24 @@ export function createPgDataLayer(getPool: () => Pool): DataLayer {
       };
     },
     async getByCategoryAndCity(category: string, citySlug: string) {
-      const catRes = await getPool().query(`select * from public.program_categories where slug = $1`, [category]);
-      const cityRes = await getPool().query(`select * from public.cities where slug = $1`, [citySlug]);
+      const catRes = await getPool().query(
+        `select * from public.program_categories where slug = $1`,
+        [category],
+      );
+      const cityRes = await getPool().query(
+        `select * from public.cities where slug = $1`,
+        [citySlug],
+      );
       const cat = catRes.rows[0] ? rowCategory(catRes.rows[0]) : null;
       const city = cityRes.rows[0] ? rowCity(cityRes.rows[0]) : null;
       if (!city) {
-        return { category: cat, city: null, programs: [], universityCount: 0, minTuitionUSD: 0 };
+        return {
+          category: cat,
+          city: null,
+          programs: [],
+          universityCount: 0,
+          minTuitionUSD: 0,
+        };
       }
       const itemsRes = await getPool().query(
         `select up.id up_id, up.university_id up_university_id, up.program_id up_program_id,
@@ -609,7 +674,7 @@ export function createPgDataLayer(getPool: () => Pool): DataLayer {
          join public.programs p on p.id = up.program_id
          join public.universities u on u.id = up.university_id
          join public.cities c on c.id = u.city_id` +
-        (where.length ? ` where ${where.join(' and ')}` : '');
+        (where.length ? ` where ${where.join(" and ")}` : "");
       const res = await getPool().query(sql, params);
       return Number(res.rows[0]?.c ?? 0);
     },
@@ -620,7 +685,7 @@ export function createPgDataLayer(getPool: () => Pool): DataLayer {
     ) {
       const offset = (page - 1) * perPage;
       const { where, params } = buildProgramListingWhere(filters);
-      const whereSql = where.length ? ` where ${where.join(' and ')}` : '';
+      const whereSql = where.length ? ` where ${where.join(" and ")}` : "";
       // B1: Single query with count(*) over() window function — eliminates
       // the separate count query (was 2 round-trips, now 1).
       const res = await getPool().query(
@@ -655,14 +720,19 @@ export function createPgDataLayer(getPool: () => Pool): DataLayer {
 
   const reviews: ReviewRepository = {
     async byUniversity(universityId: string): Promise<Review[]> {
-      const res = await getPool().query(`select * from public.reviews where university_id = $1 order by year desc`, [universityId]);
+      const res = await getPool().query(
+        `select * from public.reviews where university_id = $1 order by year desc`,
+        [universityId],
+      );
       return res.rows.map(rowReview);
     },
   };
 
   const faqs: FaqRepository = {
     async general(): Promise<Faq[]> {
-      const res = await getPool().query(`select * from public.faqs where entity_type = 'general'`);
+      const res = await getPool().query(
+        `select * from public.faqs where entity_type = 'general'`,
+      );
       return res.rows.map(rowFaq);
     },
     async byUniversity(universityId: string): Promise<Faq[]> {
@@ -676,18 +746,26 @@ export function createPgDataLayer(getPool: () => Pool): DataLayer {
 
   const scholarships: ScholarshipRepository = {
     async byUniversity(universityId: string): Promise<Scholarship[]> {
-      const res = await getPool().query(`select * from public.scholarships where university_id = $1`, [universityId]);
+      const res = await getPool().query(
+        `select * from public.scholarships where university_id = $1`,
+        [universityId],
+      );
       return res.rows.map(rowScholarship);
     },
   };
 
   const blog: BlogRepository = {
     async list(): Promise<BlogPost[]> {
-      const res = await getPool().query(`select * from public.blog_posts order by published_at desc`);
+      const res = await getPool().query(
+        `select * from public.blog_posts order by published_at desc`,
+      );
       return res.rows.map(rowBlogPost);
     },
     async getBySlug(slug: string): Promise<BlogPost | null> {
-      const res = await getPool().query(`select * from public.blog_posts where slug = $1`, [slug]);
+      const res = await getPool().query(
+        `select * from public.blog_posts where slug = $1`,
+        [slug],
+      );
       return res.rows[0] ? rowBlogPost(res.rows[0]) : null;
     },
   };
@@ -729,7 +807,7 @@ export function createPgDataLayer(getPool: () => Pool): DataLayer {
         [q, limit],
       );
       return res.rows.map((r) => ({
-        type: r.type as SearchResult['type'],
+        type: r.type as SearchResult["type"],
         id: r.id as string,
         slug: r.slug as string,
         label: r.label as string,
@@ -739,5 +817,15 @@ export function createPgDataLayer(getPool: () => Pool): DataLayer {
     },
   };
 
-  return { universities, cities, countries, programs, reviews, faqs, scholarships, blog, search };
+  return {
+    universities,
+    cities,
+    countries,
+    programs,
+    reviews,
+    faqs,
+    scholarships,
+    blog,
+    search,
+  };
 }

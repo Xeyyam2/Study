@@ -1,13 +1,13 @@
-import Image from 'next/image';
-import { MapPin, BadgeCheck, Star } from 'lucide-react';
-import type { University } from '@/types';
-import type { AppLocale } from '@/i18n/routing';
-import type { UniversityListingMetadata } from '@/lib/data/repositories';
-import { data } from '@/lib/data';
-import { cn, formatCurrency } from '@/lib/utils';
-import { Link } from '@/i18n/navigation';
-import { Card } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+import Image from "next/image";
+import { MapPin, BadgeCheck, Star } from "lucide-react";
+import type { University } from "@/types";
+import type { AppLocale } from "@/i18n/routing";
+import type { UniversityListingMetadata } from "@/lib/data/repositories";
+import { data } from "@/lib/data";
+import { cn, formatCurrency } from "@/lib/utils";
+import { Link } from "@/i18n/navigation";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
 interface UniversityCardLabels {
   verified: string;
@@ -33,14 +33,14 @@ interface UniversityCardProps {
 }
 
 const DEFAULT_LABELS: UniversityCardLabels = {
-  verified: 'YÖK',
-  state: 'State',
-  private: 'Private',
-  turkey: 'Turkey',
-  from: 'from',
-  tuition: 'Tuition',
-  rank: 'Rank',
-  founded: 'Founded',
+  verified: "YÖK",
+  state: "State",
+  private: "Private",
+  turkey: "Turkey",
+  from: "from",
+  tuition: "Tuition",
+  rank: "Rank",
+  founded: "Founded",
 };
 
 export async function UniversityCard({
@@ -48,31 +48,31 @@ export async function UniversityCard({
   locale,
   priority,
   minTuition: suppliedMinTuition,
-  originalFee,
+  originalFee: suppliedOriginalFee,
   listingMetadata,
   labels = DEFAULT_LABELS,
   footer,
 }: UniversityCardProps) {
-  const [city, minTuition, rating, count] = listingMetadata
+  const [city, minTuition, originalFee, rating, count] = listingMetadata
     ? [
         listingMetadata.city,
         suppliedMinTuition ?? listingMetadata.minTuitionUSD,
+        suppliedOriginalFee ?? listingMetadata.originalFeeUSD,
         listingMetadata.rating,
         listingMetadata.count,
       ]
     : // C7: batch the per-card metadata into one query (getListingMetadata)
       // instead of three separate calls (city + minTuition + rating).
-      await data.universities
-        .getListingMetadata([university.id])
-        .then((m) => {
-          const meta = m.get(university.id);
-          return [
-            meta?.city ?? null,
-            suppliedMinTuition ?? meta?.minTuitionUSD,
-            meta?.rating ?? 0,
-            meta?.count ?? 0,
-          ] as const;
-        });
+      await data.universities.getListingMetadata([university.id]).then((m) => {
+        const meta = m.get(university.id);
+        return [
+          meta?.city ?? null,
+          suppliedMinTuition ?? meta?.minTuitionUSD,
+          suppliedOriginalFee ?? meta?.originalFeeUSD,
+          meta?.rating ?? 0,
+          meta?.count ?? 0,
+        ] as const;
+      });
 
   return (
     <Link
@@ -108,7 +108,7 @@ export async function UniversityCard({
             <h3 className="font-display text-base font-semibold leading-snug text-foreground">
               {university.name}
             </h3>
-            <Badge variant={university.isState ? 'tertiary' : 'cta'}>
+            <Badge variant={university.isState ? "tertiary" : "cta"}>
               {university.isState ? labels.state : labels.private}
             </Badge>
           </div>
@@ -133,17 +133,20 @@ export async function UniversityCard({
               label={labels.tuition}
               value={
                 minTuition
-                  ? `${labels.from} ${formatCurrency(minTuition, 'USD', locale)}`
-                  : '—'
+                  ? `${labels.from} ${formatCurrency(minTuition, "USD", locale)}`
+                  : "—"
               }
               sub={
                 originalFee && minTuition && originalFee > minTuition
-                  ? formatCurrency(originalFee, 'USD', locale)
+                  ? formatCurrency(originalFee, "USD", locale)
                   : undefined
               }
             />
             <Stat label={labels.rank} value={`#${university.ranking}`} />
-            <Stat label={labels.founded} value={String(university.foundedYear)} />
+            <Stat
+              label={labels.founded}
+              value={String(university.foundedYear)}
+            />
           </div>
 
           {footer}
@@ -163,16 +166,16 @@ function Stat({
   sub?: string;
 }) {
   return (
-    <div className={cn('space-y-0.5')}>
+    <div className={cn("space-y-0.5")}>
       <div className="truncate text-xs font-semibold text-foreground">
         {value}
         {sub && (
-          <span className="ms-1 text-[10px] font-normal text-muted-foreground line-through">
+          <span className="ms-1 text-xs font-normal text-muted-foreground line-through">
             {sub}
           </span>
         )}
       </div>
-      <div className="text-[10px] uppercase tracking-wide text-muted-foreground">
+      <div className="text-xs uppercase tracking-wide text-muted-foreground">
         {label}
       </div>
     </div>

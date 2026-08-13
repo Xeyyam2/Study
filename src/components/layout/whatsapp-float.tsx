@@ -1,12 +1,26 @@
-'use client';
+"use client";
 
-import { siteConfig } from '@/config/site';
-import { usePathname } from 'next/navigation';
+import { siteConfig } from "@/config/site";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+import { cn } from "@/lib/utils";
 
 export function FloatingChatButtons() {
   const pathname = usePathname();
+  const [chatOpen, setChatOpen] = useState(false);
 
-  if (pathname.startsWith('/admin')) {
+  useEffect(() => {
+    const onChatOpenChange = (event: Event) => {
+      const detail = (event as CustomEvent<{ open?: boolean }>).detail;
+      setChatOpen(Boolean(detail?.open));
+    };
+    window.addEventListener("studyhub:chat-open-change", onChatOpenChange);
+    return () => {
+      window.removeEventListener("studyhub:chat-open-change", onChatOpenChange);
+    };
+  }, []);
+
+  if (pathname.startsWith("/admin")) {
     return null;
   }
 
@@ -15,7 +29,12 @@ export function FloatingChatButtons() {
   const telegramHref = siteConfig.contact.telegram.url;
 
   return (
-    <div className="fixed bottom-28 start-6 z-50 flex flex-col gap-3">
+    <div
+      className={cn(
+        "fixed z-50 flex flex-col gap-3 transition-[inset] duration-200",
+        chatOpen ? "bottom-5 end-5" : "bottom-28 start-6",
+      )}
+    >
       <a
         href={whatsappHref}
         target="_blank"

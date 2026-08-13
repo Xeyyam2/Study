@@ -1,20 +1,20 @@
-'use client';
+"use client";
 
-import { useMemo, useState } from 'react';
-import { useTranslations } from 'next-intl';
-import { Calculator } from 'lucide-react';
+import { useMemo, useState } from "react";
+import { useLocale, useTranslations } from "next-intl";
+import { Calculator } from "lucide-react";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+} from "@/components/ui/select";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-type Tier = 'state' | 'mid' | 'premium';
-type CityTier = 'istanbul' | 'ankara' | 'other';
-type Lifestyle = 'modest' | 'balanced' | 'comfortable';
+type Tier = "state" | "mid" | "premium";
+type CityTier = "istanbul" | "ankara" | "other";
+type Lifestyle = "modest" | "balanced" | "comfortable";
 
 const tuitionByTier: Record<Tier, number> = {
   state: 1500,
@@ -35,16 +35,22 @@ const livingByLifestyle: Record<Lifestyle, number> = {
 };
 
 export function CostCalculator() {
-  const t = useTranslations('HomePage.calculator');
-  const [tier, setTier] = useState<Tier>('mid');
-  const [city, setCity] = useState<CityTier>('istanbul');
-  const [lifestyle, setLifestyle] = useState<Lifestyle>('balanced');
+  const t = useTranslations("HomePage.calculator");
+  const locale = useLocale();
+  const [tier, setTier] = useState<Tier>("mid");
+  const [city, setCity] = useState<CityTier>("istanbul");
+  const [lifestyle, setLifestyle] = useState<Lifestyle>("balanced");
 
   const { tuition, rentYear, livingYear, total } = useMemo(() => {
     const tuition = tuitionByTier[tier];
     const rentYear = rentByCity[city] * 12;
     const livingYear = livingByLifestyle[lifestyle] * 12;
-    return { tuition, rentYear, livingYear, total: tuition + rentYear + livingYear };
+    return {
+      tuition,
+      rentYear,
+      livingYear,
+      total: tuition + rentYear + livingYear,
+    };
   }, [tier, city, lifestyle]);
 
   return (
@@ -52,41 +58,44 @@ export function CostCalculator() {
       <div className="container-page grid items-start gap-8 lg:grid-cols-2">
         <div>
           <p className="font-display text-sm font-semibold uppercase tracking-wide text-cta">
-            {t('eyebrow')}
+            {t("eyebrow")}
           </p>
           <h2 className="mt-2 font-display text-headline-xl text-foreground">
-            {t('title')}
+            {t("title")}
           </h2>
-          <p className="mt-3 max-w-md text-muted-foreground">{t('subtitle')}</p>
+          <p className="mt-3 max-w-md text-muted-foreground">{t("subtitle")}</p>
 
           <div className="mt-8 space-y-5">
-            <Field label={t('tier')}>
+            <Field label={t("tier")}>
               <Select value={tier} onValueChange={(v) => setTier(v as Tier)}>
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="state">{t('tierState')}</SelectItem>
-                  <SelectItem value="mid">{t('tierMid')}</SelectItem>
-                  <SelectItem value="premium">{t('tierPremium')}</SelectItem>
+                  <SelectItem value="state">{t("tierState")}</SelectItem>
+                  <SelectItem value="mid">{t("tierMid")}</SelectItem>
+                  <SelectItem value="premium">{t("tierPremium")}</SelectItem>
                 </SelectContent>
               </Select>
             </Field>
 
-            <Field label={t('city')}>
-              <Select value={city} onValueChange={(v) => setCity(v as CityTier)}>
+            <Field label={t("city")}>
+              <Select
+                value={city}
+                onValueChange={(v) => setCity(v as CityTier)}
+              >
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="istanbul">{t('cityIstanbul')}</SelectItem>
-                  <SelectItem value="ankara">{t('cityAnkara')}</SelectItem>
-                  <SelectItem value="other">{t('cityOther')}</SelectItem>
+                  <SelectItem value="istanbul">{t("cityIstanbul")}</SelectItem>
+                  <SelectItem value="ankara">{t("cityAnkara")}</SelectItem>
+                  <SelectItem value="other">{t("cityOther")}</SelectItem>
                 </SelectContent>
               </Select>
             </Field>
 
-            <Field label={t('lifestyle')}>
+            <Field label={t("lifestyle")}>
               <Select
                 value={lifestyle}
                 onValueChange={(v) => setLifestyle(v as Lifestyle)}
@@ -95,12 +104,12 @@ export function CostCalculator() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="modest">{t('lifestyleModest')}</SelectItem>
+                  <SelectItem value="modest">{t("lifestyleModest")}</SelectItem>
                   <SelectItem value="balanced">
-                    {t('lifestyleBalanced')}
+                    {t("lifestyleBalanced")}
                   </SelectItem>
                   <SelectItem value="comfortable">
-                    {t('lifestyleComfortable')}
+                    {t("lifestyleComfortable")}
                   </SelectItem>
                 </SelectContent>
               </Select>
@@ -112,24 +121,30 @@ export function CostCalculator() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Calculator className="h-5 w-5 text-primary" />
-              {t('result')}
+              {t("result")}
             </CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
-            <Row label={t('tuition')} value={formatCurrency(tuition)} />
-            <Row label={t('accommodation')} value={formatCurrency(rentYear)} />
-            <Row label={t('living')} value={formatCurrency(livingYear)} />
+            <Row label={t("tuition")} value={formatCurrency(tuition, locale)} />
+            <Row
+              label={t("accommodation")}
+              value={formatCurrency(rentYear, locale)}
+            />
+            <Row
+              label={t("living")}
+              value={formatCurrency(livingYear, locale)}
+            />
             <div className="border-t border-border pt-4">
               <div className="flex items-center justify-between">
                 <span className="font-display font-semibold text-foreground">
-                  {t('yearlyTotal')}
+                  {t("yearlyTotal")}
                 </span>
                 <span className="font-display text-2xl font-bold text-primary tabular-nums">
-                  {formatCurrency(total)}
+                  {formatCurrency(total, locale)}
                 </span>
               </div>
               <p className="mt-1 text-xs text-muted-foreground">
-                {t('disclaimer')}
+                {t("disclaimer")}
               </p>
             </div>
           </CardContent>
@@ -165,10 +180,10 @@ function Row({ label, value }: { label: string; value: string }) {
   );
 }
 
-function formatCurrency(amount: number) {
-  return new Intl.NumberFormat('en', {
-    style: 'currency',
-    currency: 'USD',
+function formatCurrency(amount: number, locale: string) {
+  return new Intl.NumberFormat(locale, {
+    style: "currency",
+    currency: "USD",
     maximumFractionDigits: 0,
   }).format(amount);
 }

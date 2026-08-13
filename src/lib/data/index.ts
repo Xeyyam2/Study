@@ -1,7 +1,7 @@
-import { Pool } from 'pg';
-import { createSeedDataLayer } from './seed-repository';
-import { createPgDataLayer } from './pg-data-repository';
-import type { DataLayer } from './repositories';
+import { getPool } from "@/lib/db";
+import { createSeedDataLayer } from "./seed-repository";
+import { createPgDataLayer } from "./pg-data-repository";
+import type { DataLayer } from "./repositories";
 
 /**
  * Single data-access entry point.
@@ -10,19 +10,8 @@ import type { DataLayer } from './repositories';
  * public read layer uses a Postgres-backed repository seeded from `src/lib/seed`.
  * Otherwise it falls back to the in-memory seed layer (useful for quick tests).
  */
-let _pool: Pool | null = null;
-export function getSharedPool(): Pool {
-  if (!_pool) {
-    if (!process.env.DATABASE_URL) throw new Error('DATABASE_URL is not set');
-    const max = Number(process.env.PGPOOL_MAX ?? 2);
-    _pool = new Pool({ connectionString: process.env.DATABASE_URL, max });
-    // 4.1: Prevent unhandled EventEmitter errors from crashing the process.
-    _pool.on('error', (err) => {
-      console.error('[data pool error]', err);
-    });
-  }
-  return _pool;
-}
+// BE-1: one shared pool for the whole app (see src/lib/db.ts).
+export const getSharedPool = getPool;
 
 function createDataLayer(): DataLayer {
   if (process.env.DATABASE_URL) return createPgDataLayer(getSharedPool);
@@ -31,7 +20,7 @@ function createDataLayer(): DataLayer {
 
 export const data: DataLayer = createDataLayer();
 
-export type { DataLayer } from './repositories';
+export type { DataLayer } from "./repositories";
 export type {
   UniversityRepository,
   CityRepository,
@@ -41,4 +30,4 @@ export type {
   FaqRepository,
   ScholarshipRepository,
   BlogRepository,
-} from './repositories';
+} from "./repositories";

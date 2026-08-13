@@ -1,18 +1,18 @@
-import type { Metadata } from 'next';
-import Image from 'next/image';
-import { notFound } from 'next/navigation';
-import { setRequestLocale, getTranslations } from 'next-intl/server';
-import { Clock, ArrowLeft, Calendar } from 'lucide-react';
-import { data } from '@/lib/data';
-import type { AppLocale } from '@/i18n/routing';
-import { Link } from '@/i18n/navigation';
-import { siteConfig } from '@/config/site';
-import { buildPageMetadata } from '@/lib/seo/alternates';
-import { articleJsonLd, breadcrumbJsonLd } from '@/lib/seo/json-ld';
-import { JsonLd } from '@/components/seo/json-ld';
-import { lx } from '@/lib/i18n/lx';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+import type { Metadata } from "next";
+import Image from "next/image";
+import { notFound } from "next/navigation";
+import { setRequestLocale, getTranslations } from "next-intl/server";
+import { Clock, ArrowLeft, Calendar } from "lucide-react";
+import { data } from "@/lib/data";
+import type { AppLocale } from "@/i18n/routing";
+import { Link } from "@/i18n/navigation";
+import { siteConfig } from "@/config/site";
+import { buildPageMetadata } from "@/lib/seo/alternates";
+import { articleJsonLd, breadcrumbJsonLd } from "@/lib/seo/json-ld";
+import { JsonLd } from "@/components/seo/json-ld";
+import { lx } from "@/lib/i18n/lx";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 
 // ISR — blog posts rarely change after publishing; rebuild hourly.
 // No generateStaticParams: pages render on-demand (first visit) and are cached.
@@ -27,11 +27,11 @@ export async function generateMetadata({
   setRequestLocale(locale);
   const post = await data.blog.getBySlug(slug);
   if (!post) return {};
-  const t = await getTranslations({ locale, namespace: 'Blog' });
+  const t = await getTranslations({ locale, namespace: "Blog" });
   return buildPageMetadata({
     locale,
     path: `/blog/${slug}`,
-    title: t('metaDetailTitle', { title: lx(post.title, locale) }),
+    title: t("metaDetailTitle", { title: lx(post.title, locale) }),
     description: lx(post.excerpt, locale),
     image: post.coverImage,
   });
@@ -45,7 +45,7 @@ export default async function BlogPostPage({
   const { locale, slug } = await params;
   setRequestLocale(locale);
   const appLocale = locale as AppLocale;
-  const t = await getTranslations({ locale, namespace: 'Blog' });
+  const t = await getTranslations({ locale, namespace: "Blog" });
 
   const post = await data.blog.getBySlug(slug);
   if (!post) notFound();
@@ -58,9 +58,12 @@ export default async function BlogPostPage({
         data={[
           articleJsonLd(post, appLocale),
           breadcrumbJsonLd([
-            { name: t('home'), url: `${siteConfig.url}/${locale}` },
-            { name: t('blog'), url: `${siteConfig.url}/${locale}/blog` },
-            { name: lx(post.title, appLocale), url: `${siteConfig.url}/${locale}${path}` },
+            { name: t("home"), url: `${siteConfig.url}/${locale}` },
+            { name: t("blog"), url: `${siteConfig.url}/${locale}/blog` },
+            {
+              name: lx(post.title, appLocale),
+              url: `${siteConfig.url}/${locale}${path}`,
+            },
           ]),
         ]}
       />
@@ -71,7 +74,7 @@ export default async function BlogPostPage({
           className="inline-flex items-center gap-1 text-sm font-semibold text-primary hover:underline"
         >
           <ArrowLeft className="h-4 w-4" />
-          {t('back')}
+          {t("back")}
         </Link>
 
         <div className="mt-6">
@@ -84,14 +87,14 @@ export default async function BlogPostPage({
             <span className="flex items-center gap-1">
               <Calendar className="h-4 w-4" />
               {new Date(post.publishedAt).toLocaleDateString(locale, {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric',
+                year: "numeric",
+                month: "long",
+                day: "numeric",
               })}
             </span>
             <span className="flex items-center gap-1">
               <Clock className="h-4 w-4" />
-              {t('minRead', { min: post.readingMinutes })}
+              {t("minRead", { min: post.readingMinutes })}
             </span>
           </div>
         </div>
@@ -107,16 +110,16 @@ export default async function BlogPostPage({
           />
         </div>
 
-        <div className="prose mt-8 max-w-none">
+        <div className="prose prose-lg mt-8 max-w-none prose-headings:text-foreground prose-a:text-primary prose-a:no-underline hover:prose-a:underline prose-img:rounded-lg">
           <RichContent content={lx(post.content, appLocale)} />
         </div>
 
         <div className="mt-12 rounded-lg border border-primary-container bg-surface-low p-6 text-center">
           <p className="font-display text-lg font-semibold text-foreground">
-            {t('ctaTitle')}
+            {t("ctaTitle")}
           </p>
           <Button asChild variant="cta" className="mt-4">
-            <Link href="/apply">{t('ctaButton')}</Link>
+            <Link href="/apply">{t("ctaButton")}</Link>
           </Button>
         </div>
       </div>
@@ -132,7 +135,7 @@ export default async function BlogPostPage({
  * `[text](/path)` links (rendered as internal `Link`s).
  */
 function RichContent({ content }: { content: string }) {
-  const blocks = content.split('\n');
+  const blocks = content.split("\n");
   const out: React.ReactNode[] = [];
   let list: string[] = [];
   let key = 0;
@@ -157,7 +160,7 @@ function RichContent({ content }: { content: string }) {
       flushList();
       continue;
     }
-    if (line.startsWith('## ')) {
+    if (line.startsWith("## ")) {
       flushList();
       out.push(
         <h2
@@ -169,7 +172,7 @@ function RichContent({ content }: { content: string }) {
       );
       continue;
     }
-    if (line.startsWith('### ')) {
+    if (line.startsWith("### ")) {
       flushList();
       out.push(
         <h3
@@ -181,7 +184,7 @@ function RichContent({ content }: { content: string }) {
       );
       continue;
     }
-    if (line.startsWith('- ')) {
+    if (line.startsWith("- ")) {
       list.push(line.slice(2));
       continue;
     }

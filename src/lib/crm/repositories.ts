@@ -21,13 +21,16 @@ import type {
   Profile,
   StudentNotification,
   StudentProfileInput,
-} from '@/types/crm';
+} from "@/types/crm";
 
 /** Thrown by write methods when the target row does not exist. */
 export class NotFoundError extends Error {
-  constructor(public readonly entity: string, id: string) {
+  constructor(
+    public readonly entity: string,
+    id: string,
+  ) {
     super(`${entity} not found: ${id}`);
-    this.name = 'NotFoundError';
+    this.name = "NotFoundError";
   }
 }
 
@@ -36,23 +39,51 @@ export interface CrmRepository {
   listLeads(filter?: LeadFilter): Promise<LeadWithRelations[]>;
   getLead(id: string): Promise<LeadDetail | null>;
   createLead(input: NewLeadInput, actorId?: string): Promise<Lead>;
-  updateLeadStatus(id: string, status: LeadStatus, actorId: string): Promise<Lead>;
-  assignConsultant(leadId: string, consultantId: string | null, actorId: string): Promise<Lead>;
+  updateLeadStatus(
+    id: string,
+    status: LeadStatus,
+    actorId: string,
+  ): Promise<Lead>;
+  assignConsultant(
+    leadId: string,
+    consultantId: string | null,
+    actorId: string,
+  ): Promise<Lead>;
+  /** SEC-1: durably record a lead that failed to capture (dead-letter). */
+  recordFailedLead(payload: unknown, error: string): Promise<void>;
   // applications
   listApplications(leadId: string): Promise<Application[]>;
   getApplication(id: string): Promise<ApplicationDetail | null>;
-  updateApplicationStatus(id: string, status: ApplicationStatus, actorId: string): Promise<Application>;
+  updateApplicationStatus(
+    id: string,
+    status: ApplicationStatus,
+    actorId: string,
+  ): Promise<Application>;
   // documents
   listDocuments(applicationId: string): Promise<ApplicationDocument[]>;
-  addDocument(input: NewDocumentInput, actorId?: string): Promise<ApplicationDocument>;
+  addDocument(
+    input: NewDocumentInput,
+    actorId?: string,
+  ): Promise<ApplicationDocument>;
   // users
   listStaff(): Promise<Profile[]>;
   getProfile(id: string): Promise<Profile | null>;
   findOrCreateStudent(input: StudentProfileInput): Promise<Profile>;
   getProfileByAuthUid(authUid: string): Promise<Profile | null>;
-  upsertStudentByAuthUid(input: { authUid: string; email: string; fullName: string }): Promise<Profile | null>;
-  getStaffProfileByAuthUid(authUid: string, email: string): Promise<Profile | null>;
-  updateProfileRole(id: string, role: 'admin' | 'consultant', actorId: string): Promise<Profile>;
+  upsertStudentByAuthUid(input: {
+    authUid: string;
+    email: string;
+    fullName: string;
+  }): Promise<Profile | null>;
+  getStaffProfileByAuthUid(
+    authUid: string,
+    email: string,
+  ): Promise<Profile | null>;
+  updateProfileRole(
+    id: string,
+    role: "admin" | "consultant",
+    actorId: string,
+  ): Promise<Profile>;
   // stats
   countByStatus(): Promise<Record<string, number>>;
   // audit
@@ -67,6 +98,11 @@ export interface CrmRepository {
   sendMessage(input: NewMessageInput): Promise<Message>;
   markThreadRead(leadId: string, readerId: string): Promise<void>;
   unreadMessageCount(userId: string): Promise<number>;
-  listNotifications(userId: string, limit?: number): Promise<StudentNotification[]>;
-  addStudentDocument(input: NewDocumentUploadInput): Promise<ApplicationDocument>;
+  listNotifications(
+    userId: string,
+    limit?: number,
+  ): Promise<StudentNotification[]>;
+  addStudentDocument(
+    input: NewDocumentUploadInput,
+  ): Promise<ApplicationDocument>;
 }

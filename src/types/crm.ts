@@ -1,13 +1,20 @@
 // src/types/crm.ts
-export type UserRole = 'student' | 'consultant' | 'admin' | 'editor';
+export type UserRole = "student" | "consultant" | "admin" | "editor";
 
 export type LeadStatus =
-  | 'new' | 'contacted' | 'document_collection' | 'application_submitted'
-  | 'offer_received' | 'accepted' | 'visa_processing' | 'arrived'
-  | 'completed' | 'lost';
+  | "new"
+  | "contacted"
+  | "document_collection"
+  | "application_submitted"
+  | "offer_received"
+  | "accepted"
+  | "visa_processing"
+  | "arrived"
+  | "completed"
+  | "lost";
 
 export type ApplicationStatus =
-  | 'draft' | 'submitted' | 'under_review' | 'offer' | 'rejected' | 'enrolled';
+  "draft" | "submitted" | "under_review" | "offer" | "rejected" | "enrolled";
 
 export interface Profile {
   id: string;
@@ -36,8 +43,8 @@ export interface Lead {
 }
 
 export interface LeadWithRelations extends Lead {
-  student: Pick<Profile, 'id' | 'fullName' | 'email' | 'countryCode'> | null;
-  consultant: Pick<Profile, 'id' | 'fullName'> | null;
+  student: Pick<Profile, "id" | "fullName" | "email" | "countryCode"> | null;
+  consultant: Pick<Profile, "id" | "fullName"> | null;
 }
 
 export interface LeadDetail extends LeadWithRelations {
@@ -71,7 +78,7 @@ export interface ApplicationDocument {
 
 export interface ApplicationDetail extends Application {
   documents: ApplicationDocument[];
-  consultant: Pick<Profile, 'id' | 'fullName'> | null;
+  consultant: Pick<Profile, "id" | "fullName"> | null;
 }
 
 export interface AuditLog {
@@ -89,6 +96,10 @@ export interface LeadFilter {
   status?: LeadStatus;
   consultantId?: string;
   search?: string;
+  /** Max rows per page (default 200). Pass with offset for pagination. */
+  limit?: number;
+  /** Rows to skip (offset). */
+  offset?: number;
 }
 
 export interface AuditFilter {
@@ -146,7 +157,7 @@ export interface MessageWithSender extends Message {
   senderRole: UserRole;
 }
 
-export type StudentNotificationType = 'status_change' | 'assigned' | 'message';
+export type StudentNotificationType = "status_change" | "assigned" | "message";
 
 export interface StudentNotification {
   id: string;
@@ -174,28 +185,35 @@ export interface NewDocumentUploadInput {
 
 // Ordered pipeline for UI steppers/Kanban columns.
 export const LEAD_PIPELINE: LeadStatus[] = [
-  'new', 'contacted', 'document_collection', 'application_submitted',
-  'offer_received', 'accepted', 'visa_processing', 'arrived', 'completed',
+  "new",
+  "contacted",
+  "document_collection",
+  "application_submitted",
+  "offer_received",
+  "accepted",
+  "visa_processing",
+  "arrived",
+  "completed",
 ];
 
 export const LEAD_STATUS_LABELS: Record<LeadStatus, string> = {
-  new: 'New',
-  contacted: 'Contacted',
-  document_collection: 'Documents',
-  application_submitted: 'Submitted',
-  offer_received: 'Offer',
-  accepted: 'Accepted',
-  visa_processing: 'Visa',
-  arrived: 'Arrived',
-  completed: 'Completed',
-  lost: 'Lost',
+  new: "New",
+  contacted: "Contacted",
+  document_collection: "Documents",
+  application_submitted: "Submitted",
+  offer_received: "Offer",
+  accepted: "Accepted",
+  visa_processing: "Visa",
+  arrived: "Arrived",
+  completed: "Completed",
+  lost: "Lost",
 };
 
 export const APPLICATION_STATUS_LABELS: Record<ApplicationStatus, string> = {
-  draft: 'Draft',
-  submitted: 'Submitted',
-  under_review: 'Under Review',
-  offer: 'Offer',
-  rejected: 'Rejected',
-  enrolled: 'Enrolled',
+  draft: "Draft",
+  submitted: "Submitted",
+  under_review: "Under Review",
+  offer: "Offer",
+  rejected: "Rejected",
+  enrolled: "Enrolled",
 };

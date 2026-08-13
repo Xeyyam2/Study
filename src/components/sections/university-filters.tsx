@@ -248,14 +248,14 @@ function FilterControls({
   return (
     <div className="space-y-4">
       <div className="relative">
-        <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+        <Search className="pointer-events-none absolute start-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
         <Input
           type="search"
           value={searchValue}
           onChange={(event) => setSearchValue(event.target.value)}
           placeholder={labels.search}
           aria-label={labels.search}
-          className="pl-9"
+          className="ps-9"
         />
       </div>
 

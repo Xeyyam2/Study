@@ -1,24 +1,24 @@
-import { getTranslations } from 'next-intl/server';
-import { GraduationCap } from 'lucide-react';
-import { Link } from '@/i18n/navigation';
-import { siteConfig } from '@/config/site';
-import { Button } from '@/components/ui/button';
-import { LocaleSwitcher } from './locale-switcher';
+import { getTranslations } from "next-intl/server";
+import { GraduationCap } from "lucide-react";
+import { Link } from "@/i18n/navigation";
+import { siteConfig } from "@/config/site";
+import { Button } from "@/components/ui/button";
+import { LocaleSwitcher } from "./locale-switcher";
 // F2: Interactive parts (mobile menu, auth, drawer) are split into a client
 // component so the static parts (logo, desktop nav, apply button) render as
 // Server Components — no client JS for the static shell.
-import { HeaderInteractive } from './header-interactive';
+import { HeaderInteractive } from "./header-interactive";
 
 const navItems = [
-  { key: 'universities', href: '/universities' },
-  { key: 'programs', href: '/programs' },
-  { key: 'about', href: '/about' },
-  { key: 'blog', href: '/blog' },
-  { key: 'contact', href: '/contact' },
+  { key: "universities", href: "/universities" },
+  { key: "programs", href: "/programs" },
+  { key: "about", href: "/about" },
+  { key: "blog", href: "/blog" },
+  { key: "contact", href: "/contact" },
 ] as const;
 
 export async function Header() {
-  const t = await getTranslations('Nav');
+  const t = await getTranslations("Nav");
 
   return (
     <header className="sticky top-0 z-40 border-b border-border bg-card/85 backdrop-blur-md">
@@ -49,8 +49,13 @@ export async function Header() {
           <div className="hidden sm:block">
             <LocaleSwitcher />
           </div>
-          <Button asChild variant="cta" size="sm" className="hidden sm:inline-flex">
-            <Link href="/dashboard/login">{t('apply')}</Link>
+          <Button
+            asChild
+            variant="cta"
+            size="sm"
+            className="hidden sm:inline-flex"
+          >
+            <Link href="/apply">{t("apply")}</Link>
           </Button>
           {/* F2: Only this part ships client JS */}
           <HeaderInteractive />

@@ -1,17 +1,26 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import Link from 'next/link';
-import * as DialogPrimitive from '@radix-ui/react-dialog';
-import { type LucideIcon } from 'lucide-react';
-import { Bell, ChevronRight, ExternalLink, FileText, GraduationCap, LogOut, MessageSquare, X } from 'lucide-react';
-import { useLocale, useTranslations } from 'next-intl';
-import { Dialog, DialogOverlay, DialogPortal } from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { signOutStudent } from '@/app/actions/student-auth';
-import { signOutAdmin } from '@/app/actions/admin-auth';
-import { cn } from '@/lib/utils';
-import type { Profile } from '@/types/crm';
+import { useState } from "react";
+import Link from "next/link";
+import * as DialogPrimitive from "@radix-ui/react-dialog";
+import { type LucideIcon } from "lucide-react";
+import {
+  Bell,
+  ChevronRight,
+  ExternalLink,
+  FileText,
+  GraduationCap,
+  LogOut,
+  MessageSquare,
+  X,
+} from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
+import { Dialog, DialogOverlay, DialogPortal } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { signOutStudent } from "@/app/actions/student-auth";
+import { signOutAdmin } from "@/app/actions/admin-auth";
+import { cn } from "@/lib/utils";
+import type { Profile } from "@/types/crm";
 
 export interface StudentProfileDrawerProps {
   session: { userId: string; profile: Profile };
@@ -19,22 +28,38 @@ export interface StudentProfileDrawerProps {
   onOpenChange: (open: boolean) => void;
 }
 
-export function StudentProfileDrawer({ session, open, onOpenChange }: StudentProfileDrawerProps) {
-  const t = useTranslations('Student');
-  const tCommon = useTranslations('Common');
+export function StudentProfileDrawer({
+  session,
+  open,
+  onOpenChange,
+}: StudentProfileDrawerProps) {
+  const t = useTranslations("Student");
+  const tCommon = useTranslations("Common");
   const locale = useLocale();
   const [showProfile, setShowProfile] = useState(false);
 
   const dash = `/${locale}/dashboard`;
-  const isAdmin = session.profile.role === 'admin';
-  const signOutAction = isAdmin ? signOutAdmin : signOutStudent.bind(null, locale);
-  const initial = (session.profile.fullName.trim().charAt(0) || '?').toUpperCase();
+  const isAdmin = session.profile.role === "admin";
+  const signOutAction = isAdmin
+    ? signOutAdmin
+    : signOutStudent.bind(null, locale);
+  const initial = (
+    session.profile.fullName.trim().charAt(0) || "?"
+  ).toUpperCase();
 
   const menuItems: { icon: LucideIcon; label: string; href: string }[] = [
-    { icon: GraduationCap, label: t('nav.applications'), href: `${dash}/applications` },
-    { icon: FileText, label: t('nav.documents'), href: `${dash}/documents` },
-    { icon: MessageSquare, label: t('nav.messages'), href: `${dash}/messages` },
-    { icon: Bell, label: t('nav.notifications'), href: `${dash}/notifications` },
+    {
+      icon: GraduationCap,
+      label: t("nav.applications"),
+      href: `${dash}/applications`,
+    },
+    { icon: FileText, label: t("nav.documents"), href: `${dash}/documents` },
+    { icon: MessageSquare, label: t("nav.messages"), href: `${dash}/messages` },
+    {
+      icon: Bell,
+      label: t("nav.notifications"),
+      href: `${dash}/notifications`,
+    },
   ];
 
   return (
@@ -43,12 +68,14 @@ export function StudentProfileDrawer({ session, open, onOpenChange }: StudentPro
         <DialogOverlay />
         <DialogPrimitive.Content
           className={cn(
-            'fixed end-0 top-0 z-50 flex h-full w-full max-w-sm flex-col border-l border-border bg-card shadow-overlay',
-            'duration-300 data-[state=open]:animate-in data-[state=open]:slide-in-from-right',
-            'data-[state=closed]:animate-out data-[state=closed]:slide-out-to-right',
+            "fixed end-0 top-0 z-50 flex h-full w-full max-w-sm flex-col border-s border-border bg-card shadow-overlay",
+            "duration-300 data-[state=open]:animate-in data-[state=open]:slide-in-from-right",
+            "data-[state=closed]:animate-out data-[state=closed]:slide-out-to-right",
           )}
         >
-          <DialogPrimitive.Title className="sr-only">{t('overview.title')}</DialogPrimitive.Title>
+          <DialogPrimitive.Title className="sr-only">
+            {t("overview.title")}
+          </DialogPrimitive.Title>
 
           {/* Header — profil məlumatı */}
           <div className="flex items-start justify-between gap-4 border-b border-border p-5">
@@ -64,11 +91,13 @@ export function StudentProfileDrawer({ session, open, onOpenChange }: StudentPro
                 <p className="truncate font-display text-base font-semibold text-foreground">
                   {session.profile.fullName}
                 </p>
-                <p className="truncate text-sm text-muted-foreground">{session.profile.email}</p>
+                <p className="truncate text-sm text-muted-foreground">
+                  {session.profile.email}
+                </p>
               </div>
             </button>
             <DialogPrimitive.Close
-              aria-label={tCommon('close')}
+              aria-label={tCommon("close")}
               className="rounded p-1.5 text-muted-foreground transition hover:bg-accent hover:text-foreground focus:outline-none focus:ring-2 focus:ring-ring"
             >
               <X className="h-5 w-5" />
@@ -80,7 +109,9 @@ export function StudentProfileDrawer({ session, open, onOpenChange }: StudentPro
             <div className="border-b border-border bg-bg-subtle p-5">
               <dl className="space-y-3 text-sm">
                 <div className="flex justify-between gap-4">
-                  <dt className="text-muted-foreground">{t('overview.title')}</dt>
+                  <dt className="text-muted-foreground">
+                    {t("overview.title")}
+                  </dt>
                   <dd className="truncate font-medium text-foreground">
                     {session.profile.fullName}
                   </dd>
@@ -100,9 +131,14 @@ export function StudentProfileDrawer({ session, open, onOpenChange }: StudentPro
                   </div>
                 )}
               </dl>
-              <Button asChild variant="outline" size="sm" className="mt-4 w-full">
+              <Button
+                asChild
+                variant="outline"
+                size="sm"
+                className="mt-4 w-full"
+              >
                 <Link href={dash}>
-                  {tCommon('viewDetails')}
+                  {tCommon("viewDetails")}
                   <ExternalLink className="ms-1.5 h-3.5 w-3.5" />
                 </Link>
               </Button>
@@ -140,7 +176,7 @@ export function StudentProfileDrawer({ session, open, onOpenChange }: StudentPro
                 <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-destructive/10">
                   <LogOut className="h-4 w-4" />
                 </span>
-                <span className="flex-1 text-left">{t('nav.logout')}</span>
+                <span className="flex-1 text-left">{t("nav.logout")}</span>
               </button>
             </form>
           </div>

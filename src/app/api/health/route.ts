@@ -1,7 +1,8 @@
-import { NextResponse } from 'next/server';
-import { Pool } from 'pg';
+import { NextResponse } from "next/server";
+import { Pool } from "pg";
+import { logger } from "@/lib/logger";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 /**
  * Health check endpoint for uptime monitors / orchestrators.
@@ -17,10 +18,13 @@ export async function GET() {
       max: 1,
     });
     try {
-      await pool.query('select 1');
+      await pool.query("select 1");
       dbOk = true;
-    } catch {
+    } catch (err) {
       dbOk = false;
+      // QA-1: surface DB-outage as a structured error so an uptime monitor +
+      // log drain can page on it (no PII, no connection-string leak).
+      logger.error("health check failed: DB unreachable", undefined, err);
     } finally {
       await pool.end().catch(() => {});
     }

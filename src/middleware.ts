@@ -1,13 +1,13 @@
-import { createServerClient } from '@supabase/ssr';
-import createMiddleware from 'next-intl/middleware';
-import type { NextRequest } from 'next/server';
-import { NextResponse } from 'next/server';
-import { routing } from './i18n/routing';
+import { createServerClient } from "@supabase/ssr";
+import createMiddleware from "next-intl/middleware";
+import type { NextRequest } from "next/server";
+import { NextResponse } from "next/server";
+import { routing } from "./i18n/routing";
 
 // Hard-coded cookie name instead of importing from lib/crm/session: that module
 // pulls in `pg`, which is Node-only and breaks the edge-runtime middleware
 // ("Code generation from strings disallowed for this context").
-const SESSION_COOKIE = 'admin_session';
+const SESSION_COOKIE = "admin_session";
 
 const intlMiddleware = createMiddleware(routing);
 
@@ -19,7 +19,7 @@ export default async function middleware(req: NextRequest) {
   // the admin layout via requireStaff(). /admin/login is exempt. The dev-auth
   // cookie is accepted here so demo logins (DEV_AUTH_ENABLED) keep working —
   // the layout re-validates the actual profile/role.
-  if (pathname.startsWith('/admin') && !pathname.startsWith('/admin/login')) {
+  if (pathname.startsWith("/admin") && !pathname.startsWith("/admin/login")) {
     const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
     const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
     let authenticated = false;
@@ -43,8 +43,8 @@ export default async function middleware(req: NextRequest) {
     }
     if (!authenticated) {
       const loginUrl = req.nextUrl.clone();
-      loginUrl.pathname = '/admin/login';
-      loginUrl.search = '';
+      loginUrl.pathname = "/admin/login";
+      loginUrl.search = "";
       return NextResponse.redirect(loginUrl);
     }
     return NextResponse.next();
@@ -56,14 +56,23 @@ export default async function middleware(req: NextRequest) {
   // Refresh the Supabase access token on each request. After the marketing
   // layout stopped reading the session (ISR), this is the single place that
   // keeps the cookie fresh for public routes.
+  // PERF(P0): only run the cross-network getUser() round-trip when an auth
+  // cookie is actually present — anonymous visitors otherwise pay a Supabase
+  // hop on every marketing pageview. Supabase ssr cookies are named
+  // `sb-<ref>-auth-token` / `sb.<ref>.auth.token*`.
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  if (url && anon) {
+  const hasAuthCookie = req.cookies
+    .getAll()
+    .some((c) => /^sb[-.]/.test(c.name));
+  if (url && anon && hasAuthCookie) {
     const supabase = createServerClient(url, anon, {
       cookies: {
         getAll: () => req.cookies.getAll(),
         setAll: (toSet) => {
-          toSet.forEach(({ name, value, options }) => res.cookies.set(name, value, options));
+          toSet.forEach(({ name, value, options }) =>
+            res.cookies.set(name, value, options),
+          );
         },
       },
     });
@@ -74,5 +83,5 @@ export default async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!api|_next|_vercel|auth|.*\\..*).*)'],
+  matcher: ["/((?!api|_next|_vercel|auth|.*\\..*).*)"],
 };

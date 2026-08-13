@@ -1,10 +1,12 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { getSupabaseBrowser } from '@/lib/supabase/client';
-import { Button } from '@/components/ui/button';
+import { useState } from "react";
+import { useTranslations } from "next-intl";
+import { getSupabaseBrowser } from "@/lib/supabase/client";
+import { Button } from "@/components/ui/button";
 
 export function GoogleSignInButton({ redirectTo }: { redirectTo: string }) {
+  const t = useTranslations("Auth");
   const [pending, setPending] = useState(false);
   const [err, setErr] = useState<string | null>(null);
 
@@ -13,7 +15,7 @@ export function GoogleSignInButton({ redirectTo }: { redirectTo: string }) {
     setErr(null);
     const supabase = getSupabaseBrowser();
     const { error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
+      provider: "google",
       options: { redirectTo },
     });
     if (error) setErr(error.message);
@@ -22,7 +24,12 @@ export function GoogleSignInButton({ redirectTo }: { redirectTo: string }) {
 
   return (
     <>
-      <Button type="button" onClick={signIn} disabled={pending} className="w-full gap-2">
+      <Button
+        type="button"
+        onClick={signIn}
+        disabled={pending}
+        className="w-full gap-2"
+      >
         <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden>
           <path
             fill="#4285F4"
@@ -41,7 +48,7 @@ export function GoogleSignInButton({ redirectTo }: { redirectTo: string }) {
             d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1A11 11 0 0 0 2.18 7.06l3.66 2.84C6.71 7.3 9.14 5.38 12 5.38z"
           />
         </svg>
-        {pending ? '...' : 'Login'}
+        {pending ? "..." : t("googleLogin")}
       </Button>
       {err && <p className="text-sm text-destructive">{err}</p>}
     </>

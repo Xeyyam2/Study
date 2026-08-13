@@ -1,68 +1,68 @@
-import { siteConfig } from '@/config/site';
+import { siteConfig } from "@/config/site";
 import type {
   BlogPost,
   Faq,
   Review as UniversityReview,
-  University,
-} from '@/types';
-import type { AppLocale } from '@/i18n/routing';
+  UniversityDetail,
+} from "@/types";
+import type { AppLocale } from "@/i18n/routing";
 
 type JsonLd = Record<string, unknown>;
 
 /** Brand logo as a schema.org ImageObject with explicit dimensions. */
 const LOGO_IMAGE = {
-  '@type': 'ImageObject',
+  "@type": "ImageObject",
   url: `${siteConfig.url}/icon.svg`,
   width: 512,
   height: 512,
 } as const;
 
 function L(key: string, value: unknown) {
-  return { '@type': key, ...((value as object) ?? {}) };
+  return { "@type": key, ...((value as object) ?? {}) };
 }
 
 export function organizationJsonLd(): JsonLd {
   return {
-    '@context': 'https://schema.org',
-    '@type': 'EducationalOrganization',
-    '@id': `${siteConfig.url}/#organization`,
+    "@context": "https://schema.org",
+    "@type": "EducationalOrganization",
+    "@id": `${siteConfig.url}/#organization`,
     name: siteConfig.name,
     url: siteConfig.url,
     logo: LOGO_IMAGE,
     description: siteConfig.description.en,
     sameAs: Object.values(siteConfig.social),
     contactPoint: {
-      '@type': 'ContactPoint',
-      contactType: 'customer support',
+      "@type": "ContactPoint",
+      contactType: "customer support",
       email: siteConfig.contact.email,
       telephone: siteConfig.contact.phone,
-      availableLanguage: ['English', 'Turkish', 'Azerbaijani', 'Russian'],
+      availableLanguage: ["English", "Turkish", "Azerbaijani", "Russian"],
     },
   };
 }
 
 export function websiteJsonLd(locale: AppLocale): JsonLd {
   return {
-    '@context': 'https://schema.org',
-    '@type': 'WebSite',
-    '@id': `${siteConfig.url}/${locale}/#website`,
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "@id": `${siteConfig.url}/${locale}/#website`,
     name: siteConfig.name,
     url: `${siteConfig.url}/${locale}`,
     inLanguage: locale,
     potentialAction: {
-      '@type': 'SearchAction',
+      "@type": "SearchAction",
       target: {
-        '@type': 'EntryPoint',
+        "@type": "EntryPoint",
         urlTemplate: `${siteConfig.url}/${locale}/universities?search={search_term_string}`,
       },
-      'query-input': 'required name=search_term_string',
+      "query-input": "required name=search_term_string",
     },
-    publisher: { '@type': 'Organization', name: siteConfig.name },
+    publisher: { "@type": "Organization", name: siteConfig.name },
   };
 }
 
 export function collegeOrUniversityJsonLd(
-  university: University,
+  university: UniversityDetail,
   locale: AppLocale,
   // Rating is intentionally unused: Google's structured-data guidelines
   // prohibit self-serving aggregate ratings (the site rates itself), which
@@ -71,9 +71,9 @@ export function collegeOrUniversityJsonLd(
   _rating: { rating: number; count: number },
 ): JsonLd {
   return {
-    '@context': 'https://schema.org',
-    '@type': ['CollegeOrUniversity', 'EducationalOrganization'],
-    '@id': `${siteConfig.url}/${locale}/universities/${university.slug}#collegeoruniversity`,
+    "@context": "https://schema.org",
+    "@type": ["CollegeOrUniversity", "EducationalOrganization"],
+    "@id": `${siteConfig.url}/${locale}/universities/${university.slug}#collegeoruniversity`,
     name: university.name,
     url: `${siteConfig.url}/${locale}/universities/${university.slug}`,
     image: university.heroImage,
@@ -82,24 +82,33 @@ export function collegeOrUniversityJsonLd(
     award: university.accreditation,
     description: university.description[locale],
     inLanguage: university.languages,
-    // S3: Address + telephone for rich results eligibility.
+    // SE-10: use the university's own city when available; fall back to the
+    // site-level address only as a last resort.
     address: {
-      '@type': 'PostalAddress',
-      addressCountry: 'TR',
-      addressLocality: (siteConfig.contact.address as Record<string, string>)[locale] ?? siteConfig.contact.address.en,
+      "@type": "PostalAddress",
+      addressCountry: "TR",
+      addressLocality:
+        university.city?.name[locale] ??
+        (siteConfig.contact.address as Record<string, string>)[locale] ??
+        siteConfig.contact.address.en,
     },
     telephone: siteConfig.contact.phone,
   };
 }
 
-export function faqPageJsonLd(faqs: Faq[], locale: AppLocale): JsonLd {
+export function faqPageJsonLd(
+  faqs: Faq[],
+  locale: AppLocale,
+  pageUrl?: string,
+): JsonLd {
   return {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    ...(pageUrl ? { "@id": `${pageUrl}#faq` } : {}),
     mainEntity: faqs.map((f) => ({
-      '@type': 'Question',
+      "@type": "Question",
       name: f.question[locale],
-      acceptedAnswer: { '@type': 'Answer', text: f.answer[locale] },
+      acceptedAnswer: { "@type": "Answer", text: f.answer[locale] },
     })),
   };
 }
@@ -107,31 +116,39 @@ export function faqPageJsonLd(faqs: Faq[], locale: AppLocale): JsonLd {
 export function articleJsonLd(post: BlogPost, locale: AppLocale): JsonLd {
   const url = `${siteConfig.url}/${locale}/blog/${post.slug}`;
   return {
-    '@context': 'https://schema.org',
-    '@type': 'Article',
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "@id": `${url}#article`,
     headline: post.title[locale],
     description: post.excerpt[locale],
     image: {
-      '@type': 'ImageObject',
+      "@type": "ImageObject",
       url: post.coverImage,
       width: 1200,
       height: 630,
     },
     datePublished: post.publishedAt,
-    dateModified: post.publishedAt,
+    dateModified: post.updatedAt ?? post.publishedAt,
     mainEntityOfPage: url,
-    author: { '@type': 'Organization', name: post.author },
-    publisher: { '@type': 'Organization', name: siteConfig.name, logo: LOGO_IMAGE },
+    author: { "@type": "Organization", name: post.author },
+    publisher: {
+      "@type": "Organization",
+      name: siteConfig.name,
+      logo: LOGO_IMAGE,
+    },
     inLanguage: locale,
   };
 }
 
-export function breadcrumbJsonLd(items: Array<{ name: string; url: string }>): JsonLd {
+export function breadcrumbJsonLd(
+  items: Array<{ name: string; url: string }>,
+): JsonLd {
   return {
-    '@context': 'https://schema.org',
-    '@type': 'BreadcrumbList',
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    ...(items[0] ? { "@id": `${items[items.length - 1].url}#breadcrumb` } : {}),
     itemListElement: items.map((item, i) => ({
-      '@type': 'ListItem',
+      "@type": "ListItem",
       position: i + 1,
       name: item.name,
       item: item.url,
@@ -141,22 +158,24 @@ export function breadcrumbJsonLd(items: Array<{ name: string; url: string }>): J
 
 export function courseListJsonLd(
   items: Array<{ name: string; url: string; fee: number }>,
+  pageUrl?: string,
 ): JsonLd {
   // S4: drop zero-price rows — a 0-fee Course in structured data is a
   // data-quality signal to Google.
   const priced = items.filter((i) => i.fee > 0);
   return {
-    '@context': 'https://schema.org',
-    '@type': 'ItemList',
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    ...(pageUrl ? { "@id": `${pageUrl}#programs` } : {}),
     itemListElement: priced.map((item, i) =>
-      L('ListItem', {
+      L("ListItem", {
         position: i + 1,
         item: {
-          '@type': 'Course',
+          "@type": "Course",
           name: item.name,
           url: item.url,
-          provider: { '@type': 'Organization', name: siteConfig.name },
-          offers: { '@type': 'Offer', price: item.fee, priceCurrency: 'USD' },
+          provider: { "@type": "Organization", name: siteConfig.name },
+          offers: { "@type": "Offer", price: item.fee, priceCurrency: "USD" },
         },
       }),
     ),
@@ -169,15 +188,17 @@ export function courseListJsonLd(
  */
 export function itemListJsonLd(
   items: Array<{ name: string; url: string; description?: string }>,
+  pageUrl?: string,
 ): JsonLd {
   return {
-    '@context': 'https://schema.org',
-    '@type': 'ItemList',
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    ...(pageUrl ? { "@id": `${pageUrl}#universities` } : {}),
     itemListElement: items.map((item, i) =>
-      L('ListItem', {
+      L("ListItem", {
         position: i + 1,
         item: {
-          '@type': 'CollegeOrUniversity',
+          "@type": "CollegeOrUniversity",
           name: item.name,
           url: item.url,
           ...(item.description ? { description: item.description } : {}),
@@ -193,15 +214,16 @@ export function itemListJsonLd(
  */
 export function howToJsonLd(
   steps: Array<{ name: string; text: string }>,
-  opts?: { name?: string; description?: string },
+  opts?: { name?: string; description?: string; pageUrl?: string },
 ): JsonLd {
   return {
-    '@context': 'https://schema.org',
-    '@type': 'HowTo',
-    name: opts?.name ?? 'How to study in Turkey',
-    description: opts?.description ?? '',
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    ...(opts?.pageUrl ? { "@id": `${opts.pageUrl}#howto` } : {}),
+    name: opts?.name ?? "How to study in Turkey",
+    description: opts?.description ?? "",
     step: steps.map((s, i) => ({
-      '@type': 'HowToStep',
+      "@type": "HowToStep",
       position: i + 1,
       name: s.name,
       text: s.text,
@@ -219,19 +241,19 @@ export function reviewJsonLd(
   universitySlug: string,
 ): JsonLd[] {
   return reviews.map((r) => ({
-    '@context': 'https://schema.org',
-    '@type': 'Review',
+    "@context": "https://schema.org",
+    "@type": "Review",
     itemReviewed: {
-      '@type': 'CollegeOrUniversity',
+      "@type": "CollegeOrUniversity",
       name: universitySlug,
     },
     reviewRating: {
-      '@type': 'Rating',
+      "@type": "Rating",
       ratingValue: r.rating,
       bestRating: 5,
       worstRating: 1,
     },
-    author: { '@type': 'Person', name: r.authorName },
+    author: { "@type": "Person", name: r.authorName },
     reviewBody: r.text[locale],
     datePublished: String(r.year),
   }));
@@ -242,12 +264,12 @@ export function reviewJsonLd(
  */
 export function aboutPageJsonLd(locale: AppLocale): JsonLd {
   return {
-    '@context': 'https://schema.org',
-    '@type': 'AboutPage',
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
     name: `About ${siteConfig.name}`,
     url: `${siteConfig.url}/${locale}/about`,
     mainEntity: {
-      '@type': 'Organization',
+      "@type": "Organization",
       name: siteConfig.name,
       url: siteConfig.url,
       description: siteConfig.description.en,
@@ -260,20 +282,20 @@ export function aboutPageJsonLd(locale: AppLocale): JsonLd {
  */
 export function contactPageJsonLd(locale: AppLocale): JsonLd {
   return {
-    '@context': 'https://schema.org',
-    '@type': 'ContactPage',
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
     url: `${siteConfig.url}/${locale}/contact`,
     mainEntity: {
-      '@type': 'Organization',
+      "@type": "Organization",
       name: siteConfig.name,
       email: siteConfig.contact.email,
       telephone: siteConfig.contact.phone,
       contactPoint: {
-        '@type': 'ContactPoint',
-        contactType: 'customer support',
+        "@type": "ContactPoint",
+        contactType: "customer support",
         email: siteConfig.contact.email,
         telephone: siteConfig.contact.phone,
-        availableLanguage: ['English', 'Turkish', 'Azerbaijani', 'Russian'],
+        availableLanguage: ["English", "Turkish", "Azerbaijani", "Russian"],
       },
     },
   };
@@ -288,12 +310,12 @@ export function collectionPageJsonLd(
   items: Array<{ name: string; url: string }>,
 ): JsonLd {
   return {
-    '@context': 'https://schema.org',
-    '@type': 'CollectionPage',
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
     name,
     url,
     hasPart: items.map((item) => ({
-      '@type': 'WebPage',
+      "@type": "WebPage",
       name: item.name,
       url: item.url,
     })),
@@ -305,17 +327,17 @@ export function collectionPageJsonLd(
  */
 export function serviceJsonLd(locale: AppLocale): JsonLd {
   return {
-    '@context': 'https://schema.org',
-    '@type': 'Service',
-    name: 'University Application Support',
-    serviceType: 'Education consulting',
-    provider: { '@type': 'Organization', name: siteConfig.name },
-    areaServed: 'TR',
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: "University Application Support",
+    serviceType: "Education consulting",
+    provider: { "@type": "Organization", name: siteConfig.name },
+    areaServed: "TR",
     offers: {
-      '@type': 'Offer',
-      price: '0',
-      priceCurrency: 'USD',
-      description: 'Free application support and consultation',
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "USD",
+      description: "Free application support and consultation",
     },
     url: `${siteConfig.url}/${locale}/apply`,
   };

@@ -1,10 +1,16 @@
-import type { Metadata } from 'next';
-import { Suspense } from 'react';
-import { setRequestLocale, getTranslations } from 'next-intl/server';
-import { data } from '@/lib/data';
-import { buildPageMetadata } from '@/lib/seo/alternates';
-import { CompareTool, type CompareItem } from '@/components/sections/compare-tool';
-import { formatCurrency } from '@/lib/utils';
+import type { Metadata } from "next";
+import { Suspense } from "react";
+import { setRequestLocale, getTranslations } from "next-intl/server";
+import { data } from "@/lib/data";
+import { buildPageMetadata } from "@/lib/seo/alternates";
+import {
+  CompareTool,
+  type CompareItem,
+} from "@/components/sections/compare-tool";
+import { formatCurrency } from "@/lib/utils";
+
+// PERF/SEO: ISR so comparison data stays current.
+export const revalidate = 3600;
 
 export async function generateMetadata({
   params,
@@ -13,12 +19,12 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   setRequestLocale(locale);
-  const t = await getTranslations({ locale, namespace: 'Compare' });
+  const t = await getTranslations({ locale, namespace: "Compare" });
   return buildPageMetadata({
     locale,
-    path: '/compare',
-    title: t('metaTitle'),
-    description: t('metaDescription'),
+    path: "/compare",
+    title: t("metaTitle"),
+    description: t("metaDescription"),
   });
 }
 
@@ -29,7 +35,7 @@ export default async function ComparePage({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const t = await getTranslations({ locale, namespace: 'Compare' });
+  const t = await getTranslations({ locale, namespace: "Compare" });
 
   const [universities, cities] = await Promise.all([
     data.universities.list(),
@@ -49,8 +55,8 @@ export default async function ComparePage({
       id: u.id,
       name: u.name,
       logoText: u.logoText,
-      cityName: cityById.get(u.cityId)?.name[locale as never] ?? '—',
-      tuition: formatCurrency(m?.minTuitionUSD ?? 0, 'USD', locale),
+      cityName: cityById.get(u.cityId)?.name[locale as never] ?? "—",
+      tuition: formatCurrency(m?.minTuitionUSD ?? 0, "USD", locale),
       ranking: u.ranking,
       studentCount: u.studentCount,
       isState: u.isState,
@@ -63,9 +69,9 @@ export default async function ComparePage({
     <div className="container-page py-section-md">
       <header className="mb-8">
         <h1 className="font-display text-headline-xl text-foreground">
-          {t('title')}
+          {t("title")}
         </h1>
-        <p className="mt-2 max-w-2xl text-muted-foreground">{t('subtitle')}</p>
+        <p className="mt-2 max-w-2xl text-muted-foreground">{t("subtitle")}</p>
       </header>
 
       {/* F8: Suspense required for useSearchParams in CompareTool */}

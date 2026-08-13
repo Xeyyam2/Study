@@ -4,30 +4,31 @@
 // routing + content grows (Phase 3C-full), this file should split into multiple
 // `sitemap-{group}.xml` routes and have /sitemap.xml act as an index file.
 
-import type { MetadataRoute } from 'next';
-import { data } from '@/lib/data';
-import { siteConfig, fullyTranslatedLocales } from '@/config/site';
+import type { MetadataRoute } from "next";
+import { data } from "@/lib/data";
+import { siteConfig, fullyTranslatedLocales } from "@/config/site";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = siteConfig.url;
 
-  const [universities, posts, combinations, countries, categories] = await Promise.all([
-    data.universities.list(),
-    data.blog.list(),
-    data.programs.getCombinations(),
-    data.countries.list(),
-    data.programs.getCategories(),
-  ]);
+  const [universities, posts, combinations, countries, categories] =
+    await Promise.all([
+      data.universities.list(),
+      data.blog.list(),
+      data.programs.getCombinations(),
+      data.countries.list(),
+      data.programs.getCategories(),
+    ]);
 
   const staticPaths = [
-    { path: '/', priority: 1.0, change: 'weekly' as const },
-    { path: '/universities', priority: 0.9, change: 'weekly' as const },
-    { path: '/programs', priority: 0.8, change: 'weekly' as const },
-    { path: '/compare', priority: 0.6, change: 'monthly' as const },
-    { path: '/about', priority: 0.5, change: 'monthly' as const },
-    { path: '/blog', priority: 0.7, change: 'weekly' as const },
-    { path: '/contact', priority: 0.5, change: 'monthly' as const },
-    { path: '/apply', priority: 0.8, change: 'monthly' as const },
+    { path: "/", priority: 1.0, change: "weekly" as const },
+    { path: "/universities", priority: 0.9, change: "weekly" as const },
+    { path: "/programs", priority: 0.8, change: "weekly" as const },
+    { path: "/compare", priority: 0.6, change: "monthly" as const },
+    { path: "/about", priority: 0.5, change: "monthly" as const },
+    { path: "/blog", priority: 0.7, change: "weekly" as const },
+    { path: "/contact", priority: 0.5, change: "monthly" as const },
+    { path: "/apply", priority: 0.8, change: "monthly" as const },
   ];
 
   // `lastModified` is intentionally omitted for content without a real
@@ -37,7 +38,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // posts carry a real publish date.
   const makeEntry = (
     path: string,
-    changeFrequency: MetadataRoute.Sitemap[number]['changeFrequency'],
+    changeFrequency: MetadataRoute.Sitemap[number]["changeFrequency"],
     priority: number,
     lastModified?: Date,
   ): MetadataRoute.Sitemap[number] => ({
@@ -48,7 +49,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   });
 
   const urls: MetadataRoute.Sitemap = [];
-  const locPrefix = (loc: string, path: string) => `/${loc}${path === '/' ? '' : path}`;
+  const locPrefix = (loc: string, path: string) =>
+    `/${loc}${path === "/" ? "" : path}`;
 
   // Only emit URLs for fully-translated locales. The six stub locales
   // (bg/id/so/ur/uz/sw) are near-empty; indexing them would flag the site
@@ -59,23 +61,40 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
 
     for (const u of universities) {
-      urls.push(makeEntry(locPrefix(locale, `/universities/${u.slug}`), 'monthly', 0.85));
+      urls.push(
+        makeEntry(
+          locPrefix(locale, `/universities/${u.slug}`),
+          "monthly",
+          0.85,
+          u.updatedAt ? new Date(u.updatedAt) : undefined,
+        ),
+      );
     }
 
     for (const cat of categories) {
-      urls.push(makeEntry(locPrefix(locale, `/programs/${cat.slug}`), 'monthly', 0.7));
+      urls.push(
+        makeEntry(locPrefix(locale, `/programs/${cat.slug}`), "monthly", 0.7),
+      );
     }
 
     for (const c of combinations) {
       urls.push(
-        makeEntry(locPrefix(locale, `/programs/${c.categorySlug}/${c.citySlug}`), 'monthly', 0.65),
+        makeEntry(
+          locPrefix(locale, `/programs/${c.categorySlug}/${c.citySlug}`),
+          "monthly",
+          0.65,
+        ),
       );
     }
 
     // "Study in Turkey from {country}" landing pages — high-intent geo funnels.
     for (const c of countries) {
       urls.push(
-        makeEntry(locPrefix(locale, `/study-in-turkey-from/${c.slug}`), 'monthly', 0.7),
+        makeEntry(
+          locPrefix(locale, `/study-in-turkey-from/${c.slug}`),
+          "monthly",
+          0.7,
+        ),
       );
     }
 
@@ -83,7 +102,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       urls.push(
         makeEntry(
           locPrefix(locale, `/blog/${post.slug}`),
-          'monthly',
+          "monthly",
           0.7,
           new Date(post.publishedAt),
         ),

@@ -1,12 +1,12 @@
-import { redirect } from 'next/navigation';
-import { cookies } from 'next/headers';
-import type { AppLocale } from '@/i18n/routing';
-import { crm } from './index';
-import { getSessionUser } from '@/lib/supabase/server-session';
-import { verifySessionPayload } from './cookie-signature';
-import type { Profile } from '@/types/crm';
+import { redirect } from "next/navigation";
+import { cookies } from "next/headers";
+import type { AppLocale } from "@/i18n/routing";
+import { crm } from "./index";
+import { getSessionUser } from "@/lib/supabase/server-session";
+import { verifySessionPayload } from "./cookie-signature";
+import type { Profile } from "@/types/crm";
 
-export const STUDENT_SESSION_COOKIE = 'student_session';
+export const STUDENT_SESSION_COOKIE = "student_session";
 
 /** Dev-auth fallback is OFF by default. Enable only by setting DEV_AUTH_ENABLED=1
  *  AND running outside production. The NODE_ENV gate is hard: even if the flag
@@ -14,7 +14,10 @@ export const STUDENT_SESSION_COOKIE = 'student_session';
  *  and the devLogin actions) stays inert — neutralizing both the unsigned
  *  cookie and the predictable seed UUIDs in one place. */
 export function isDevAuthEnabled(): boolean {
-  return process.env.DEV_AUTH_ENABLED === '1' && process.env.NODE_ENV !== 'production';
+  return (
+    process.env.DEV_AUTH_ENABLED === "1" &&
+    process.env.NODE_ENV !== "production"
+  );
 }
 
 export interface StudentSession {
@@ -30,8 +33,8 @@ export async function getStudentSession(): Promise<StudentSession | null> {
     if (!user) return null;
     const profile = await crm.upsertStudentByAuthUid({
       authUid: user.id,
-      email: user.email ?? '',
-      fullName: (user.user_metadata?.full_name as string | undefined) ?? '',
+      email: user.email ?? "",
+      fullName: (user.user_metadata?.full_name as string | undefined) ?? "",
     });
     // Email collision with a staff profile (or another taken email) → no
     // student session.
@@ -42,7 +45,28 @@ export async function getStudentSession(): Promise<StudentSession | null> {
   }
 }
 
-export async function requireStudent(locale: AppLocale): Promise<StudentSession> {
+/**
+ * PERF(B): read-only resolution for /api/me (header avatar). Avoids the
+ * `upsertStudentByAuthUid` write that `getStudentSession` performs on every
+ * pageview for logged-in students. Profile linking still happens via
+ * `requireStudent` on the dashboard (the login flow redirects to /dashboard),
+ * so the avatar resolves correctly once the student has visited the dashboard.
+ */
+export async function getStudentSessionReadOnly(): Promise<StudentSession | null> {
+  try {
+    const user = await getSessionUser();
+    if (!user) return null;
+    const profile = await crm.getProfileByAuthUid(user.id);
+    if (!profile) return null;
+    return { userId: profile.id, profile };
+  } catch {
+    return null;
+  }
+}
+
+export async function requireStudent(
+  locale: AppLocale,
+): Promise<StudentSession> {
   const session = await getStudentSession();
   if (!session) redirect(`/${locale}/dashboard/login`);
   return session;
@@ -67,7 +91,9 @@ export async function getDevStudentSession(): Promise<StudentSession | null> {
   return profile ? { userId: profile.id, profile } : null;
 }
 
-export async function requireStudentAny(locale: AppLocale): Promise<StudentSession> {
+export async function requireStudentAny(
+  locale: AppLocale,
+): Promise<StudentSession> {
   const session = (await getStudentSession()) ?? (await getDevStudentSession());
   if (!session) redirect(`/${locale}/dashboard/login`);
   return session;

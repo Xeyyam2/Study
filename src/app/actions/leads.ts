@@ -1,14 +1,14 @@
-'use server';
+"use server";
 
-import { headers } from 'next/headers';
-import { leadSchema, type LeadInput } from '@/lib/validations/lead';
-import { crm } from '@/lib/crm';
-import { rateLimit, getIpFromHeaders } from '@/lib/rate-limit';
-import { isAllowedOrigin } from '@/lib/security/origin';
+import { headers } from "next/headers";
+import { leadSchema, type LeadInput } from "@/lib/validations/lead";
+import { crm } from "@/lib/crm";
+import { rateLimit, getIpFromHeaders } from "@/lib/rate-limit";
+import { isAllowedOrigin } from "@/lib/security/origin";
+import { logger } from "@/lib/logger";
 
 export type LeadResult =
-  | { ok: true }
-  | { ok: false; errors: Record<string, string[]> };
+  { ok: true } | { ok: false; errors: Record<string, string[]> };
 
 // 5 lead submissions per minute per IP — enough for an honest applicant who
 // retries after a typo, but blocks a script flooding the CRM with spam leads.
@@ -17,8 +17,8 @@ const leadLimiter = rateLimit({ windowMs: 60_000, max: 5 });
 export async function submitLead(input: unknown): Promise<LeadResult> {
   // Reject cross-origin browser calls (spam bots often post from other sites).
   const h = await headers();
-  if (!isAllowedOrigin(h.get('origin'))) {
-    return { ok: false, errors: { _form: ['Request rejected.'] } };
+  if (!isAllowedOrigin(h.get("origin"))) {
+    return { ok: false, errors: { _form: ["Request rejected."] } };
   }
 
   const parsed = leadSchema.safeParse(input);
@@ -45,13 +45,17 @@ export async function submitLead(input: unknown): Promise<LeadResult> {
   if (!(await leadLimiter.check(ip))) {
     return {
       ok: false,
-      errors: { _form: ['Too many submissions. Please wait a minute and try again.'] },
+      errors: {
+        _form: ["Too many submissions. Please wait a minute and try again."],
+      },
     };
   }
 
-  // Persist the lead into the CRM. We fail open: a transient DB error must not
-  // break the public "Apply Now" UX (the student has already filled the form).
-  // The failure is logged server-side so it can be picked up by monitoring.
+  // Persist the lead into the CRM. We fail open on the *student-facing* result:
+  // a transient DB error must not break the public "Apply Now" UX. BUT the
+  // failure is now durably recorded (SEC-1) — written to the leads_dl
+  // dead-letter table so it can be replayed/alerted on, instead of silently
+  // vanishing into an ephemeral console log.
   try {
     const profile = await crm.findOrCreateStudent({
       email: data.email,
@@ -65,16 +69,24 @@ export async function submitLead(input: unknown): Promise<LeadResult> {
       userId: profile.id,
       // university_id is NOT NULL + a soft-ref to seed content; a general
       // application with no specific university page is tagged 'direct'.
-      universityId: data.universityId || data.universitySlug || 'direct',
+      universityId: data.universityId || data.universitySlug || "direct",
       programId: data.programId || data.programInterest || null,
-      source: 'website',
+      source: "website",
       // Store the free-text message plus the rich apply metadata as a JSON
       // blob so consultants see everything in one place without a migration.
       notes: JSON.stringify(buildLeadNotes(data)),
     });
   } catch (err) {
-    // eslint-disable-next-line no-console
-    console.error('[lead capture failed]', err);
+    // QA-1: structured log (no PII — the full payload is persisted to the
+    // leads_dl dead-letter table by recordFailedLead). error.name is enough
+    // to triage; email/phone stay out of logs.
+    logger.error("lead capture failed", { ip }, err);
+    // SEC-1: persist the raw payload + error so no paying-intent lead is ever
+    // silently lost. recordFailedLead swallows its own errors (best-effort).
+    await crm.recordFailedLead(
+      { input: data, ip },
+      err instanceof Error ? `${err.name}: ${err.message}` : String(err),
+    );
   }
 
   return { ok: true };

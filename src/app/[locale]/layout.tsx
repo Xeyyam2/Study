@@ -1,24 +1,24 @@
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
-import { GeistSans } from 'geist/font/sans';
-import { notFound } from 'next/navigation';
-import { NextIntlClientProvider } from 'next-intl';
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import { GeistSans } from "geist/font/sans";
+import { notFound } from "next/navigation";
+import { NextIntlClientProvider } from "next-intl";
 import {
   getMessages,
   getTranslations,
   setRequestLocale,
-} from 'next-intl/server';
-import { routing, isRtl, isLocale, type AppLocale } from '@/i18n/routing';
-import { siteConfig, isIncompleteLocale } from '@/config/site';
-import { JsonLd } from '@/components/seo/json-ld';
-import { Analytics } from '@/components/seo/analytics';
-import { organizationJsonLd, websiteJsonLd } from '@/lib/seo/json-ld';
-import '../globals.css';
+} from "next-intl/server";
+import { routing, isRtl, isLocale, type AppLocale } from "@/i18n/routing";
+import { siteConfig, isIncompleteLocale } from "@/config/site";
+import { JsonLd } from "@/components/seo/json-ld";
+import { Analytics } from "@/components/seo/analytics";
+import { organizationJsonLd, websiteJsonLd } from "@/lib/seo/json-ld";
+import "../globals.css";
 
 const inter = Inter({
-  subsets: ['latin', 'cyrillic'],
-  variable: '--font-inter',
-  display: 'swap',
+  subsets: ["latin", "cyrillic"],
+  variable: "--font-inter",
+  display: "swap",
 });
 
 export function generateStaticParams() {
@@ -31,19 +31,21 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: 'Meta' });
+  const t = await getTranslations({ locale, namespace: "Meta" });
 
   return {
     title: {
-      default: t('title'),
+      default: t("title"),
       template: `%s | ${siteConfig.name}`,
     },
-    description: t('description'),
+    description: t("description"),
     metadataBase: new URL(siteConfig.url),
     // Stub locales (~10% translated) would be flagged as thin content if
     // indexed. They still render if visited directly, but stay noindex until
     // fully translated (see INCOMPLETE_LOCALES in config/site.ts).
-    ...(isIncompleteLocale(locale) ? { robots: { index: false, follow: false } } : {}),
+    ...(isIncompleteLocale(locale)
+      ? { robots: { index: false, follow: false } }
+      : {}),
   };
 }
 
@@ -63,8 +65,8 @@ export default async function LocaleLayout({
   setRequestLocale(locale);
 
   const messages = await getMessages();
-  const tCommon = await getTranslations({ locale, namespace: 'Common' });
-  const direction = isRtl(locale) ? 'rtl' : 'ltr';
+  const tCommon = await getTranslations({ locale, namespace: "Common" });
+  const direction = isRtl(locale) ? "rtl" : "ltr";
   const appLocale = locale as AppLocale;
 
   return (
@@ -75,13 +77,17 @@ export default async function LocaleLayout({
       suppressHydrationWarning
     >
       <body>
+        {/* PERF: preconnect to cross-origin analytics/tag hosts so the DNS/TLS
+            handshake overlaps with first paint instead of serializing. */}
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        <link rel="preconnect" href="https://www.clarity.ms" />
         <JsonLd data={[organizationJsonLd(), websiteJsonLd(appLocale)]} />
         <NextIntlClientProvider messages={messages}>
           <a
             href="#main"
             className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[60] focus:rounded focus:bg-card focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:shadow-flat-hover"
           >
-            {tCommon('skipToContent')}
+            {tCommon("skipToContent")}
           </a>
           {children}
         </NextIntlClientProvider>

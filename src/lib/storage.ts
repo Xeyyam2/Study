@@ -1,7 +1,10 @@
-import { getSupabaseServer } from './supabase/server';
+import { getSupabaseServer } from "./supabase/server";
 
-export const DOCUMENT_BUCKET = 'application-documents';
-const SIGNED_URL_TTL_SECONDS = 60;
+export const DOCUMENT_BUCKET = "application-documents";
+// BE-3: 60s was too short for async document downloads (viewing a document a
+// minute after opening the admin panel 404'd). 10 minutes balances security
+// and usability.
+const SIGNED_URL_TTL_SECONDS = 600;
 
 export async function uploadDocumentObject(
   path: string,

@@ -16,6 +16,9 @@ import {
   sortUniversities,
 } from "@/lib/universities/listing-query";
 
+// PERF/SEO: ISR so the listing rebuilds against the live DB periodically.
+export const revalidate = 3600;
+
 export async function generateMetadata({
   params,
 }: {
@@ -111,6 +114,7 @@ export default async function UniversitiesPage({
               name: u.name,
               url: `${siteConfig.url}/${locale}/universities/${u.slug}`,
             })),
+            `${siteConfig.url}/${locale}/universities`,
           ),
         ]}
       />

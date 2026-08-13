@@ -1,4 +1,4 @@
-import Script from 'next/script';
+import Script from "next/script";
 
 /**
  * Analytics integration — env-based, renders nothing when IDs are absent.
@@ -6,9 +6,10 @@ import Script from 'next/script';
  * - Google Analytics 4 (NEXT_PUBLIC_GA_ID)
  * - Microsoft Clarity (NEXT_PUBLIC_CLARITY_ID)
  *
- * Both are loaded via next/script with `afterInteractive` strategy so they
- * don't block the initial page paint. In development / preview without env
- * vars set, this component is a no-op.
+ * Both are loaded via next/script so they don't block the initial page paint.
+ * GA4 uses `afterInteractive` (primary analytics); Clarity (session replay,
+ * non-critical) uses `lazyOnload` to defer until after first paint. In
+ * development / preview without env vars set, this component is a no-op.
  */
 export function Analytics() {
   const gaId = process.env.NEXT_PUBLIC_GA_ID;
@@ -34,7 +35,7 @@ export function Analytics() {
       )}
 
       {clarityId && (
-        <Script id="clarity-init" strategy="afterInteractive">
+        <Script id="clarity-init" strategy="lazyOnload">
           {`
             (function(c,l,a,r,i,t,y){
               c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
