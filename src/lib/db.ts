@@ -7,11 +7,18 @@ import { Pool } from "pg";
 
 let pool: Pool | null = null;
 
+function defaultPoolMax(): number {
+  return process.env.npm_lifecycle_event === "build" ||
+    process.env.NEXT_PHASE === "phase-production-build"
+    ? 1
+    : 2;
+}
+
 export function getPool(): Pool {
   if (!pool) {
     const url = process.env.DATABASE_URL;
     if (!url) throw new Error("DATABASE_URL is not set");
-    const max = Number(process.env.PGPOOL_MAX ?? 10);
+    const max = Number(process.env.PGPOOL_MAX ?? defaultPoolMax());
     pool = new Pool({ connectionString: url, max });
     // Prevent unhandled EventEmitter errors from crashing the process when an
     // idle client hits a connection error.

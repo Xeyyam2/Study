@@ -1,9 +1,16 @@
-import createNextIntlPlugin from 'next-intl/plugin';
-import { fileURLToPath } from 'node:url';
-import path from 'node:path';
+import createNextIntlPlugin from "next-intl/plugin";
+import { fileURLToPath } from "node:url";
+import path from "node:path";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
+const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
+
+const staticGenerationMaxConcurrency = Number(
+  process.env.NEXT_STATIC_GENERATION_MAX_CONCURRENCY ?? 1,
+);
+const staticGenerationMinPagesPerWorker = Number(
+  process.env.NEXT_STATIC_GENERATION_MIN_PAGES_PER_WORKER ?? 25,
+);
 
 // Fail fast at BUILD time so a misconfigured production deploy throws here
 // instead of 500-ing on the first request at runtime. Gated on production so
@@ -14,21 +21,24 @@ const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
 // (Vercel's build environment has none). The app falls back to the in-memory
 // seed layer until the first request hits the real DB.
 function assertEnv() {
-  if (process.env.NODE_ENV !== 'production') return;
+  if (process.env.NODE_ENV !== "production") return;
   const missing = [];
   // SEO canonical/hreflang/sitemap all depend on the public site URL — a
   // placeholder here silently emits wrong canonicals.
-  if (!process.env.NEXT_PUBLIC_SITE_URL) missing.push('NEXT_PUBLIC_SITE_URL');
+  if (!process.env.NEXT_PUBLIC_SITE_URL) missing.push("NEXT_PUBLIC_SITE_URL");
   // Supabase keys are only required when the app actually uses Supabase.
-  if (process.env.SUPABASE_ENABLED === 'true') {
-    if (!process.env.NEXT_PUBLIC_SUPABASE_URL) missing.push('NEXT_PUBLIC_SUPABASE_URL');
-    if (!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) missing.push('NEXT_PUBLIC_SUPABASE_ANON_KEY');
-    if (!process.env.SUPABASE_SERVICE_ROLE_KEY) missing.push('SUPABASE_SERVICE_ROLE_KEY');
+  if (process.env.SUPABASE_ENABLED === "true") {
+    if (!process.env.NEXT_PUBLIC_SUPABASE_URL)
+      missing.push("NEXT_PUBLIC_SUPABASE_URL");
+    if (!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY)
+      missing.push("NEXT_PUBLIC_SUPABASE_ANON_KEY");
+    if (!process.env.SUPABASE_SERVICE_ROLE_KEY)
+      missing.push("SUPABASE_SERVICE_ROLE_KEY");
   }
   if (missing.length) {
     throw new Error(
-      `Missing required environment variables: ${missing.join(', ')}. ` +
-        'Copy .env.example to .env.local and fill in the values.',
+      `Missing required environment variables: ${missing.join(", ")}. ` +
+        "Copy .env.example to .env.local and fill in the values.",
     );
   }
 }
@@ -39,37 +49,44 @@ const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
   outputFileTracingRoot: __dirname,
+  experimental: {
+    staticGenerationMaxConcurrency,
+    staticGenerationMinPagesPerWorker,
+  },
   images: {
-    formats: ['image/avif', 'image/webp'],
+    formats: ["image/avif", "image/webp"],
     remotePatterns: [
-      { protocol: 'https', hostname: 'images.unsplash.com' },
-      { protocol: 'https', hostname: 'images.pexels.com' },
-      { protocol: 'https', hostname: '*.supabase.co' },
-      { protocol: 'https', hostname: 'studyleo-production-bucket.s3.eu-north-1.amazonaws.com' },
+      { protocol: "https", hostname: "images.unsplash.com" },
+      { protocol: "https", hostname: "images.pexels.com" },
+      { protocol: "https", hostname: "*.supabase.co" },
+      {
+        protocol: "https",
+        hostname: "studyleo-production-bucket.s3.eu-north-1.amazonaws.com",
+      },
     ],
   },
   async headers() {
     const securityHeaders = [
-      { key: 'X-Content-Type-Options', value: 'nosniff' },
-      { key: 'X-Frame-Options', value: 'SAMEORIGIN' },
-      { key: 'Referrer-Policy', value: 'strict-origin-when-cross-origin' },
+      { key: "X-Content-Type-Options", value: "nosniff" },
+      { key: "X-Frame-Options", value: "SAMEORIGIN" },
+      { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
       {
-        key: 'Permissions-Policy',
-        value: 'camera=(), microphone=(), geolocation=()',
+        key: "Permissions-Policy",
+        value: "camera=(), microphone=(), geolocation=()",
       },
       {
-        key: 'Strict-Transport-Security',
-        value: 'max-age=63072000; includeSubDomains; preload',
+        key: "Strict-Transport-Security",
+        value: "max-age=63072000; includeSubDomains; preload",
       },
       {
-        key: 'Content-Security-Policy',
+        key: "Content-Security-Policy",
         value: [
           "default-src 'self'",
           // next/script inline + GA gtag + Clarity + GA collect.
           // Dev mode requires 'unsafe-eval' (webpack source maps + HMR use eval);
           // production builds don't, so it stays strict there.
           `script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.google-analytics.com https://www.clarity.ms${
-            process.env.NODE_ENV === 'development' ? " 'unsafe-eval'" : ''
+            process.env.NODE_ENV === "development" ? " 'unsafe-eval'" : ""
           }`,
           "style-src 'self' 'unsafe-inline'",
           // next/image öz originindən xidmət edir; uzaq şəkillər yalnız məlum
@@ -84,10 +101,10 @@ const nextConfig = {
           "base-uri 'self'",
           "form-action 'self'",
           "upgrade-insecure-requests",
-        ].join('; '),
+        ].join("; "),
       },
     ];
-    return [{ source: '/(.*)', headers: securityHeaders }];
+    return [{ source: "/(.*)", headers: securityHeaders }];
   },
 };
 
