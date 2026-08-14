@@ -46,17 +46,28 @@ export async function getStudentSession(): Promise<StudentSession | null> {
 }
 
 /**
- * PERF(B): read-only resolution for /api/me (header avatar). Avoids the
+ * Read-mostly resolution for /api/me (header avatar). Avoids the
  * `upsertStudentByAuthUid` write that `getStudentSession` performs on every
- * pageview for logged-in students. Profile linking still happens via
- * `requireStudent` on the dashboard (the login flow redirects to /dashboard),
- * so the avatar resolves correctly once the student has visited the dashboard.
+ * pageview: it reads `getProfileByAuthUid` first, and only falls back to an
+ * upsert when the profile isn't linked yet (first call after login, before the
+ * user visits /dashboard). So the write happens ~once per user lifetime, not
+ * per pageview — preserving the perf win while fixing the post-login window
+ * where the header showed a Google-login button instead of the avatar.
  */
 export async function getStudentSessionReadOnly(): Promise<StudentSession | null> {
   try {
     const user = await getSessionUser();
     if (!user) return null;
-    const profile = await crm.getProfileByAuthUid(user.id);
+    let profile = await crm.getProfileByAuthUid(user.id);
+    if (!profile) {
+      // Profile not linked yet (first /api/me after Google login, before any
+      // /dashboard visit). Link it once; subsequent calls hit the read path.
+      profile = await crm.upsertStudentByAuthUid({
+        authUid: user.id,
+        email: user.email ?? "",
+        fullName: (user.user_metadata?.full_name as string | undefined) ?? "",
+      });
+    }
     if (!profile) return null;
     return { userId: profile.id, profile };
   } catch {
