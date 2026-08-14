@@ -316,13 +316,13 @@ export function createPgDataLayer(getPool: () => Pool): DataLayer {
       return res.rows.map(rowUniversity);
     },
 
-    async getBySlug(slug: string): Promise<University | null> {
+    getBySlug: cache(async (slug: string): Promise<University | null> => {
       const res = await getPool().query(
         `select * from public.universities where slug = $1`,
         [slug],
       );
       return res.rows[0] ? rowUniversity(res.rows[0]) : null;
-    },
+    }),
 
     // B6: React.cache deduplicates getDetail calls within a single request —
     // generateMetadata and the page component both call it for the same slug.

@@ -61,14 +61,16 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
 
     for (const u of universities) {
-      urls.push(
-        makeEntry(
-          locPrefix(locale, `/universities/${u.slug}`),
-          "monthly",
-          0.85,
-          u.updatedAt ? new Date(u.updatedAt) : undefined,
-        ),
-      );
+      // SE-7: advertise hero + gallery images so Google Images can crawl them
+      // without discovering them through the (JS-heavy) page HTML.
+      const images = [u.heroImage, ...u.gallery].filter(Boolean);
+      urls.push({
+        url: `${base}${locPrefix(locale, `/universities/${u.slug}`)}`,
+        ...(images.length ? { images } : {}),
+        changeFrequency: "monthly",
+        priority: 0.85,
+        ...(u.updatedAt ? { lastModified: new Date(u.updatedAt) } : {}),
+      });
     }
 
     for (const cat of categories) {

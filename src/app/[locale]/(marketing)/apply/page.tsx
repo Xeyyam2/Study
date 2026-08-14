@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import dynamic from "next/dynamic";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { ShieldCheck, Clock, Headset } from "lucide-react";
 import { data } from "@/lib/data";
@@ -7,8 +8,14 @@ import type { AppLocale } from "@/i18n/routing";
 import { buildPageMetadata } from "@/lib/seo/alternates";
 import { serviceJsonLd, howToJsonLd } from "@/lib/seo/json-ld";
 import { JsonLd } from "@/components/seo/json-ld";
-import { ApplyForm } from "@/components/sections/apply-form";
 import { isGeoLocale } from "@/lib/seo/geo";
+
+// P2: split react-hook-form + zod out of the initial bundle — the form is the
+// only consumer of those deps, so lazy-loading it keeps them off the critical
+// path while SSR still renders the form HTML (default ssr:true).
+const ApplyForm = dynamic(() =>
+  import("@/components/sections/apply-form").then((m) => m.ApplyForm),
+);
 
 // PERF/SEO: ISR so the university/program options stay current.
 export const revalidate = 3600;

@@ -18,6 +18,7 @@ import {
 } from "lucide-react";
 import { data } from "@/lib/data";
 import type { AppLocale } from "@/i18n/routing";
+import { routing } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { siteConfig } from "@/config/site";
 import { buildPageMetadata } from "@/lib/seo/alternates";
@@ -52,8 +53,18 @@ import { UniversityCard } from "@/components/sections/university-card";
 import { formatCurrency, formatNumber } from "@/lib/utils";
 
 // ISR — content rarely changes; rebuild only every hour (or on-demand revalidation).
-// No generateStaticParams: pages are rendered on-demand (first visit) and cached.
+// SE-5/P2: pre-render the featured universities at build time so their first
+// visit (and Google's first crawl) is a static cache hit instead of a cold SSR
+// + DB round-trip. Non-featured slugs still render on-demand and are cached.
 export const revalidate = 3600;
+
+export async function generateStaticParams() {
+  const universities = await data.universities.list();
+  const featured = universities.filter((u) => u.featured).slice(0, 30);
+  return routing.locales.flatMap((locale) =>
+    featured.map((u) => ({ locale, slug: u.slug })),
+  );
+}
 
 export async function generateMetadata({
   params,
@@ -210,6 +221,8 @@ export default async function UniversityDetailPage({
             alt={detail.name}
             fill
             priority
+            placeholder="blur"
+            blurDataURL="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSIxNCIgdmlld0JveD0iMCAwIDQwIDE0Ij48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZTNlOGY4Ii8+PC9zdmc+"
             sizes="(max-width: 768px) 100vw, 1200px"
             className="object-cover"
           />

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import dynamic from "next/dynamic";
 import { Suspense } from "react";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import type { AppLocale } from "@/i18n/routing";
@@ -7,10 +8,15 @@ import { HeroSection } from "@/components/sections/hero-section";
 import { StatsSection } from "@/components/sections/stats-section";
 import { CategorySection } from "@/components/sections/category-section";
 import { FeaturedUniversities } from "@/components/sections/featured-universities";
-import { CostCalculator } from "@/components/sections/cost-calculator";
 import { SuccessStories } from "@/components/sections/success-stories";
 import { FaqSection } from "@/components/sections/faq-section";
 import { CTASection } from "@/components/sections/cta-section";
+
+// P1: the calculator is below the fold and client-only (Radix Select) — split
+// it out so its JS only loads when the section hydrates.
+const CostCalculator = dynamic(() =>
+  import("@/components/sections/cost-calculator").then((m) => m.CostCalculator),
+);
 
 // PERF/SEO: rebuild the homepage on an interval so new universities/programs/
 // stats appear without a redeploy, while keeping it ISR-cached (fast TTFB +

@@ -1,13 +1,18 @@
 import type { Metadata } from "next";
+import dynamic from "next/dynamic";
 import { Suspense } from "react";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { data } from "@/lib/data";
 import { buildPageMetadata } from "@/lib/seo/alternates";
-import {
-  CompareTool,
-  type CompareItem,
-} from "@/components/sections/compare-tool";
 import { formatCurrency } from "@/lib/utils";
+
+// P2: CompareTool is client-only (useSearchParams + Radix Select) — a dynamic
+// import splits its JS into a separate chunk. SSR stays on; useSearchParams is
+// handled by the surrounding Suspense boundary.
+const CompareTool = dynamic(() =>
+  import("@/components/sections/compare-tool").then((m) => m.CompareTool),
+);
+import type { CompareItem } from "@/components/sections/compare-tool";
 
 // PERF/SEO: ISR so comparison data stays current.
 export const revalidate = 3600;

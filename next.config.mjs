@@ -5,8 +5,17 @@ import path from "node:path";
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const withNextIntl = createNextIntlPlugin("./src/i18n/request.ts");
 
-const staticGenerationMaxConcurrency = Number(
-  process.env.NEXT_STATIC_GENERATION_MAX_CONCURRENCY ?? 1,
+// FS-3: derived from the same knob the pg pool uses (src/lib/db.ts). Static
+// generation workers each hold a pool connection during a page build, so the
+// concurrency must never exceed PGPOOL_MAX — otherwise the pool starves and
+// builds hang. Defaults mirror src/lib/db.ts (1 during build).
+const pgpoolMax = Number(process.env.PGPOOL_MAX ?? 1);
+const staticGenerationMaxConcurrency = Math.max(
+  1,
+  Math.min(
+    Number(process.env.NEXT_STATIC_GENERATION_MAX_CONCURRENCY ?? 1),
+    pgpoolMax,
+  ),
 );
 const staticGenerationMinPagesPerWorker = Number(
   process.env.NEXT_STATIC_GENERATION_MIN_PAGES_PER_WORKER ?? 25,

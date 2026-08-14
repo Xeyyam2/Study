@@ -5,6 +5,7 @@ import { setRequestLocale, getTranslations } from "next-intl/server";
 import { Clock, ArrowLeft, Calendar } from "lucide-react";
 import { data } from "@/lib/data";
 import type { AppLocale } from "@/i18n/routing";
+import { routing } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { siteConfig } from "@/config/site";
 import { buildPageMetadata } from "@/lib/seo/alternates";
@@ -15,8 +16,16 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 
 // ISR — blog posts rarely change after publishing; rebuild hourly.
-// No generateStaticParams: pages render on-demand (first visit) and are cached.
+// SE-5/P2: pre-render all posts at build time — a small, static set that
+// otherwise pays a cold SSR + DB round-trip on every first visit/crawl.
 export const revalidate = 3600;
+
+export async function generateStaticParams() {
+  const posts = await data.blog.list();
+  return routing.locales.flatMap((locale) =>
+    posts.map((post) => ({ locale, slug: post.slug })),
+  );
+}
 
 export async function generateMetadata({
   params,

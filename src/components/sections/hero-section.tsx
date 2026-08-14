@@ -27,12 +27,20 @@ export function HeroSection() {
   const [open, setOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState(-1);
   const boxRef = useRef<HTMLDivElement>(null);
+  // P3: cache results per query so retyping/backspacing doesn't re-hit the API.
+  const cacheRef = useRef(new Map<string, SearchHit[]>());
 
   // Debounced autocomplete.
   useEffect(() => {
     const q = query.trim();
     if (q.length < 2) {
       setHits([]);
+      return;
+    }
+    const cached = cacheRef.current.get(q);
+    if (cached) {
+      setHits(cached);
+      setOpen(true);
       return;
     }
     const ctrl = new AbortController();
@@ -44,7 +52,11 @@ export function HeroSection() {
         );
         if (!res.ok) return;
         const data = await res.json();
-        setHits(data.results ?? []);
+        const results = data.results ?? [];
+        // Bound the cache so it can't grow unbounded during a long session.
+        if (cacheRef.current.size > 100) cacheRef.current.clear();
+        cacheRef.current.set(q, results);
+        setHits(results);
         setOpen(true);
       } catch {
         /* aborted or network — ignore */
@@ -199,6 +211,8 @@ export function HeroSection() {
               alt={t("imageAlt")}
               fill
               priority
+              placeholder="blur"
+              blurDataURL="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI1MCIgdmlld0JveD0iMCAwIDQwIDUwIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZTNlOGY4Ii8+PC9zdmc+"
               sizes="(max-width: 1200px) 50vw, 480px"
               className="object-cover"
             />
