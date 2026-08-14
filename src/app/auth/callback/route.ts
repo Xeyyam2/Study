@@ -2,6 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { createServerClient } from "@supabase/ssr";
 import { routing } from "@/i18n/routing";
 import { logger } from "@/lib/logger";
+import { crm } from "@/lib/crm";
 
 export const dynamic = "force-dynamic";
 
@@ -75,6 +76,23 @@ export async function GET(req: NextRequest) {
     }
     // QA-1 / SEC-10: log WITHOUT the email (PII). A boolean is all operators need.
     logger.info("auth callback: session established", { hasUser: !!data.user });
+    // Link the student profile server-side at login so the header avatar
+    // resolves immediately on the next page (no /api/me race). Best-effort —
+    // a failure just means /api/me's read-mostly path links it later. Safe for
+    // staff too: upsertStudentByAuthUid returns null when the email belongs to
+    // a staff/admin profile (no privilege escalation).
+    if (data.user) {
+      try {
+        await crm.upsertStudentByAuthUid({
+          authUid: data.user.id,
+          email: data.user.email ?? "",
+          fullName:
+            (data.user.user_metadata?.full_name as string | undefined) ?? "",
+        });
+      } catch {
+        // Swallow — linking also happens lazily via /api/me.
+      }
+    }
   }
   return res;
 }

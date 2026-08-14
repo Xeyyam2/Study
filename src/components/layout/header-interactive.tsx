@@ -54,7 +54,7 @@ export function HeaderInteractive() {
   const [session, setSession] = useState<HeaderSession | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const redirectTo = `${siteConfig.url}/${locale}?auth=success`;
+  const redirectTo = `${siteConfig.url}/auth/callback?next=/${locale}`;
   const initial = (
     session?.profile.fullName.trim().charAt(0) || "?"
   ).toUpperCase();

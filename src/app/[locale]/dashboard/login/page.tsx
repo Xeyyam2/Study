@@ -1,12 +1,18 @@
-import { getTranslations } from 'next-intl/server';
-import type { Metadata } from 'next';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { GoogleSignInButton } from '@/components/auth/GoogleSignInButton';
-import { Button } from '@/components/ui/button';
-import { crm } from '@/lib/crm';
-import { isDevAuthEnabled } from '@/lib/crm/student-session';
+import { getTranslations } from "next-intl/server";
+import type { Metadata } from "next";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { GoogleSignInButton } from "@/components/auth/GoogleSignInButton";
+import { Button } from "@/components/ui/button";
+import { crm } from "@/lib/crm";
+import { isDevAuthEnabled } from "@/lib/crm/student-session";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 // Auth pages must never appear in search results.
 export const metadata: Metadata = {
@@ -22,9 +28,9 @@ export default async function StudentLoginPage({
 }) {
   const { locale } = await params;
   const { error: authError } = await searchParams;
-  const t = await getTranslations({ locale, namespace: 'Student.login' });
-  const base = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000';
-  const callbackUrl = `${base}/${locale}?auth=success`;
+  const t = await getTranslations({ locale, namespace: "Student.login" });
+  const base = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
+  const callbackUrl = `${base}/auth/callback?next=/${locale}`;
   const isDev = isDevAuthEnabled();
 
   let demoStudents: Awaited<ReturnType<typeof crm.listStudents>> = [];
@@ -34,8 +40,8 @@ export default async function StudentLoginPage({
     <div className="flex min-h-screen items-center justify-center bg-background p-6">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle>{t('title')}</CardTitle>
-          <CardDescription>{t('subtitle')}</CardDescription>
+          <CardTitle>{t("title")}</CardTitle>
+          <CardDescription>{t("subtitle")}</CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
           {authError && (
@@ -46,14 +52,23 @@ export default async function StudentLoginPage({
           <GoogleSignInButton redirectTo={callbackUrl} />
           {isDev && demoStudents.length > 0 && (
             <div className="space-y-2 border-t border-border pt-4">
-              <p className="text-xs uppercase text-muted-foreground">Dev login</p>
+              <p className="text-xs uppercase text-muted-foreground">
+                Dev login
+              </p>
               {demoStudents.map((s) => (
                 <form key={s.id} action={devLoginAction} className="block">
                   <input type="hidden" name="profileId" value={s.id} />
                   <input type="hidden" name="locale" value={locale} />
-                  <Button type="submit" variant="outline" size="sm" className="w-full justify-between">
+                  <Button
+                    type="submit"
+                    variant="outline"
+                    size="sm"
+                    className="w-full justify-between"
+                  >
                     <span>{s.fullName}</span>
-                    <span className="text-xs text-muted-foreground">{s.email}</span>
+                    <span className="text-xs text-muted-foreground">
+                      {s.email}
+                    </span>
                   </Button>
                 </form>
               ))}
@@ -66,10 +81,10 @@ export default async function StudentLoginPage({
 }
 
 async function devLoginAction(formData: FormData) {
-  'use server';
-  const { devStudentLogin } = await import('@/app/actions/student-auth');
+  "use server";
+  const { devStudentLogin } = await import("@/app/actions/student-auth");
   await devStudentLogin({
-    profileId: String(formData.get('profileId')),
-    locale: String(formData.get('locale')),
+    profileId: String(formData.get("profileId")),
+    locale: String(formData.get("locale")),
   });
 }
