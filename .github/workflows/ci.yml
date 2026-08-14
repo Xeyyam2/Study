@@ -92,7 +92,7 @@ jobs:
           cache: npm
       - run: npm ci
       - name: Install Playwright browsers
-        run: npx playwright install --with-deps
+        run: npx playwright install --with-deps chromium firefox webkit
       - name: Migrate + seed database
         run: npm run db:migrate -- --seed
       - name: Production build

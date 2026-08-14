@@ -29,29 +29,23 @@ UPSTASH_REDIS_REST_URL / UPSTASH_REDIS_REST_TOKEN  # rate limiting (recommended)
 TRUST_PROXY=1              # Vercel is a trusted proxy
 ```
 
-## Standard deploy sequence (manual, until CD lands)
+## Standard deploy sequence
 
 > The CI pipeline (`.github/workflows/ci.yml`) runs lint → typecheck → migrate+seed
-> → unit → build → e2e. **Migrations against prod are NOT yet automated** (QA-2),
-> so order matters: **migrate first, then deploy.**
+> → unit → build → e2e. **Production deploys are automated** (`.github/workflows/deploy.yml`,
+> QA-2): merge to `main` triggers **migrate-first → Vercel → smoke test**, and the
+> job fails if the migration or smoke step fails. Supabase-only migrations that
+> `migrate.ts` skips locally (`0005/0006/0007/0009/0013/0018/0021` + any future
+> `SKIP_LOCAL` entry) are still applied manually in the Supabase SQL Editor, in
+> filename order, **before** merging a PR that ships code depending on them.
 
-1. **Merge** the PR to `main` (CI must be green).
-2. **Apply Supabase-only migrations** that `migrate.ts` skips locally
-   (`0005/0006/0007/0009/0013/0018/0021` + any future `SKIP_LOCAL` entry) in the
-   Supabase **SQL Editor**, in filename order. General migrations (`0020_leads_dl`,
-   `0022_*`, …) go via the migrator below.
-3. **Apply general migrations** against prod:
-   ```bash
-   DATABASE_URL="<prod-direct-conn>" npm run db:migrate
-   ```
-   The migrator uses the `schema_migrations` ledger + advisory lock + SHA-256
-   checksum (QA-4) — it skips already-applied files and refuses edited ones.
-4. **Deploy:** push to `main` triggers Vercel. `assertEnv()` fails the build if a
-   required prod env var is missing.
-5. **Smoke test** after Vercel finishes:
-   - `curl -fsS https://<domain>/api/health` → `{"ok":true}` (200).
-   - Open the homepage, a university detail page, `/apply`, and `/en/dashboard/login`.
-   - Submit a test lead and confirm it appears in `/admin` (CRM).
+1. **Apply Supabase-only migrations** (if any) in the Supabase **SQL Editor**, in
+   filename order.
+2. **Merge** the PR to `main` — CI must be green; the CD job then runs
+   `db:migrate` against prod (ledger + advisory lock + SHA-256 checksum, QA-4),
+   deploys to Vercel, and smoke-tests `/api/health`, the homepage, `/universities`
+   and `/apply`.
+3. **Verify** the CD run in Actions → "CD — Deploy" → all steps green.
 
 ## Rollback
 
@@ -70,8 +64,8 @@ TRUST_PROXY=1              # Vercel is a trusted proxy
    are captured-but-not-recorded leads (SEC-1 dead-letter). Replay manually.
 5. Roll back code (step above) if a deploy caused it; page on the backup if data is lost.
 
-## "Migrate-first" hard gate (when CD lands — QA-2)
+## "Migrate-first" hard gate (live — QA-2)
 
-The deploy job MUST run `db:migrate` against prod **before** Vercel goes live and
-**fail the deploy** on migration error. Until then, the manual sequence above is the
-source of truth — do not let Vercel auto-deploy ahead of an unapplied migration.
+The CD deploy job (`.github/workflows/deploy.yml`) runs `db:migrate` against prod
+**before** Vercel goes live and **fails the deploy** on any migration error.
+Vercel Git auto-deploy is disabled for `main`; the CD job is the single deploy path.
