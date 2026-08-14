@@ -40,14 +40,13 @@ export async function GET(req: NextRequest) {
     );
   }
 
-  const res = NextResponse.redirect(redirectTarget);
-
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   if (!url || !anon) {
     logger.error("auth callback: missing Supabase env vars");
-    return res;
+    return NextResponse.redirect(redirectTarget);
   }
+  const res = NextResponse.redirect(redirectTarget);
   const supabase = createServerClient(url, anon, {
     cookies: {
       getAll: () => req.cookies.getAll(),
@@ -76,6 +75,8 @@ export async function GET(req: NextRequest) {
     }
     // QA-1 / SEC-10: log WITHOUT the email (PII). A boolean is all operators need.
     logger.info("auth callback: session established", { hasUser: !!data.user });
+    redirectTarget.searchParams.set("auth", "success");
+    res.headers.set("location", redirectTarget.toString());
     // Link the student profile server-side at login so the header avatar
     // resolves immediately on the next page (no /api/me race). Best-effort —
     // a failure just means /api/me's read-mostly path links it later. Safe for
