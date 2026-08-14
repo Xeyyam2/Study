@@ -31,11 +31,17 @@ export async function getStudentSession(): Promise<StudentSession | null> {
   try {
     const user = await getSessionUser();
     if (!user) return null;
-    const profile = await crm.upsertStudentByAuthUid({
-      authUid: user.id,
-      email: user.email ?? "",
-      fullName: (user.user_metadata?.full_name as string | undefined) ?? "",
-    });
+    let profile = await crm.getProfileByAuthUid(user.id);
+    if (!profile) {
+      profile = await crm.getProfile(user.id);
+    }
+    if (!profile) {
+      profile = await crm.upsertStudentByAuthUid({
+        authUid: user.id,
+        email: user.email ?? "",
+        fullName: (user.user_metadata?.full_name as string | undefined) ?? "",
+      });
+    }
     // Email collision with a staff profile (or another taken email) → no
     // student session.
     if (!profile) return null;
@@ -59,6 +65,9 @@ export async function getStudentSessionReadOnly(): Promise<StudentSession | null
     const user = await getSessionUser();
     if (!user) return null;
     let profile = await crm.getProfileByAuthUid(user.id);
+    if (!profile) {
+      profile = await crm.getProfile(user.id);
+    }
     if (!profile) {
       // Profile not linked yet (first /api/me after Google login, before any
       // /dashboard visit). Link it once; subsequent calls hit the read path.
