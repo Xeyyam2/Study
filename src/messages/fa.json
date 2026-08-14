@@ -430,6 +430,9 @@
     "login": "Log in",
     "profile": "Profile"
   },
+  "Auth": {
+    "googleLogin": "ادامه با گوگل"
+  },
   "Student": {
     "auth": {
       "email": "ایمیل",
@@ -438,8 +441,7 @@
       "verify": "تأیید کد",
       "back": "ایمیل دیگری استفاده کنید",
       "linkSent": "ایمیل خود را برای لینک جادویی بررسی کنید (یا کد را وارد کنید).",
-      "error": "خطایی رخ داد. دوباره تلاش کنید.",
-      "googleLogin": "Continue with Google"
+      "error": "خطایی رخ داد. دوباره تلاش کنید."
     },
     "drawer": {
       "applications": "Applications",

@@ -430,6 +430,9 @@
     "login": "Log in",
     "profile": "Profile"
   },
+  "Auth": {
+    "googleLogin": "Continue with Google"
+  },
   "Student": {
     "auth": {
       "email": "Email",
@@ -438,8 +441,7 @@
       "verify": "Verifikasi kode",
       "back": "Gunakan email lain",
       "linkSent": "Periksa email Anda untuk magic link (atau masukkan kode).",
-      "error": "Terjadi kesalahan. Coba lagi.",
-      "googleLogin": "Continue with Google"
+      "error": "Terjadi kesalahan. Coba lagi."
     },
     "drawer": {
       "applications": "Applications",

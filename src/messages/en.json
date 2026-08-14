@@ -430,6 +430,9 @@
     "login": "Log in",
     "profile": "Profile"
   },
+  "Auth": {
+    "googleLogin": "Continue with Google"
+  },
   "Student": {
     "auth": {
       "email": "Email",
@@ -438,8 +441,7 @@
       "verify": "Verify code",
       "back": "Use a different email",
       "linkSent": "Check your email for the magic link (or enter the code).",
-      "error": "Something went wrong. Try again.",
-      "googleLogin": "Continue with Google"
+      "error": "Something went wrong. Try again."
     },
     "drawer": {
       "applications": "Applications",

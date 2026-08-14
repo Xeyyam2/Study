@@ -430,6 +430,9 @@
     "login": "Log in",
     "profile": "Profile"
   },
+  "Auth": {
+    "googleLogin": "Continue with Google"
+  },
   "Student": {
     "auth": {
       "email": "Iimeel",
@@ -438,8 +441,7 @@
       "verify": "Hubi koodhka",
       "back": "Iimeel kale isticmaal",
       "linkSent": "Eeg iimeelkaaga magic link (ama gali koodhka).",
-      "error": "Wax qaldamay. Isku day mar kale.",
-      "googleLogin": "Continue with Google"
+      "error": "Wax qaldamay. Isku day mar kale."
     },
     "drawer": {
       "applications": "Applications",

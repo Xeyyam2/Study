@@ -430,6 +430,9 @@
     "login": "Log in",
     "profile": "Profile"
   },
+  "Auth": {
+    "googleLogin": "Continuer avec Google"
+  },
   "Student": {
     "auth": {
       "email": "E-mail",
@@ -438,8 +441,7 @@
       "verify": "Vérifier le code",
       "back": "Utiliser un autre e-mail",
       "linkSent": "Vérifiez votre e-mail pour le lien magique (ou saisissez le code).",
-      "error": "Une erreur est survenue. Réessayez.",
-      "googleLogin": "Continue with Google"
+      "error": "Une erreur est survenue. Réessayez."
     },
     "drawer": {
       "applications": "Applications",

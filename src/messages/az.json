@@ -430,6 +430,9 @@
     "login": "Daxil ol",
     "profile": "Profil"
   },
+  "Auth": {
+    "googleLogin": "Google ilə davam et"
+  },
   "Student": {
     "auth": {
       "email": "E-poçt",
@@ -438,8 +441,7 @@
       "verify": "Kodu təsdiqlə",
       "back": "Başqa e-poçt istifadə et",
       "linkSent": "E-poçtunuzu yoxlayın (və ya kodu daxil edin).",
-      "error": "Bir şey xəta verdi. Təkrar cəhd edin.",
-      "googleLogin": "Google ilə davam et"
+      "error": "Bir şey xəta verdi. Təkrar cəhd edin."
     },
     "drawer": {
       "applications": "Müraciətlər",

@@ -430,6 +430,9 @@
     "login": "Giriş yap",
     "profile": "Profil"
   },
+  "Auth": {
+    "googleLogin": "Google ile devam et"
+  },
   "Student": {
     "auth": {
       "email": "E-posta",
@@ -438,8 +441,7 @@
       "verify": "Kodu doğrula",
       "back": "Farklı e-posta kullan",
       "linkSent": "E-postanızı kontrol edin (veya kodu girin).",
-      "error": "Bir şeyler ters gitti. Tekrar deneyin.",
-      "googleLogin": "Google ile devam et"
+      "error": "Bir şeyler ters gitti. Tekrar deneyin."
     },
     "drawer": {
       "applications": "Başvurular",

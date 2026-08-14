@@ -430,6 +430,9 @@
     "login": "Log in",
     "profile": "Profile"
   },
+  "Auth": {
+    "googleLogin": "Continue with Google"
+  },
   "Student": {
     "auth": {
       "email": "ای میل",
@@ -438,8 +441,7 @@
       "verify": "کوڈ تصدیق کریں",
       "back": "کوئی اور ای میل استعمال کریں",
       "linkSent": "میجک لنک کے لیے اپنا ای میل چیک کریں (یا کوڈ درج کریں)۔",
-      "error": "کچھ غلط ہو گیا۔ دوبارہ کوشش کریں۔",
-      "googleLogin": "Continue with Google"
+      "error": "کچھ غلط ہو گیا۔ دوبارہ کوشش کریں۔"
     },
     "drawer": {
       "applications": "Applications",

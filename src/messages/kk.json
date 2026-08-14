@@ -430,6 +430,9 @@
     "login": "Log in",
     "profile": "Profile"
   },
+  "Auth": {
+    "googleLogin": "Continue with Google"
+  },
   "Student": {
     "auth": {
       "email": "Эл. пошта",
@@ -438,8 +441,7 @@
       "verify": "Кодты тексеру",
       "back": "Басқа эл. поштаны пайдалану",
       "linkSent": "Magic link үшін эл. поштаңызды тексеріңіз (немесе кодты енгізіңіз).",
-      "error": "Бірдеңе дұрыс болмады. Қайталап көріңіз.",
-      "googleLogin": "Continue with Google"
+      "error": "Бірдеңе дұрыс болмады. Қайталап көріңіз."
     },
     "drawer": {
       "applications": "Applications",

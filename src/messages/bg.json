@@ -430,6 +430,9 @@
     "login": "Log in",
     "profile": "Profile"
   },
+  "Auth": {
+    "googleLogin": "Continue with Google"
+  },
   "Student": {
     "auth": {
       "email": "Имейл",
@@ -438,8 +441,7 @@
       "verify": "Провери кода",
       "back": "Използвайте друг имейл",
       "linkSent": "Проверете имейла си за magic link (или въведете кода).",
-      "error": "Нещо се обърка. Опитайте отново.",
-      "googleLogin": "Continue with Google"
+      "error": "Нещо се обърка. Опитайте отново."
     },
     "nav": {
       "overview": "Обзор",

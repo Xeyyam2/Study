@@ -430,6 +430,9 @@
     "login": "Log in",
     "profile": "Profile"
   },
+  "Auth": {
+    "googleLogin": "Continue with Google"
+  },
   "Student": {
     "auth": {
       "email": "Email",
@@ -438,8 +441,7 @@
       "verify": "Kodni tekshirish",
       "back": "Boshqa emaildan foydalanish",
       "linkSent": "Magic link uchun emailingizni tekshiring (yoki kodni kiriting).",
-      "error": "Bir narsa noto‘g‘ri bo‘ldi. Qayta urinib ko‘ring.",
-      "googleLogin": "Continue with Google"
+      "error": "Bir narsa noto‘g‘ri bo‘ldi. Qayta urinib ko‘ring."
     },
     "drawer": {
       "applications": "Applications",

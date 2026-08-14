@@ -430,6 +430,9 @@
     "login": "Log in",
     "profile": "Profile"
   },
+  "Auth": {
+    "googleLogin": "Continue with Google"
+  },
   "Student": {
     "auth": {
       "email": "Barua pepe",
@@ -438,8 +441,7 @@
       "verify": "Thibitisha msimbo",
       "back": "Tumia barua pepe nyingine",
       "linkSent": "Angalia barua pepe yako kwa magic link (au ingiza msimbo).",
-      "error": "Hitilafu imetokea. Jaribu tena.",
-      "googleLogin": "Continue with Google"
+      "error": "Hitilafu imetokea. Jaribu tena."
     },
     "drawer": {
       "applications": "Applications",

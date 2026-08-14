@@ -430,6 +430,9 @@
     "login": "Log in",
     "profile": "Profile"
   },
+  "Auth": {
+    "googleLogin": "المتابعة باستخدام Google"
+  },
   "Student": {
     "auth": {
       "email": "البريد الإلكتروني",
@@ -438,8 +441,7 @@
       "verify": "تحقق من الرمز",
       "back": "استخدم بريداً آخر",
       "linkSent": "تحقق من بريدك للحصول على الرابط السحري (أو أدخل الرمز).",
-      "error": "حدث خطأ. حاول مرة أخرى.",
-      "googleLogin": "Continue with Google"
+      "error": "حدث خطأ. حاول مرة أخرى."
     },
     "drawer": {
       "applications": "Applications",

@@ -430,6 +430,9 @@
     "login": "Log in",
     "profile": "Profile"
   },
+  "Auth": {
+    "googleLogin": "Continue with Google"
+  },
   "Student": {
     "auth": {
       "email": "E-poçta",
@@ -438,8 +441,7 @@
       "verify": "Kody tassyk",
       "back": "Başka e-poçta ulan",
       "linkSent": "Seýr linki üçin e-poçtaňyzy barlaň (ya-da kody giriziň).",
-      "error": "Hätiş bolmez bolýar. Täzeden synanyşyň.",
-      "googleLogin": "Continue with Google"
+      "error": "Hätiş bolmez bolýar. Täzeden synanyşyň."
     },
     "drawer": {
       "applications": "Applications",

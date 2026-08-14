@@ -430,6 +430,9 @@
     "login": "Log in",
     "profile": "Profile"
   },
+  "Auth": {
+    "googleLogin": "Mit Google fortfahren"
+  },
   "Student": {
     "auth": {
       "email": "E-Mail",
@@ -438,8 +441,7 @@
       "verify": "Code bestätigen",
       "back": "Andere E-Mail verwenden",
       "linkSent": "Prüfe deine E-Mail auf den magischen Link (oder gib den Code ein).",
-      "error": "Etwas ist schiefgelaufen. Versuche es erneut.",
-      "googleLogin": "Continue with Google"
+      "error": "Etwas ist schiefgelaufen. Versuche es erneut."
     },
     "drawer": {
       "applications": "Applications",
