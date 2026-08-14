@@ -9,15 +9,13 @@ import type { Profile } from "@/types/crm";
 export const STUDENT_SESSION_COOKIE = "student_session";
 
 /** Dev-auth fallback is OFF by default. Enable only by setting DEV_AUTH_ENABLED=1
- *  AND running outside production. The NODE_ENV gate is hard: even if the flag
- *  leaks into a production env, the entire dev-auth subsystem (cookie readers
- *  and the devLogin actions) stays inert — neutralizing both the unsigned
- *  cookie and the predictable seed UUIDs in one place. */
+ *  AND not on Vercel. The VERCEL gate is hard: even if the flag leaks into a
+ *  production Vercel env, the entire dev-auth subsystem (cookie readers and the
+ *  devLogin actions) stays inert — neutralizing both the unsigned cookie and
+ *  the predictable seed UUIDs in one place. Local `next start` (CI e2e included)
+ *  may opt in, since it never serves real traffic. */
 export function isDevAuthEnabled(): boolean {
-  return (
-    process.env.DEV_AUTH_ENABLED === "1" &&
-    process.env.NODE_ENV !== "production"
-  );
+  return process.env.DEV_AUTH_ENABLED === "1" && process.env.VERCEL !== "1";
 }
 
 export interface StudentSession {

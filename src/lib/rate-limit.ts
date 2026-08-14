@@ -11,8 +11,8 @@
  *
  * `check()` is async because the Redis path performs a network round-trip.
  */
-import { Ratelimit } from '@upstash/ratelimit';
-import { Redis } from '@upstash/redis';
+import { Ratelimit } from "@upstash/ratelimit";
+import { Redis } from "@upstash/redis";
 
 interface Limiter {
   /** Returns true when the request is under the limit (allowed). */
@@ -33,7 +33,7 @@ export function rateLimit(opts: { windowMs: number; max: number }): Limiter {
       redis,
       limiter: Ratelimit.slidingWindow(max, `${windowMs} ms`),
       analytics: false,
-      prefix: 'rl',
+      prefix: "rl",
     });
     return {
       async check(key: string): Promise<boolean> {
@@ -63,22 +63,24 @@ export function rateLimit(opts: { windowMs: number; max: number }): Limiter {
 }
 
 /**
- * Resolve the caller IP from request headers. The `x-forwarded-for` header is
- * client-spoofable, so we only trust it when the app is explicitly configured
- * to sit behind a trusted proxy (`TRUST_PROXY=1` — e.g. Vercel). Otherwise we
- * use `x-real-ip` (set by the proxy after validation) or fall back to a fixed
- * string so the limiter still has a key.
+ * Resolve the caller IP from request headers. Both `x-forwarded-for` and
+ * `x-real-ip` are client-spoofable, so we only trust them when the app is
+ * explicitly configured to sit behind a trusted proxy (`TRUST_PROXY=1` — e.g.
+ * Vercel, where the platform overwrites these headers). Otherwise we fall back
+ * to a fixed string so the limiter still has a key.
  */
 export function getIpFromHeaders(
   headerLookup: (name: string) => string | null,
 ): string {
-  const trustProxy = process.env.TRUST_PROXY === '1';
+  const trustProxy = process.env.TRUST_PROXY === "1";
   if (trustProxy) {
-    const forwarded = headerLookup('x-forwarded-for');
+    const forwarded = headerLookup("x-forwarded-for");
     if (forwarded) {
       // "client, proxy1, proxy2" — take the first (the original client).
-      return forwarded.split(',')[0].trim();
+      return forwarded.split(",")[0].trim();
     }
+    const realIp = headerLookup("x-real-ip");
+    if (realIp) return realIp;
   }
-  return headerLookup('x-real-ip') ?? 'unknown';
+  return "unknown";
 }

@@ -694,6 +694,10 @@ export function createPgCrm(getPool: () => Pool): CrmRepository {
       email: string;
       fullName: string;
     }): Promise<Profile | null> {
+      // Fast path: auth_uid already bound (repeat login). Read is race-free
+      // enough here because binding happens once per auth_uid; the UPDATE below
+      // re-binds atomically with a guard, and the final INSERT uses
+      // `on conflict (email) do nothing` for the rare concurrent-signup race.
       const byUid = await q(
         "select * from public.profiles where auth_uid = $1",
         [input.authUid],
@@ -702,9 +706,11 @@ export function createPgCrm(getPool: () => Pool): CrmRepository {
       // Merge an existing profile by email ONLY if it is a student. Linking to a
       // staff/admin profile here would let an attacker who controls that email
       // bind their auth_uid to a privileged profile and then resolve it via the
-      // staff session path (privilege escalation).
+      // staff session path (privilege escalation). The `(auth_uid is null or
+      // auth_uid = $1)` guard keeps a concurrent double-signup from stealing the
+      // row out from under the first caller.
       const linked = await q(
-        "update public.profiles set auth_uid = $1 where email = $2 and role = $3 returning *",
+        "update public.profiles set auth_uid = $1 where email = $2 and role = $3 and (auth_uid is null or auth_uid = $1) returning *",
         [input.authUid, input.email, "student"],
       );
       if (linked.rowCount) return rowToProfile(linked.rows[0]);

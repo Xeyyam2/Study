@@ -14,39 +14,45 @@ const intlMiddleware = createMiddleware(routing);
 export default async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
-  // Central admin gate (defense-in-depth): block anonymous access to /admin/*
-  // before the route renders. Fine-grained staff/role checks still happen in
-  // the admin layout via requireStaff(). /admin/login is exempt. The dev-auth
-  // cookie is accepted here so demo logins (DEV_AUTH_ENABLED) keep working —
-  // the layout re-validates the actual profile/role.
-  if (pathname.startsWith("/admin") && !pathname.startsWith("/admin/login")) {
-    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-    let authenticated = false;
-    if (url && anon) {
-      const supabase = createServerClient(url, anon, {
-        cookies: {
-          getAll: () => req.cookies.getAll(),
-          setAll: () => {
-            // Read-only in middleware; refresh happens via getUser() below.
+  // Admin routes are locale-less (src/app/admin), so they must never reach the
+  // next-intl middleware — `localePrefix: 'always'` would rewrite /admin/* to
+  // /en/admin/* and 404. Handle auth here, then short-circuit.
+  if (pathname.startsWith("/admin")) {
+    // Central admin gate (defense-in-depth): block anonymous access to /admin/*
+    // before the route renders. Fine-grained staff/role checks still happen in
+    // the admin layout via requireStaff(). /admin/login is exempt. The dev-auth
+    // cookie is accepted here so demo logins (DEV_AUTH_ENABLED) keep working —
+    // the layout re-validates the actual profile/role.
+    if (!pathname.startsWith("/admin/login")) {
+      const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+      const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+      let authenticated = false;
+      if (url && anon) {
+        const supabase = createServerClient(url, anon, {
+          cookies: {
+            getAll: () => req.cookies.getAll(),
+            setAll: () => {
+              // Read-only in middleware; refresh happens via getUser() below.
+            },
           },
-        },
-      });
-      // getUser() validates the JWT server-side (preferred over getSession()).
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-      authenticated = !!user;
+        });
+        // getUser() validates the JWT server-side (preferred over getSession()).
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+        authenticated = !!user;
+      }
+      if (!authenticated && req.cookies.get(SESSION_COOKIE)?.value) {
+        authenticated = true;
+      }
+      if (!authenticated) {
+        const loginUrl = req.nextUrl.clone();
+        loginUrl.pathname = "/admin/login";
+        loginUrl.search = "";
+        return NextResponse.redirect(loginUrl);
+      }
     }
-    if (!authenticated && req.cookies.get(SESSION_COOKIE)?.value) {
-      authenticated = true;
-    }
-    if (!authenticated) {
-      const loginUrl = req.nextUrl.clone();
-      loginUrl.pathname = "/admin/login";
-      loginUrl.search = "";
-      return NextResponse.redirect(loginUrl);
-    }
+    // /admin/* never passes through the intl middleware (locale-less routes).
     return NextResponse.next();
   }
 
