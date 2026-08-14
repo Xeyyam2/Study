@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useLocale, useTranslations } from "next-intl";
 import { Menu, X } from "lucide-react";
 import { Link, usePathname } from "@/i18n/navigation";
@@ -59,7 +59,7 @@ export function HeaderInteractive() {
     session?.profile.fullName.trim().charAt(0) || "?"
   ).toUpperCase();
 
-  useEffect(() => {
+  const loadSession = useCallback(() => {
     let active = true;
     fetch("/api/me", { cache: "no-store" })
       .then((r) => r.json())
@@ -76,6 +76,21 @@ export function HeaderInteractive() {
       active = false;
     };
   }, []);
+
+  // Initial load on mount.
+  useEffect(() => loadSession(), [loadSession]);
+
+  // After Google OAuth the app redirects back with ?auth=success. The very
+  // first /api/me on that load can race the Supabase session settling
+  // server-side and return null (so the header wrongly keeps the login
+  // button). Re-fetch shortly after to pick up the now-established session.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (new URLSearchParams(window.location.search).get("auth") !== "success")
+      return;
+    const t = setTimeout(() => loadSession(), 1200);
+    return () => clearTimeout(t);
+  }, [loadSession]);
 
   useEffect(() => {
     setOpen(false);
