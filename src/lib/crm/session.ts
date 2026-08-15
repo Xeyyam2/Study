@@ -26,6 +26,7 @@ async function getStaffSession(): Promise<AdminSession | null> {
   try {
     const user = await getSessionUser();
     if (!user) return null;
+    const email = (user.email ?? "").trim().toLowerCase();
     // Bootstrap: on first login, promote the configured INITIAL_ADMIN_EMAIL to
     // admin (no-op for any other email — it returns null). This must run before
     // getStaffProfileByAuthUid, because that resolver returns ANY auth_uid-bound
@@ -33,13 +34,14 @@ async function getStaffSession(): Promise<AdminSession | null> {
     // short-circuit the promotion.
     await crm.bootstrapInitialAdmin({
       authUid: user.id,
-      email: user.email ?? "",
+      email,
       fullName: (user.user_metadata?.full_name as string | undefined) ?? "",
     });
-    const profile = await crm.getStaffProfileByAuthUid(
-      user.id,
-      user.email ?? "",
-    );
+    // Hard gate: only allowlisted emails may resolve a staff session. This is
+    // the single choke point that blocks any other Gmail from entering the
+    // admin panel without an admin's explicit allowlisting.
+    if (!(await crm.isAdminAllowlisted(email))) return null;
+    const profile = await crm.getStaffProfileByAuthUid(user.id, email);
     if (!profile || !STAFF_ROLES.includes(profile.role)) return null;
     return {
       userId: profile.id,

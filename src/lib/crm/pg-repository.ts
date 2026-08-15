@@ -753,6 +753,13 @@ export function createPgCrm(getPool: () => Pool): CrmRepository {
       if (!initialEmail || input.email.trim().toLowerCase() !== initialEmail) {
         return null;
       }
+      // Ensure the initial admin email is allowlisted so it can resolve staff
+      // sessions on subsequent logins.
+      await q(
+        `insert into public.admin_allowlist (email) values ($1)
+         on conflict (email) do nothing`,
+        [initialEmail],
+      );
       // Link the auth_uid to an existing profile (any role) or create one,
       // then force role='admin' and bind auth_uid atomically.
       const res = await q(
@@ -764,6 +771,45 @@ export function createPgCrm(getPool: () => Pool): CrmRepository {
         [input.email, input.fullName || input.email, input.authUid],
       );
       return res.rowCount ? rowToProfile(res.rows[0]) : null;
+    },
+
+    async isAdminAllowlisted(email: string): Promise<boolean> {
+      const normalized = email.trim().toLowerCase();
+      if (!normalized) return false;
+      const res = await q(
+        "select 1 from public.admin_allowlist where email = $1",
+        [normalized],
+      );
+      return (res.rowCount ?? 0) > 0;
+    },
+
+    async listAdminAllowlist(): Promise<string[]> {
+      const res = await q(
+        "select email from public.admin_allowlist order by email",
+      );
+      return res.rows.map((r) => r.email as string);
+    },
+
+    async addAdminAllowlist(email: string): Promise<string[]> {
+      const normalized = email.trim().toLowerCase();
+      if (normalized) {
+        await q(
+          `insert into public.admin_allowlist (email) values ($1)
+           on conflict (email) do nothing`,
+          [normalized],
+        );
+      }
+      return this.listAdminAllowlist();
+    },
+
+    async removeAdminAllowlist(email: string): Promise<string[]> {
+      const normalized = email.trim().toLowerCase();
+      if (normalized) {
+        await q("delete from public.admin_allowlist where email = $1", [
+          normalized,
+        ]);
+      }
+      return this.listAdminAllowlist();
     },
 
     async countByStatus(): Promise<Record<string, number>> {

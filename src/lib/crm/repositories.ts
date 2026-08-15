@@ -85,6 +85,14 @@ export interface CrmRepository {
     email: string;
     fullName: string;
   }): Promise<Profile | null>;
+  /** Is this email allowed to resolve a staff/admin session? */
+  isAdminAllowlisted(email: string): Promise<boolean>;
+  /** List allowlisted emails (admin management UI). */
+  listAdminAllowlist(): Promise<string[]>;
+  /** Add an email to the allowlist (returns the new list). */
+  addAdminAllowlist(email: string): Promise<string[]>;
+  /** Remove an email from the allowlist (returns the new list). */
+  removeAdminAllowlist(email: string): Promise<string[]>;
   updateProfileRole(
     id: string,
     role: "admin" | "consultant",

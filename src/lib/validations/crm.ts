@@ -1,6 +1,6 @@
 // src/lib/validations/crm.ts
-import { z } from 'zod';
-import { LEAD_PIPELINE } from '@/types/crm';
+import { z } from "zod";
+import { LEAD_PIPELINE } from "@/types/crm";
 
 export const updateLeadStatusSchema = z.object({
   leadId: z.string().uuid(),
@@ -18,16 +18,23 @@ export const devLoginSchema = z.object({
 
 export const updateRoleSchema = z.object({
   profileId: z.string().uuid(),
-  role: z.enum(['admin', 'consultant']),
+  role: z.enum(["admin", "consultant"]),
+});
+
+export const allowlistEmailSchema = z.object({
+  email: z
+    .string()
+    .email()
+    .transform((e) => e.trim().toLowerCase()),
 });
 
 export const changePasswordSchema = z
   .object({
-    currentPassword: z.string().min(1, 'Current password is required'),
-    newPassword: z.string().min(8, 'Password must be at least 8 characters'),
+    currentPassword: z.string().min(1, "Current password is required"),
+    newPassword: z.string().min(8, "Password must be at least 8 characters"),
     confirmPassword: z.string().min(1),
   })
   .refine((d) => d.newPassword === d.confirmPassword, {
-    message: 'Passwords do not match',
-    path: ['confirmPassword'],
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
   });

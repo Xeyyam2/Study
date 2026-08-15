@@ -100,6 +100,32 @@ export async function GET(req: NextRequest) {
     }
     // QA-1 / SEC-10: log WITHOUT the email (PII). A boolean is all operators need.
     logger.info("auth callback: session established", { hasUser: !!data.user });
+    // If the signed-in email is admin-allowlisted, route straight to the admin
+    // panel regardless of the originating `next` (student Google button or admin
+    // OTP form). The allowlist gate in getStaffSession() is the real security
+    // boundary; this is the UX redirect that lands them on /admin.
+    if (data.user?.email) {
+      try {
+        // Bootstrap first so the INITIAL_ADMIN_EMAIL self-registers into the
+        // allowlist on the very first login (before any /admin visit).
+        await crm.bootstrapInitialAdmin({
+          authUid: data.user.id,
+          email: data.user.email,
+          fullName:
+            (data.user.user_metadata?.full_name as string | undefined) ?? "",
+        });
+        const isAdmin = await crm.isAdminAllowlisted(data.user.email);
+        if (isAdmin) {
+          res.headers.set(
+            "location",
+            new URL("/admin", requestUrl.origin).toString(),
+          );
+          return res;
+        }
+      } catch {
+        // Swallow — getStaffSession() re-checks the allowlist authoritatively.
+      }
+    }
     redirectTarget.searchParams.set("auth", "success");
     res.headers.set("location", redirectTarget.toString());
     // Link the student profile server-side at login so the header avatar
