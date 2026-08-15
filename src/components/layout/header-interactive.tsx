@@ -59,37 +59,75 @@ export function HeaderInteractive() {
     session?.profile.fullName.trim().charAt(0) || "?"
   ).toUpperCase();
 
-  const loadSession = useCallback(() => {
-    let active = true;
-    fetch("/api/me", { cache: "no-store" })
-      .then((r) => r.json())
-      .then((data) => {
-        if (!active) return;
-        if (data && data.profile)
-          setSession({ userId: data.userId, profile: data.profile });
+  // Resolves the current session. Returns true when a profile was found, false
+  // otherwise — the caller decides how to handle a still-absent session. This
+  // is important for the first Google sign-in, where /api/me can race the
+  // server-side Supabase session settling and briefly return null.
+  const loadSession = useCallback(async (): Promise<boolean> => {
+    try {
+      const r = await fetch("/api/me", { cache: "no-store" });
+      const data = await r.json();
+      if (data && data.profile) {
+        setSession({ userId: data.userId, profile: data.profile });
         setLoading(false);
-      })
-      .catch(() => {
-        if (active) setLoading(false);
-      });
+        return true;
+      }
+      return false;
+    } catch {
+      return false;
+    }
+  }, []);
+
+  // Initial load on mount (non-OAuth). A single attempt is enough for returning
+  // visitors whose session is already established; on a miss we stop loading so
+  // the login button shows. The ?auth=success path is handled by the next
+  // effect to avoid the two racing each other.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if (new URLSearchParams(window.location.search).get("auth") === "success")
+      return;
+    let active = true;
+    loadSession().then((found) => {
+      if (!active) return;
+      if (!found) setLoading(false);
+    });
     return () => {
       active = false;
     };
-  }, []);
+  }, [loadSession]);
 
-  // Initial load on mount.
-  useEffect(() => loadSession(), [loadSession]);
-
-  // After Google OAuth the app redirects back with ?auth=success. The very
-  // first /api/me on that load can race the Supabase session settling
-  // server-side and return null (so the header wrongly keeps the login
-  // button). Re-fetch shortly after to pick up the now-established session.
+  // After Google OAuth the app redirects back with ?auth=success. The first
+  // /api/me on that load can race the Supabase session settling server-side and
+  // return null, so poll with increasing backoff until the session is picked up
+  // (up to ~7.2s across 6 attempts). The header keeps its loading indicator the
+  // whole time and only falls back to the login button if every attempt misses.
   useEffect(() => {
     if (typeof window === "undefined") return;
     if (new URLSearchParams(window.location.search).get("auth") !== "success")
       return;
-    const t = setTimeout(() => loadSession(), 1200);
-    return () => clearTimeout(t);
+    let active = true;
+    let timer: ReturnType<typeof setTimeout> | null = null;
+    const delays = [0, 300, 700, 1200, 2000, 3000];
+    let attempt = 0;
+
+    const poll = async () => {
+      if (!active) return;
+      const found = await loadSession();
+      if (!active) return;
+      if (found) return;
+      attempt += 1;
+      if (attempt >= delays.length) {
+        setLoading(false);
+        return;
+      }
+      timer = setTimeout(poll, delays[attempt]);
+    };
+
+    poll();
+    return () => {
+      active = false;
+      if (timer) clearTimeout(timer);
+    };
   }, [loadSession]);
 
   useEffect(() => {
