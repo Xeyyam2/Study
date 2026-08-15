@@ -5,7 +5,6 @@ import { useLocale, useTranslations } from "next-intl";
 import { Menu, X } from "lucide-react";
 import { Link, usePathname } from "@/i18n/navigation";
 import { type AppLocale } from "@/i18n/routing";
-import { siteConfig } from "@/config/site";
 import { Button } from "@/components/ui/button";
 // PERF(P0): code-split GoogleSignInButton (and its @supabase/supabase-js
 // dependency, ~40KB gz) out of the global header chunk. It only loads lazily
@@ -54,7 +53,7 @@ export function HeaderInteractive() {
   const [session, setSession] = useState<HeaderSession | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const redirectTo = `${siteConfig.url}/auth/callback?next=/${locale}`;
+  const redirectTo = `/${locale}`;
   const initial = (
     session?.profile.fullName.trim().charAt(0) || "?"
   ).toUpperCase();
@@ -170,7 +169,7 @@ export function HeaderInteractive() {
         </button>
       );
     }
-    return <GoogleSignInButton redirectTo={redirectTo} />;
+    return <GoogleSignInButton next={redirectTo} />;
   }
 
   return (

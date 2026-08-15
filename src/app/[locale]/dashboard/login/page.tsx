@@ -29,8 +29,6 @@ export default async function StudentLoginPage({
   const { locale } = await params;
   const { error: authError } = await searchParams;
   const t = await getTranslations({ locale, namespace: "Student.login" });
-  const base = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
-  const callbackUrl = `${base}/auth/callback?next=/${locale}`;
   const isDev = isDevAuthEnabled();
 
   let demoStudents: Awaited<ReturnType<typeof crm.listStudents>> = [];
@@ -49,7 +47,7 @@ export default async function StudentLoginPage({
               Authentication failed. Check console logs or try again.
             </p>
           )}
-          <GoogleSignInButton redirectTo={callbackUrl} />
+          <GoogleSignInButton next={`/${locale}`} />
           {isDev && demoStudents.length > 0 && (
             <div className="space-y-2 border-t border-border pt-4">
               <p className="text-xs uppercase text-muted-foreground">

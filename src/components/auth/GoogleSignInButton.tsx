@@ -8,7 +8,18 @@ import {
 } from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 
-export function GoogleSignInButton({ redirectTo }: { redirectTo: string }) {
+/**
+ * Google OAuth button.
+ *
+ * The redirect target is built from `window.location.origin` — the origin the
+ * user is ACTUALLY on — instead of NEXT_PUBLIC_SITE_URL. Building it from the
+ * env var sent localhost logins to the production domain (or vice versa),
+ * stranding the OAuth code on the wrong origin where the PKCE verifier cookie
+ * doesn't exist, so the first exchange always failed. Origin-based redirect
+ * keeps the whole flow (cookies + code) on one origin, on every environment:
+ * localhost:3000, *.vercel.app previews, and the production domain.
+ */
+export function GoogleSignInButton({ next }: { next: string }) {
   const t = useTranslations("Auth");
   const [pending, setPending] = useState(false);
   const [err, setErr] = useState<string | null>(null);
@@ -20,6 +31,8 @@ export function GoogleSignInButton({ redirectTo }: { redirectTo: string }) {
     // one makes the first token exchange fail (bad_code_verifier) while a
     // second attempt succeeds. Clearing here makes every attempt start clean.
     clearStalePkceCookies();
+    const origin = typeof window !== "undefined" ? window.location.origin : "";
+    const redirectTo = `${origin}/auth/callback?next=${encodeURIComponent(next)}`;
     const supabase = getSupabaseBrowser();
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",

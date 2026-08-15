@@ -1,15 +1,19 @@
 // src/app/admin/login/page.tsx
-import { crm } from '@/lib/crm';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { EmailOtpForm } from '@/components/auth/EmailOtpForm';
-import { isDevAuthEnabled } from '@/lib/crm/student-session';
+import { crm } from "@/lib/crm";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { EmailOtpForm } from "@/components/auth/EmailOtpForm";
+import { isDevAuthEnabled } from "@/lib/crm/student-session";
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 export default async function AdminLoginPage() {
-  const base = process.env.NEXT_PUBLIC_SITE_URL ?? 'http://localhost:3000';
-  const callbackUrl = `${base}/auth/callback?next=/admin`;
   const showDev = isDevAuthEnabled();
   const staff = showDev ? await crm.listStaff() : [];
 
@@ -19,20 +23,30 @@ export default async function AdminLoginPage() {
         <CardHeader>
           <CardTitle>Admin sign in</CardTitle>
           <CardDescription>
-            Sign in with your work email. Staff access requires an admin/consultant/editor profile.
+            Sign in with your work email. Staff access requires an
+            admin/consultant/editor profile.
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
-          <EmailOtpForm redirectTo={callbackUrl} />
+          <EmailOtpForm next="/admin" />
           {showDev && staff.length > 0 && (
             <div className="space-y-2 border-t border-border pt-4">
-              <p className="text-xs uppercase text-muted-foreground">Dev login</p>
+              <p className="text-xs uppercase text-muted-foreground">
+                Dev login
+              </p>
               {staff.map((p) => (
                 <form key={p.id} action={devLoginAction} className="block">
                   <input type="hidden" name="profileId" value={p.id} />
-                  <Button type="submit" variant="outline" size="sm" className="w-full justify-between">
+                  <Button
+                    type="submit"
+                    variant="outline"
+                    size="sm"
+                    className="w-full justify-between"
+                  >
                     <span>{p.fullName}</span>
-                    <span className="text-xs uppercase text-muted-foreground">{p.role}</span>
+                    <span className="text-xs uppercase text-muted-foreground">
+                      {p.role}
+                    </span>
                   </Button>
                 </form>
               ))}
@@ -45,7 +59,7 @@ export default async function AdminLoginPage() {
 }
 
 async function devLoginAction(formData: FormData) {
-  'use server';
-  const { devLogin } = await import('@/app/actions/admin-auth');
-  await devLogin({ profileId: String(formData.get('profileId')) });
+  "use server";
+  const { devLogin } = await import("@/app/actions/admin-auth");
+  await devLogin({ profileId: String(formData.get("profileId")) });
 }
