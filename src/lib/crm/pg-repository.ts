@@ -740,6 +740,32 @@ export function createPgCrm(getPool: () => Pool): CrmRepository {
       return byUid.rowCount ? rowToProfile(byUid.rows[0]) : null;
     },
 
+    async bootstrapInitialAdmin(input: {
+      authUid: string;
+      email: string;
+      fullName: string;
+    }): Promise<Profile | null> {
+      // Bootstrap guard: only the configured INITIAL_ADMIN_EMAIL may ever be
+      // promoted here. Any other email is ignored so this can never become a
+      // privilege-escalation vector.
+      const initialEmail =
+        process.env.INITIAL_ADMIN_EMAIL?.trim().toLowerCase();
+      if (!initialEmail || input.email.trim().toLowerCase() !== initialEmail) {
+        return null;
+      }
+      // Link the auth_uid to an existing profile (any role) or create one,
+      // then force role='admin' and bind auth_uid atomically.
+      const res = await q(
+        `insert into public.profiles (email, full_name, role, auth_uid)
+         values ($1, $2, 'admin', $3)
+         on conflict (email) do update
+           set auth_uid = excluded.auth_uid, role = 'admin'
+         returning *`,
+        [input.email, input.fullName || input.email, input.authUid],
+      );
+      return res.rowCount ? rowToProfile(res.rows[0]) : null;
+    },
+
     async countByStatus(): Promise<Record<string, number>> {
       const res = await q(
         "select status, count(*)::int c from public.leads group by status",

@@ -79,6 +79,12 @@ export interface CrmRepository {
     authUid: string,
     email: string,
   ): Promise<Profile | null>;
+  /** Promote the configured INITIAL_ADMIN_EMAIL to admin on first login. */
+  bootstrapInitialAdmin(input: {
+    authUid: string;
+    email: string;
+    fullName: string;
+  }): Promise<Profile | null>;
   updateProfileRole(
     id: string,
     role: "admin" | "consultant",

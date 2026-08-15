@@ -1,15 +1,15 @@
 // src/lib/crm/session.ts — admin/staff auth (Supabase session + dev fallback)
-import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
-import { crm } from './index';
-import { getSessionUser } from '@/lib/supabase/server-session';
-import { verifySessionPayload } from './cookie-signature';
-import { isDevAuthEnabled } from './student-session';
-import type { Profile, UserRole } from '@/types/crm';
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+import { crm } from "./index";
+import { getSessionUser } from "@/lib/supabase/server-session";
+import { verifySessionPayload } from "./cookie-signature";
+import { isDevAuthEnabled } from "./student-session";
+import type { Profile, UserRole } from "@/types/crm";
 
-export const SESSION_COOKIE = 'admin_session';
+export const SESSION_COOKIE = "admin_session";
 
-const STAFF_ROLES: UserRole[] = ['admin', 'consultant', 'editor'];
+const STAFF_ROLES: UserRole[] = ["admin", "consultant", "editor"];
 
 export interface AdminSession {
   userId: string;
@@ -26,9 +26,27 @@ async function getStaffSession(): Promise<AdminSession | null> {
   try {
     const user = await getSessionUser();
     if (!user) return null;
-    const profile = await crm.getStaffProfileByAuthUid(user.id, user.email ?? '');
+    // Bootstrap: on first login, promote the configured INITIAL_ADMIN_EMAIL to
+    // admin (no-op for any other email — it returns null). This must run before
+    // getStaffProfileByAuthUid, because that resolver returns ANY auth_uid-bound
+    // profile (including a previously-linked student), which would otherwise
+    // short-circuit the promotion.
+    await crm.bootstrapInitialAdmin({
+      authUid: user.id,
+      email: user.email ?? "",
+      fullName: (user.user_metadata?.full_name as string | undefined) ?? "",
+    });
+    const profile = await crm.getStaffProfileByAuthUid(
+      user.id,
+      user.email ?? "",
+    );
     if (!profile || !STAFF_ROLES.includes(profile.role)) return null;
-    return { userId: profile.id, role: profile.role, fullName: profile.fullName, profile };
+    return {
+      userId: profile.id,
+      role: profile.role,
+      fullName: profile.fullName,
+      profile,
+    };
   } catch {
     return null;
   }
@@ -44,7 +62,12 @@ async function getDevStaffSession(): Promise<AdminSession | null> {
   if (!payload) return null;
   const profile = await crm.getProfile(payload.userId);
   if (!profile || !STAFF_ROLES.includes(profile.role)) return null;
-  return { userId: profile.id, role: profile.role, fullName: profile.fullName, profile };
+  return {
+    userId: profile.id,
+    role: profile.role,
+    fullName: profile.fullName,
+    profile,
+  };
 }
 
 export async function getSession(): Promise<AdminSession | null> {
@@ -53,7 +76,7 @@ export async function getSession(): Promise<AdminSession | null> {
 
 export async function requireStaff(): Promise<AdminSession> {
   const session = await getSession();
-  if (!session) redirect('/admin/login');
+  if (!session) redirect("/admin/login");
   return session;
 }
 
