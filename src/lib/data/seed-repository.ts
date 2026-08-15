@@ -99,6 +99,14 @@ class SeedUniversityRepository implements UniversityRepository {
     return delay(seedUniversities.filter((u) => u.featured).slice(0, limit));
   }
 
+  async getTop(limit = 4): Promise<University[]> {
+    return delay(
+      [...seedUniversities]
+        .sort((a, b) => a.ranking - b.ranking)
+        .slice(0, limit),
+    );
+  }
+
   async getBySlug(slug: string): Promise<University | null> {
     return delay(seedUniversities.find((u) => u.slug === slug) ?? null);
   }

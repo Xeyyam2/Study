@@ -26,6 +26,8 @@ export interface UniversityListingMetadata {
 export interface UniversityRepository {
   list(filters?: UniversityFilters): Promise<University[]>;
   getFeatured(limit?: number): Promise<University[]>;
+  /** Highest-ranked universities regardless of the featured flag. */
+  getTop(limit?: number): Promise<University[]>;
   getBySlug(slug: string): Promise<University | null>;
   getDetail(slug: string): Promise<UniversityDetail | null>;
   getRelated(slug: string, limit?: number): Promise<University[]>;

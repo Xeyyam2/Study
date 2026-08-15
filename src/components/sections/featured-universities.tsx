@@ -16,7 +16,9 @@ export async function FeaturedUniversities({
   locale,
 }: FeaturedUniversitiesProps) {
   const t = await getTranslations("HomePage.featured");
-  const featured = await data.universities.getFeatured(10);
+  // Top-ranked universities (ranking ascending) — enough cards for the carousel
+  // to page (≥10) regardless of which universities are flagged featured.
+  const featured = await data.universities.getTop(12);
   const metadata = await data.universities.getListingMetadata(
     featured.map((u) => u.id),
   );

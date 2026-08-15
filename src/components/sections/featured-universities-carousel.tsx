@@ -36,7 +36,7 @@ interface FeaturedUniversitiesCarouselProps {
   };
 }
 
-/** How many cards fit per slide at each viewport width. */
+/** How many fixed-width cards fit per page at each viewport width. */
 const PAGE_BREAKPOINTS = [
   { min: 1280, perPage: 4 },
   { min: 1024, perPage: 3 },
@@ -44,24 +44,34 @@ const PAGE_BREAKPOINTS = [
   { min: 0, perPage: 1 },
 ];
 
+/** Card width in px — matches the original compact card size. */
+const CARD_WIDTH = 320;
+
 /**
- * StudyLeo-style "Popular Universities" carousel. Cards sit in a responsive
- * grid (all equal width/height) and the arrows/dots switch between whole pages
- * of cards — one click replaces the visible set, exactly like a classic
- * carousel. Touch swipe is supported on the track.
+ * StudyLeo-style "Popular Universities" carousel. Cards keep the original
+ * fixed width/height; arrows and dots switch whole pages of cards, and the
+ * track slides to the active page (touch swipe works too).
  */
 export function FeaturedUniversitiesCarousel({
   cards,
   labels,
 }: FeaturedUniversitiesCarouselProps) {
+  const trackRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
   const touchX = useRef<number | null>(null);
   const [perPage, setPerPage] = useState(4);
   const [page, setPage] = useState(0);
 
   const pages = Math.max(1, Math.ceil(cards.length / perPage));
+  const trackGap = 24; // gap-6
+  const pageOffset = perPage * CARD_WIDTH + (perPage - 1) * trackGap;
 
-  // Measure the viewport to decide how many cards fit per slide.
+  const slideTo = useCallback((target: number) => {
+    const el = trackRef.current;
+    if (el) el.scrollTo({ left: target, behavior: "smooth" });
+  }, []);
+
+  // Measure the viewport to decide how many fixed-width cards fit per page.
   useEffect(() => {
     const el = viewportRef.current;
     if (!el) return;
@@ -75,10 +85,17 @@ export function FeaturedUniversitiesCarousel({
     return () => ro.disconnect();
   }, []);
 
-  // Keep the current page valid when the layout (or card count) changes.
+  // Keep the page in range when the layout (or card count) changes.
   useEffect(() => {
-    setPage((p) => Math.min(p, Math.max(0, pages - 1)));
+    const next = Math.min(page, Math.max(0, pages - 1));
+    setPage(next);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pages, perPage]);
+
+  // Slide the track when the active page changes.
+  useEffect(() => {
+    slideTo(page * pageOffset);
+  }, [page, pageOffset, slideTo]);
 
   const go = useCallback(
     (next: number) => {
@@ -87,43 +104,36 @@ export function FeaturedUniversitiesCarousel({
     [pages],
   );
 
-  const start = page * perPage;
-  const visible = cards.slice(start, start + perPage);
-
   return (
     <div>
-      <div
-        ref={viewportRef}
-        className="relative touch-pan-y"
-        onPointerDown={(e) => {
-          touchX.current = e.clientX;
-        }}
-        onPointerUp={(e) => {
-          if (touchX.current == null) return;
-          const dx = e.clientX - touchX.current;
-          if (Math.abs(dx) > 48) go(page + (dx < 0 ? 1 : -1));
-          touchX.current = null;
-        }}
-        onPointerCancel={() => {
-          touchX.current = null;
-        }}
-        onPointerLeave={() => {
-          touchX.current = null;
-        }}
-      >
+      <div ref={viewportRef} className="relative overflow-hidden">
         <div
-          className="grid gap-6"
-          style={{
-            gridTemplateColumns: `repeat(${perPage}, minmax(0, 1fr))`,
+          ref={trackRef}
+          className="flex touch-pan-y gap-6 overflow-x-auto pb-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          onPointerDown={(e) => {
+            touchX.current = e.clientX;
+          }}
+          onPointerUp={(e) => {
+            if (touchX.current == null) return;
+            const dx = e.clientX - touchX.current;
+            if (Math.abs(dx) > 48) go(page + (dx < 0 ? 1 : -1));
+            touchX.current = null;
+          }}
+          onPointerCancel={() => {
+            touchX.current = null;
+          }}
+          onPointerLeave={() => {
+            touchX.current = null;
           }}
         >
-          {visible.map((card, i) => (
-            <CarouselCard
-              key={card.id}
-              card={card}
-              labels={labels}
-              priority={page === 0 && i < 2}
-            />
+          {cards.map((card, i) => (
+            <div key={card.id} className="shrink-0 snap-start">
+              <CarouselCard
+                card={card}
+                labels={labels}
+                priority={page === 0 && i < 2}
+              />
+            </div>
           ))}
         </div>
 
@@ -184,7 +194,7 @@ function CarouselCard({
   priority: boolean;
 }) {
   return (
-    <article className="group relative flex h-full flex-col overflow-hidden rounded-lg border border-border bg-card transition-shadow duration-300 hover:shadow-flat-hover">
+    <article className="group relative flex h-full w-[280px] flex-col overflow-hidden rounded-lg border border-border bg-card transition-shadow duration-300 hover:shadow-flat-hover sm:w-[320px]">
       {/* Whole card links to the university detail page. */}
       <Link
         href={`/universities/${card.slug}`}
@@ -197,7 +207,7 @@ function CarouselCard({
           src={card.heroImage}
           alt={card.name}
           fill
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
+          sizes="280px"
           className="object-cover transition-transform duration-500 group-hover:scale-105"
           priority={priority}
         />
