@@ -64,10 +64,17 @@ export async function GET(req: NextRequest) {
     // A missing verifier at this point pinpoints the stale/mis-set
     // code-verifier class of bugs instantly in the logs.
     const cookieNames = req.cookies.getAll().map((c) => c.name);
+    const hasVerifierCookie = cookieNames.some((n) =>
+      n.endsWith("-code-verifier"),
+    );
     logger.info("auth callback: exchange attempt", {
-      hasVerifierCookie: cookieNames.some((n) => n.endsWith("-code-verifier")),
+      hasVerifierCookie,
       sbCookieCount: cookieNames.filter((n) => /^sb[-.]/.test(n)).length,
     });
+    console.log(
+      `[auth-callback] exchange attempt | code=${code.slice(0, 8)}… | verifierCookie=${hasVerifierCookie} | cookies=`,
+      cookieNames,
+    );
     const { error, data } = await supabase.auth.exchangeCodeForSession(code);
     if (error) {
       logger.error(
@@ -75,15 +82,18 @@ export async function GET(req: NextRequest) {
         {
           code: error.code,
           status: error.status,
-          hasVerifierCookie: cookieNames.some((n) =>
-            n.endsWith("-code-verifier"),
-          ),
+          hasVerifierCookie,
         },
         error,
       );
+      console.error(
+        `[auth-callback] ❌ EXCHANGE FAILED — reason: ${error.message} | code=${error.code} | status=${error.status} | verifierCookie=${hasVerifierCookie}`,
+      );
+      // Surface the reason to the BROWSER too (URL param) so it's visible in
+      // the client console/devtools without server log access.
       return NextResponse.redirect(
         new URL(
-          `/${routing.defaultLocale}/dashboard/login?error=auth`,
+          `/${routing.defaultLocale}/dashboard/login?error=auth&reason=${encodeURIComponent(error.code ?? error.message)}&verifier=${hasVerifierCookie}`,
           requestUrl.origin,
         ),
       );
