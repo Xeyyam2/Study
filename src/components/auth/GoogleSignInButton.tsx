@@ -2,7 +2,10 @@
 
 import { useState } from "react";
 import { useTranslations } from "next-intl";
-import { getSupabaseBrowser } from "@/lib/supabase/client";
+import {
+  getSupabaseBrowser,
+  clearStalePkceCookies,
+} from "@/lib/supabase/client";
 import { Button } from "@/components/ui/button";
 
 export function GoogleSignInButton({ redirectTo }: { redirectTo: string }) {
@@ -13,6 +16,10 @@ export function GoogleSignInButton({ redirectTo }: { redirectTo: string }) {
   async function signIn() {
     setPending(true);
     setErr(null);
+    // Drop verifier cookies from any earlier incomplete OAuth flow — a stale
+    // one makes the first token exchange fail (bad_code_verifier) while a
+    // second attempt succeeds. Clearing here makes every attempt start clean.
+    clearStalePkceCookies();
     const supabase = getSupabaseBrowser();
     const { error } = await supabase.auth.signInWithOAuth({
       provider: "google",

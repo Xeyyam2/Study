@@ -48,6 +48,7 @@ export async function GET(req: NextRequest) {
   }
   const res = NextResponse.redirect(redirectTarget);
   const supabase = createServerClient(url, anon, {
+    auth: { flowType: "pkce" },
     cookies: {
       getAll: () => req.cookies.getAll(),
       setAll: (toSet) => {
@@ -59,11 +60,25 @@ export async function GET(req: NextRequest) {
   });
 
   if (code) {
+    // Instrumentation: cookie NAMES only (never values — they hold secrets).
+    // A missing verifier at this point pinpoints the stale/mis-set
+    // code-verifier class of bugs instantly in the logs.
+    const cookieNames = req.cookies.getAll().map((c) => c.name);
+    logger.info("auth callback: exchange attempt", {
+      hasVerifierCookie: cookieNames.some((n) => n.endsWith("-code-verifier")),
+      sbCookieCount: cookieNames.filter((n) => /^sb[-.]/.test(n)).length,
+    });
     const { error, data } = await supabase.auth.exchangeCodeForSession(code);
     if (error) {
       logger.error(
         "auth callback: exchangeCodeForSession failed",
-        { code: error.code },
+        {
+          code: error.code,
+          status: error.status,
+          hasVerifierCookie: cookieNames.some((n) =>
+            n.endsWith("-code-verifier"),
+          ),
+        },
         error,
       );
       return NextResponse.redirect(

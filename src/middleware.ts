@@ -29,6 +29,7 @@ export default async function middleware(req: NextRequest) {
       let authenticated = false;
       if (url && anon) {
         const supabase = createServerClient(url, anon, {
+          auth: { flowType: "pkce" },
           cookies: {
             getAll: () => req.cookies.getAll(),
             setAll: () => {
@@ -73,6 +74,7 @@ export default async function middleware(req: NextRequest) {
     .some((c) => /^sb[-.]/.test(c.name));
   if (url && anon && hasAuthCookie) {
     const supabase = createServerClient(url, anon, {
+      auth: { flowType: "pkce" },
       cookies: {
         getAll: () => req.cookies.getAll(),
         setAll: (toSet) => {
