@@ -48,5 +48,5 @@ export async function signOutAdmin() {
   await supabase.auth.signOut();
   const store = await cookies();
   store.delete(SESSION_COOKIE);
-  redirect("/admin/login");
+  redirect("/");
 }

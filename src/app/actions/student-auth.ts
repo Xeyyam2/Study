@@ -41,5 +41,5 @@ export async function signOutStudent(locale: string) {
   await supabase.auth.signOut();
   const store = await cookies();
   store.delete(STUDENT_SESSION_COOKIE);
-  redirect(`/${locale}/dashboard/login`);
+  redirect(`/${locale}`);
 }
