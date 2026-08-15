@@ -70,7 +70,15 @@
       "eyebrow": "Öne çıkanlar",
       "title": "En yüksek puanlı üniversiteler",
       "subtitle": "Uluslararası öğrenciler arasında popüler, seçilmiş akredite üniversiteler.",
-      "viewAll": "Tüm üniversiteler"
+      "viewAll": "Tüm üniversiteler",
+      "applyNow": "Hemen başvur",
+      "state": "Devlet",
+      "private": "Vakıf",
+      "verified": "YÖK",
+      "prev": "Önceki",
+      "next": "Sonraki",
+      "turkey": "Türkiye",
+      "students": "Kayıtlı öğrenciler"
     },
     "calculator": {
       "eyebrow": "Maliyet tahmini",

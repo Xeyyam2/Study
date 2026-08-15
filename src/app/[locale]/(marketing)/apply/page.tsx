@@ -38,13 +38,18 @@ export async function generateMetadata({
 
 export default async function ApplyPage({
   params,
+  searchParams,
 }: {
   params: Promise<{ locale: string }>;
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
   const appLocale = locale as AppLocale;
   const t = await getTranslations({ locale, namespace: "Apply" });
+  const sp = await searchParams;
+  const universitySlug =
+    typeof sp.university === "string" ? sp.university : undefined;
   const showGeo = isGeoLocale(locale);
   // Only load the Geo translator for supported locales — the Geo namespace
   // doesn't exist in the other 14 message files and getTranslations throws.
@@ -151,6 +156,7 @@ export default async function ApplyPage({
           countries={countries}
           universities={universityOptions}
           programs={programOptions}
+          universitySlug={universitySlug}
         />
       </div>
     </div>

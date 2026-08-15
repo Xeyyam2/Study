@@ -70,7 +70,15 @@
       "eyebrow": "精选",
       "title": "评分最高的大学",
       "subtitle": "精心挑选的国际学生欢迎的受认证大学。",
-      "viewAll": "全部大学"
+      "viewAll": "全部大学",
+      "applyNow": "立即申请",
+      "state": "公立",
+      "private": "私立",
+      "verified": "YÖK",
+      "prev": "上一页",
+      "next": "下一页",
+      "turkey": "土耳其",
+      "students": "在校学生"
     },
     "calculator": {
       "eyebrow": "费用估算器",

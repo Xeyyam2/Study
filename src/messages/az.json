@@ -70,7 +70,15 @@
       "eyebrow": "Seçilmişlər",
       "title": "Ən yüksək reytinqli universitetlər",
       "subtitle": "Beynəlxalq tələbələr arasında populyar, seçilmiş akreditə olunmuş universitetlər.",
-      "viewAll": "Bütün universitetlər"
+      "viewAll": "Bütün universitetlər",
+      "applyNow": "İndi müraciət et",
+      "state": "Dövlət",
+      "private": "Özəl",
+      "verified": "YÖK",
+      "prev": "Əvvəlki",
+      "next": "Növbəti",
+      "turkey": "Türkiyə",
+      "students": "Qeydiyyatlı tələbələr"
     },
     "calculator": {
       "eyebrow": "Dəyər hesablayıcısı",

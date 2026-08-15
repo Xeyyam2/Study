@@ -70,7 +70,15 @@
       "eyebrow": "Zilizochaguliwa",
       "title": "Vyuo vyenye alama za juu kabisa",
       "subtitle": "Vyuo vilivyochaguliwa kwa mkono vinavyopendwa na wanafunzi kimataifa.",
-      "viewAll": "Vyuo vyote"
+      "viewAll": "Vyuo vyote",
+      "applyNow": "Omba sasa",
+      "state": "Umma",
+      "private": "Binafsi",
+      "verified": "YOK",
+      "prev": "Iliyopita",
+      "next": "Inayofuata",
+      "turkey": "Turkey",
+      "students": "Wanafunzi walioandikishwa"
     },
     "calculator": {
       "eyebrow": "Kikadirio cha gharama",

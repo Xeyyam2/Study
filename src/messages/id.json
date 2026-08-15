@@ -70,7 +70,15 @@
       "eyebrow": "Unggulan",
       "title": "Universitas dengan peringkat teratas",
       "subtitle": "Universitas terakreditasi pilihan yang populer di kalangan mahasiswa internasional.",
-      "viewAll": "Semua universitas"
+      "viewAll": "Semua universitas",
+      "applyNow": "Daftar sekarang",
+      "state": "Negeri",
+      "private": "Swasta",
+      "verified": "YOK",
+      "prev": "Sebelumnya",
+      "next": "Berikutnya",
+      "turkey": "Turkey",
+      "students": "Mahasiswa terdaftar"
     },
     "calculator": {
       "eyebrow": "Estimator biaya",

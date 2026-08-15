@@ -70,7 +70,15 @@
       "eyebrow": "Tavsiya etilgan",
       "title": "Eng yuqori baholangan universitetlar",
       "subtitle": "Xalqaro talabalar orasida mashhur qo‘lda tanlangan akkreditatsiyadan o‘tgan universitetlar.",
-      "viewAll": "Barcha universitetlar"
+      "viewAll": "Barcha universitetlar",
+      "applyNow": "Hozir murojaat qiling",
+      "state": "Davlat",
+      "private": "Xususiy",
+      "verified": "YOK",
+      "prev": "Oldingi",
+      "next": "Keyingi",
+      "turkey": "Turkey",
+      "students": "O‘qiyotgan talabalar"
     },
     "calculator": {
       "eyebrow": "Xarajat kalkulyatori",

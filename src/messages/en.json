@@ -70,7 +70,15 @@
       "eyebrow": "Featured",
       "title": "Top-rated universities",
       "subtitle": "Hand-picked accredited universities popular with international students.",
-      "viewAll": "All universities"
+      "viewAll": "All universities",
+      "applyNow": "Apply now",
+      "state": "State",
+      "private": "Private",
+      "verified": "YÖK",
+      "prev": "Previous",
+      "next": "Next",
+      "turkey": "Turkey",
+      "students": "Students enrolled"
     },
     "calculator": {
       "eyebrow": "Cost estimator",

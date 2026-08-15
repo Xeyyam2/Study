@@ -70,7 +70,15 @@
       "eyebrow": "À la une",
       "title": "Universités les mieux notées",
       "subtitle": "Universités accréditées sélectionnées, populaires auprès des étudiants internationaux.",
-      "viewAll": "Toutes les universités"
+      "viewAll": "Toutes les universités",
+      "applyNow": "Postuler maintenant",
+      "state": "Publique",
+      "private": "Privée",
+      "verified": "YÖK",
+      "prev": "Précédent",
+      "next": "Suivant",
+      "turkey": "Turquie",
+      "students": "Étudiants inscrits"
     },
     "calculator": {
       "eyebrow": "Estimateur de coûts",

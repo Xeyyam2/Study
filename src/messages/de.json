@@ -70,7 +70,15 @@
       "eyebrow": "Empfohlen",
       "title": "Top-bewertete Universitäten",
       "subtitle": "Handverlesene akkreditierte Universitäten, beliebt bei internationalen Studierenden.",
-      "viewAll": "Alle Universitäten"
+      "viewAll": "Alle Universitäten",
+      "applyNow": "Jetzt bewerben",
+      "state": "Staatlich",
+      "private": "Privat",
+      "verified": "YÖK",
+      "prev": "Zurück",
+      "next": "Weiter",
+      "turkey": "Türkei",
+      "students": "Eingeschriebene Studierende"
     },
     "calculator": {
       "eyebrow": "Kostenrechner",

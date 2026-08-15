@@ -70,7 +70,15 @@
       "eyebrow": "Höwrümli",
       "title": "Iň ýokary bahasy berlen uniwersitetler",
       "subtitle": "Eller bilen saýlanan yöritegedil uniwersvetleriň, halkaralary okuwçylaryň arasynda meşhurdyr.",
-      "viewAll": "Ähli uniwersvetleri"
+      "viewAll": "Ähli uniwersvetleri",
+      "applyNow": "Häzir bas",
+      "state": "Döwlet",
+      "private": "Hususy",
+      "verified": "YÖK",
+      "prev": "Öňki",
+      "next": "Indiki",
+      "turkey": "Türkiýe",
+      "students": "Oka okuwçylar"
     },
     "calculator": {
       "eyebrow": "Bahalary hasaplaýjy",

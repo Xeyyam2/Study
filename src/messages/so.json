@@ -70,7 +70,15 @@
       "eyebrow": "La xushay",
       "title": "Jaamacadaha ugu sarreeya qiimaynta",
       "subtitle": "Jaamacado la xaqeejiyey oo gacanta loo doortay, oo caan ku ah ardayda caalamka.",
-      "viewAll": "Jaamacadaha oo dhan"
+      "viewAll": "Jaamacadaha oo dhan",
+      "applyNow": "Codso hadda",
+      "state": "Dawladeed",
+      "private": "Gaar ah",
+      "verified": "YOK",
+      "prev": "Kii hore",
+      "next": "Kii xiga",
+      "turkey": "Turkey",
+      "students": "Arday diiwaan gashan"
     },
     "calculator": {
       "eyebrow": "Qiimeeyaha khidmada",
