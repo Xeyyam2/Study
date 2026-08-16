@@ -32,7 +32,7 @@ interface BlogCarouselProps {
 
 /** How many cards fit per page at each viewport width. */
 const BLOG_PAGE_BREAKPOINTS = [
-  { min: 1280, perPage: 4 },
+  { min: 1280, perPage: 5 },
   { min: 768, perPage: 2 },
   { min: 0, perPage: 1 },
 ];

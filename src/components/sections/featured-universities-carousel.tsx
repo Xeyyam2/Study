@@ -46,8 +46,8 @@ interface FeaturedUniversitiesCarouselProps {
 
 /** How many cards fit per page at each viewport width. */
 const PAGE_BREAKPOINTS = [
-  { min: 1280, perPage: 4 },
-  { min: 1024, perPage: 3 },
+  { min: 1280, perPage: 5 },
+  { min: 1024, perPage: 4 },
   { min: 640, perPage: 2 },
   { min: 0, perPage: 1 },
 ];
