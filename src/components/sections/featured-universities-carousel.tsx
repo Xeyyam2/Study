@@ -130,9 +130,30 @@ export function FeaturedUniversitiesCarousel({
       onMouseLeave={() => setPaused(false)}
     >
       <div ref={viewportRef} className="relative overflow-hidden px-1">
+        {/* Arrows above the cards, top-right, fully visible (never clipped
+            by the overflow-hidden viewport). */}
+        {pages > 1 && (
+          <div className="absolute end-0 top-0 z-30 hidden items-center gap-2 lg:flex">
+            <ArrowButton
+              onClick={() => go(page - 1)}
+              disabled={page === 0}
+              ariaLabel={labels.prev}
+            >
+              <ArrowLeft className="h-5 w-5" />
+            </ArrowButton>
+            <ArrowButton
+              onClick={() => go(page + 1)}
+              disabled={page >= pages - 1}
+              ariaLabel={labels.next}
+            >
+              <ArrowRight className="h-5 w-5" />
+            </ArrowButton>
+          </div>
+        )}
+
         <div
           ref={trackRef}
-          className="flex touch-pan-y gap-6 overflow-x-auto py-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          className="flex touch-pan-y gap-6 overflow-x-auto py-2 lg:mt-12 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           onPointerDown={(e) => {
             touchX.current = e.clientX;
             setPaused(true);
@@ -160,30 +181,6 @@ export function FeaturedUniversitiesCarousel({
             </div>
           ))}
         </div>
-
-        {/* Arrows sit OUTSIDE the cards, at the edges of the track. */}
-        {pages > 1 && (
-          <>
-            <div className="absolute inset-y-0 -start-5 z-30 hidden items-center lg:flex">
-              <ArrowButton
-                onClick={() => go(page - 1)}
-                disabled={page === 0}
-                ariaLabel={labels.prev}
-              >
-                <ArrowLeft className="h-5 w-5" />
-              </ArrowButton>
-            </div>
-            <div className="absolute inset-y-0 -end-5 z-30 hidden items-center lg:flex">
-              <ArrowButton
-                onClick={() => go(page + 1)}
-                disabled={page >= pages - 1}
-                ariaLabel={labels.next}
-              >
-                <ArrowRight className="h-5 w-5" />
-              </ArrowButton>
-            </div>
-          </>
-        )}
       </div>
 
       {pages > 1 && (
@@ -284,9 +281,7 @@ function CarouselCard({
       </Link>
 
       <Button asChild variant="cta" className="w-full">
-        <Link href={`/apply?university=${card.slug}`}>
-          {labels.applyNow}
-        </Link>
+        <Link href={`/apply?university=${card.slug}`}>{labels.applyNow}</Link>
       </Button>
     </article>
   );

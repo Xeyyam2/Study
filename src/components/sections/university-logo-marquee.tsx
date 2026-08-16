@@ -42,7 +42,7 @@ export async function UniversityLogoMarquee({
         >
           <ul
             className="flex w-max min-w-full shrink-0 flex-nowrap items-center gap-6 md:gap-10 animate-marquee"
-            style={{ "--marquee-duration": "40s" } as CSSProperties}
+            style={{ "--marquee-duration": "80s" } as CSSProperties}
           >
             {[...withLogo, ...withLogo].map((u, i) => (
               <li
