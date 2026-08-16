@@ -140,6 +140,7 @@ function mapProgramItem(r: Record<string, unknown>) {
       accreditation: r.u_accr as string,
       isState: Boolean(r.u_state),
       logoText: r.u_logo as string,
+      logoImage: universityLogoImages[r.u_slug as string],
       heroImage: r.u_hero as string,
       gallery: (r.u_gallery as string[]) ?? [],
       // L5: listing items don't render tagline/description — omit the heavy

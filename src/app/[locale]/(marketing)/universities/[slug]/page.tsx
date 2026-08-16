@@ -239,8 +239,20 @@ export default async function UniversityDetailPage({
             </Link>
           </div>
           <div className="mt-3 flex items-start gap-4">
-            <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-lg border border-border bg-card font-display text-xl font-bold text-primary shadow-flat-plus sm:h-20 sm:w-20">
-              {detail.logoText}
+            <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-lg border border-border bg-card shadow-flat-plus sm:h-20 sm:w-20">
+              {detail.logoImage ? (
+                <Image
+                  src={detail.logoImage}
+                  alt={`${detail.name} logo`}
+                  width={80}
+                  height={80}
+                  className="object-contain"
+                />
+              ) : (
+                <span className="font-display text-xl font-bold text-primary">
+                  {detail.logoText}
+                </span>
+              )}
             </div>
             <div className="flex-1">
               <div className="flex flex-wrap items-center gap-2">

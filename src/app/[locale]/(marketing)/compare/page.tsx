@@ -60,6 +60,7 @@ export default async function ComparePage({
       id: u.id,
       name: u.name,
       logoText: u.logoText,
+      logoImage: u.logoImage,
       cityName: cityById.get(u.cityId)?.name[locale as never] ?? "—",
       tuition: formatCurrency(m?.minTuitionUSD ?? 0, "USD", locale),
       ranking: u.ranking,

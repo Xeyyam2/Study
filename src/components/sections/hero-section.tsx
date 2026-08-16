@@ -207,7 +207,7 @@ export function HeroSection() {
         <div className="relative hidden lg:block">
           <div className="relative aspect-[4/5] overflow-hidden rounded-xl border border-border shadow-flat-hover">
             <Image
-              src="/images/universities/marmara-university/hero.webp"
+              src="/images/universities/marmara-university/gallery-1.webp"
               alt={t("imageAlt")}
               fill
               priority

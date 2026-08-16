@@ -98,8 +98,20 @@ export async function UniversityCard({
               {labels.verified}
             </Badge>
           </div>
-          <div className="absolute start-3 top-3 flex h-10 w-10 items-center justify-center rounded-md bg-card/90 font-display text-sm font-bold text-primary backdrop-blur">
-            {university.logoText}
+          <div className="absolute start-3 top-3 flex h-10 w-10 items-center justify-center overflow-hidden rounded-md bg-card/90 backdrop-blur">
+            {university.logoImage ? (
+              <Image
+                src={university.logoImage}
+                alt={`${university.name} logo`}
+                width={40}
+                height={40}
+                className="object-contain"
+              />
+            ) : (
+              <span className="font-display text-sm font-bold text-primary">
+                {university.logoText}
+              </span>
+            )}
           </div>
         </div>
 

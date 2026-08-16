@@ -2,6 +2,7 @@
 
 import { useMemo, useState, useEffect } from "react";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
+import Image from "next/image";
 import { useTranslations } from "next-intl";
 import { Search, X } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
@@ -11,6 +12,7 @@ export interface CompareItem {
   id: string;
   name: string;
   logoText: string;
+  logoImage?: string;
   cityName: string;
   tuition: string;
   ranking: number;
@@ -115,8 +117,20 @@ export function CompareTool({ items }: { items: CompareItem[] }) {
                     disabled && "cursor-not-allowed opacity-50",
                   )}
                 >
-                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded bg-primary/10 font-display text-xs font-bold text-primary">
-                    {i.logoText}
+                  <span className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded bg-primary/10">
+                    {i.logoImage ? (
+                      <Image
+                        src={i.logoImage}
+                        alt={`${i.name} logo`}
+                        width={32}
+                        height={32}
+                        className="object-contain"
+                      />
+                    ) : (
+                      <span className="font-display text-xs font-bold text-primary">
+                        {i.logoText}
+                      </span>
+                    )}
                   </span>
                   <span className="flex-1 truncate">{i.name}</span>
                   {checked && <X className="h-4 w-4 text-muted-foreground" />}
@@ -139,8 +153,20 @@ export function CompareTool({ items }: { items: CompareItem[] }) {
                   {selectedItems.map((i) => (
                     <th key={i.id} className="p-4 text-left align-top">
                       <div className="flex items-center gap-2">
-                        <span className="flex h-8 w-8 items-center justify-center rounded bg-primary/10 font-display text-xs font-bold text-primary">
-                          {i.logoText}
+                        <span className="flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded bg-primary/10">
+                          {i.logoImage ? (
+                            <Image
+                              src={i.logoImage}
+                              alt={`${i.name} logo`}
+                              width={32}
+                              height={32}
+                              className="object-contain"
+                            />
+                          ) : (
+                            <span className="font-display text-xs font-bold text-primary">
+                              {i.logoText}
+                            </span>
+                          )}
                         </span>
                         <span className="font-display font-semibold text-foreground">
                           {i.name}
