@@ -4,6 +4,7 @@ import { Suspense } from "react";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import type { AppLocale } from "@/i18n/routing";
 import { buildPageMetadata } from "@/lib/seo/alternates";
+import { data } from "@/lib/data";
 import { HeroSection } from "@/components/sections/hero-section";
 import { StatsSection } from "@/components/sections/stats-section";
 import { CategorySection } from "@/components/sections/category-section";
@@ -48,9 +49,13 @@ export default async function HomePage({
   setRequestLocale(locale);
   const appLocale = locale as AppLocale;
 
+  // Real university count for the hero stat badge (kept out of the featured
+  // section's own fetch; the page is ISR-cached so this runs once per revalidate).
+  const universityCount = (await data.universities.list()).length;
+
   return (
     <>
-      <HeroSection />
+      <HeroSection universityCount={universityCount} />
       {/* PERF(P2): stream below-the-fold async sections so a slow DB read on
           one section never blocks the Hero (LCP) from flushing to the browser. */}
       <Suspense fallback={<div className="h-40" aria-hidden />}>

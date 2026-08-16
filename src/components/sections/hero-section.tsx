@@ -18,7 +18,7 @@ type SearchHit = {
   nameI18n?: Record<string, string>;
 };
 
-export function HeroSection() {
+export function HeroSection({ universityCount }: { universityCount: number }) {
   const t = useTranslations("HomePage.hero");
   const locale = useLocale();
   const router = useRouter();
@@ -218,7 +218,9 @@ export function HeroSection() {
             />
           </div>
           <div className="absolute -bottom-5 -start-5 rounded-lg border border-border bg-card p-4 shadow-flat-hover">
-            <p className="font-display text-2xl font-bold text-primary">12+</p>
+            <p className="font-display text-2xl font-bold text-primary">
+              {universityCount}+
+            </p>
             <p className="text-xs text-muted-foreground">{t("universities")}</p>
           </div>
         </div>
