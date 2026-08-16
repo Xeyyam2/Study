@@ -71,26 +71,19 @@ export function FeaturedUniversitiesCarousel({
   const viewportRef = useRef<HTMLDivElement>(null);
   const touchX = useRef<number | null>(null);
   const [perPage, setPerPage] = useState(4);
-  const [page, setPage] = useState(0);
+  // Virtual page index into a track that repeats the cards 3x. We always start
+  // in the middle copy so prev/next can scroll in either direction endlessly
+  // (StudyLeo-style) — at the edges we snap back to the middle copy without a
+  // visible jump, because both positions show the same cards.
+  const [vp, setVp] = useState(() => Math.ceil(cards.length / 4));
   const [paused, setPaused] = useState(false);
 
   const pages = Math.max(1, Math.ceil(cards.length / perPage));
   const trackGap = 24; // gap-6
   const pageOffset = perPage * CARD_WIDTH + (perPage - 1) * trackGap;
+  const trackCards = [...cards, ...cards, ...cards];
 
-  // Infinite loop: prev/next wrap around — the first page is never "stuck"
-  // and the arrows are never disabled.
-  const go = useCallback(
-    (next: number) => {
-      setPage(((next % pages) + pages) % pages);
-    },
-    [pages],
-  );
-
-  const slideTo = useCallback((target: number) => {
-    const el = trackRef.current;
-    if (el) el.scrollTo({ left: target, behavior: "smooth" });
-  }, []);
+  const go = useCallback((next: number) => setVp(next), []);
 
   // Measure the viewport to decide how many fixed-width cards fit per page.
   useEffect(() => {
@@ -106,21 +99,30 @@ export function FeaturedUniversitiesCarousel({
     return () => ro.disconnect();
   }, []);
 
-  // Keep the page in range (wrap) when the layout (or card count) changes.
+  // Re-center on the middle copy when the page count changes (resize).
   useEffect(() => {
-    setPage((p) => ((p % pages) + pages) % pages);
-  }, [pages, perPage]);
+    setVp(pages);
+    el_scrollTo(trackRef.current, pages * pageOffset, false);
+  }, [pages, perPage, pageOffset]);
 
-  // Slide the track when the active page changes.
+  // Slide the track; at either edge, invisibly snap back to the middle copy.
   useEffect(() => {
-    slideTo(page * pageOffset);
-  }, [page, pageOffset, slideTo]);
+    if (vp >= 2 * pages) {
+      el_scrollTo(trackRef.current, pages * pageOffset, false);
+      setVp(pages);
+    } else if (vp < pages) {
+      el_scrollTo(trackRef.current, (2 * pages - 1) * pageOffset, false);
+      setVp(2 * pages - 1);
+    } else {
+      el_scrollTo(trackRef.current, vp * pageOffset, true);
+    }
+  }, [vp, pages, pageOffset]);
 
-  // Auto-advance every AUTOPLAY_MS, pausing on hover/touch.
+  // Auto-advance every AUTOPLAY_MS, pausing on hover/touch. Loops forever.
   useEffect(() => {
     if (paused || pages <= 1) return;
     const id = setInterval(() => {
-      setPage((p) => (p >= pages - 1 ? 0 : p + 1));
+      setVp((p) => (p >= 2 * pages - 1 ? pages : p + 1));
     }, AUTOPLAY_MS);
     return () => clearInterval(id);
   }, [paused, pages]);
@@ -131,17 +133,17 @@ export function FeaturedUniversitiesCarousel({
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      {/* Infinite loop: arrows never disable — prev at page 0 wraps to the
-          last page and next at the last page wraps to page 0. */}
+      {/* Infinite loop: arrows never disable; left always moves left, right
+          always moves right (no teleport between first/last). */}
       {pages > 1 && (
         <>
           <div className="absolute -start-6 top-1/2 z-30 hidden -translate-y-1/2 lg:flex">
-            <ArrowButton onClick={() => go(page - 1)} ariaLabel={labels.prev}>
+            <ArrowButton onClick={() => go(vp - 1)} ariaLabel={labels.prev}>
               <ArrowLeft className="h-5 w-5" />
             </ArrowButton>
           </div>
           <div className="absolute -end-6 top-1/2 z-30 hidden -translate-y-1/2 lg:flex">
-            <ArrowButton onClick={() => go(page + 1)} ariaLabel={labels.next}>
+            <ArrowButton onClick={() => go(vp + 1)} ariaLabel={labels.next}>
               <ArrowRight className="h-5 w-5" />
             </ArrowButton>
           </div>
@@ -159,7 +161,7 @@ export function FeaturedUniversitiesCarousel({
           onPointerUp={(e) => {
             if (touchX.current == null) return;
             const dx = e.clientX - touchX.current;
-            if (Math.abs(dx) > 48) go(page + (dx < 0 ? 1 : -1));
+            if (Math.abs(dx) > 48) go(vp + (dx < 0 ? 1 : -1));
             touchX.current = null;
           }}
           onPointerCancel={() => {
@@ -169,12 +171,12 @@ export function FeaturedUniversitiesCarousel({
             touchX.current = null;
           }}
         >
-          {cards.map((card, i) => (
-            <div key={card.id} className="shrink-0 snap-start">
+          {trackCards.map((card, i) => (
+            <div key={`${card.id}-${i}`} className="shrink-0 snap-start">
               <CarouselCard
                 card={card}
                 labels={labels}
-                priority={page === 0 && i < 2}
+                priority={i < 2 * cards.length}
               />
             </div>
           ))}
@@ -187,12 +189,12 @@ export function FeaturedUniversitiesCarousel({
             <button
               key={i}
               type="button"
-              onClick={() => go(i)}
+              onClick={() => go(pages + i)}
               aria-label={`${i + 1}`}
-              aria-current={i === page}
+              aria-current={i === vp % pages}
               className={cn(
                 "h-2 rounded-full transition-all duration-300",
-                i === page
+                i === vp % pages
                   ? "w-6 bg-primary"
                   : "w-2 bg-border hover:bg-muted-foreground/40",
               )}
@@ -283,6 +285,11 @@ function CarouselCard({
       </Button>
     </article>
   );
+}
+
+/** Immediate (non-smooth) scroll to a pixel offset — used for edge re-centering. */
+function el_scrollTo(el: HTMLDivElement | null, left: number, smooth: boolean) {
+  if (el) el.scrollTo({ left, behavior: smooth ? "smooth" : "auto" });
 }
 
 function ArrowButton({
