@@ -47,7 +47,7 @@ export async function WhyChooseUs({ locale }: WhyChooseUsProps) {
   ];
 
   return (
-    <section className="section-padding bg-card">
+    <section className="section-padding bg-surface-low">
       <div className="container-page">
         <p className="text-center font-display text-sm font-semibold uppercase tracking-wide text-cta">
           {t("eyebrow")}

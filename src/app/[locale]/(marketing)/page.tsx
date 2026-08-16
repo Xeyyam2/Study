@@ -63,9 +63,6 @@ export default async function HomePage({
       <Suspense fallback={<div className="h-40" aria-hidden />}>
         <StatsSection locale={appLocale} />
       </Suspense>
-      <Suspense fallback={<div className="section-padding h-96" aria-hidden />}>
-        <WhyChooseUs locale={appLocale} />
-      </Suspense>
       <Suspense fallback={<div className="section-padding h-64" aria-hidden />}>
         <CategorySection locale={appLocale} />
       </Suspense>
@@ -88,6 +85,10 @@ export default async function HomePage({
         <FaqSection locale={appLocale} />
       </Suspense>
       <CTASection />
+      {/* StudyLeo-style "Why Choose Us" sits right above the footer. */}
+      <Suspense fallback={<div className="section-padding h-96" aria-hidden />}>
+        <WhyChooseUs locale={appLocale} />
+      </Suspense>
     </>
   );
 }
