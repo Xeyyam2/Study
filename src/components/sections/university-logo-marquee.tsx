@@ -2,6 +2,7 @@ import type { CSSProperties } from "react";
 import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import { data } from "@/lib/data";
+import { isSvgUrl } from "@/lib/images/is-svg";
 import type { AppLocale } from "@/i18n/routing";
 
 interface UniversityLogoMarqueeProps {
@@ -54,6 +55,7 @@ export async function UniversityLogoMarquee({
                   alt={`${u.name} logo`}
                   width={96}
                   height={96}
+                  unoptimized={isSvgUrl(u.logoImage)}
                   className="max-h-full w-auto max-w-full object-contain transition-transform duration-300 hover:scale-110"
                 />
               </li>

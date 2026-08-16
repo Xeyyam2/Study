@@ -8,6 +8,7 @@ import type { AppLocale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { buildPageMetadata } from "@/lib/seo/alternates";
 import { formatCurrency } from "@/lib/utils";
+import { isSvgUrl } from "@/lib/images/is-svg";
 import { ProgramFilters } from "@/components/sections/program-filters";
 import {
   Table,
@@ -158,6 +159,7 @@ export default async function ProgramsPage({
                                 alt={`${p.university.name} logo`}
                                 width={32}
                                 height={32}
+                                unoptimized={isSvgUrl(p.university.logoImage)}
                                 className="object-contain"
                               />
                             ) : (
@@ -191,9 +193,7 @@ export default async function ProgramsPage({
                           {p.city.name[appLocale] ?? p.city.slug}
                         </span>
                       </TableCell>
-                      <TableCell className="uppercase">
-                        {p.language}
-                      </TableCell>
+                      <TableCell className="uppercase">{p.language}</TableCell>
                       <TableCell className="text-right">
                         <span className="font-semibold tabular-nums text-foreground">
                           {formatCurrency(p.tuitionFee, "USD", locale)}

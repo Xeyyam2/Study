@@ -51,6 +51,7 @@ import {
 } from "@/components/ui/accordion";
 import { UniversityCard } from "@/components/sections/university-card";
 import { formatCurrency, formatNumber } from "@/lib/utils";
+import { isSvgUrl } from "@/lib/images/is-svg";
 
 // ISR — content rarely changes; rebuild only every hour (or on-demand revalidation).
 // SE-5/P2: pre-render the featured universities at build time so their first
@@ -246,6 +247,7 @@ export default async function UniversityDetailPage({
                   alt={`${detail.name} logo`}
                   width={80}
                   height={80}
+                  unoptimized={isSvgUrl(detail.logoImage)}
                   className="object-contain"
                 />
               ) : (

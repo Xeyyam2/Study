@@ -7,6 +7,7 @@ import { useTranslations } from "next-intl";
 import { Search, X } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { isSvgUrl } from "@/lib/images/is-svg";
 
 export interface CompareItem {
   id: string;
@@ -124,6 +125,7 @@ export function CompareTool({ items }: { items: CompareItem[] }) {
                         alt={`${i.name} logo`}
                         width={32}
                         height={32}
+                        unoptimized={isSvgUrl(i.logoImage)}
                         className="object-contain"
                       />
                     ) : (
@@ -160,6 +162,7 @@ export function CompareTool({ items }: { items: CompareItem[] }) {
                               alt={`${i.name} logo`}
                               width={32}
                               height={32}
+                              unoptimized={isSvgUrl(i.logoImage)}
                               className="object-contain"
                             />
                           ) : (

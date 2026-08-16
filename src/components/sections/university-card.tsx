@@ -5,6 +5,7 @@ import type { AppLocale } from "@/i18n/routing";
 import type { UniversityListingMetadata } from "@/lib/data/repositories";
 import { data } from "@/lib/data";
 import { cn, formatCurrency } from "@/lib/utils";
+import { isSvgUrl } from "@/lib/images/is-svg";
 import { Link } from "@/i18n/navigation";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -105,6 +106,7 @@ export async function UniversityCard({
                 alt={`${university.name} logo`}
                 width={40}
                 height={40}
+                unoptimized={isSvgUrl(university.logoImage)}
                 className="object-contain"
               />
             ) : (
