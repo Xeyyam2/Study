@@ -316,14 +316,6 @@ export function createPgDataLayer(getPool: () => Pool): DataLayer {
       return res.rows.map(rowUniversity);
     },
 
-    async getTop(limit = 4): Promise<University[]> {
-      const res = await getPool().query(
-        `select * from public.universities order by ranking asc nulls last limit $1`,
-        [limit],
-      );
-      return res.rows.map(rowUniversity);
-    },
-
     getBySlug: cache(async (slug: string): Promise<University | null> => {
       const res = await getPool().query(
         `select * from public.universities where slug = $1`,

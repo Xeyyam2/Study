@@ -11,6 +11,11 @@
  * and its `logoText` fallback.
  */
 export const universityHeroImages: Record<string, string> = {
+  'istanbul-technical-university': '/images/universities/istanbul-technical-university/hero.webp',
+  'bogazici-university': '/images/universities/bogazici-university/hero.webp',
+  'middle-east-technical-university': '/images/universities/middle-east-technical-university/hero.webp',
+  'ankara-university': '/images/universities/ankara-university/hero.webp',
+  'yildiz-technical-university': '/images/universities/yildiz-technical-university/hero.webp',
   'bahcesehir-university': '/images/universities/bahcesehir-university/hero.webp',
   'izmir-university-of-economics': '/images/universities/izmir-university-of-economics/hero.webp',
   'antalya-bilim-university': '/images/universities/antalya-bilim-university/hero.webp',

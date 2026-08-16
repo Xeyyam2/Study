@@ -56,8 +56,12 @@ export const seedUniversities: University[] = [
     accreditation: 'YÖK Accredited',
     isState: true,
     logoText: 'İTÜ',
-    heroImage: seedImages.engineering,
-    gallery: [seedImages.campusAerial, seedImages.engineering, seedImages.computer],
+    heroImage: '/images/universities/istanbul-technical-university/hero.webp',
+    gallery: [
+      '/images/universities/istanbul-technical-university/gallery-1.webp',
+      '/images/universities/istanbul-technical-university/gallery-2.webp',
+      '/images/universities/istanbul-technical-university/gallery-3.webp',
+    ],
     languages: ['en', 'tr'],
     featured: true,
     tagline: {
@@ -84,8 +88,12 @@ export const seedUniversities: University[] = [
     accreditation: 'YÖK Accredited',
     isState: true,
     logoText: 'BU',
-    heroImage: seedImages.campusLibrary,
-    gallery: [seedImages.campusBuilding, seedImages.students, seedImages.istanbul],
+    heroImage: '/images/universities/bogazici-university/hero.webp',
+    gallery: [
+      '/images/universities/bogazici-university/gallery-1.webp',
+      '/images/universities/bogazici-university/gallery-2.webp',
+      '/images/universities/bogazici-university/gallery-3.webp',
+    ],
     languages: ['en', 'tr'],
     featured: true,
     tagline: {
@@ -112,8 +120,12 @@ export const seedUniversities: University[] = [
     accreditation: 'YÖK Accredited',
     isState: true,
     logoText: 'ODTÜ',
-    heroImage: seedImages.campusAerial,
-    gallery: [seedImages.engineering, seedImages.computer, seedImages.students],
+    heroImage: '/images/universities/middle-east-technical-university/hero.webp',
+    gallery: [
+      '/images/universities/middle-east-technical-university/gallery-1.webp',
+      '/images/universities/middle-east-technical-university/gallery-2.webp',
+      '/images/universities/middle-east-technical-university/gallery-3.webp',
+    ],
     languages: ['en'],
     featured: true,
     tagline: {
@@ -140,8 +152,12 @@ export const seedUniversities: University[] = [
     accreditation: 'YÖK Accredited',
     isState: true,
     logoText: 'AU',
-    heroImage: seedImages.law,
-    gallery: [seedImages.campusBuilding, seedImages.law, seedImages.business],
+    heroImage: '/images/universities/ankara-university/hero.webp',
+    gallery: [
+      '/images/universities/ankara-university/gallery-1.webp',
+      '/images/universities/ankara-university/gallery-2.webp',
+      '/images/universities/ankara-university/gallery-3.webp',
+    ],
     languages: ['tr', 'en'],
     tagline: {
       en: 'The first university of the Republic',
@@ -275,8 +291,12 @@ export const seedUniversities: University[] = [
     accreditation: 'YÖK Accredited',
     isState: true,
     logoText: 'YTÜ',
-    heroImage: seedImages.architecture,
-    gallery: [seedImages.architecture, seedImages.engineering, seedImages.istanbul],
+    heroImage: '/images/universities/yildiz-technical-university/hero.webp',
+    gallery: [
+      '/images/universities/yildiz-technical-university/gallery-1.webp',
+      '/images/universities/yildiz-technical-university/gallery-2.webp',
+      '/images/universities/yildiz-technical-university/gallery-3.webp',
+    ],
     languages: ['tr', 'en'],
     tagline: {
       en: 'Design and engineering on the European shore',

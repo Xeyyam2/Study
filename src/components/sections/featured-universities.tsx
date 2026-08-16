@@ -16,11 +16,35 @@ export async function FeaturedUniversities({
   locale,
 }: FeaturedUniversitiesProps) {
   const t = await getTranslations("HomePage.featured");
-  // Top-ranked universities (ranking ascending) — enough cards for the carousel
-  // to page (≥10) regardless of which universities are flagged featured.
-  const featured = await data.universities.getTop(12);
+
+  // The exact set of state universities the site highlights — in this order.
+  const FEATURED_SLUGS = [
+    "akdeniz-university",
+    "ankara-university",
+    "bogazici-university",
+    "bursa-uludag-university",
+    "cappadocia-university",
+    "ege-university",
+    "erciyes-university",
+    "gaziantep-university",
+    "istanbul-cerrahpasa-university",
+    "istanbul-technical-university",
+    "istanbul-vocational-school-of-health-and-social-sciences",
+    "karadeniz-technical-university",
+    "kocaeli-university",
+    "mersin-university",
+    "marmara-university",
+    "middle-east-technical-university",
+    "yildiz-technical-university",
+  ];
+
+  const all = await data.universities.list();
   const metadata = await data.universities.getListingMetadata(
-    featured.map((u) => u.id),
+    all.map((u) => u.id),
+  );
+  const bySlug = new Map(all.map((u) => [u.slug, u]));
+  const featured = FEATURED_SLUGS.map((slug) => bySlug.get(slug)).filter(
+    (u): u is NonNullable<typeof u> => Boolean(u),
   );
 
   const cards: FeaturedUniversityCardData[] = featured.map((u) => {
