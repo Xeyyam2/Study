@@ -219,11 +219,11 @@ function CarouselCard({
   priority: boolean;
 }) {
   return (
-    <article className="flex h-full w-[280px] flex-col gap-2 sm:w-[320px]">
+    <article className="flex w-[280px] flex-col gap-2 sm:w-[320px]">
       <Link
         href={`/universities/${card.slug}`}
         aria-label={card.name}
-        className="group relative block h-full w-full flex-1 overflow-hidden rounded-lg transition-transform duration-300 ease-out hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+        className="group relative block aspect-[4/3] w-full overflow-hidden rounded-lg transition-transform duration-300 ease-out hover:-translate-y-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
       >
         <Image
           src={card.heroImage}
