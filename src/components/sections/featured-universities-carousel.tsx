@@ -129,11 +129,11 @@ export function FeaturedUniversitiesCarousel({
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      <div ref={viewportRef} className="relative overflow-hidden px-1">
-        {/* Arrows above the cards, top-right, fully visible (never clipped
-            by the overflow-hidden viewport). */}
-        {pages > 1 && (
-          <div className="absolute end-0 top-0 z-30 hidden items-center gap-2 lg:flex">
+      {/* Arrows at the sides of the track, outside the overflow-hidden
+          viewport so they are never clipped. */}
+      {pages > 1 && (
+        <>
+          <div className="absolute -start-6 top-1/2 z-30 hidden -translate-y-1/2 lg:flex">
             <ArrowButton
               onClick={() => go(page - 1)}
               disabled={page === 0}
@@ -141,6 +141,8 @@ export function FeaturedUniversitiesCarousel({
             >
               <ArrowLeft className="h-5 w-5" />
             </ArrowButton>
+          </div>
+          <div className="absolute -end-6 top-1/2 z-30 hidden -translate-y-1/2 lg:flex">
             <ArrowButton
               onClick={() => go(page + 1)}
               disabled={page >= pages - 1}
@@ -149,11 +151,13 @@ export function FeaturedUniversitiesCarousel({
               <ArrowRight className="h-5 w-5" />
             </ArrowButton>
           </div>
-        )}
+        </>
+      )}
 
+      <div ref={viewportRef} className="relative overflow-hidden px-1">
         <div
           ref={trackRef}
-          className="flex touch-pan-y gap-6 overflow-x-auto py-2 lg:mt-12 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          className="flex touch-pan-y gap-6 overflow-x-auto py-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           onPointerDown={(e) => {
             touchX.current = e.clientX;
             setPaused(true);
