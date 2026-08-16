@@ -78,9 +78,11 @@ export function FeaturedUniversitiesCarousel({
   const trackGap = 24; // gap-6
   const pageOffset = perPage * CARD_WIDTH + (perPage - 1) * trackGap;
 
+  // Infinite loop: prev/next wrap around — the first page is never "stuck"
+  // and the arrows are never disabled.
   const go = useCallback(
     (next: number) => {
-      setPage(Math.max(0, Math.min(pages - 1, next)));
+      setPage(((next % pages) + pages) % pages);
     },
     [pages],
   );
@@ -104,9 +106,9 @@ export function FeaturedUniversitiesCarousel({
     return () => ro.disconnect();
   }, []);
 
-  // Keep the page in range when the layout (or card count) changes.
+  // Keep the page in range (wrap) when the layout (or card count) changes.
   useEffect(() => {
-    setPage((p) => Math.min(p, Math.max(0, pages - 1)));
+    setPage((p) => ((p % pages) + pages) % pages);
   }, [pages, perPage]);
 
   // Slide the track when the active page changes.
@@ -129,25 +131,17 @@ export function FeaturedUniversitiesCarousel({
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
     >
-      {/* Arrows at the sides of the track, outside the overflow-hidden
-          viewport so they are never clipped. */}
+      {/* Infinite loop: arrows never disable — prev at page 0 wraps to the
+          last page and next at the last page wraps to page 0. */}
       {pages > 1 && (
         <>
           <div className="absolute -start-6 top-1/2 z-30 hidden -translate-y-1/2 lg:flex">
-            <ArrowButton
-              onClick={() => go(page - 1)}
-              disabled={page === 0}
-              ariaLabel={labels.prev}
-            >
+            <ArrowButton onClick={() => go(page - 1)} ariaLabel={labels.prev}>
               <ArrowLeft className="h-5 w-5" />
             </ArrowButton>
           </div>
           <div className="absolute -end-6 top-1/2 z-30 hidden -translate-y-1/2 lg:flex">
-            <ArrowButton
-              onClick={() => go(page + 1)}
-              disabled={page >= pages - 1}
-              ariaLabel={labels.next}
-            >
+            <ArrowButton onClick={() => go(page + 1)} ariaLabel={labels.next}>
               <ArrowRight className="h-5 w-5" />
             </ArrowButton>
           </div>
@@ -294,21 +288,18 @@ function CarouselCard({
 function ArrowButton({
   children,
   onClick,
-  disabled,
   ariaLabel,
 }: {
   children: React.ReactNode;
   onClick: () => void;
-  disabled: boolean;
   ariaLabel: string;
 }) {
   return (
     <button
       type="button"
       onClick={onClick}
-      disabled={disabled}
       aria-label={ariaLabel}
-      className="flex h-11 w-11 items-center justify-center rounded-full border border-border bg-card text-foreground shadow-flat-plus transition-colors hover:bg-accent disabled:pointer-events-none disabled:opacity-40"
+      className="flex h-11 w-11 items-center justify-center rounded-full border border-border bg-card text-foreground shadow-flat-plus transition-colors hover:bg-accent"
     >
       {children}
     </button>

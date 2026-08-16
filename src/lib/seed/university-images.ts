@@ -155,6 +155,8 @@ export const universityLogoImages: Record<string, string> = {
   "bogazici-university": "/images/universities/bogazici-university/logo.webp",
   "bursa-uludag-university":
     "/images/universities/bursa-uludag-university/logo.webp",
+  "bursa-technical-university":
+    "/images/universities/bursa-technical-university/logo.webp",
   "cappadocia-university":
     "/images/universities/cappadocia-university/logo.webp",
   "ege-university": "/images/universities/ege-university/logo.webp",
