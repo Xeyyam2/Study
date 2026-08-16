@@ -32,12 +32,12 @@ interface BlogCarouselProps {
 
 /** How many cards fit per page at each viewport width. */
 const BLOG_PAGE_BREAKPOINTS = [
-  { min: 1280, perPage: 3 },
+  { min: 1280, perPage: 4 },
   { min: 768, perPage: 2 },
   { min: 0, perPage: 1 },
 ];
 
-const BLOG_CARD_WIDTH = 360;
+const BLOG_CARD_WIDTH = 280;
 const BLOG_TRACK_GAP = 24;
 
 /**
@@ -139,10 +139,7 @@ export function BlogCarousel({ items, locale, labels }: BlogCarouselProps) {
           }}
         >
           {trackItems.map((item, i) => (
-            <div
-              key={`${item.id}-${i}`}
-              className="w-[320px] shrink-0 sm:w-[360px]"
-            >
+            <div key={`${item.id}-${i}`} className="w-[280px] shrink-0">
               <Link href={`/blog/${item.slug}`} className="group block h-full">
                 <Card className="h-full overflow-hidden transition-shadow hover:shadow-flat-hover">
                   <div className="relative aspect-[16/9] overflow-hidden bg-surface-low">
@@ -150,21 +147,21 @@ export function BlogCarousel({ items, locale, labels }: BlogCarouselProps) {
                       src={item.coverImage}
                       alt={lx(item.title, locale)}
                       fill
-                      sizes="(max-width: 768px) 90vw, 360px"
+                      sizes="(max-width: 768px) 90vw, 280px"
                       className="object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                   </div>
-                  <CardContent className="space-y-3 p-5">
+                  <CardContent className="space-y-2.5 p-4">
                     <Badge variant="tertiary">
                       {lx(item.category, locale)}
                     </Badge>
-                    <h3 className="line-clamp-2 font-display text-lg font-semibold leading-snug text-foreground">
+                    <h3 className="line-clamp-2 font-display text-base font-semibold leading-snug text-foreground">
                       {lx(item.title, locale)}
                     </h3>
                     <p className="line-clamp-2 text-sm text-muted-foreground">
                       {lx(item.excerpt, locale)}
                     </p>
-                    <div className="flex items-center gap-1 pt-2 text-xs text-muted-foreground">
+                    <div className="flex items-center gap-1 pt-1.5 text-xs text-muted-foreground">
                       <Clock className="h-3.5 w-3.5" />
                       {labels.minRead.replace(
                         "{min}",
