@@ -181,60 +181,75 @@ export function HeaderInteractive() {
         {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
       </button>
 
-      {/* Mobile menu */}
+      {/* Mobile menu — full-screen overlay from the very top to the bottom. */}
       {open && (
         <div
           id="mobile-menu"
-          className="border-t border-border bg-card md:hidden"
+          className="fixed inset-0 top-0 z-50 flex flex-col overflow-y-auto bg-card md:hidden"
         >
-          <nav className="container-page flex flex-col gap-1 py-3">
+          <div className="flex h-16 shrink-0 items-center justify-between border-b border-border px-4">
+            <span className="font-display text-lg font-bold text-primary">
+              {tCommon("menu")}
+            </span>
+            <button
+              type="button"
+              onClick={() => setOpen(false)}
+              aria-label={tCommon("close")}
+              className="inline-flex h-10 w-10 items-center justify-center rounded text-foreground hover:bg-accent"
+            >
+              <X className="h-5 w-5" />
+            </button>
+          </div>
+          <nav className="flex flex-1 flex-col gap-1 px-4 py-4">
             <Link
               href="/"
-              className="rounded px-3 py-2.5 text-sm font-medium text-foreground hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+              onClick={() => setOpen(false)}
+              className="rounded-lg px-4 py-3.5 text-base font-medium text-foreground hover:bg-accent"
             >
               {t("home")}
             </Link>
             <Link
               href="/universities"
-              className="rounded px-3 py-2.5 text-sm font-medium text-foreground hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+              onClick={() => setOpen(false)}
+              className="rounded-lg px-4 py-3.5 text-base font-medium text-foreground hover:bg-accent"
             >
               {t("universities")}
             </Link>
             <Link
               href="/programs"
-              className="rounded px-3 py-2.5 text-sm font-medium text-foreground hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+              onClick={() => setOpen(false)}
+              className="rounded-lg px-4 py-3.5 text-base font-medium text-foreground hover:bg-accent"
             >
               {t("programs")}
             </Link>
             <Link
               href="/about"
-              className="rounded px-3 py-2.5 text-sm font-medium text-foreground hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+              onClick={() => setOpen(false)}
+              className="rounded-lg px-4 py-3.5 text-base font-medium text-foreground hover:bg-accent"
             >
               {t("about")}
             </Link>
             <Link
               href="/blog"
-              className="rounded px-3 py-2.5 text-sm font-medium text-foreground hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+              onClick={() => setOpen(false)}
+              className="rounded-lg px-4 py-3.5 text-base font-medium text-foreground hover:bg-accent"
             >
               {t("blog")}
             </Link>
             <Link
               href="/contact"
-              className="rounded px-3 py-2.5 text-sm font-medium text-foreground hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+              onClick={() => setOpen(false)}
+              className="rounded-lg px-4 py-3.5 text-base font-medium text-foreground hover:bg-accent"
             >
               {t("contact")}
             </Link>
-            <Link
-              href="/compare"
-              className="rounded px-3 py-2.5 text-sm font-medium text-foreground hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
-            >
-              {t("compare")}
-            </Link>
-            <Button asChild variant="cta" className="mt-2">
-              <Link href="/apply">{t("apply")}</Link>
+            <Button asChild variant="cta" className="mt-6">
+              <Link href="/apply" onClick={() => setOpen(false)}>
+                {t("apply")}
+              </Link>
             </Button>
-            <div className="mt-3">{AuthControl()}</div>
-            <div className="mt-3">
+            <div className="mt-4">{AuthControl()}</div>
+            <div className="mt-4">
               <LocaleSwitcher />
             </div>
           </nav>

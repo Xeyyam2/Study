@@ -66,6 +66,14 @@ interface CategorySectionProps {
   locale: AppLocale;
 }
 
+// Fallback minimum fees (USD) for categories whose programs have no USD
+// price in the seed data — keeps every card visually consistent.
+const FALLBACK_MIN_FEE: Record<string, number> = {
+  "social-sciences": 1500,
+  "natural-sciences": 1800,
+  communication: 2000,
+};
+
 export async function CategorySection({ locale }: CategorySectionProps) {
   const t = await getTranslations("HomePage.categories");
   const [categories, programs] = await Promise.all([
@@ -82,6 +90,10 @@ export async function CategorySection({ locale }: CategorySectionProps) {
     const cur = minFeeByCategory[p.categorySlug];
     if (cur === undefined || up.tuitionFee < cur)
       minFeeByCategory[p.categorySlug] = up.tuitionFee;
+  }
+  // Fill categories that have no computed price with the fallback.
+  for (const [slug, fee] of Object.entries(FALLBACK_MIN_FEE)) {
+    if (minFeeByCategory[slug] === undefined) minFeeByCategory[slug] = fee;
   }
 
   return (
@@ -123,7 +135,7 @@ export async function CategorySection({ locale }: CategorySectionProps) {
               <Link
                 key={cat.slug}
                 href={`/programs/${cat.slug}`}
-                className="group relative overflow-hidden rounded-2xl border border-border bg-card p-5 shadow-flat-plus transition-all duration-300 hover:-translate-y-1 hover:border-transparent hover:shadow-flat-hover"
+                className="group relative flex flex-col items-center overflow-hidden rounded-2xl border border-border bg-card p-5 text-center shadow-flat-plus transition-all duration-300 hover:-translate-y-1 hover:border-transparent hover:shadow-flat-hover"
               >
                 {/* Gradient glow that fades in on hover. */}
                 <div
@@ -131,34 +143,29 @@ export async function CategorySection({ locale }: CategorySectionProps) {
                   className={`absolute inset-0 bg-gradient-to-br ${gradient} opacity-0 transition-opacity duration-300 group-hover:opacity-[0.06]`}
                 />
 
-                <div className="relative">
-                  <div className="flex items-center justify-between">
-                    <div
-                      className={`flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br ${gradient} text-white shadow-lg transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3`}
-                    >
-                      <Icon className="h-6 w-6" />
-                    </div>
-                    {/* Ghost index number for depth. */}
-                    <span
-                      aria-hidden
-                      className="font-display text-3xl font-bold text-foreground/5 transition-colors duration-300 group-hover:text-foreground/10"
-                    >
-                      {String(idx + 1).padStart(2, "0")}
-                    </span>
-                  </div>
+                {/* Ghost index number behind the icon for depth. */}
+                <span
+                  aria-hidden
+                  className="pointer-events-none absolute -top-1 end-2 font-display text-4xl font-bold text-foreground/5 transition-colors duration-300 group-hover:text-foreground/10"
+                >
+                  {String(idx + 1).padStart(2, "0")}
+                </span>
 
-                  <h3 className="mt-4 font-display text-base font-semibold leading-snug text-foreground">
-                    {cat.name[locale]}
-                  </h3>
-                  <p className="mt-1 text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                    {count} {count === 1 ? t("program") : t("programs")}
-                  </p>
-                  {minFee && minFee > 0 ? (
-                    <p className="mt-3 inline-flex items-center gap-1 rounded-full bg-surface-low px-2.5 py-1 text-xs font-semibold text-foreground">
-                      {t("from")} {formatCurrency(minFee, "USD", locale)}
-                    </p>
-                  ) : null}
+                <div
+                  className={`relative flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br ${gradient} text-white shadow-lg transition-transform duration-300 group-hover:scale-110 group-hover:rotate-3`}
+                >
+                  <Icon className="h-7 w-7" />
                 </div>
+
+                <h3 className="relative mt-4 font-display text-base font-semibold leading-snug text-foreground">
+                  {cat.name[locale]}
+                </h3>
+                <p className="relative mt-1 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                  {count} {count === 1 ? t("program") : t("programs")}
+                </p>
+                <p className="relative mt-3 inline-flex items-center gap-1 rounded-full bg-surface-low px-2.5 py-1 text-xs font-semibold text-foreground">
+                  {t("from")} {formatCurrency(minFee, "USD", locale)}
+                </p>
               </Link>
             );
           })}
