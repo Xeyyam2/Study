@@ -84,11 +84,11 @@ export default async function HomePage({
       <Suspense fallback={<div className="section-padding h-64" aria-hidden />}>
         <FaqSection locale={appLocale} />
       </Suspense>
-      <CTASection />
-      {/* StudyLeo-style "Why Choose Us" sits right above the footer. */}
+      {/* StudyLeo-style "Why Choose Us" sits right above the final CTA. */}
       <Suspense fallback={<div className="section-padding h-96" aria-hidden />}>
         <WhyChooseUs locale={appLocale} />
       </Suspense>
+      <CTASection />
     </>
   );
 }

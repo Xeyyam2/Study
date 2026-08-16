@@ -31,8 +31,13 @@ export function FloatingChatButtons() {
   return (
     <div
       className={cn(
-        "fixed z-50 flex flex-col gap-3 transition-[inset] duration-200",
-        chatOpen ? "bottom-5 end-5" : "bottom-28 start-6",
+        "fixed z-50 flex flex-col gap-3 transition-all duration-200",
+        // Keep the stack on the left, above the chat button, so it never
+        // collides with the Apply button on the right — on any screen size.
+        // When the chat panel opens, slide the stack out of view.
+        chatOpen
+          ? "pointer-events-none -translate-x-24 opacity-0"
+          : "bottom-28 start-6",
       )}
     >
       <a

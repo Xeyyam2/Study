@@ -27,14 +27,6 @@ import { StudentProfileDrawer } from "@/components/student/StudentProfileDrawer"
 import type { Profile } from "@/types/crm";
 import { LocaleSwitcher } from "./locale-switcher";
 
-const navItems = [
-  { key: "universities", href: "/universities" },
-  { key: "programs", href: "/programs" },
-  { key: "about", href: "/about" },
-  { key: "blog", href: "/blog" },
-  { key: "contact", href: "/contact" },
-] as const;
-
 interface HeaderSession {
   userId: string;
   profile: Profile;
@@ -202,15 +194,42 @@ export function HeaderInteractive() {
             >
               {t("home")}
             </Link>
-            {navItems.map((item) => (
-              <Link
-                key={item.key}
-                href={item.href}
-                className="rounded px-3 py-2.5 text-sm font-medium text-foreground hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
-              >
-                {t(item.key)}
-              </Link>
-            ))}
+            <Link
+              href="/universities"
+              className="rounded px-3 py-2.5 text-sm font-medium text-foreground hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+            >
+              {t("universities")}
+            </Link>
+            <Link
+              href="/programs"
+              className="rounded px-3 py-2.5 text-sm font-medium text-foreground hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+            >
+              {t("programs")}
+            </Link>
+            <Link
+              href="/about"
+              className="rounded px-3 py-2.5 text-sm font-medium text-foreground hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+            >
+              {t("about")}
+            </Link>
+            <Link
+              href="/blog"
+              className="rounded px-3 py-2.5 text-sm font-medium text-foreground hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+            >
+              {t("blog")}
+            </Link>
+            <Link
+              href="/contact"
+              className="rounded px-3 py-2.5 text-sm font-medium text-foreground hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+            >
+              {t("contact")}
+            </Link>
+            <Link
+              href="/compare"
+              className="rounded px-3 py-2.5 text-sm font-medium text-foreground hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+            >
+              {t("compare")}
+            </Link>
             <Button asChild variant="cta" className="mt-2">
               <Link href="/apply">{t("apply")}</Link>
             </Button>
