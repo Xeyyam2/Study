@@ -37,34 +37,36 @@ const BLOG_PAGE_BREAKPOINTS = [
   { min: 0, perPage: 1 },
 ];
 
-const BLOG_CARD_WIDTH = 280;
-const BLOG_TRACK_GAP = 24;
+const TRACK_GAP = 24; // gap-6
 
 /**
  * StudyLeo-style directional infinite blog carousel: cards repeat 3x, arrows
  * never disable and always scroll in their direction; the edge snap-back to
- * the middle copy is invisible.
+ * the middle copy is invisible. Cards are fluid (exactly `perPage` fit the
+ * viewport — no half card visible) and every click moves by one card.
  */
 export function BlogCarousel({ items, locale, labels }: BlogCarouselProps) {
   const trackRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
   const touchX = useRef<number | null>(null);
-  const [perPage, setPerPage] = useState(3);
-  const [vp, setVp] = useState(() => Math.ceil(items.length / 3));
-
-  const pages = Math.max(1, Math.ceil(items.length / perPage));
-  const pageOffset = perPage * BLOG_CARD_WIDTH + (perPage - 1) * BLOG_TRACK_GAP;
+  const [perPage, setPerPage] = useState(4);
+  const [cardWidth, setCardWidth] = useState(280);
+  const total = Math.max(1, items.length);
+  const cardStep = cardWidth + TRACK_GAP;
   const trackItems = [...items, ...items, ...items];
+  const [vp, setVp] = useState(() => total);
 
   const go = useCallback((next: number) => setVp(next), []);
 
-  // Measure the viewport to decide how many cards fit per page.
+  // Measure the viewport to decide how many cards fit and their fluid width.
   useEffect(() => {
     const el = viewportRef.current;
     if (!el) return;
     const compute = () => {
       const match = BLOG_PAGE_BREAKPOINTS.find((b) => el.clientWidth >= b.min);
-      setPerPage(match ? match.perPage : 1);
+      const per = match ? match.perPage : 1;
+      setPerPage(per);
+      setCardWidth((el.clientWidth - (per - 1) * TRACK_GAP) / per);
     };
     compute();
     const ro = new ResizeObserver(compute);
@@ -72,28 +74,28 @@ export function BlogCarousel({ items, locale, labels }: BlogCarouselProps) {
     return () => ro.disconnect();
   }, []);
 
-  // Re-center on the middle copy when the page count changes (resize).
+  // Re-center on the middle copy when the layout changes (resize).
   useEffect(() => {
-    setVp(pages);
-    elScrollTo(trackRef.current, pages * pageOffset, false);
-  }, [pages, perPage, pageOffset]);
+    setVp(total);
+    elScrollTo(trackRef.current, total * cardStep, false);
+  }, [total, perPage, cardWidth, cardStep]);
 
   // Slide the track; at either edge, invisibly snap back to the middle copy.
   useEffect(() => {
-    if (vp >= 2 * pages) {
-      elScrollTo(trackRef.current, pages * pageOffset, false);
-      setVp(pages);
-    } else if (vp < pages) {
-      elScrollTo(trackRef.current, (2 * pages - 1) * pageOffset, false);
-      setVp(2 * pages - 1);
+    if (vp >= 2 * total) {
+      elScrollTo(trackRef.current, total * cardStep, false);
+      setVp(total);
+    } else if (vp < total) {
+      elScrollTo(trackRef.current, (2 * total - 1) * cardStep, false);
+      setVp(2 * total - 1);
     } else {
-      elScrollTo(trackRef.current, vp * pageOffset, true);
+      elScrollTo(trackRef.current, vp * cardStep, true);
     }
-  }, [vp, pages, pageOffset]);
+  }, [vp, total, cardStep]);
 
   return (
     <div className="relative">
-      {pages > 1 && (
+      {total > 1 && (
         <>
           <div className="absolute -start-5 top-1/2 z-30 hidden -translate-y-1/2 lg:flex">
             <button
@@ -139,7 +141,11 @@ export function BlogCarousel({ items, locale, labels }: BlogCarouselProps) {
           }}
         >
           {trackItems.map((item, i) => (
-            <div key={`${item.id}-${i}`} className="w-[280px] shrink-0">
+            <div
+              key={`${item.id}-${i}`}
+              className="shrink-0"
+              style={{ width: cardWidth }}
+            >
               <Link href={`/blog/${item.slug}`} className="group block h-full">
                 <Card className="h-full overflow-hidden transition-shadow hover:shadow-flat-hover">
                   <div className="relative aspect-[16/9] overflow-hidden bg-surface-low">

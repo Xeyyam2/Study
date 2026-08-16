@@ -44,7 +44,7 @@ interface FeaturedUniversitiesCarouselProps {
   };
 }
 
-/** How many fixed-width cards fit per page at each viewport width. */
+/** How many cards fit per page at each viewport width. */
 const PAGE_BREAKPOINTS = [
   { min: 1280, perPage: 4 },
   { min: 1024, perPage: 3 },
@@ -52,14 +52,13 @@ const PAGE_BREAKPOINTS = [
   { min: 0, perPage: 1 },
 ];
 
-/** Card width in px — matches the original compact card size. */
-const CARD_WIDTH = 320;
+const TRACK_GAP = 24; // gap-6
 
 /**
  * StudyLeo-style "Popular Universities" carousel. Each card is a full-width
  * image with name/location/rating overlaid and an "Apply Now" button below.
- * The carousel auto-advances, and the prev/next arrows sit OUTSIDE the card
- * area (at the edges of the track) so they never cover the cards.
+ * Cards are fluid (exactly `perPage` fit the viewport — no half card visible)
+ * and every click on the arrows moves the track by exactly one card.
  */
 export function FeaturedUniversitiesCarousel({
   cards,
@@ -69,26 +68,27 @@ export function FeaturedUniversitiesCarousel({
   const viewportRef = useRef<HTMLDivElement>(null);
   const touchX = useRef<number | null>(null);
   const [perPage, setPerPage] = useState(4);
-  // Virtual page index into a track that repeats the cards 3x. We always start
+  const [cardWidth, setCardWidth] = useState(320);
+  const total = Math.max(1, cards.length);
+  const cardStep = cardWidth + TRACK_GAP;
+  const trackCards = [...cards, ...cards, ...cards];
+  // Virtual card index into a track that repeats the cards 3x. We always start
   // in the middle copy so prev/next can scroll in either direction endlessly
   // (StudyLeo-style) — at the edges we snap back to the middle copy without a
   // visible jump, because both positions show the same cards.
-  const [vp, setVp] = useState(() => Math.ceil(cards.length / 4));
-
-  const pages = Math.max(1, Math.ceil(cards.length / perPage));
-  const trackGap = 24; // gap-6
-  const pageOffset = perPage * CARD_WIDTH + (perPage - 1) * trackGap;
-  const trackCards = [...cards, ...cards, ...cards];
+  const [vp, setVp] = useState(() => total);
 
   const go = useCallback((next: number) => setVp(next), []);
 
-  // Measure the viewport to decide how many fixed-width cards fit per page.
+  // Measure the viewport to decide how many cards fit and their fluid width.
   useEffect(() => {
     const el = viewportRef.current;
     if (!el) return;
     const compute = () => {
       const match = PAGE_BREAKPOINTS.find((b) => el.clientWidth >= b.min);
-      setPerPage(match ? match.perPage : 1);
+      const per = match ? match.perPage : 1;
+      setPerPage(per);
+      setCardWidth((el.clientWidth - (per - 1) * TRACK_GAP) / per);
     };
     compute();
     const ro = new ResizeObserver(compute);
@@ -96,30 +96,30 @@ export function FeaturedUniversitiesCarousel({
     return () => ro.disconnect();
   }, []);
 
-  // Re-center on the middle copy when the page count changes (resize).
+  // Re-center on the middle copy when the layout changes (resize).
   useEffect(() => {
-    setVp(pages);
-    el_scrollTo(trackRef.current, pages * pageOffset, false);
-  }, [pages, perPage, pageOffset]);
+    setVp(total);
+    el_scrollTo(trackRef.current, total * cardStep, false);
+  }, [total, perPage, cardWidth, cardStep]);
 
   // Slide the track; at either edge, invisibly snap back to the middle copy.
   useEffect(() => {
-    if (vp >= 2 * pages) {
-      el_scrollTo(trackRef.current, pages * pageOffset, false);
-      setVp(pages);
-    } else if (vp < pages) {
-      el_scrollTo(trackRef.current, (2 * pages - 1) * pageOffset, false);
-      setVp(2 * pages - 1);
+    if (vp >= 2 * total) {
+      el_scrollTo(trackRef.current, total * cardStep, false);
+      setVp(total);
+    } else if (vp < total) {
+      el_scrollTo(trackRef.current, (2 * total - 1) * cardStep, false);
+      setVp(2 * total - 1);
     } else {
-      el_scrollTo(trackRef.current, vp * pageOffset, true);
+      el_scrollTo(trackRef.current, vp * cardStep, true);
     }
-  }, [vp, pages, pageOffset]);
+  }, [vp, total, cardStep]);
 
   return (
     <div className="relative">
       {/* Infinite loop: arrows never disable; left always moves left, right
           always moves right (no teleport between first/last). */}
-      {pages > 1 && (
+      {total > 1 && (
         <>
           <div className="absolute -start-6 top-1/2 z-30 hidden -translate-y-1/2 lg:flex">
             <ArrowButton onClick={() => go(vp - 1)} ariaLabel={labels.prev}>
@@ -155,7 +155,11 @@ export function FeaturedUniversitiesCarousel({
           }}
         >
           {trackCards.map((card, i) => (
-            <div key={`${card.id}-${i}`} className="shrink-0 snap-start">
+            <div
+              key={`${card.id}-${i}`}
+              className="shrink-0 snap-start"
+              style={{ width: cardWidth }}
+            >
               <CarouselCard
                 card={card}
                 labels={labels}
@@ -166,18 +170,18 @@ export function FeaturedUniversitiesCarousel({
         </div>
       </div>
 
-      {pages > 1 && (
+      {total > 1 && (
         <div className="mt-5 flex items-center justify-center gap-2">
-          {Array.from({ length: pages }).map((_, i) => (
+          {Array.from({ length: total }).map((_, i) => (
             <button
               key={i}
               type="button"
-              onClick={() => go(pages + i)}
+              onClick={() => go(total + i)}
               aria-label={`${i + 1}`}
-              aria-current={i === vp % pages}
+              aria-current={i === vp % total}
               className={cn(
                 "h-2 rounded-full transition-all duration-300",
-                i === vp % pages
+                i === vp % total
                   ? "w-6 bg-primary"
                   : "w-2 bg-border hover:bg-muted-foreground/40",
               )}
@@ -199,7 +203,7 @@ function CarouselCard({
   priority: boolean;
 }) {
   return (
-    <article className="flex w-[280px] flex-col gap-2 sm:w-[320px]">
+    <article className="flex w-full flex-col gap-2">
       <Link
         href={`/universities/${card.slug}`}
         aria-label={card.name}
