@@ -468,7 +468,7 @@
     "profile": "Profile"
   },
   "Auth": {
-    "googleLogin": "تسجيل الدخول عبر Google"
+    "googleLogin": "تسجيل الدخول"
   },
   "Student": {
     "auth": {

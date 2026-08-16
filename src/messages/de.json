@@ -468,7 +468,7 @@
     "profile": "Profile"
   },
   "Auth": {
-    "googleLogin": "Mit Google anmelden"
+    "googleLogin": "Anmelden"
   },
   "Student": {
     "auth": {

@@ -468,7 +468,7 @@
     "profile": "Profile"
   },
   "Auth": {
-    "googleLogin": "Google 登录"
+    "googleLogin": "登录"
   },
   "Student": {
     "auth": {
