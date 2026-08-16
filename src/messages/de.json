@@ -108,6 +108,16 @@
       "eyebrow": "Studierendenstimmen",
       "title": "Was unsere Studierenden sagen"
     },
+    "blog": {
+      "eyebrow": "Blog",
+      "title": "Neueste Artikel",
+      "subtitle": "Nützliche Tipps und Ratgeber zum Studium in der Türkei.",
+      "viewAll": "Alle Artikel",
+      "minRead": "{min} Min. Lesezeit",
+      "readMore": "Mehr lesen",
+      "prev": "Zurück",
+      "next": "Weiter"
+    },
     "faq": {
       "eyebrow": "FAQ",
       "title": "Häufig gestellte Fragen",

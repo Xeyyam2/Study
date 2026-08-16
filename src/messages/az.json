@@ -108,6 +108,16 @@
       "eyebrow": "Tələbə səsləri",
       "title": "Tələbələrimiz nə deyir"
     },
+    "blog": {
+      "eyebrow": "Bloq",
+      "title": "Son məqalələr",
+      "subtitle": "Türkiyədə təhsil haqqında faydalı məsləhətlər və rəhbərlik.",
+      "viewAll": "Bütün məqalələr",
+      "minRead": "{min} dəq oxu",
+      "readMore": "Daha çox oxu",
+      "prev": "Əvvəlki",
+      "next": "Növbəti"
+    },
     "faq": {
       "eyebrow": "TSQ",
       "title": "Tez-tez verilən suallar",

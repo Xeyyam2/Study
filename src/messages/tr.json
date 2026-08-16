@@ -108,6 +108,16 @@
       "eyebrow": "Öğrenci sesleri",
       "title": "Öğrencilerimiz ne diyor"
     },
+    "blog": {
+      "eyebrow": "Blog",
+      "title": "Son yazılar",
+      "subtitle": "Türkiye'de eğitim hakkında faydalı ipuçları ve rehberler.",
+      "viewAll": "Tüm yazılar",
+      "minRead": "{min} dk okuma",
+      "readMore": "Devamını oku",
+      "prev": "Önceki",
+      "next": "Sonraki"
+    },
     "faq": {
       "eyebrow": "SSS",
       "title": "Sık sorulan sorular",

@@ -108,6 +108,16 @@
       "eyebrow": "学生之声",
       "title": "我们的学生怎么说"
     },
+    "blog": {
+      "eyebrow": "博客",
+      "title": "最新文章",
+      "subtitle": "关于在土耳其学习的有用提示和指南。",
+      "viewAll": "所有文章",
+      "minRead": "{min} 分钟阅读",
+      "readMore": "阅读更多",
+      "prev": "上一个",
+      "next": "下一个"
+    },
     "faq": {
       "eyebrow": "常见问题",
       "title": "常见问题",

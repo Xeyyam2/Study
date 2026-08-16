@@ -10,6 +10,7 @@ import { StatsSection } from "@/components/sections/stats-section";
 import { CategorySection } from "@/components/sections/category-section";
 import { FeaturedUniversities } from "@/components/sections/featured-universities";
 import { UniversityLogoMarquee } from "@/components/sections/university-logo-marquee";
+import { BlogCarouselSection } from "@/components/sections/blog-carousel-section";
 import { SuccessStories } from "@/components/sections/success-stories";
 import { FaqSection } from "@/components/sections/faq-section";
 import { CTASection } from "@/components/sections/cta-section";
@@ -75,6 +76,9 @@ export default async function HomePage({
       </Suspense>
       <Suspense fallback={<div className="section-padding h-64" aria-hidden />}>
         <SuccessStories locale={appLocale} />
+      </Suspense>
+      <Suspense fallback={<div className="section-padding h-96" aria-hidden />}>
+        <BlogCarouselSection locale={appLocale} />
       </Suspense>
       <Suspense fallback={<div className="section-padding h-64" aria-hidden />}>
         <FaqSection locale={appLocale} />

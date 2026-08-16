@@ -108,6 +108,16 @@
       "eyebrow": "Sauti za wanafunzi",
       "title": "Wanafunzi wetu wanasema nini"
     },
+    "blog": {
+      "eyebrow": "Blogu",
+      "title": "Makala za hivi karibuni",
+      "subtitle": "Vidokezo na miongozo muhimu kuhusu kusoma Uturuki.",
+      "viewAll": "Makala zote",
+      "minRead": "{min} dk soma",
+      "readMore": "Soma zaidi",
+      "prev": "Iliyotangulia",
+      "next": "Inayofuata"
+    },
     "faq": {
       "eyebrow": "Maswali yanayoulizwa mara kwa mara",
       "title": "Maswali yanayoulizwa mara kwa mara",

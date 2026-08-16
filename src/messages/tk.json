@@ -105,8 +105,18 @@
       "disclaimer": "Diňe tahminler; hakyky bahalar uniwersvetiň we şahsy kararlarıň bilen üýtgeýär."
     },
     "stories": {
-      "eyebrow": "Okuwçylaryň sesleri",
-      "title": "Okuwçylarymyz näme diýýär"
+      "eyebrow": "Talyp sesleri",
+      "title": "Talypalarymyz näme diýýär"
+    },
+    "blog": {
+      "eyebrow": "Blog",
+      "title": "Soňky makalalar",
+      "subtitle": "Türkiýede okamak barada peýdaly maslahatlar we gollanmalar.",
+      "viewAll": "Ähli makalalar",
+      "minRead": "{min} min okamak",
+      "readMore": "Köpräk oka",
+      "prev": "Öňki",
+      "next": "Indiki"
     },
     "faq": {
       "eyebrow": "Sorag-jogap",

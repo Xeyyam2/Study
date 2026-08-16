@@ -105,8 +105,18 @@
       "disclaimer": "Faqat baho; haqiqiy xarajatlar universitet va shaxsiy tanlovlarga qarab farq qiladi."
     },
     "stories": {
-      "eyebrow": "Talabalarning ovozlari",
+      "eyebrow": "Talabalar ovozi",
       "title": "Talabalarimiz nima deydi"
+    },
+    "blog": {
+      "eyebrow": "Blog",
+      "title": "So'nggi maqolalar",
+      "subtitle": "Turkiyada o'qish haqida foydali maslahatlar va qo'llanmalar.",
+      "viewAll": "Barcha maqolalar",
+      "minRead": "{min} daqiqa o'qish",
+      "readMore": "To'liq o'qish",
+      "prev": "Oldingi",
+      "next": "Keyingi"
     },
     "faq": {
       "eyebrow": "Tej-tej beriladigan savollar",

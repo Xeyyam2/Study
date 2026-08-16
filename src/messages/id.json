@@ -108,6 +108,16 @@
       "eyebrow": "Suara mahasiswa",
       "title": "Apa kata mahasiswa kami"
     },
+    "blog": {
+      "eyebrow": "Blog",
+      "title": "Artikel terbaru",
+      "subtitle": "Tips dan panduan bermanfaat tentang kuliah di Turki.",
+      "viewAll": "Semua artikel",
+      "minRead": "{min} menit baca",
+      "readMore": "Baca selengkapnya",
+      "prev": "Sebelumnya",
+      "next": "Berikutnya"
+    },
     "faq": {
       "eyebrow": "FAQ",
       "title": "Pertanyaan umum",

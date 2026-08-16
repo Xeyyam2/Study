@@ -108,6 +108,16 @@
       "eyebrow": "Student voices",
       "title": "What our students say"
     },
+    "blog": {
+      "eyebrow": "Blog",
+      "title": "Latest articles",
+      "subtitle": "Useful tips and guides about studying in Turkey.",
+      "viewAll": "All articles",
+      "minRead": "{min} min read",
+      "readMore": "Read more",
+      "prev": "Previous",
+      "next": "Next"
+    },
     "faq": {
       "eyebrow": "FAQ",
       "title": "Frequently asked questions",

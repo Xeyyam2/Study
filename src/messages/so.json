@@ -106,7 +106,17 @@
     },
     "stories": {
       "eyebrow": "Codadka ardayda",
-      "title": "Aragtida ardaydayaga"
+      "title": "Waxa ay dhahaan ardaydeena"
+    },
+    "blog": {
+      "eyebrow": "Blog",
+      "title": "Maqaallada ugu dambeeyay",
+      "subtitle": "Talo iyo hagitaano faa'iido leh oo ku saabsan waxbarashada Turkiga.",
+      "viewAll": "Dhammaan maqaallada",
+      "minRead": "{min} daqiiqo akhris",
+      "readMore": "Akhri wax badan",
+      "prev": "Hore",
+      "next": "Xiga"
     },
     "faq": {
       "eyebrow": "Su'aalaha badan",

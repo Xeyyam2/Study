@@ -54,8 +54,6 @@ const PAGE_BREAKPOINTS = [
 
 /** Card width in px — matches the original compact card size. */
 const CARD_WIDTH = 320;
-/** Auto-advance interval in ms (0 = no autoplay). */
-const AUTOPLAY_MS = 4000;
 
 /**
  * StudyLeo-style "Popular Universities" carousel. Each card is a full-width
@@ -76,7 +74,6 @@ export function FeaturedUniversitiesCarousel({
   // (StudyLeo-style) — at the edges we snap back to the middle copy without a
   // visible jump, because both positions show the same cards.
   const [vp, setVp] = useState(() => Math.ceil(cards.length / 4));
-  const [paused, setPaused] = useState(false);
 
   const pages = Math.max(1, Math.ceil(cards.length / perPage));
   const trackGap = 24; // gap-6
@@ -118,21 +115,8 @@ export function FeaturedUniversitiesCarousel({
     }
   }, [vp, pages, pageOffset]);
 
-  // Auto-advance every AUTOPLAY_MS, pausing on hover/touch. Loops forever.
-  useEffect(() => {
-    if (paused || pages <= 1) return;
-    const id = setInterval(() => {
-      setVp((p) => (p >= 2 * pages - 1 ? pages : p + 1));
-    }, AUTOPLAY_MS);
-    return () => clearInterval(id);
-  }, [paused, pages]);
-
   return (
-    <div
-      className="relative"
-      onMouseEnter={() => setPaused(true)}
-      onMouseLeave={() => setPaused(false)}
-    >
+    <div className="relative">
       {/* Infinite loop: arrows never disable; left always moves left, right
           always moves right (no teleport between first/last). */}
       {pages > 1 && (
@@ -156,7 +140,6 @@ export function FeaturedUniversitiesCarousel({
           className="flex touch-pan-y gap-6 overflow-x-auto py-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           onPointerDown={(e) => {
             touchX.current = e.clientX;
-            setPaused(true);
           }}
           onPointerUp={(e) => {
             if (touchX.current == null) return;

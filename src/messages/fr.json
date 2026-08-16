@@ -108,6 +108,16 @@
       "eyebrow": "Témoignages d'étudiants",
       "title": "Ce que disent nos étudiants"
     },
+    "blog": {
+      "eyebrow": "Blog",
+      "title": "Derniers articles",
+      "subtitle": "Conseils et guides utiles pour étudier en Turquie.",
+      "viewAll": "Tous les articles",
+      "minRead": "{min} min de lecture",
+      "readMore": "Lire la suite",
+      "prev": "Précédent",
+      "next": "Suivant"
+    },
     "faq": {
       "eyebrow": "FAQ",
       "title": "Questions fréquentes",
