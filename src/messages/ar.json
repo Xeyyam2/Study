@@ -58,6 +58,24 @@
       "countries": "د origins",
       "students": "طلاب مسجلون"
     },
+    "whyUs": {
+      "eyebrow": "Why choose us",
+      "title": "Why choose us",
+      "subtitle": "We partner with over 150 prestigious universities across Turkey.",
+      "scholarshipsTitle": "Scholarships up to 100%",
+      "scholarshipsBody": "We represent over 150 prestigious universities in Turkey, offering exclusive scholarships to ensure you pay the most competitive fees for your chosen program.",
+      "freeApplicationTitle": "Free Application Process",
+      "freeApplicationBody": "Complete the Free Application Form by uploading your documents and selecting the programs you wish to pursue in Turkey.",
+      "admissionTitle": "Admission to 150+ Universities",
+      "admissionBody": "At StudyHub, we proudly partner with over 150 universities across Turkey, ensuring our students receive the best opportunities!",
+      "cheapestTitle": "The Cheapest Tuition Fees",
+      "cheapestBody": "We represent over 150 prestigious universities in Turkey, offering exclusive scholarships to ensure you pay the most competitive fees for your chosen program.",
+      "acceptanceTitle": "100% Acceptance Rate",
+      "acceptanceBody": "With an extensive catalog of universities, we'll ensure your acceptance into the department of your choice with an acceptance rate of 100%.",
+      "freeTitle": "Absolutely Free",
+      "freeBody": "Explore your educational options with our free consultation! We collaborate with various universities in Turkey to help you obtain partial scholarships and reduce your tuition fees."
+    },
+
     "categories": {
       "eyebrow": "تصفّح حسب المجال",
       "title": "اعثر على مجال دراستك",
@@ -450,7 +468,7 @@
     "profile": "Profile"
   },
   "Auth": {
-    "googleLogin": "المتابعة باستخدام Google"
+    "googleLogin": "تسجيل الدخول عبر Google"
   },
   "Student": {
     "auth": {

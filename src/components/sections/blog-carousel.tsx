@@ -30,14 +30,14 @@ interface BlogCarouselProps {
   };
 }
 
-/** How many cards fit per page at each viewport width. */
+/** How many cards fit per page at each container width. */
 const BLOG_PAGE_BREAKPOINTS = [
-  { min: 1280, perPage: 5 },
+  { min: 1024, perPage: 5 },
   { min: 768, perPage: 2 },
   { min: 0, perPage: 1 },
 ];
 
-const TRACK_GAP = 24; // gap-6
+const TRACK_GAP = 16; // gap-4
 
 /**
  * StudyLeo-style directional infinite blog carousel: cards repeat 3x, arrows
@@ -49,8 +49,8 @@ export function BlogCarousel({ items, locale, labels }: BlogCarouselProps) {
   const trackRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
   const touchX = useRef<number | null>(null);
-  const [perPage, setPerPage] = useState(4);
-  const [cardWidth, setCardWidth] = useState(280);
+  const [perPage, setPerPage] = useState(5);
+  const [cardWidth, setCardWidth] = useState(230);
   const total = Math.max(1, items.length);
   const cardStep = cardWidth + TRACK_GAP;
   const trackItems = [...items, ...items, ...items];
@@ -123,7 +123,7 @@ export function BlogCarousel({ items, locale, labels }: BlogCarouselProps) {
       <div ref={viewportRef} className="relative overflow-hidden">
         <div
           ref={trackRef}
-          className="flex touch-pan-y gap-6 overflow-x-auto py-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          className="flex touch-pan-y gap-4 overflow-x-auto py-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           onPointerDown={(e) => {
             touchX.current = e.clientX;
           }}
@@ -153,7 +153,7 @@ export function BlogCarousel({ items, locale, labels }: BlogCarouselProps) {
                       src={item.coverImage}
                       alt={lx(item.title, locale)}
                       fill
-                      sizes="(max-width: 768px) 90vw, 280px"
+                      sizes="(max-width: 768px) 90vw, 240px"
                       className="object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                   </div>

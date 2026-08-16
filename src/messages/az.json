@@ -58,6 +58,23 @@
       "countries": "Mənşə ölkələri",
       "students": "Qeydiyyatlı tələbələr"
     },
+    "whyUs": {
+      "eyebrow": "Niyə biz",
+      "title": "Niyə bizi seçməlisiniz",
+      "subtitle": "150-dən çox prestijli Türkiyə universiteti ilə əməkdaşlıq edirik və təhsilinizi əlçatan edirik.",
+      "scholarshipsTitle": "100%-ə qədər təqaüdlər",
+      "scholarshipsBody": "150-dən çox prestijli Türkiyə universitetini təmsil edirik və seçdiyiniz proqram üçün ən rəqabətli qiymətləri ödəməyinizə əmin olmaq üçün xüsusi təqaüdlər təklif edirik.",
+      "freeApplicationTitle": "Pulsuz müraciət prosesi",
+      "freeApplicationBody": "Pulsuz müraciət formasını doldurun, sənədlərinizi yükləyin və Türkiyədə oxumaq istədiyiniz proqramları seçin.",
+      "admissionTitle": "150+ universitetə qəbul",
+      "admissionBody": "StudyHub Türkiyənin hər yerində 150-dən çox universitetlə qürurla əməkdaşlıq edir və tələbələrimizə ən yaxşı imkanları təmin edir!",
+      "cheapestTitle": "Ən sərfəli təhsil haqları",
+      "cheapestBody": "150-dən çox prestijli Türkiyə universitetini təmsil edirik və seçdiyiniz proqram üçün ən rəqabətli qiymətləri ödəməyinizə əmin olmaq üçün xüsusi təqaüdlər təklif edirik.",
+      "acceptanceTitle": "100% qəbul nisbəti",
+      "acceptanceBody": "Geniş universitet kataloqu ilə istədiyiniz fakültəyə qəbulunuzu 100% təmin edirik.",
+      "freeTitle": "Tamamilə pulsuz",
+      "freeBody": "Pulsuz konsultasiyamızla təhsil seçimlərinizi araşdırın! Türkiyənin müxtəlif universitetləri ilə əməkdaşlıq edərək qismən təqaüdlər əldə etməyə kömək edirik."
+    },
     "categories": {
       "eyebrow": "Sahəyə görə gözdən keçir",
       "title": "Təhsil sahənizi tapın",
@@ -450,7 +467,7 @@
     "profile": "Profil"
   },
   "Auth": {
-    "googleLogin": "Google ilə davam et"
+    "googleLogin": "Google ilə daxil ol"
   },
   "Student": {
     "auth": {

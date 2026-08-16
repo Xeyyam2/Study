@@ -44,15 +44,15 @@ interface FeaturedUniversitiesCarouselProps {
   };
 }
 
-/** How many cards fit per page at each viewport width. */
+/** How many cards fit per page at each container width. */
 const PAGE_BREAKPOINTS = [
-  { min: 1280, perPage: 5 },
-  { min: 1024, perPage: 4 },
+  { min: 1024, perPage: 5 },
+  { min: 768, perPage: 4 },
   { min: 640, perPage: 2 },
   { min: 0, perPage: 1 },
 ];
 
-const TRACK_GAP = 24; // gap-6
+const TRACK_GAP = 16; // gap-4
 
 /**
  * StudyLeo-style "Popular Universities" carousel. Each card is a full-width
@@ -67,8 +67,8 @@ export function FeaturedUniversitiesCarousel({
   const trackRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
   const touchX = useRef<number | null>(null);
-  const [perPage, setPerPage] = useState(4);
-  const [cardWidth, setCardWidth] = useState(320);
+  const [perPage, setPerPage] = useState(5);
+  const [cardWidth, setCardWidth] = useState(240);
   const total = Math.max(1, cards.length);
   const cardStep = cardWidth + TRACK_GAP;
   const trackCards = [...cards, ...cards, ...cards];
@@ -137,7 +137,7 @@ export function FeaturedUniversitiesCarousel({
       <div ref={viewportRef} className="relative overflow-hidden px-1">
         <div
           ref={trackRef}
-          className="flex touch-pan-y gap-6 overflow-x-auto py-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+          className="flex touch-pan-y gap-4 overflow-x-auto py-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
           onPointerDown={(e) => {
             touchX.current = e.clientX;
           }}
