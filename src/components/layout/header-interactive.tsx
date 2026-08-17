@@ -211,7 +211,7 @@ export function HeaderInteractive() {
             />
             <aside
               id="mobile-menu"
-              className="absolute inset-y-0 end-0 flex w-full flex-col bg-card shadow-2xl sm:max-w-sm"
+              className="absolute inset-y-0 end-0 flex w-[70%] min-w-[260px] max-w-[380px] flex-col bg-card shadow-2xl"
             >
               <div className="flex h-16 shrink-0 items-center justify-between border-b border-border px-5">
                 <span className="font-display text-xl font-semibold text-foreground">
