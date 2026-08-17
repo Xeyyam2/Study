@@ -202,7 +202,7 @@ export function HeaderInteractive() {
       {open &&
         mounted &&
         createPortal(
-          <div className="fixed inset-0 z-[100] md:hidden">
+          <div className="fixed inset-0 z-[100] h-dvh md:hidden">
             {/* Overlay — click to close */}
             <button
               type="button"
@@ -212,7 +212,7 @@ export function HeaderInteractive() {
             />
             <aside
               id="mobile-menu"
-              className="absolute inset-y-0 end-0 flex w-full max-w-sm flex-col bg-card shadow-2xl"
+              className="absolute inset-y-0 end-0 flex w-full flex-col bg-card shadow-2xl sm:max-w-sm"
             >
               <div className="flex h-16 shrink-0 items-center justify-between border-b border-border px-5">
                 <span className="font-display text-xl font-semibold text-foreground">

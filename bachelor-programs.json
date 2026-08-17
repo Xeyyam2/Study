@@ -1,0 +1,1327 @@
+[
+  {
+    "slug": "accounting",
+    "name_en": "Accounting",
+    "name_tr": "Muhasebe"
+  },
+  {
+    "slug": "accounting-and-finance-management",
+    "name_en": "Accounting And Finance Management",
+    "name_tr": "Accounting And Finance Management"
+  },
+  {
+    "slug": "accounting-and-financial-management",
+    "name_en": "Accounting And Financial Management",
+    "name_tr": "Accounting And Financial Management"
+  },
+  {
+    "slug": "advertisement-design-and-communication",
+    "name_en": "Advertisement Design And Communication",
+    "name_tr": "Advertisement Design And Communication"
+  },
+  {
+    "slug": "advertising",
+    "name_en": "Advertising",
+    "name_tr": "Reklamcılık"
+  },
+  {
+    "slug": "aeronautical-engineering",
+    "name_en": "Aeronautical Engineering",
+    "name_tr": "Aeronautical Engineering"
+  },
+  {
+    "slug": "aerospace-engineering",
+    "name_en": "Aerospace Engineering",
+    "name_tr": "Havacılık ve Uzay Mühendisliği"
+  },
+  {
+    "slug": "agricultural-economics",
+    "name_en": "Agricultural Economics",
+    "name_tr": "Agricultural Economics"
+  },
+  {
+    "slug": "agricultural-engineering",
+    "name_en": "Agricultural Engineering",
+    "name_tr": "Tarım Mühendisliği"
+  },
+  {
+    "slug": "agricultural-machinery-and-technologies-engineering",
+    "name_en": "Agricultural Machinery and Technologies Engineering",
+    "name_tr": "Agricultural Machinery and Technologies Engineering"
+  },
+  {
+    "slug": "air-traffic-control",
+    "name_en": "Air Traffic Control",
+    "name_tr": "Air Traffic Control"
+  },
+  {
+    "slug": "aircraft-maintenance-and-repair",
+    "name_en": "Aircraft Maintenance And Repair",
+    "name_tr": "Aircraft Maintenance And Repair"
+  },
+  {
+    "slug": "airframe-and-powerplant-maintenance",
+    "name_en": "Airframe And Powerplant Maintenance",
+    "name_tr": "Airframe And Powerplant Maintenance"
+  },
+  {
+    "slug": "american-culture-and-literature",
+    "name_en": "American Culture And Literature",
+    "name_tr": "American Culture And Literature"
+  },
+  {
+    "slug": "arabic-language-teaching",
+    "name_en": "Arabic Language Teaching",
+    "name_tr": "Arabic Language Teaching"
+  },
+  {
+    "slug": "arabic-translation-and-interpreting",
+    "name_en": "Arabic Translation and Interpreting",
+    "name_tr": "Arabic Translation and Interpreting"
+  },
+  {
+    "slug": "arabic-turkish-translation-and-interpreting",
+    "name_en": "Arabic-Turkish Translation and Interpreting",
+    "name_tr": "Arabic-Turkish Translation and Interpreting"
+  },
+  {
+    "slug": "archaeology",
+    "name_en": "Archaeology",
+    "name_tr": "Archaeology"
+  },
+  {
+    "slug": "archaeology-and-history-of-art",
+    "name_en": "Archaeology and History of Art",
+    "name_tr": "Archaeology and History of Art"
+  },
+  {
+    "slug": "architecture",
+    "name_en": "Architecture",
+    "name_tr": "Mimarlık"
+  },
+  {
+    "slug": "artificial-intelligence-and-data-engineering",
+    "name_en": "Artificial Intelligence and Data Engineering",
+    "name_tr": "Artificial Intelligence and Data Engineering"
+  },
+  {
+    "slug": "artificial-intelligence-and-machine-learning",
+    "name_en": "Artificial Intelligence and Machine Learning",
+    "name_tr": "Artificial Intelligence and Machine Learning"
+  },
+  {
+    "slug": "artificial-intelligence-engineering",
+    "name_en": "Artificial Intelligence Engineering",
+    "name_tr": "Artificial Intelligence Engineering"
+  },
+  {
+    "slug": "arts-and-culture-management",
+    "name_en": "Arts and Culture Management",
+    "name_tr": "Arts and Culture Management"
+  },
+  {
+    "slug": "automotive-engineering",
+    "name_en": "Automotive Engineering",
+    "name_tr": "Otomotiv Mühendisliği"
+  },
+  {
+    "slug": "aviation-electrical-and-electronics",
+    "name_en": "Aviation Electrical and Electronics",
+    "name_tr": "Aviation Electrical and Electronics"
+  },
+  {
+    "slug": "aviation-management",
+    "name_en": "Aviation Management",
+    "name_tr": "Aviation Management"
+  },
+  {
+    "slug": "avioincs",
+    "name_en": "Avioincs",
+    "name_tr": "Avioincs"
+  },
+  {
+    "slug": "basic-sciences",
+    "name_en": "Basic Sciences",
+    "name_tr": "Basic Sciences"
+  },
+  {
+    "slug": "biology",
+    "name_en": "Biology",
+    "name_tr": "Biyoloji"
+  },
+  {
+    "slug": "biomedical-engineering",
+    "name_en": "Biomedical Engineering",
+    "name_tr": "Biyomedikal Mühendisliği"
+  },
+  {
+    "slug": "biomedical-technology",
+    "name_en": "Biomedical Technology",
+    "name_tr": "Biyomedikal Teknoloji"
+  },
+  {
+    "slug": "bow-instruments",
+    "name_en": "Bow Instruments",
+    "name_tr": "Bow Instruments"
+  },
+  {
+    "slug": "business-administration",
+    "name_en": "Business Administration",
+    "name_tr": "İşletme"
+  },
+  {
+    "slug": "business-istanbul-rumeli-university",
+    "name_en": "Business",
+    "name_tr": "Business"
+  },
+  {
+    "slug": "cartoon-and-animation",
+    "name_en": "Cartoon and Animation",
+    "name_tr": "Cartoon and Animation"
+  },
+  {
+    "slug": "cartoons-and-animation",
+    "name_en": "Cartoons and Animation",
+    "name_tr": "Cartoons and Animation"
+  },
+  {
+    "slug": "cartoons-and-animations",
+    "name_en": "Cartoons and Animations",
+    "name_tr": "Cartoons and Animations"
+  },
+  {
+    "slug": "chemical-and-biological-engineering",
+    "name_en": "Chemical and Biological Engineering",
+    "name_tr": "Chemical and Biological Engineering"
+  },
+  {
+    "slug": "chemical-engineering",
+    "name_en": "Chemical Engineering",
+    "name_tr": "Kimya Mühendisliği"
+  },
+  {
+    "slug": "chemistry",
+    "name_en": "Chemistry",
+    "name_tr": "Kimya"
+  },
+  {
+    "slug": "chinese-translation-and-interpreting",
+    "name_en": "Chinese Translation and Interpreting",
+    "name_tr": "Chinese Translation and Interpreting"
+  },
+  {
+    "slug": "cinema-and-television",
+    "name_en": "Cinema and Television",
+    "name_tr": "Sinema ve Televizyon"
+  },
+  {
+    "slug": "city-and-regional-planning",
+    "name_en": "City And Regional Planning",
+    "name_tr": "City And Regional Planning"
+  },
+  {
+    "slug": "civil-engineering",
+    "name_en": "Civil Engineering",
+    "name_tr": "İnşaat Mühendisliği"
+  },
+  {
+    "slug": "classroom-teaching",
+    "name_en": "Classroom Teaching",
+    "name_tr": "Classroom Teaching"
+  },
+  {
+    "slug": "coaching",
+    "name_en": "Coaching",
+    "name_tr": "Coaching"
+  },
+  {
+    "slug": "coaching-education",
+    "name_en": "Coaching Education",
+    "name_tr": "Coaching Education"
+  },
+  {
+    "slug": "coaching-training",
+    "name_en": "Coaching Training",
+    "name_tr": "Coaching Training"
+  },
+  {
+    "slug": "communication-and-design",
+    "name_en": "Communication and Design",
+    "name_tr": "Communication and Design"
+  },
+  {
+    "slug": "communication-science",
+    "name_en": "Communication Science",
+    "name_tr": "Communication Science"
+  },
+  {
+    "slug": "composition-and-music-theory",
+    "name_en": "Composition and Music Theory",
+    "name_tr": "Composition and Music Theory"
+  },
+  {
+    "slug": "computer-education-and-instructional-technology",
+    "name_en": "Computer Education And Instructional Technology",
+    "name_tr": "Computer Education And Instructional Technology"
+  },
+  {
+    "slug": "computer-engineering",
+    "name_en": "Computer Engineering",
+    "name_tr": "Bilgisayar Mühendisliği"
+  },
+  {
+    "slug": "customs-management",
+    "name_en": "Customs Management",
+    "name_tr": "Customs Management"
+  },
+  {
+    "slug": "cybersecurity",
+    "name_en": "Cybersecurity",
+    "name_tr": "Siber Güvenlik"
+  },
+  {
+    "slug": "data-science",
+    "name_en": "Data Science",
+    "name_tr": "Veri Bilimi"
+  },
+  {
+    "slug": "data-science-and-analytics",
+    "name_en": "Data Science and Analytics",
+    "name_tr": "Data Science and Analytics"
+  },
+  {
+    "slug": "dentistry",
+    "name_en": "Dentistry",
+    "name_tr": "Diş Hekimliği"
+  },
+  {
+    "slug": "digital-game-design",
+    "name_en": "Digital Game Design",
+    "name_tr": "Digital Game Design"
+  },
+  {
+    "slug": "digital-gaming-design",
+    "name_en": "Digital Gaming Design",
+    "name_tr": "Digital Gaming Design"
+  },
+  {
+    "slug": "drama-and-acting",
+    "name_en": "Drama And Acting",
+    "name_tr": "Drama And Acting"
+  },
+  {
+    "slug": "e-commerce-and-management",
+    "name_en": "E-Commerce and Management",
+    "name_tr": "E-Commerce and Management"
+  },
+  {
+    "slug": "economics",
+    "name_en": "Economics",
+    "name_tr": "Ekonomi"
+  },
+  {
+    "slug": "economics-and-finance",
+    "name_en": "Economics and Finance",
+    "name_tr": "Economics and Finance"
+  },
+  {
+    "slug": "economy",
+    "name_en": "Economy",
+    "name_tr": "Economy"
+  },
+  {
+    "slug": "economy-and-finance",
+    "name_en": "Economy and Finance",
+    "name_tr": "Economy and Finance"
+  },
+  {
+    "slug": "economy-finance",
+    "name_en": "Economy& Finance",
+    "name_tr": "Economy& Finance"
+  },
+  {
+    "slug": "electrical-and-electronic-engineering",
+    "name_en": "Electrical and Electronic Engineering",
+    "name_tr": "Electrical and Electronic Engineering"
+  },
+  {
+    "slug": "electrical-and-electronics-engineering",
+    "name_en": "Electrical and Electronics Engineering",
+    "name_tr": "Electrical and Electronics Engineering"
+  },
+  {
+    "slug": "electrical-electronics-engineering",
+    "name_en": "Electrical & Electronics Engineering",
+    "name_tr": "Electrical & Electronics Engineering"
+  },
+  {
+    "slug": "electrical-electronics-engineering-toros-university",
+    "name_en": "Electrical-Electronics Engineering",
+    "name_tr": "Electrical-Electronics Engineering"
+  },
+  {
+    "slug": "electrical-engineering",
+    "name_en": "Electrical Engineering",
+    "name_tr": "Elektrik Mühendisliği"
+  },
+  {
+    "slug": "electronic-commerce-and-management",
+    "name_en": "Electronic Commerce and Management",
+    "name_tr": "Electronic Commerce and Management"
+  },
+  {
+    "slug": "elementary-school-teacher-education",
+    "name_en": "Elementary School Teacher Education",
+    "name_tr": "Elementary School Teacher Education"
+  },
+  {
+    "slug": "energy-management",
+    "name_en": "Energy Management",
+    "name_tr": "Energy Management"
+  },
+  {
+    "slug": "energy-systems-engineering",
+    "name_en": "Energy Systems Engineering",
+    "name_tr": "Enerji Sistemleri Mühendisliği"
+  },
+  {
+    "slug": "english-language-and-literature",
+    "name_en": "English Language and Literature",
+    "name_tr": "English Language and Literature"
+  },
+  {
+    "slug": "english-teaching",
+    "name_en": "English Teaching",
+    "name_tr": "English Teaching"
+  },
+  {
+    "slug": "english-translation-and-interpretation",
+    "name_en": "English Translation and Interpretation",
+    "name_tr": "English Translation and Interpretation"
+  },
+  {
+    "slug": "english-translation-and-interpreting",
+    "name_en": "English Translation and Interpreting",
+    "name_tr": "English Translation and Interpreting"
+  },
+  {
+    "slug": "english-turkish-translation-and-interpreting",
+    "name_en": "English-Turkish Translation and Interpreting",
+    "name_tr": "English-Turkish Translation and Interpreting"
+  },
+  {
+    "slug": "entrepreneurship",
+    "name_en": "Entrepreneurship",
+    "name_tr": "Entrepreneurship"
+  },
+  {
+    "slug": "environmental-engineering",
+    "name_en": "Environmental Engineering",
+    "name_tr": "Çevre Mühendisliği"
+  },
+  {
+    "slug": "ergotherapy",
+    "name_en": "Ergotherapy",
+    "name_tr": "Ergotherapy"
+  },
+  {
+    "slug": "exercise-and-sport-for-disabled",
+    "name_en": "Exercise and Sport For Disabled",
+    "name_tr": "Exercise and Sport For Disabled"
+  },
+  {
+    "slug": "exercise-and-sports-sciences",
+    "name_en": "Exercise and Sports Sciences",
+    "name_tr": "Exercise and Sports Sciences"
+  },
+  {
+    "slug": "exercise-and-sports-sciences-for-the-disabled",
+    "name_en": "Exercise and Sports Sciences for the Disabled",
+    "name_tr": "Exercise and Sports Sciences for the Disabled"
+  },
+  {
+    "slug": "fashion-and-textile-design",
+    "name_en": "Fashion and Textile Design",
+    "name_tr": "Fashion and Textile Design"
+  },
+  {
+    "slug": "fashion-design",
+    "name_en": "Fashion Design",
+    "name_tr": "Moda Tasarımı"
+  },
+  {
+    "slug": "film-design-and-directing",
+    "name_en": "Film Design and Directing",
+    "name_tr": "Film Design and Directing"
+  },
+  {
+    "slug": "film-design-and-direction",
+    "name_en": "Film Design and Direction",
+    "name_tr": "Film Design and Direction"
+  },
+  {
+    "slug": "finance",
+    "name_en": "Finance",
+    "name_tr": "Finans"
+  },
+  {
+    "slug": "finance-and-banking",
+    "name_en": "Finance and Banking",
+    "name_tr": "Finance and Banking"
+  },
+  {
+    "slug": "fine-arts",
+    "name_en": "Fine Arts",
+    "name_tr": "Fine Arts"
+  },
+  {
+    "slug": "flight-training",
+    "name_en": "Flight Training",
+    "name_tr": "Flight Training"
+  },
+  {
+    "slug": "flight-training-pilotage",
+    "name_en": "Flight Training (Pilotage)",
+    "name_tr": "Flight Training (Pilotage)"
+  },
+  {
+    "slug": "food-engineering",
+    "name_en": "Food Engineering",
+    "name_tr": "Gıda Mühendisliği"
+  },
+  {
+    "slug": "game-development",
+    "name_en": "Game Development",
+    "name_tr": "Oyun Geliştirme"
+  },
+  {
+    "slug": "gastronomy-and-culinary-arts",
+    "name_en": "Gastronomy and Culinary Arts",
+    "name_tr": "Gastronomi ve Mutfak Sanatları"
+  },
+  {
+    "slug": "genetics-and-bioengineering",
+    "name_en": "Genetics and Bioengineering",
+    "name_tr": "Genetik ve Biyomühendislik"
+  },
+  {
+    "slug": "geomatics-engineering",
+    "name_en": "Geomatics Engineering",
+    "name_tr": "Geomatics Engineering"
+  },
+  {
+    "slug": "graphic",
+    "name_en": "Graphic",
+    "name_tr": "Graphic"
+  },
+  {
+    "slug": "graphic-design",
+    "name_en": "Graphic Design",
+    "name_tr": "Grafik Tasarım"
+  },
+  {
+    "slug": "guidance-and-psychological-counseling",
+    "name_en": "Guidance and Psychological Counseling",
+    "name_tr": "Guidance and Psychological Counseling"
+  },
+  {
+    "slug": "guidance-and-psychological-counselling",
+    "name_en": "Guidance and Psychological Counselling",
+    "name_tr": "Guidance and Psychological Counselling"
+  },
+  {
+    "slug": "guidance-and-psychology-counseling",
+    "name_en": "Guidance and Psychology Counseling",
+    "name_tr": "Guidance and Psychology Counseling"
+  },
+  {
+    "slug": "guidance-and-psychology-counselling",
+    "name_en": "Guidance and Psychology Counselling",
+    "name_tr": "Guidance and Psychology Counselling"
+  },
+  {
+    "slug": "guitar",
+    "name_en": "Guitar",
+    "name_tr": "Guitar"
+  },
+  {
+    "slug": "harp",
+    "name_en": "Harp",
+    "name_tr": "Harp"
+  },
+  {
+    "slug": "health-management",
+    "name_en": "Health Management",
+    "name_tr": "Health Management"
+  },
+  {
+    "slug": "healthcare-management",
+    "name_en": "Healthcare Management",
+    "name_tr": "Healthcare Management"
+  },
+  {
+    "slug": "history",
+    "name_en": "History",
+    "name_tr": "Tarih"
+  },
+  {
+    "slug": "hotel-management",
+    "name_en": "Hotel Management",
+    "name_tr": "Otel İşletmeciliği"
+  },
+  {
+    "slug": "human-resources-management",
+    "name_en": "Human Resources Management",
+    "name_tr": "İnsan Kaynakları Yönetimi"
+  },
+  {
+    "slug": "industrial-design",
+    "name_en": "Industrial Design",
+    "name_tr": "Endüstriyel Tasarım"
+  },
+  {
+    "slug": "industrial-design-engineering",
+    "name_en": "Industrial Design Engineering",
+    "name_tr": "Industrial Design Engineering"
+  },
+  {
+    "slug": "industrial-engineering",
+    "name_en": "Industrial Engineering",
+    "name_tr": "Endüstri Mühendisliği"
+  },
+  {
+    "slug": "industrial-products-design",
+    "name_en": "Industrial Products Design",
+    "name_tr": "Industrial Products Design"
+  },
+  {
+    "slug": "information-and-document-management",
+    "name_en": "Information and Document Management",
+    "name_tr": "Information and Document Management"
+  },
+  {
+    "slug": "information-systems",
+    "name_en": "Information Systems",
+    "name_tr": "Bilişim Sistemleri"
+  },
+  {
+    "slug": "information-systems-and-technologies",
+    "name_en": "Information Systems And Technologies",
+    "name_tr": "Information Systems And Technologies"
+  },
+  {
+    "slug": "information-systems-engineering",
+    "name_en": "Information Systems Engineering",
+    "name_tr": "Information Systems Engineering"
+  },
+  {
+    "slug": "information-systems-technologies",
+    "name_en": "Information Systems Technologies",
+    "name_tr": "Information Systems Technologies"
+  },
+  {
+    "slug": "insurance",
+    "name_en": "Insurance",
+    "name_tr": "Insurance"
+  },
+  {
+    "slug": "insurance-and-social-security",
+    "name_en": "Insurance and Social Security",
+    "name_tr": "Insurance and Social Security"
+  },
+  {
+    "slug": "interior-architecture",
+    "name_en": "Interior Architecture",
+    "name_tr": "İç Mimarlık"
+  },
+  {
+    "slug": "interior-architecture-and-environmental-design",
+    "name_en": "Interior Architecture and Environmental Design",
+    "name_tr": "Interior Architecture and Environmental Design"
+  },
+  {
+    "slug": "international-business-and-trade",
+    "name_en": "International Business and Trade",
+    "name_tr": "International Business and Trade"
+  },
+  {
+    "slug": "international-entrepreneurship",
+    "name_en": "International Entrepreneurship",
+    "name_tr": "International Entrepreneurship"
+  },
+  {
+    "slug": "international-finance",
+    "name_en": "International Finance",
+    "name_tr": "International Finance"
+  },
+  {
+    "slug": "international-finance-and-banking",
+    "name_en": "International Finance and Banking",
+    "name_tr": "International Finance and Banking"
+  },
+  {
+    "slug": "international-management",
+    "name_en": "International Management",
+    "name_tr": "International Management"
+  },
+  {
+    "slug": "international-relations",
+    "name_en": "International Relations",
+    "name_tr": "Uluslararası İlişkiler"
+  },
+  {
+    "slug": "international-relations-altinbas-university",
+    "name_en": "International Relations ",
+    "name_tr": "International Relations "
+  },
+  {
+    "slug": "international-relations-social",
+    "name_en": "International Relations",
+    "name_tr": "Uluslararası İlişkiler"
+  },
+  {
+    "slug": "international-trade",
+    "name_en": "International Trade",
+    "name_tr": "Uluslararası Ticaret"
+  },
+  {
+    "slug": "international-trade-and-business",
+    "name_en": "International Trade And Business",
+    "name_tr": "International Trade And Business"
+  },
+  {
+    "slug": "international-trade-and-business-administration",
+    "name_en": "International Trade and Business Administration",
+    "name_tr": "International Trade and Business Administration"
+  },
+  {
+    "slug": "international-trade-and-finance",
+    "name_en": "International Trade and Finance",
+    "name_tr": "International Trade and Finance"
+  },
+  {
+    "slug": "international-trade-and-logistics",
+    "name_en": "International Trade and Logistics",
+    "name_tr": "International Trade and Logistics"
+  },
+  {
+    "slug": "international-trade-and-management",
+    "name_en": "International Trade And Management",
+    "name_tr": "International Trade And Management"
+  },
+  {
+    "slug": "international-transportation-systems",
+    "name_en": "International Transportation Systems",
+    "name_tr": "International Transportation Systems"
+  },
+  {
+    "slug": "interpretation-translation-english",
+    "name_en": "Interpretation & Translation (English)",
+    "name_tr": "Interpretation & Translation (English)"
+  },
+  {
+    "slug": "islamic-economics-and-finance",
+    "name_en": "Islamic Economics And Finance",
+    "name_tr": "Islamic Economics And Finance"
+  },
+  {
+    "slug": "islamic-science",
+    "name_en": "Islamic Science",
+    "name_tr": "Islamic Science"
+  },
+  {
+    "slug": "islamic-sciences",
+    "name_en": "Islamic Sciences",
+    "name_tr": "Islamic Sciences"
+  },
+  {
+    "slug": "jewelry-technology-and-design",
+    "name_en": "Jewelry Technology And Design",
+    "name_tr": "Jewelry Technology And Design"
+  },
+  {
+    "slug": "journalism",
+    "name_en": "Journalism",
+    "name_tr": "Gazetecilik"
+  },
+  {
+    "slug": "law",
+    "name_en": "Law",
+    "name_tr": "Hukuk"
+  },
+  {
+    "slug": "logistic-management",
+    "name_en": "Logistic Management",
+    "name_tr": "Logistic Management"
+  },
+  {
+    "slug": "logistics-management",
+    "name_en": "Logistics Management",
+    "name_tr": "Logistics Management"
+  },
+  {
+    "slug": "management",
+    "name_en": "Management",
+    "name_tr": "Management"
+  },
+  {
+    "slug": "management-engineering",
+    "name_en": "Management Engineering",
+    "name_tr": "Management Engineering"
+  },
+  {
+    "slug": "management-information-system",
+    "name_en": "Management Information System",
+    "name_tr": "Management Information System"
+  },
+  {
+    "slug": "maritime-business-management",
+    "name_en": "Maritime Business Management",
+    "name_tr": "Maritime Business Management"
+  },
+  {
+    "slug": "maritime-transportation-management-engineering",
+    "name_en": "Maritime Transportation Management Engineering",
+    "name_tr": "Maritime Transportation Management Engineering"
+  },
+  {
+    "slug": "marketing",
+    "name_en": "Marketing",
+    "name_tr": "Pazarlama"
+  },
+  {
+    "slug": "material-science-and-nanotechnology-engineering",
+    "name_en": "Material Science and Nanotechnology Engineering",
+    "name_tr": "Material Science and Nanotechnology Engineering"
+  },
+  {
+    "slug": "material-sciences-and-engineering",
+    "name_en": "Material Sciences And Engineering",
+    "name_tr": "Material Sciences And Engineering"
+  },
+  {
+    "slug": "materials-science-and-engineering",
+    "name_en": "Materials Science and Engineering",
+    "name_tr": "Materials Science and Engineering"
+  },
+  {
+    "slug": "mathematical-engineering",
+    "name_en": "Mathematical Engineering",
+    "name_tr": "Mathematical Engineering"
+  },
+  {
+    "slug": "mathematics",
+    "name_en": "Mathematics",
+    "name_tr": "Matematik"
+  },
+  {
+    "slug": "mathematics-teaching-for-elementary-schools",
+    "name_en": "Mathematics Teaching for Elementary Schools",
+    "name_tr": "Mathematics Teaching for Elementary Schools"
+  },
+  {
+    "slug": "maths",
+    "name_en": "Maths",
+    "name_tr": "Maths"
+  },
+  {
+    "slug": "mechanical-engineering",
+    "name_en": "Mechanical Engineering",
+    "name_tr": "Makine Mühendisliği"
+  },
+  {
+    "slug": "mechatronic-engineering",
+    "name_en": "Mechatronic Engineering",
+    "name_tr": "Mechatronic Engineering"
+  },
+  {
+    "slug": "mechatronics-engineering",
+    "name_en": "Mechatronics Engineering",
+    "name_tr": "Mekatronik Mühendisliği"
+  },
+  {
+    "slug": "media-and-visual-arts",
+    "name_en": "Media and Visual Arts",
+    "name_tr": "Media and Visual Arts"
+  },
+  {
+    "slug": "medicine",
+    "name_en": "Medicine (MD)",
+    "name_tr": "Tıp"
+  },
+  {
+    "slug": "medicine-istanbul-medipol-university",
+    "name_en": "Medicine",
+    "name_tr": "Medicine"
+  },
+  {
+    "slug": "metallurgy-and-materials-engineering",
+    "name_en": "Metallurgy and Materials Engineering",
+    "name_tr": "Metallurgy and Materials Engineering"
+  },
+  {
+    "slug": "molecular-biology-and-genetics",
+    "name_en": "Molecular Biology and Genetics",
+    "name_tr": "Moleküler Biyoloji ve Genetik"
+  },
+  {
+    "slug": "molecular-biology-genetics-and-bioengineering",
+    "name_en": "Molecular Biology, Genetics and Bioengineering",
+    "name_tr": "Molecular Biology, Genetics and Bioengineering"
+  },
+  {
+    "slug": "music",
+    "name_en": "Music",
+    "name_tr": "Müzik"
+  },
+  {
+    "slug": "music-teaching",
+    "name_en": "Music Teaching",
+    "name_tr": "Music Teaching"
+  },
+  {
+    "slug": "music-technology",
+    "name_en": "Music Technology",
+    "name_tr": "Music Technology"
+  },
+  {
+    "slug": "nanotechnology-engineering",
+    "name_en": "Nanotechnology Engineering",
+    "name_tr": "Nanotechnology Engineering"
+  },
+  {
+    "slug": "naval-architecture-and-marine-engineering",
+    "name_en": "Naval Architecture and Marine Engineering",
+    "name_tr": "Naval Architecture and Marine Engineering"
+  },
+  {
+    "slug": "new-media",
+    "name_en": "New Media",
+    "name_tr": "New Media"
+  },
+  {
+    "slug": "new-media-and-communication",
+    "name_en": "New Media and Communication",
+    "name_tr": "Yeni Medya ve İletişim"
+  },
+  {
+    "slug": "new-media-and-communication-systems",
+    "name_en": "New Media and Communication Systems",
+    "name_tr": "New Media and Communication Systems"
+  },
+  {
+    "slug": "new-media-and-journalism",
+    "name_en": "New Media and Journalism",
+    "name_tr": "New Media and Journalism"
+  },
+  {
+    "slug": "nursing",
+    "name_en": "Nursing",
+    "name_tr": "Hemşirelik"
+  },
+  {
+    "slug": "nutrition-and-dietetics",
+    "name_en": "Nutrition and Dietetics",
+    "name_tr": "Beslenme ve Diyetetik"
+  },
+  {
+    "slug": "opera",
+    "name_en": "Opera",
+    "name_tr": "Opera"
+  },
+  {
+    "slug": "opera-and-concert-singing",
+    "name_en": "Opera And Concert Singing",
+    "name_tr": "Opera And Concert Singing"
+  },
+  {
+    "slug": "orthopedic-prosthetic-and-orthotics",
+    "name_en": "Orthopedic Prosthetic and Orthotics",
+    "name_tr": "Orthopedic Prosthetic and Orthotics"
+  },
+  {
+    "slug": "painting",
+    "name_en": "Painting",
+    "name_tr": "Painting"
+  },
+  {
+    "slug": "petroleum-engineering",
+    "name_en": "Petroleum Engineering",
+    "name_tr": "Petrol ve Doğal Gaz Mühendisliği"
+  },
+  {
+    "slug": "pharmacy",
+    "name_en": "Pharmacy",
+    "name_tr": "Eczacılık"
+  },
+  {
+    "slug": "philosophy",
+    "name_en": "Philosophy",
+    "name_tr": "Felsefe"
+  },
+  {
+    "slug": "physical",
+    "name_en": "Physical",
+    "name_tr": "Physical"
+  },
+  {
+    "slug": "physical-education-and-sports-teaching",
+    "name_en": "Physical Education and Sports Teaching",
+    "name_tr": "Physical Education and Sports Teaching"
+  },
+  {
+    "slug": "physics",
+    "name_en": "Physics",
+    "name_tr": "Fizik"
+  },
+  {
+    "slug": "physiotherapy",
+    "name_en": "Physiotherapy",
+    "name_tr": "Fizyoterapi"
+  },
+  {
+    "slug": "piano",
+    "name_en": "Piano",
+    "name_tr": "Piano"
+  },
+  {
+    "slug": "pilot-training",
+    "name_en": "Pilot Training",
+    "name_tr": "Pilot Training"
+  },
+  {
+    "slug": "pilotage",
+    "name_en": "Pilotage",
+    "name_tr": "Pilotage"
+  },
+  {
+    "slug": "plant-production-and-technologies",
+    "name_en": "Plant Production and Technologies",
+    "name_tr": "Plant Production and Technologies"
+  },
+  {
+    "slug": "political-science",
+    "name_en": "Political Science",
+    "name_tr": "Siyaset Bilimi"
+  },
+  {
+    "slug": "political-science-and-international-relations",
+    "name_en": "Political Science and International Relations",
+    "name_tr": "Political Science and International Relations"
+  },
+  {
+    "slug": "political-science-and-public-administration",
+    "name_en": "Political Science and Public Administration",
+    "name_tr": "Political Science and Public Administration"
+  },
+  {
+    "slug": "pre-school-education",
+    "name_en": "Pre-School Education",
+    "name_tr": "Pre-School Education"
+  },
+  {
+    "slug": "pre-school-teaching",
+    "name_en": "Pre-School Teaching",
+    "name_tr": "Pre-School Teaching"
+  },
+  {
+    "slug": "preschool-teaching",
+    "name_en": "Preschool Teaching",
+    "name_tr": "Preschool Teaching"
+  },
+  {
+    "slug": "primary-education",
+    "name_en": "Primary Education",
+    "name_tr": "Primary Education"
+  },
+  {
+    "slug": "primary-mathematics-education",
+    "name_en": "Primary Mathematics Education",
+    "name_tr": "Primary Mathematics Education"
+  },
+  {
+    "slug": "primary-school-mathematics-teaching",
+    "name_en": "Primary School Mathematics Teaching",
+    "name_tr": "Primary School Mathematics Teaching"
+  },
+  {
+    "slug": "primary-school-teaching",
+    "name_en": "Primary School Teaching",
+    "name_tr": "Primary School Teaching"
+  },
+  {
+    "slug": "professional-flight",
+    "name_en": "Professional Flight",
+    "name_tr": "Professional Flight"
+  },
+  {
+    "slug": "psychology",
+    "name_en": "Psychology",
+    "name_tr": "Psikoloji"
+  },
+  {
+    "slug": "public-administration",
+    "name_en": "Public Administration",
+    "name_tr": "Kamu Yönetimi"
+  },
+  {
+    "slug": "public-relation-and-advertisement",
+    "name_en": "Public Relation and Advertisement",
+    "name_tr": "Public Relation and Advertisement"
+  },
+  {
+    "slug": "public-relations",
+    "name_en": "Public Relations",
+    "name_tr": "Halkla İlişkiler"
+  },
+  {
+    "slug": "public-relations-and-advertisement",
+    "name_en": "Public Relations and Advertisement",
+    "name_tr": "Public Relations and Advertisement"
+  },
+  {
+    "slug": "public-relations-and-advertising",
+    "name_en": "Public Relations and Advertising",
+    "name_tr": "Public Relations and Advertising"
+  },
+  {
+    "slug": "radio-television-and-cinema",
+    "name_en": "Radio, Television and Cinema",
+    "name_tr": "Radyo, Televizyon ve Sinema"
+  },
+  {
+    "slug": "radio-television-and-cinema-antalya-belek-university",
+    "name_en": "Radio Television and Cinema",
+    "name_tr": "Radio Television and Cinema"
+  },
+  {
+    "slug": "radio-television-and-film-studies",
+    "name_en": "Radio, Television And Film Studies",
+    "name_tr": "Radio, Television And Film Studies"
+  },
+  {
+    "slug": "radio-tv-and-cinema",
+    "name_en": "Radio, TV and Cinema",
+    "name_tr": "Radio, TV and Cinema"
+  },
+  {
+    "slug": "real-estate-development-and-management",
+    "name_en": "Real Estate Development And Management",
+    "name_tr": "Real Estate Development And Management"
+  },
+  {
+    "slug": "recreation",
+    "name_en": "Recreation",
+    "name_tr": "Recreation"
+  },
+  {
+    "slug": "russian-language-and-literature",
+    "name_en": "Russian Language And Literature",
+    "name_tr": "Russian Language And Literature"
+  },
+  {
+    "slug": "russian-translation-and-interpreting",
+    "name_en": "Russian Translation and Interpreting",
+    "name_tr": "Russian Translation and Interpreting"
+  },
+  {
+    "slug": "ship-and-yacht-design",
+    "name_en": "Ship And Yacht Design",
+    "name_tr": "Ship And Yacht Design"
+  },
+  {
+    "slug": "ship-machinery-management-engineering",
+    "name_en": "Ship Machinery Management Engineering",
+    "name_tr": "Ship Machinery Management Engineering"
+  },
+  {
+    "slug": "sociology",
+    "name_en": "Sociology",
+    "name_tr": "Sosyoloji"
+  },
+  {
+    "slug": "software-development",
+    "name_en": "Software Development",
+    "name_tr": "Software Development"
+  },
+  {
+    "slug": "software-development-program",
+    "name_en": "Software Development Program",
+    "name_tr": "Software Development Program"
+  },
+  {
+    "slug": "software-engineering",
+    "name_en": "Software Engineering",
+    "name_tr": "Yazılım Mühendisliği"
+  },
+  {
+    "slug": "space-engineering",
+    "name_en": "Space Engineering",
+    "name_tr": "Space Engineering"
+  },
+  {
+    "slug": "special-education-teacher",
+    "name_en": "Special Education Teacher",
+    "name_tr": "Special Education Teacher"
+  },
+  {
+    "slug": "special-education-teaching",
+    "name_en": "Special Education Teaching",
+    "name_tr": "Special Education Teaching"
+  },
+  {
+    "slug": "speech-and-language-therapy",
+    "name_en": "Speech and Language Therapy",
+    "name_tr": "Speech and Language Therapy"
+  },
+  {
+    "slug": "sport-s-management",
+    "name_en": "Sport's Management",
+    "name_tr": "Sport's Management"
+  },
+  {
+    "slug": "sports-coaching",
+    "name_en": "Sports Coaching",
+    "name_tr": "Sports Coaching"
+  },
+  {
+    "slug": "statistics",
+    "name_en": "Statistics",
+    "name_tr": "Statistics"
+  },
+  {
+    "slug": "string-instruments",
+    "name_en": "String Instruments",
+    "name_tr": "String Instruments"
+  },
+  {
+    "slug": "supply-chain-management",
+    "name_en": "Supply Chain Management",
+    "name_tr": "Tedarik Zinciri Yönetimi"
+  },
+  {
+    "slug": "teacher-training-at-pre-school-level",
+    "name_en": "Teacher Training at Pre-School Level",
+    "name_tr": "Teacher Training at Pre-School Level"
+  },
+  {
+    "slug": "teacher-training-at-primary-school-level",
+    "name_en": "Teacher Training At Primary School Level",
+    "name_tr": "Teacher Training At Primary School Level"
+  },
+  {
+    "slug": "teacher-training-in-arabic",
+    "name_en": "Teacher Training In Arabic",
+    "name_tr": "Teacher Training In Arabic"
+  },
+  {
+    "slug": "teacher-training-in-english",
+    "name_en": "Teacher Training in English",
+    "name_tr": "Teacher Training in English"
+  },
+  {
+    "slug": "teacher-training-in-mathematics-at-primary-school-level",
+    "name_en": "Teacher Training in Mathematics at Primary School Level",
+    "name_tr": "Teacher Training in Mathematics at Primary School Level"
+  },
+  {
+    "slug": "teacher-training-in-turkish",
+    "name_en": "Teacher Training In Turkish",
+    "name_tr": "Teacher Training In Turkish"
+  },
+  {
+    "slug": "technology-and-information-management",
+    "name_en": "Technology and Information Management",
+    "name_tr": "Technology and Information Management"
+  },
+  {
+    "slug": "television-news-and-programming",
+    "name_en": "Television News And Programming",
+    "name_tr": "Television News And Programming"
+  },
+  {
+    "slug": "television-reporting-and-programming",
+    "name_en": "Television Reporting And Programming",
+    "name_tr": "Television Reporting And Programming"
+  },
+  {
+    "slug": "textile-and-fashion",
+    "name_en": "Textile And Fashion",
+    "name_tr": "Textile And Fashion"
+  },
+  {
+    "slug": "textile-and-fashion-design",
+    "name_en": "Textile and Fashion Design",
+    "name_tr": "Textile and Fashion Design"
+  },
+  {
+    "slug": "theater",
+    "name_en": "Theater",
+    "name_tr": "Theater"
+  },
+  {
+    "slug": "theatre",
+    "name_en": "Theatre",
+    "name_tr": "Theatre"
+  },
+  {
+    "slug": "tourism-administration",
+    "name_en": "Tourism Administration",
+    "name_tr": "Tourism Administration"
+  },
+  {
+    "slug": "tourism-management",
+    "name_en": "Tourism Management",
+    "name_tr": "Turizm İşletmeciliği"
+  },
+  {
+    "slug": "translation-and-interpretation",
+    "name_en": "Translation and Interpretation",
+    "name_tr": "Translation and Interpretation"
+  },
+  {
+    "slug": "translation-and-interpreting",
+    "name_en": "Translation and Interpreting",
+    "name_tr": "Mütercimlik ve Tercümanlık"
+  },
+  {
+    "slug": "translation-and-interpreting-studies",
+    "name_en": "Translation And Interpreting Studies",
+    "name_tr": "Translation And Interpreting Studies"
+  },
+  {
+    "slug": "turkish-language-and-literature",
+    "name_en": "Turkish Language and Literature",
+    "name_tr": "Türk Dili ve Edebiyatı"
+  },
+  {
+    "slug": "turkish-language-teaching",
+    "name_en": "Turkish Language Teaching",
+    "name_tr": "Turkish Language Teaching"
+  },
+  {
+    "slug": "turkish-music-art",
+    "name_en": "Turkish Music Art",
+    "name_tr": "Turkish Music Art"
+  },
+  {
+    "slug": "urban-and-regional-planning",
+    "name_en": "Urban and Regional Planning",
+    "name_tr": "Urban and Regional Planning"
+  },
+  {
+    "slug": "urban-design-and-landscape-architecture",
+    "name_en": "Urban Design and Landscape Architecture",
+    "name_tr": "Urban Design and Landscape Architecture"
+  },
+  {
+    "slug": "visual-communication-design",
+    "name_en": "Visual Communication Design",
+    "name_tr": "Visual Communication Design"
+  },
+  {
+    "slug": "vocal-training",
+    "name_en": "Vocal Training",
+    "name_tr": "Vocal Training"
+  }
+]
