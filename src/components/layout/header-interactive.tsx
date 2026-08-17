@@ -5,7 +5,6 @@ import { useLocale, useTranslations } from "next-intl";
 import { Menu, X } from "lucide-react";
 import { Link, usePathname } from "@/i18n/navigation";
 import { type AppLocale } from "@/i18n/routing";
-import { Button } from "@/components/ui/button";
 // PERF(P0): code-split GoogleSignInButton (and its @supabase/supabase-js
 // dependency, ~40KB gz) out of the global header chunk. It only loads lazily
 // after hydration, and only renders for anonymous visitors once /api/me
@@ -136,6 +135,16 @@ export function HeaderInteractive() {
     window.history.replaceState({}, "", clean ? `${path}?${clean}` : path);
   }, [session]);
 
+  // Lock body scroll while the mobile menu is open.
+  useEffect(() => {
+    if (!open) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [open]);
+
   function AuthControl() {
     if (loading) {
       return (
@@ -181,78 +190,103 @@ export function HeaderInteractive() {
         {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
       </button>
 
-      {/* Mobile menu — full-screen overlay from the very top to the bottom. */}
+      {/* Mobile menu — right-side drawer with dark overlay (StudyLeo-style). */}
       {open && (
-        <div
-          id="mobile-menu"
-          className="fixed inset-0 top-0 z-50 flex flex-col overflow-y-auto bg-card md:hidden"
-        >
-          <div className="flex h-16 shrink-0 items-center justify-between border-b border-border px-4">
-            <span className="font-display text-lg font-bold text-primary">
-              {tCommon("menu")}
-            </span>
-            <button
-              type="button"
-              onClick={() => setOpen(false)}
-              aria-label={tCommon("close")}
-              className="inline-flex h-10 w-10 items-center justify-center rounded text-foreground hover:bg-accent"
-            >
-              <X className="h-5 w-5" />
-            </button>
-          </div>
-          <nav className="flex flex-1 flex-col gap-1 px-4 py-4">
-            <Link
-              href="/"
-              onClick={() => setOpen(false)}
-              className="rounded-lg px-4 py-3.5 text-base font-medium text-foreground hover:bg-accent"
-            >
-              {t("home")}
-            </Link>
-            <Link
-              href="/universities"
-              onClick={() => setOpen(false)}
-              className="rounded-lg px-4 py-3.5 text-base font-medium text-foreground hover:bg-accent"
-            >
-              {t("universities")}
-            </Link>
-            <Link
-              href="/programs"
-              onClick={() => setOpen(false)}
-              className="rounded-lg px-4 py-3.5 text-base font-medium text-foreground hover:bg-accent"
-            >
-              {t("programs")}
-            </Link>
-            <Link
-              href="/about"
-              onClick={() => setOpen(false)}
-              className="rounded-lg px-4 py-3.5 text-base font-medium text-foreground hover:bg-accent"
-            >
-              {t("about")}
-            </Link>
-            <Link
-              href="/blog"
-              onClick={() => setOpen(false)}
-              className="rounded-lg px-4 py-3.5 text-base font-medium text-foreground hover:bg-accent"
-            >
-              {t("blog")}
-            </Link>
-            <Link
-              href="/contact"
-              onClick={() => setOpen(false)}
-              className="rounded-lg px-4 py-3.5 text-base font-medium text-foreground hover:bg-accent"
-            >
-              {t("contact")}
-            </Link>
-            <Button asChild variant="cta" className="mt-6">
-              <Link href="/apply" onClick={() => setOpen(false)}>
-                {t("apply")}
-              </Link>
-            </Button>
-            <div className="mt-4">{AuthControl()}</div>
-            <div className="mt-4">
-              <LocaleSwitcher />
+        <div className="fixed inset-0 z-50 md:hidden">
+          {/* Overlay — click to close */}
+          <button
+            type="button"
+            aria-label={tCommon("close")}
+            onClick={() => setOpen(false)}
+            className="absolute inset-0 bg-black/50"
+          />
+          <aside
+            id="mobile-menu"
+            className="absolute inset-y-0 end-0 flex w-full max-w-sm flex-col bg-card shadow-2xl"
+          >
+            <div className="flex h-16 shrink-0 items-center justify-between border-b border-border px-5">
+              <span className="font-display text-xl font-semibold text-foreground">
+                {tCommon("menu")}
+              </span>
+              <button
+                type="button"
+                onClick={() => setOpen(false)}
+                aria-label={tCommon("close")}
+                className="inline-flex h-10 w-10 items-center justify-center rounded text-foreground hover:bg-accent"
+              >
+                <X className="h-5 w-5" />
+              </button>
             </div>
-          </nav>
+
+            <nav
+              className="flex flex-1 flex-col overflow-y-auto px-3 py-4"
+              aria-label={tCommon("menu")}
+            >
+              <ul className="flex-1 space-y-1">
+                <li>
+                  <Link
+                    href="/"
+                    onClick={() => setOpen(false)}
+                    className="block rounded-lg px-4 py-3 text-base font-medium text-foreground transition-colors hover:bg-accent"
+                  >
+                    {t("home")}
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/universities"
+                    onClick={() => setOpen(false)}
+                    className="block rounded-lg px-4 py-3 text-base font-medium text-foreground transition-colors hover:bg-accent"
+                  >
+                    {t("universities")}
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/programs"
+                    onClick={() => setOpen(false)}
+                    className="block rounded-lg px-4 py-3 text-base font-medium text-foreground transition-colors hover:bg-accent"
+                  >
+                    {t("programs")}
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/about"
+                    onClick={() => setOpen(false)}
+                    className="block rounded-lg px-4 py-3 text-base font-medium text-foreground transition-colors hover:bg-accent"
+                  >
+                    {t("about")}
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/blog"
+                    onClick={() => setOpen(false)}
+                    className="block rounded-lg px-4 py-3 text-base font-medium text-foreground transition-colors hover:bg-accent"
+                  >
+                    {t("blog")}
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/contact"
+                    onClick={() => setOpen(false)}
+                    className="block rounded-lg px-4 py-3 text-base font-medium text-foreground transition-colors hover:bg-accent"
+                  >
+                    {t("contact")}
+                  </Link>
+                </li>
+              </ul>
+
+              <div className="mt-6 space-y-3 border-t border-border pt-5">
+                <div>{AuthControl()}</div>
+                <div>
+                  <LocaleSwitcher />
+                </div>
+              </div>
+            </nav>
+          </aside>
         </div>
       )}
 
