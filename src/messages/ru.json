@@ -1,4 +1,21 @@
 {
+  "Search": {
+    "metaTitle": "Поиск | StudyHub",
+    "metaDescription": "Ищите университеты, программы и города в Турции, чтобы найти идеальный вариант обучения.",
+    "title": "Поиск",
+    "subtitle": "Результаты поиска",
+    "placeholder": "Поиск университетов, программ, городов…",
+    "search": "Поиск",
+    "results": "По запросу «{query}» найдено результатов: {count}.",
+    "universities": "Университеты",
+    "programs": "Программы",
+    "cities": "Города",
+    "viewAllUniversities": "Все университеты",
+    "viewAllPrograms": "Все программы",
+    "emptyTitle": "Ничего не найдено",
+    "emptySubtitle": "Сейчас нечего показать — измените запрос, чтобы увидеть больше вариантов."
+  },
+
   "Meta": {
     "title": "StudyHub — Учеба в Турции",
     "description": "Сравнивайте аккредитованные турецкие университеты, программы, стоимость и стипендии. Подавайте заявку с экспертным сопровождением — включая визовую поддержку.",
@@ -28,7 +45,11 @@
     "blog": "Блог",
     "contact": "Контакты",
     "apply": "Подать заявку",
-    "compare": "Сравнить"
+    "compare": "Сравнить",
+    "search": "Поиск",
+    "searchPlaceholder": "Поиск университетов, программ, городов…",
+    "searchClose": "Закрыть поиск",
+    "noResults": "Ничего не найдено"
   },
   "Footer": {
     "tagline": "Ваш путь к учебе в Турции под руководством экспертов — от подачи заявки до приезда.",
@@ -75,7 +96,6 @@
       "freeTitle": "Absolutely Free",
       "freeBody": "Explore your educational options with our free consultation! We collaborate with various universities in Turkey to help you obtain partial scholarships and reduce your tuition fees."
     },
-
     "categories": {
       "eyebrow": "По направлениям",
       "title": "Найдите своё направление",

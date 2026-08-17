@@ -1,4 +1,21 @@
 {
+  "Search": {
+    "metaTitle": "Arama | StudyHub",
+    "metaDescription": "Türkiye'deki üniversiteler, programlar ve şehirler arasında arayarak ideal eğitim seçeneğinizi bulun.",
+    "title": "Arama",
+    "subtitle": "Arama sonuçları",
+    "placeholder": "Üniversite, program, şehir ara…",
+    "search": "Ara",
+    "results": "“{query}” için {count} sonuç bulundu.",
+    "universities": "Üniversiteler",
+    "programs": "Programlar",
+    "cities": "Şehirler",
+    "viewAllUniversities": "Tüm üniversiteler",
+    "viewAllPrograms": "Tüm programlar",
+    "emptyTitle": "Bulunamadı",
+    "emptySubtitle": "Şu anda gösterilecek bir şey yok — daha fazla seçenek görmek için aramanızı değiştirin."
+  },
+
   "Meta": {
     "title": "StudyHub — Türkiye'de Eğitim",
     "description": "Türkiye'nin akredite üniversitelerini, bölümlerini, ücretlerini ve burslarını karşılaştırın. Uzman rehberlikle başvurun — vize desteği dahil.",
@@ -28,7 +45,11 @@
     "blog": "Blog",
     "contact": "İletişim",
     "apply": "Başvur",
-    "compare": "Karşılaştır"
+    "compare": "Karşılaştır",
+    "search": "Ara",
+    "searchPlaceholder": "Üniversite, bölüm, şehir ara…",
+    "searchClose": "Aramayı kapat",
+    "noResults": "Sonuç bulunamadı"
   },
   "Footer": {
     "tagline": "Türkiye'de eğitim için rehberli yolculuğunuz — başvurudan varişe kadar.",
@@ -75,7 +96,6 @@
       "freeTitle": "Absolutely Free",
       "freeBody": "Explore your educational options with our free consultation! We collaborate with various universities in Turkey to help you obtain partial scholarships and reduce your tuition fees."
     },
-
     "categories": {
       "eyebrow": "Alana göre göz atın",
       "title": "Çalışma alanınızı bulun",

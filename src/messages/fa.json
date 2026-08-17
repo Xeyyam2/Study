@@ -1,4 +1,21 @@
 {
+  "Search": {
+    "metaTitle": "جستجو | StudyHub",
+    "metaDescription": "جستجوی دانشگاه‌ها، برنامه‌ها و شهرها در ترکیه.",
+    "title": "جستجو",
+    "subtitle": "نتایج جستجو",
+    "placeholder": "جستجوی دانشگاه‌ها، برنامه‌ها، شهرها…",
+    "search": "جستجو",
+    "results": "{count} نتیجه برای «{query}».",
+    "universities": "دانشگاه‌ها",
+    "programs": "برنامه‌ها",
+    "cities": "شهرها",
+    "viewAllUniversities": "مشاهده همه دانشگاه‌ها",
+    "viewAllPrograms": "مشاهده همه برنامه‌ها",
+    "emptyTitle": "یافت نشد",
+    "emptySubtitle": "در حال حاضر چیزی برای نمایش نیست — جستجوی خود را تغییر دهید."
+  },
+
   "Meta": {
     "title": "StudyHub — تحصیل در ترکیه",
     "description": "دانشگاه‌های معتبر ترکیه، رشته‌ها، شهریه و بورسیه‌ها را مقایسه کنید. با راهنمایی متخصصان درخواست دهید — پشتیبانی ویزا گنجانده شده است.",
@@ -28,7 +45,11 @@
     "blog": "وبلاگ",
     "contact": "تماس",
     "apply": "درخواست",
-    "compare": "مقایسه"
+    "compare": "مقایسه",
+    "search": "جستجو",
+    "searchPlaceholder": "جستجوی دانشگاه، رشته، شهر…",
+    "searchClose": "بستن جستجو",
+    "noResults": "نتیجه‌ای یافت نشد"
   },
   "Footer": {
     "tagline": "مسیر راهنمای شما برای تحصیل در ترکیه — از درخواست تا رسیدن.",
@@ -75,7 +96,6 @@
       "freeTitle": "Absolutely Free",
       "freeBody": "Explore your educational options with our free consultation! We collaborate with various universities in Turkey to help you obtain partial scholarships and reduce your tuition fees."
     },
-
     "categories": {
       "eyebrow": "مرور بر اساس حوزه",
       "title": "حوزه تحصیلی خود را پیدا کنید",

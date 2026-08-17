@@ -1,4 +1,21 @@
 {
+  "Search": {
+    "metaTitle": "Qidiruv | StudyHub",
+    "metaDescription": "Turkiyadagi universitetlar, dasturlar va shaharlarni qidiring.",
+    "title": "Qidiruv",
+    "subtitle": "Qidiruv natijalari",
+    "placeholder": "Universitet, dastur, shahar qidirish…",
+    "search": "Qidirish",
+    "results": "«{query}» bo‘yicha {count} natija.",
+    "universities": "Universitetlar",
+    "programs": "Dasturlar",
+    "cities": "Shaharlar",
+    "viewAllUniversities": "Barcha universitetlar",
+    "viewAllPrograms": "Barcha dasturlar",
+    "emptyTitle": "Topilmadi",
+    "emptySubtitle": "Hozir ko‘rsatadigan narsa yo‘q — qidiruvni o‘zgartiring."
+  },
+
   "Meta": {
     "title": "StudyHub — Turkiyada o‘qish",
     "description": "Akkreditatsiyadan o‘tgan turk universitetlarini, dasturlarini, o‘qish to‘lovlarini va stipendiyalarini solishtiring. Mutaxassis bilan birga hujjat topshiring — viza yordami bilan.",
@@ -28,7 +45,11 @@
     "blog": "Blog",
     "contact": "Aloqa",
     "apply": "Murojaat",
-    "compare": "Solishtirish"
+    "compare": "Solishtirish",
+    "search": "Qidirish",
+    "searchPlaceholder": "Universitet, dastur, shahar qidirish…",
+    "searchClose": "Qidiruvni yopish",
+    "noResults": "Natija topilmadi"
   },
   "Footer": {
     "tagline": "Turkiyada o‘qishingizning ko‘rsatma yo‘li — murojaatdan kelishgacha.",
@@ -75,7 +96,6 @@
       "freeTitle": "Absolutely Free",
       "freeBody": "Explore your educational options with our free consultation! We collaborate with various universities in Turkey to help you obtain partial scholarships and reduce your tuition fees."
     },
-
     "categories": {
       "eyebrow": "Soha bo‘yicha ko‘rib chiqish",
       "title": "O‘qish sohangizni toping",

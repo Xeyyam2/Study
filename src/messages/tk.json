@@ -1,4 +1,21 @@
 {
+  "Search": {
+    "metaTitle": "Gözleg | StudyHub",
+    "metaDescription": "Türkiýedäki uniwersitetleri, programmalary we şäherleri gözläň.",
+    "title": "Gözleg",
+    "subtitle": "Gözleg netijeleri",
+    "placeholder": "Uniwersitet, programma, şäher gözle…",
+    "search": "Gözle",
+    "results": "«{query}» üçin {count} netije.",
+    "universities": "Uniwersitetler",
+    "programs": "Programmalar",
+    "cities": "Şäherler",
+    "viewAllUniversities": "Ähli uniwersitetler",
+    "viewAllPrograms": "Ähli programmalar",
+    "emptyTitle": "Tapylmady",
+    "emptySubtitle": "Häzir görkezmelik zat ýok — gözlegiňizi üýtgediň."
+  },
+
   "Meta": {
     "title": "StudyHub — Türkiýada okuw",
     "description": "Yöritegedilen türk uniwersitetlerini, hünärleri, okuw töleglerini we stipendiýalary deňeşdiriň. Hünärmenler bilen ýörite-barma düşün branşyny — wiza goldawy goşuldy.",
@@ -28,7 +45,11 @@
     "blog": "Blog",
     "contact": "Habar",
     "apply": "Baş",
-    "compare": "Deňeşdir"
+    "compare": "Deňeşdir",
+    "search": "Gözle",
+    "searchPlaceholder": "Uniwersitet, hünär, şäher gözle…",
+    "searchClose": "Gözlegi ýap",
+    "noResults": "Netije tapylmady"
   },
   "Footer": {
     "tagline": "Türkiýada okuwyň ýolbeletlik bilen ýörite-barmana çenli — öz ugrunyzy ýörite-barmana ýetir.",
@@ -75,7 +96,6 @@
       "freeTitle": "Absolutely Free",
       "freeBody": "Explore your educational options with our free consultation! We collaborate with various universities in Turkey to help you obtain partial scholarships and reduce your tuition fees."
     },
-
     "categories": {
       "eyebrow": "Ugur boýunça gez",
       "title": "Okuw ugrunyňyzy tapyň",

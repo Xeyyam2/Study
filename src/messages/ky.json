@@ -1,4 +1,21 @@
 {
+  "Search": {
+    "metaTitle": "Издөө | StudyHub",
+    "metaDescription": "Түркиядагы университеттерди, программаларды жана шаарларды издеңиз.",
+    "title": "Издөө",
+    "subtitle": "Издөө жыйынтыктары",
+    "placeholder": "Университеттер, программалар, шаарлар издөө…",
+    "search": "Издөө",
+    "results": "«{query}» боюнча {count} жыйынтык.",
+    "universities": "Университеттер",
+    "programs": "Программалар",
+    "cities": "Шаарлар",
+    "viewAllUniversities": "Бардык университеттер",
+    "viewAllPrograms": "Бардык программалар",
+    "emptyTitle": "Табылган жок",
+    "emptySubtitle": "Азыр көрсөтө турган эч нерсе жок — издөөңүздү өзгөртүңүз."
+  },
+
   "Meta": {
     "title": "StudyHub — Түркияда окуу",
     "description": "Аккредиттелген түрк университеттеринин, программаларды, окуу акысын жана стипендияларды салыштырыңыз. Адистер менен бирге арыз бериңиз — виза колдоосу менен кошулду.",
@@ -28,7 +45,11 @@
     "blog": "Блог",
     "contact": "Байланыш",
     "apply": "Арыз",
-    "compare": "Салыштыруу"
+    "compare": "Салыштыруу",
+    "search": "Издөө",
+    "searchPlaceholder": "Университет, программа, шаар издөө…",
+    "searchClose": "Издөөнү жабуу",
+    "noResults": "Натыйжа табылган жок"
   },
   "Footer": {
     "tagline": "Түркиядагы окууңуздун жолсерик жолу —_apply өтүнмөсүнөн келүүгө чейин.",
@@ -75,7 +96,6 @@
       "freeTitle": "Absolutely Free",
       "freeBody": "Explore your educational options with our free consultation! We collaborate with various universities in Turkey to help you obtain partial scholarships and reduce your tuition fees."
     },
-
     "categories": {
       "eyebrow": "Тармак боюнча карап чыгуу",
       "title": "Өзүңүздүн окуу тармагыңызды табыңыз",

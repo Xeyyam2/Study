@@ -1,4 +1,21 @@
 {
+  "Search": {
+    "metaTitle": "Suche | StudyHub",
+    "metaDescription": "Suchen Sie Universitäten, Studiengänge und Städte in der Türkei.",
+    "title": "Suche",
+    "subtitle": "Suchergebnisse",
+    "placeholder": "Universitäten, Studiengänge, Städte suchen…",
+    "search": "Suchen",
+    "results": "{count} Ergebnis(se) für „{query}“.",
+    "universities": "Universitäten",
+    "programs": "Studiengänge",
+    "cities": "Städte",
+    "viewAllUniversities": "Alle Universitäten",
+    "viewAllPrograms": "Alle Studiengänge",
+    "emptyTitle": "Nicht gefunden",
+    "emptySubtitle": "Derzeit gibt es nichts anzuzeigen — ändern Sie Ihre Suche."
+  },
+
   "Meta": {
     "title": "StudyHub — In der Türkei studieren",
     "description": "Vergleiche akkreditierte türkische Universitäten, Studiengänge, Studiengebühren und Stipendien. Bewerbe dich mit Expertenbegleitung — inklusive Visum-Unterstützung.",
@@ -28,7 +45,11 @@
     "blog": "Blog",
     "contact": "Kontakt",
     "apply": "Bewerben",
-    "compare": "Vergleichen"
+    "compare": "Vergleichen",
+    "search": "Suchen",
+    "searchPlaceholder": "Universitäten, Studiengänge, Städte suchen…",
+    "searchClose": "Suche schließen",
+    "noResults": "Keine Ergebnisse"
   },
   "Footer": {
     "tagline": "Dein begleiteter Weg zum Studium in der Türkei — von der Bewerbung bis zur Ankunft.",
@@ -75,7 +96,6 @@
       "freeTitle": "Absolutely Free",
       "freeBody": "Explore your educational options with our free consultation! We collaborate with various universities in Turkey to help you obtain partial scholarships and reduce your tuition fees."
     },
-
     "categories": {
       "eyebrow": "Nach Fach durchsuchen",
       "title": "Finde dein Studienfach",

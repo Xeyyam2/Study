@@ -1,4 +1,21 @@
 {
+  "Search": {
+    "metaTitle": "تلاش | StudyHub",
+    "metaDescription": "ترکی میں یونیورسٹیاں، پروگرام اور شہر تلاش کریں۔",
+    "title": "تلاش",
+    "subtitle": "تلاش کے نتائج",
+    "placeholder": "یونیورسٹیاں، پروگرام، شہر تلاش کریں…",
+    "search": "تلاش",
+    "results": "«{query}» کے لیے {count} نتائج۔",
+    "universities": "یونیورسٹیاں",
+    "programs": "پروگرام",
+    "cities": "شہر",
+    "viewAllUniversities": "تمام یونیورسٹیاں دیکھیں",
+    "viewAllPrograms": "تمام پروگرام دیکھیں",
+    "emptyTitle": "نہیں ملا",
+    "emptySubtitle": "فی الحال دکھانے کے لیے کچھ نہیں — اپنی تلاش تبدیل کریں۔"
+  },
+
   "Meta": {
     "title": "StudyHub — ترکی میں تعلیم",
     "description": "مستند ترک جامعات، پروگرام، فیس اور اسکالرشپس کا موازنہ کریں۔ ماہرین کی رہنمائی میں درخواست دیں — ویزا سپورٹ شامل ہے۔",
@@ -28,7 +45,11 @@
     "blog": "بلاگ",
     "contact": "رابطہ",
     "apply": "درخواست",
-    "compare": "موازنہ"
+    "compare": "موازنہ",
+    "search": "تلاش",
+    "searchPlaceholder": "یونیورسٹی، پروگرام، شہر تلاش کریں…",
+    "searchClose": "تلاش بند کریں",
+    "noResults": "کوئی نتیجہ نہیں"
   },
   "Footer": {
     "tagline": "ترکی میں تعلیم کی آپ کی رہنمائی والی راہ — درخواست سے آمد تک۔",
@@ -75,7 +96,6 @@
       "freeTitle": "Absolutely Free",
       "freeBody": "Explore your educational options with our free consultation! We collaborate with various universities in Turkey to help you obtain partial scholarships and reduce your tuition fees."
     },
-
     "categories": {
       "eyebrow": "شعبہ بھر بناؤ",
       "title": "اپنا مطالعاتی شعبہ تلاش کریں",

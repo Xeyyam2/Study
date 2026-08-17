@@ -1,4 +1,21 @@
 {
+  "Search": {
+    "metaTitle": "Search | StudyHub",
+    "metaDescription": "Search universities, programs and cities in Turkey to find your perfect study option.",
+    "title": "Search",
+    "subtitle": "Search Results",
+    "placeholder": "Search universities, programs, cities…",
+    "search": "Search",
+    "results": "Your query matches {count} result(s) for “{query}”.",
+    "universities": "Universities",
+    "programs": "Programs",
+    "cities": "Cities",
+    "viewAllUniversities": "View All Universities",
+    "viewAllPrograms": "View All Programs",
+    "emptyTitle": "Not found",
+    "emptySubtitle": "There’s nothing to show right now — try changing your search to see more options."
+  },
+
   "Meta": {
     "title": "StudyHub — Study in Turkey",
     "description": "Compare accredited Turkish universities, programs, tuition and scholarships. Apply with expert guidance — visa support included.",
@@ -28,7 +45,11 @@
     "blog": "Blog",
     "contact": "Contact",
     "apply": "Apply",
-    "compare": "Compare"
+    "compare": "Compare",
+    "search": "Search",
+    "searchPlaceholder": "Search universities, programs, cities…",
+    "searchClose": "Close search",
+    "noResults": "No results"
   },
   "Footer": {
     "tagline": "Your guided path to studying in Turkey — from application to arrival.",

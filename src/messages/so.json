@@ -1,4 +1,21 @@
 {
+  "Search": {
+    "metaTitle": "Raadi | StudyHub",
+    "metaDescription": "Raadi jaamacadaha, barnaamijyada iyo magaalooyinka Turkiga.",
+    "title": "Raadi",
+    "subtitle": "Natiijooyinka raadinta",
+    "placeholder": "Raadi jaamacado, barnaamijyo, magaalooyin…",
+    "search": "Raadi",
+    "results": "{count} natiijo oo loo helay “{query}”.",
+    "universities": "Jaamacadaha",
+    "programs": "Barnaamijyada",
+    "cities": "Magaalooyinka",
+    "viewAllUniversities": "Dhammaan jaamacadaha",
+    "viewAllPrograms": "Dhammaan barnaamijyada",
+    "emptyTitle": "Lama helin",
+    "emptySubtitle": "Waxba ma jiraan in la tuso — beddel raadintaada."
+  },
+
   "Meta": {
     "title": "StudyHub — Dhexdeenaanka Turkiga",
     "description": "Is barbar dhig jaamacadaha Turkiga ee la xaqeejiyey, barnaamijyada, lacagta waxbarashada iyo deeqaha. Codso hageyga khabiirka ah — taageerada visa ku jirtaa.",
@@ -28,7 +45,11 @@
     "blog": "Bogga",
     "contact": "Xidhiidh",
     "apply": "Codso",
-    "compare": "Is barbar dhig"
+    "compare": "Is barbar dhig",
+    "search": "Raadi",
+    "searchPlaceholder": "Raadi jaamacadaha, barnaamijyada, magaalooyinka…",
+    "searchClose": "Xaadh raadinta",
+    "noResults": "Wax natiijo ah lama helin"
   },
   "Footer": {
     "tagline": "Dariiqaagu ee hageysiga waxbarashada Turkiga — codsigi ka ilaa soo gaarista.",
@@ -75,7 +96,6 @@
       "freeTitle": "Absolutely Free",
       "freeBody": "Explore your educational options with our free consultation! We collaborate with various universities in Turkey to help you obtain partial scholarships and reduce your tuition fees."
     },
-
     "categories": {
       "eyebrow": "U eeg goobta",
       "title": "Hel goobtaada waxbarasho",

@@ -1,4 +1,21 @@
 {
+  "Search": {
+    "metaTitle": "Pencarian | StudyHub",
+    "metaDescription": "Cari universitas, program, dan kota di Turki.",
+    "title": "Pencarian",
+    "subtitle": "Hasil pencarian",
+    "placeholder": "Cari universitas, program, kota…",
+    "search": "Cari",
+    "results": "{count} hasil untuk “{query}”.",
+    "universities": "Universitas",
+    "programs": "Program",
+    "cities": "Kota",
+    "viewAllUniversities": "Lihat semua universitas",
+    "viewAllPrograms": "Lihat semua program",
+    "emptyTitle": "Tidak ditemukan",
+    "emptySubtitle": "Tidak ada yang bisa ditampilkan — ubah pencarian Anda."
+  },
+
   "Meta": {
     "title": "StudyHub — Belajar di Turki",
     "description": "Bandingkan universitas-universitas Turki yang terakreditasi, program, biaya kuliah, dan beasiswa. Daftar dengan bimbingan ahli — dukungan visa termasuk.",
@@ -28,7 +45,11 @@
     "blog": "Blog",
     "contact": "Kontak",
     "apply": "Daftar",
-    "compare": "Bandingkan"
+    "compare": "Bandingkan",
+    "search": "Cari",
+    "searchPlaceholder": "Cari universitas, program, kota…",
+    "searchClose": "Tutup pencarian",
+    "noResults": "Tidak ada hasil"
   },
   "Footer": {
     "tagline": "Jalan terpandu Anda untuk belajar di Turki — dari pendaftaran hingga kedatangan.",
@@ -75,7 +96,6 @@
       "freeTitle": "Absolutely Free",
       "freeBody": "Explore your educational options with our free consultation! We collaborate with various universities in Turkey to help you obtain partial scholarships and reduce your tuition fees."
     },
-
     "categories": {
       "eyebrow": "Jelajahi berdasarkan bidang",
       "title": "Temukan bidang studi Anda",

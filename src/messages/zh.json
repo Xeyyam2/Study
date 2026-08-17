@@ -1,4 +1,21 @@
 {
+  "Search": {
+    "metaTitle": "搜索 | StudyHub",
+    "metaDescription": "搜索土耳其的大学、课程和城市。",
+    "title": "搜索",
+    "subtitle": "搜索结果",
+    "placeholder": "搜索大学、课程、城市…",
+    "search": "搜索",
+    "results": "“{query}” 的 {count} 条结果。",
+    "universities": "大学",
+    "programs": "课程",
+    "cities": "城市",
+    "viewAllUniversities": "查看所有大学",
+    "viewAllPrograms": "查看所有课程",
+    "emptyTitle": "未找到",
+    "emptySubtitle": "目前没有可显示的内容 — 请更改您的搜索。"
+  },
+
   "Meta": {
     "title": "StudyHub — 在土耳其留学",
     "description": "比较受认证的土耳其大学、项目、学费和奖学金。在专家指导下申请 —— 含签证支持。",
@@ -28,7 +45,11 @@
     "blog": "博客",
     "contact": "联系",
     "apply": "申请",
-    "compare": "比较"
+    "compare": "比较",
+    "search": "搜索",
+    "searchPlaceholder": "搜索大学、专业、城市…",
+    "searchClose": "关闭搜索",
+    "noResults": "无结果"
   },
   "Footer": {
     "tagline": "您通往土耳其留学的全程向导 —— 从申请到抵达。",
@@ -75,7 +96,6 @@
       "freeTitle": "Absolutely Free",
       "freeBody": "Explore your educational options with our free consultation! We collaborate with various universities in Turkey to help you obtain partial scholarships and reduce your tuition fees."
     },
-
     "categories": {
       "eyebrow": "按领域浏览",
       "title": "寻找您的学习领域",

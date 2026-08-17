@@ -1,4 +1,21 @@
 {
+  "Search": {
+    "metaTitle": "Axtarış | StudyHub",
+    "metaDescription": "Türkiyədə universitetlər, proqramlar və şəhərlər üzrə axtarış edərək ideal təhsil seçiminizi tapın.",
+    "title": "Axtarış",
+    "subtitle": "Axtarış nəticələri",
+    "placeholder": "Universitet, proqram, şəhər axtar…",
+    "search": "Axtar",
+    "results": "Sorğunuz “{query}” üçün {count} nəticə tapıldı.",
+    "universities": "Universitetlər",
+    "programs": "Proqramlar",
+    "cities": "Şəhərlər",
+    "viewAllUniversities": "Bütün universitetlər",
+    "viewAllPrograms": "Bütün proqramlar",
+    "emptyTitle": "Tapılmadı",
+    "emptySubtitle": "Hazırda göstəriləcək heç nə yoxdur — axtarışınızı dəyişərək daha çox seçim görün."
+  },
+
   "Meta": {
     "title": "StudyHub — Türkiyədə Təhsil",
     "description": "Akreditə olunmuş Türkiyə universitetlərini, proqramları, tədris haqqını və təqaüdləri müqayisə edin. Ekspert rəhbərliyi ilə müraciət edin — viza dəstəyi daxil.",
@@ -28,7 +45,11 @@
     "blog": "Bloq",
     "contact": "Əlaqə",
     "apply": "Müraciət",
-    "compare": "Müqayisə"
+    "compare": "Müqayisə",
+    "search": "Axtarış",
+    "searchPlaceholder": "Universitet, proqram, şəhər axtar…",
+    "searchClose": "Axtarışı bağla",
+    "noResults": "Nəticə tapılmadı"
   },
   "Footer": {
     "tagline": "Türkiyədə təhsil üçün rəhbərlik olunan yolçuluğunuz — müraciətdən gəlişə qədər.",

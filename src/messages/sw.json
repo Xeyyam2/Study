@@ -1,4 +1,21 @@
 {
+  "Search": {
+    "metaTitle": "Tafuta | StudyHub",
+    "metaDescription": "Tafuta vyuo, programu na miji nchini Uturuki.",
+    "title": "Tafuta",
+    "subtitle": "Matokeo ya utafutaji",
+    "placeholder": "Tafuta vyuo, programu, miji…",
+    "search": "Tafuta",
+    "results": "Matokeo {count} kwa “{query}”.",
+    "universities": "Vyuo vikuu",
+    "programs": "Programu",
+    "cities": "Miji",
+    "viewAllUniversities": "Angalia vyuo vyote",
+    "viewAllPrograms": "Angalia programu zote",
+    "emptyTitle": "Haipatikani",
+    "emptySubtitle": "Hakuna cha kuonyesha sasa — badilisha utafutaji wako."
+  },
+
   "Meta": {
     "title": "StudyHub — Masomo nchini Uturuki",
     "description": "Linganisha vyuo vikuu vya Kituruki vilivyoidhinishwa, programu, ada na ufadhili. Omba usaidizi kutoka kwa wataalamu — msaada wa visa umejumuishwa.",
@@ -28,7 +45,11 @@
     "blog": "Blogu",
     "contact": "Wasiliana",
     "apply": "Omba",
-    "compare": "Linganisha"
+    "compare": "Linganisha",
+    "search": "Tafuta",
+    "searchPlaceholder": "Tafuta vyuo, kozi, miji…",
+    "searchClose": "Funga utafutaji",
+    "noResults": "Hakuna matokeo"
   },
   "Footer": {
     "tagline": "Njia yako iliyoelekezwa ya kusoma Uturuki — kutoka kwa ombi hadi kuwasili.",
@@ -75,7 +96,6 @@
       "freeTitle": "Absolutely Free",
       "freeBody": "Explore your educational options with our free consultation! We collaborate with various universities in Turkey to help you obtain partial scholarships and reduce your tuition fees."
     },
-
     "categories": {
       "eyebrow": "Tafuta kwa taaluma",
       "title": "Pata taaluma yako ya masomo",

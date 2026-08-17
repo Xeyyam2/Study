@@ -1,4 +1,21 @@
 {
+  "Search": {
+    "metaTitle": "Recherche | StudyHub",
+    "metaDescription": "Recherchez des universités, programmes et villes en Turquie.",
+    "title": "Recherche",
+    "subtitle": "Résultats de recherche",
+    "placeholder": "Rechercher universités, programmes, villes…",
+    "search": "Rechercher",
+    "results": "{count} résultat(s) pour « {query} ».",
+    "universities": "Universités",
+    "programs": "Programmes",
+    "cities": "Villes",
+    "viewAllUniversities": "Toutes les universités",
+    "viewAllPrograms": "Tous les programmes",
+    "emptyTitle": "Introuvable",
+    "emptySubtitle": "Rien à afficher pour le moment — modifiez votre recherche."
+  },
+
   "Meta": {
     "title": "StudyHub — Étudier en Turquie",
     "description": "Comparez les universités turques accréditées, les programmes, les frais de scolarité et les bourses. Postulez avec un accompagnement expert — incluant le soutien pour le visa.",
@@ -28,7 +45,11 @@
     "blog": "Blog",
     "contact": "Contact",
     "apply": "Postuler",
-    "compare": "Comparer"
+    "compare": "Comparer",
+    "search": "Rechercher",
+    "searchPlaceholder": "Rechercher universités, programmes, villes…",
+    "searchClose": "Fermer la recherche",
+    "noResults": "Aucun résultat"
   },
   "Footer": {
     "tagline": "Votre chemin guidé vers des études en Turquie — de la candidature à l'arrivée.",
@@ -75,7 +96,6 @@
       "freeTitle": "Absolutely Free",
       "freeBody": "Explore your educational options with our free consultation! We collaborate with various universities in Turkey to help you obtain partial scholarships and reduce your tuition fees."
     },
-
     "categories": {
       "eyebrow": "Parcourir par domaine",
       "title": "Trouvez votre domaine d'études",

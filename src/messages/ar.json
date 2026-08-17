@@ -1,4 +1,21 @@
 {
+  "Search": {
+    "metaTitle": "بحث | StudyHub",
+    "metaDescription": "ابحث عن الجامعات والبرامج والمدن في تركيا.",
+    "title": "بحث",
+    "subtitle": "نتائج البحث",
+    "placeholder": "ابحث عن الجامعات والبرامج والمدن…",
+    "search": "بحث",
+    "results": "{count} نتيجة لـ «{query}».",
+    "universities": "الجامعات",
+    "programs": "البرامج",
+    "cities": "المدن",
+    "viewAllUniversities": "عرض كل الجامعات",
+    "viewAllPrograms": "عرض كل البرامج",
+    "emptyTitle": "غير موجود",
+    "emptySubtitle": "لا يوجد شيء للعرض حالياً — جرّب تغيير بحثك."
+  },
+
   "Meta": {
     "title": "StudyHub — الدراسة في تركيا",
     "description": "قارن الجامعات التركية المعتمدة والتخصصات والرسوم والمنح. تقدّم بطلب مع إرشاد خبراء — يشمل دعم التأشيرة.",
@@ -28,7 +45,11 @@
     "blog": "المدونة",
     "contact": "اتصل",
     "apply": "تقدّم",
-    "compare": "قارن"
+    "compare": "قارن",
+    "search": "بحث",
+    "searchPlaceholder": "ابحث عن جامعات، تخصصات، مدن…",
+    "searchClose": "إغلاق البحث",
+    "noResults": "لا توجد نتائج"
   },
   "Footer": {
     "tagline": "مسيرك الموجَّه للدراسة في تركيا — من التقديم إلى الوصول.",
@@ -75,7 +96,6 @@
       "freeTitle": "Absolutely Free",
       "freeBody": "Explore your educational options with our free consultation! We collaborate with various universities in Turkey to help you obtain partial scholarships and reduce your tuition fees."
     },
-
     "categories": {
       "eyebrow": "تصفّح حسب المجال",
       "title": "اعثر على مجال دراستك",
