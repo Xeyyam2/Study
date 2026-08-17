@@ -24,10 +24,12 @@ export type SearchHit = {
 
 const DEBOUNCE_MS = 150;
 const MIN_QUERY = 2;
-const LIMIT = 8;
+const DEFAULT_LIMIT = 8;
 const CACHE_BOUND = 100;
 
-export function useSearchSuggest() {
+export function useSearchSuggest({
+  limit = DEFAULT_LIMIT,
+}: { limit?: number } = {}) {
   const [query, setQuery] = useState("");
   const [hits, setHits] = useState<SearchHit[]>([]);
   const [open, setOpen] = useState(false);
@@ -52,7 +54,7 @@ export function useSearchSuggest() {
     const t = setTimeout(async () => {
       try {
         const res = await fetch(
-          `/api/search?q=${encodeURIComponent(q)}&limit=${LIMIT}`,
+          `/api/search?q=${encodeURIComponent(q)}&limit=${limit}`,
           { signal: ctrl.signal },
         );
         if (!res.ok) return;
@@ -71,7 +73,7 @@ export function useSearchSuggest() {
       ctrl.abort();
       clearTimeout(t);
     };
-  }, [query]);
+  }, [query, limit]);
 
   /** ↑/↓ move the active row (wrapping); Escape closes. Attach to input onKeyDown. */
   function onInputKeyDown(e: React.KeyboardEvent<HTMLInputElement>): void {

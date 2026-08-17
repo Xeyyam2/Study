@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
 import Link from "next/link";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { type LucideIcon } from "lucide-react";
@@ -37,15 +37,27 @@ export function StudentProfileDrawer({
   const tCommon = useTranslations("Common");
   const locale = useLocale();
   const [showProfile, setShowProfile] = useState(false);
+  const [pending, startTransition] = useTransition();
 
   const dash = `/${locale}/dashboard`;
   const isAdmin = session.profile.role === "admin";
-  const signOutAction = isAdmin
-    ? signOutAdmin
-    : signOutStudent.bind(null, locale);
   const initial = (
     session.profile.fullName.trim().charAt(0) || "?"
   ).toUpperCase();
+
+  // Sign out via the server action, then do a hard reload so the header's
+  // session state (held client-side) resets immediately — a soft redirect
+  // alone leaves the header showing the old logged-in state until refresh.
+  function onSignOut() {
+    const action = isAdmin ? signOutAdmin() : signOutStudent(locale);
+    startTransition(async () => {
+      try {
+        await action;
+      } finally {
+        window.location.href = `/${locale}`;
+      }
+    });
+  }
 
   const menuItems: { icon: LucideIcon; label: string; href: string }[] = [
     {
@@ -168,17 +180,19 @@ export function StudentProfileDrawer({
 
           {/* Çıxış — aşağıda sabit */}
           <div className="border-t border-border p-3">
-            <form action={signOutAction}>
-              <button
-                type="submit"
-                className="flex w-full items-center gap-3 rounded-lg px-4 py-3.5 text-sm font-medium text-destructive transition hover:bg-destructive/10"
-              >
-                <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-destructive/10">
-                  <LogOut className="h-4 w-4" />
-                </span>
-                <span className="flex-1 text-left">{t("nav.logout")}</span>
-              </button>
-            </form>
+            <button
+              type="button"
+              onClick={onSignOut}
+              disabled={pending}
+              className="flex w-full items-center gap-3 rounded-lg px-4 py-3.5 text-sm font-medium text-destructive transition hover:bg-destructive/10 disabled:opacity-60"
+            >
+              <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-destructive/10">
+                <LogOut className="h-4 w-4" />
+              </span>
+              <span className="flex-1 text-left">
+                {pending ? "…" : t("nav.logout")}
+              </span>
+            </button>
           </div>
         </DialogPrimitive.Content>
       </DialogPortal>
