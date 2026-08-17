@@ -20,6 +20,8 @@ export type SearchHit = {
   label: string;
   hint?: string;
   nameI18n?: Record<string, string>;
+  taglineI18n?: Record<string, string>;
+  descriptionI18n?: Record<string, string>;
 };
 
 const DEBOUNCE_MS = 150;

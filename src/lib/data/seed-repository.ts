@@ -566,6 +566,8 @@ export function createSeedDataLayer(): DataLayer {
               slug: u.slug,
               label: u.name,
               hint: u.accreditation,
+              taglineI18n: u.tagline,
+              descriptionI18n: u.description,
             });
           }
           if (out.length >= limit) return out;

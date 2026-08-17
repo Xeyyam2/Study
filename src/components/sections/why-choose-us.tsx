@@ -7,44 +7,51 @@ interface WhyChooseUsProps {
 }
 
 /**
- * StudyLeo-style "Why Choose Us" grid: 6 cards, each with an image on top and
- * a title + short description. Uses existing local campus photos.
+ * StudyLeo-style "Why Choose Us" grid: 6 horizontal cards, each with a pastel
+ * tint, a 120×120 illustration on the left (object-contain) and a title +
+ * short description on the right. Same layout as StudyLeo's footer cards.
  */
+const cards = [
+  {
+    image: "/images/why-us/card-1.png",
+    tint: "bg-why-us-blue",
+    titleKey: "scholarshipsTitle",
+    bodyKey: "scholarshipsBody",
+  },
+  {
+    image: "/images/why-us/card-2.png",
+    tint: "bg-why-us-beige",
+    titleKey: "freeApplicationTitle",
+    bodyKey: "freeApplicationBody",
+  },
+  {
+    image: "/images/why-us/card-3.png",
+    tint: "bg-why-us-amber",
+    titleKey: "admissionTitle",
+    bodyKey: "admissionBody",
+  },
+  {
+    image: "/images/why-us/card-4.png",
+    tint: "bg-why-us-pink",
+    titleKey: "cheapestTitle",
+    bodyKey: "cheapestBody",
+  },
+  {
+    image: "/images/why-us/card-5.png",
+    tint: "bg-why-us-green",
+    titleKey: "acceptanceTitle",
+    bodyKey: "acceptanceBody",
+  },
+  {
+    image: "/images/why-us/card-6.png",
+    tint: "bg-why-us-sky",
+    titleKey: "freeTitle",
+    bodyKey: "freeBody",
+  },
+] as const;
+
 export async function WhyChooseUs({ locale }: WhyChooseUsProps) {
   const t = await getTranslations({ locale, namespace: "HomePage.whyUs" });
-
-  const items = [
-    {
-      image: "/images/universities/istanbul-technical-university/hero.webp",
-      title: t("scholarshipsTitle"),
-      body: t("scholarshipsBody"),
-    },
-    {
-      image: "/images/universities/bogazici-university/hero.webp",
-      title: t("freeApplicationTitle"),
-      body: t("freeApplicationBody"),
-    },
-    {
-      image: "/images/universities/middle-east-technical-university/hero.webp",
-      title: t("admissionTitle"),
-      body: t("admissionBody"),
-    },
-    {
-      image: "/images/universities/ankara-university/hero.webp",
-      title: t("cheapestTitle"),
-      body: t("cheapestBody"),
-    },
-    {
-      image: "/images/universities/yildiz-technical-university/hero.webp",
-      title: t("acceptanceTitle"),
-      body: t("acceptanceBody"),
-    },
-    {
-      image: "/images/universities/ege-university/hero.webp",
-      title: t("freeTitle"),
-      body: t("freeBody"),
-    },
-  ];
 
   return (
     <section className="section-padding bg-surface-low">
@@ -59,31 +66,31 @@ export async function WhyChooseUs({ locale }: WhyChooseUsProps) {
           {t("subtitle")}
         </p>
 
-        <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {items.map((item) => (
-            <article
-              key={item.title}
-              className="overflow-hidden rounded-lg border border-border bg-card shadow-flat-plus transition-shadow hover:shadow-flat-hover"
-            >
-              <div className="relative aspect-[16/9] overflow-hidden bg-surface-low">
+        <div className="mt-10 grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-3">
+          {cards.map((card) => {
+            const title = t(card.titleKey);
+            return (
+              <article
+                key={title}
+                className={`flex items-center gap-4 rounded-2xl p-4 ${card.tint}`}
+              >
                 <Image
-                  src={item.image}
-                  alt={item.title}
-                  fill
-                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  className="object-cover"
+                  src={card.image}
+                  alt={title}
+                  width={120}
+                  height={120}
+                  loading="lazy"
+                  className="aspect-square size-30 object-contain"
                 />
-              </div>
-              <div className="space-y-1.5 p-5">
-                <h3 className="font-display text-base font-semibold text-foreground">
-                  {item.title}
-                </h3>
-                <p className="text-sm leading-relaxed text-muted-foreground">
-                  {item.body}
-                </p>
-              </div>
-            </article>
-          ))}
+                <div className="w-[70%] text-sm text-foreground">
+                  <span className="mb-2 block font-display text-base font-medium md:text-xl">
+                    {title}
+                  </span>
+                  {t(card.bodyKey)}
+                </div>
+              </article>
+            );
+          })}
         </div>
       </div>
     </section>

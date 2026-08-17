@@ -98,6 +98,15 @@ const config: Config = {
           whatsapp: "#25D366",
           telegram: "#229ED9",
         },
+        // StudyLeo-style pastel tints for the "Why Choose Us" cards.
+        "why-us": {
+          blue: "#D5EEFF",
+          beige: "#A2845E52",
+          amber: "#FFAA003D",
+          pink: "#FF2D553D",
+          green: "#00D68F52",
+          sky: "#007AFF3D",
+        },
       },
       backgroundImage: {
         // UI-5: primary-tinted dot grid (was an inline rgba in hero-section).

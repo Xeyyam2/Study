@@ -146,6 +146,10 @@ export interface SearchResult {
   hint?: string;
   /** Locale-aware name when available (cities/programs have i18n; universities are plain text). */
   nameI18n?: Record<string, string>;
+  /** Locale-aware short tagline (universities) — shown as text with the result. */
+  taglineI18n?: Record<string, string>;
+  /** Locale-aware full description (universities) — shown as text with the result. */
+  descriptionI18n?: Record<string, string>;
 }
 
 export interface DataLayer {

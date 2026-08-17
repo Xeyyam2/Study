@@ -161,6 +161,14 @@ export function SearchClient({ initialQuery }: { initialQuery: string }) {
                             <h3 className="font-display font-semibold text-foreground">
                               {u.label}
                             </h3>
+                            {/* Text result: localized short description/tagline */}
+                            {(lx(u.descriptionI18n, locale) ||
+                              lx(u.taglineI18n, locale)) && (
+                              <p className="mt-1 line-clamp-2 text-sm leading-snug text-muted-foreground">
+                                {lx(u.descriptionI18n, locale) ||
+                                  lx(u.taglineI18n, locale)}
+                              </p>
+                            )}
                             {u.hint && (
                               <p className="mt-0.5 text-xs text-muted-foreground">
                                 {u.hint}

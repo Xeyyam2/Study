@@ -780,6 +780,7 @@ export function createPgDataLayer(getPool: () => Pool): DataLayer {
       const res = await getPool().query(
         `(
            select 1 sort, 'university' type, u.id, u.slug, u.name label, u.accreditation hint, null::jsonb name_i18n,
+                  u.tagline_i18n, u.description_i18n,
                   ts_rank(u.search_tsv, plainto_tsquery('simple', $1)) rank
            from public.universities u
            where u.search_tsv @@ plainto_tsquery('simple', $1)
@@ -790,6 +791,7 @@ export function createPgDataLayer(getPool: () => Pool): DataLayer {
          union all
          (
            select 2 sort, 'program' type, p.id, p.slug, p.slug label, p.degree_level hint, p.name_i18n,
+                  null::jsonb, null::jsonb,
                   0::float8 rank
            from public.programs p
            where p.slug ilike '%' || $1 || '%' or p.name_i18n::text ilike '%' || $1 || '%'
@@ -798,6 +800,7 @@ export function createPgDataLayer(getPool: () => Pool): DataLayer {
          union all
          (
            select 3 sort, 'city' type, c.id, c.slug, c.slug label, null hint, c.name_i18n,
+                  null::jsonb, null::jsonb,
                   0::float8 rank
            from public.cities c
            where c.slug ilike '%' || $1 || '%' or c.name_i18n::text ilike '%' || $1 || '%'
@@ -814,6 +817,10 @@ export function createPgDataLayer(getPool: () => Pool): DataLayer {
         label: r.label as string,
         hint: r.hint ?? undefined,
         nameI18n: r.name_i18n ? i18n(r.name_i18n) : undefined,
+        taglineI18n: r.tagline_i18n ? i18n(r.tagline_i18n) : undefined,
+        descriptionI18n: r.description_i18n
+          ? i18n(r.description_i18n)
+          : undefined,
       }));
     },
   };
