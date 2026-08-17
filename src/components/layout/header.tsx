@@ -2,8 +2,8 @@ import { getTranslations } from "next-intl/server";
 import { GraduationCap } from "lucide-react";
 import { Link } from "@/i18n/navigation";
 import { siteConfig } from "@/config/site";
-import { Button } from "@/components/ui/button";
 import { LocaleSwitcher } from "./locale-switcher";
+import { HeaderSearch } from "./header-search";
 // F2: Interactive parts (mobile menu, auth, drawer) are split into a client
 // component so the static parts (logo, desktop nav, apply button) render as
 // Server Components — no client JS for the static shell.
@@ -46,18 +46,13 @@ export async function Header() {
         </nav>
 
         <div className="flex items-center gap-2">
+          {/* Site search — icon expands into an input (2026-08-17 spec);
+              sits next to the locale switcher on every breakpoint. */}
+          <HeaderSearch />
           {/* Locale switcher always visible in the header bar — on mobile it
               sits next to the hamburger (not inside the menu), on desktop
-              next to Apply. */}
+              next to the auth control. */}
           <LocaleSwitcher />
-          <Button
-            asChild
-            variant="cta"
-            size="sm"
-            className="hidden sm:inline-flex"
-          >
-            <Link href="/apply">{t("apply")}</Link>
-          </Button>
           {/* F2: Only this part ships client JS */}
           <HeaderInteractive />
         </div>
