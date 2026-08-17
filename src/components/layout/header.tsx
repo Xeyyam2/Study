@@ -46,9 +46,10 @@ export async function Header() {
         </nav>
 
         <div className="flex items-center gap-2">
-          <div className="hidden sm:block">
-            <LocaleSwitcher />
-          </div>
+          {/* Locale switcher always visible in the header bar — on mobile it
+              sits next to the hamburger (not inside the menu), on desktop
+              next to Apply. */}
+          <LocaleSwitcher />
           <Button
             asChild
             variant="cta"

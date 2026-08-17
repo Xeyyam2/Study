@@ -25,7 +25,6 @@ const GoogleSignInButton = dynamic(
 );
 import { StudentProfileDrawer } from "@/components/student/StudentProfileDrawer";
 import type { Profile } from "@/types/crm";
-import { LocaleSwitcher } from "./locale-switcher";
 
 interface HeaderSession {
   userId: string;
@@ -290,10 +289,9 @@ export function HeaderInteractive() {
                 </ul>
 
                 <div className="mt-6 space-y-3 border-t border-border pt-5">
+                  {/* Locale switcher intentionally NOT here — it lives in the
+                      header bar next to the hamburger. */}
                   <div>{AuthControl()}</div>
-                  <div>
-                    <LocaleSwitcher />
-                  </div>
                 </div>
               </nav>
             </aside>
