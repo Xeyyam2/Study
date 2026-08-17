@@ -1,72 +1,35 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
 import { Search, ArrowRight, ShieldCheck } from "lucide-react";
 import { useRouter } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { useLocale } from "next-intl";
 import { lx } from "@/lib/i18n/lx";
-
-type SearchHit = {
-  type: "university" | "program" | "city";
-  id: string;
-  slug: string;
-  label: string;
-  hint?: string;
-  nameI18n?: Record<string, string>;
-};
+import {
+  useSearchSuggest,
+  searchHitRoute,
+  type SearchHit,
+} from "@/lib/hooks/use-search-suggest";
 
 export function HeroSection({ universityCount }: { universityCount: number }) {
   const t = useTranslations("HomePage.hero");
   const locale = useLocale();
   const router = useRouter();
-  const [query, setQuery] = useState("");
-  const [hits, setHits] = useState<SearchHit[]>([]);
-  const [open, setOpen] = useState(false);
-  const [activeIndex, setActiveIndex] = useState(-1);
   const boxRef = useRef<HTMLDivElement>(null);
-  // P3: cache results per query so retyping/backspacing doesn't re-hit the API.
-  const cacheRef = useRef(new Map<string, SearchHit[]>());
-
-  // Debounced autocomplete.
-  useEffect(() => {
-    const q = query.trim();
-    if (q.length < 2) {
-      setHits([]);
-      return;
-    }
-    const cached = cacheRef.current.get(q);
-    if (cached) {
-      setHits(cached);
-      setOpen(true);
-      return;
-    }
-    const ctrl = new AbortController();
-    const t = setTimeout(async () => {
-      try {
-        const res = await fetch(
-          `/api/search?q=${encodeURIComponent(q)}&limit=8`,
-          { signal: ctrl.signal },
-        );
-        if (!res.ok) return;
-        const data = await res.json();
-        const results = data.results ?? [];
-        // Bound the cache so it can't grow unbounded during a long session.
-        if (cacheRef.current.size > 100) cacheRef.current.clear();
-        cacheRef.current.set(q, results);
-        setHits(results);
-        setOpen(true);
-      } catch {
-        /* aborted or network — ignore */
-      }
-    }, 150);
-    return () => {
-      ctrl.abort();
-      clearTimeout(t);
-    };
-  }, [query]);
+  const {
+    query,
+    setQuery,
+    hits,
+    open,
+    setOpen,
+    activeIndex,
+    setActiveIndex,
+    onInputKeyDown,
+    enterHit,
+  } = useSearchSuggest();
 
   // Close suggestions when clicking outside.
   useEffect(() => {
@@ -76,19 +39,18 @@ export function HeroSection({ universityCount }: { universityCount: number }) {
     }
     document.addEventListener("mousedown", onClick);
     return () => document.removeEventListener("mousedown", onClick);
-  }, []);
+  }, [setOpen]);
 
   function go(hit: SearchHit) {
     setOpen(false);
-    if (hit.type === "university") router.push(`/universities/${hit.slug}`);
-    else if (hit.type === "program") router.push(`/programs`);
-    else router.push(`/universities?search=${encodeURIComponent(hit.slug)}`);
+    router.push(searchHitRoute(hit));
   }
 
   function onSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (activeIndex >= 0 && hits[activeIndex]) {
-      go(hits[activeIndex]);
+    const hit = enterHit();
+    if (hit) {
+      go(hit);
       return;
     }
     router.push(
@@ -97,16 +59,7 @@ export function HeroSection({ universityCount }: { universityCount: number }) {
   }
 
   function onKey(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (!hits.length) return;
-    if (e.key === "ArrowDown") {
-      e.preventDefault();
-      setActiveIndex((i) => (i + 1) % hits.length);
-    } else if (e.key === "ArrowUp") {
-      e.preventDefault();
-      setActiveIndex((i) => (i - 1 + hits.length) % hits.length);
-    } else if (e.key === "Escape") {
-      setOpen(false);
-    }
+    onInputKeyDown(e);
   }
 
   function hitLabel(hit: SearchHit) {
