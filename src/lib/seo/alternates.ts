@@ -48,7 +48,9 @@ function localizedUrl(locale: string, path: string): string {
   return `${siteConfig.url}/${locale}${suffix}`;
 }
 
-export function buildAlternates(path: string): Pick<Metadata, "alternates"> {
+export function buildAlternates(path: string): {
+  alternates: { languages: Record<string, string> };
+} {
   const languages: Record<string, string> = {};
   // Only announce hreflang for fully-translated locales. Pointing crawlers at
   // the six stub locales (bg/id/so/ur/uz/sw) would advertise near-empty pages
@@ -94,13 +96,28 @@ export function buildPageMetadata({
     "scholarships turkey",
   ];
 
-  // Only set explicit OG/Twitter images when a real per-page image is supplied.
-  // Otherwise omit them so the file-based `opengraph-image.tsx` generator
-  // applies (Next uses it for both og:image and twitter:image). Hardcoding
-  // siteConfig.ogImage here previously pointed every share at a 404.
+  // og:image must ALWAYS be present — shares without one render as a bare
+  // link card and it is a weak entity/trust signal.
+  //
+  // When a real per-page image is supplied, use it. Otherwise fall back to the
+  // localized file-based generator (src/app/[locale]/opengraph-image.tsx),
+  // which serves a branded 1200×630 PNG. The explicit `images` entry is
+  // required: if openGraph is returned without `images`, Next treats it as
+  // authoritative and never merges the file-based og:image (observed: home
+  // pages shipped no og:image while the 404 page — which skips buildPage-
+  // Metadata — picked the file one up).
   const ogImage = image
     ? { images: [{ url: image, width: 1200, height: 630, alt: title }] }
-    : {};
+    : {
+        images: [
+          {
+            url: `${siteConfig.url}/${locale}/opengraph-image`,
+            width: 1200,
+            height: 630,
+            alt: title,
+          },
+        ],
+      };
 
   return {
     title,
@@ -124,7 +141,10 @@ export function buildPageMetadata({
       card: "summary_large_image",
       title,
       description,
-      ...(image ? { images: [image] } : {}),
+      // Mirrors the og:image fallback above (file-based generator route).
+      ...(image
+        ? { images: [image] }
+        : { images: [`${siteConfig.url}/${locale}/opengraph-image`] }),
     },
   };
 }

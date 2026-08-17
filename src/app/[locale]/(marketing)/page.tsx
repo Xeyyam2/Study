@@ -7,6 +7,7 @@ import { buildPageMetadata } from "@/lib/seo/alternates";
 import { data } from "@/lib/data";
 import { HeroSection } from "@/components/sections/hero-section";
 import { StatsSection } from "@/components/sections/stats-section";
+import { WhyStudyTurkey } from "@/components/sections/why-study-turkey";
 import { WhyChooseUs } from "@/components/sections/why-choose-us";
 import { CategorySection } from "@/components/sections/category-section";
 import { FeaturedUniversities } from "@/components/sections/featured-universities";
@@ -62,6 +63,11 @@ export default async function HomePage({
           one section never blocks the Hero (LCP) from flushing to the browser. */}
       <Suspense fallback={<div className="h-40" aria-hidden />}>
         <StatsSection locale={appLocale} />
+      </Suspense>
+      {/* AEO: extractable "why study in Turkey" definition + real-data stats —
+          the self-contained answer block AI engines source for the head query. */}
+      <Suspense fallback={<div className="section-padding h-96" aria-hidden />}>
+        <WhyStudyTurkey locale={appLocale} />
       </Suspense>
       <Suspense fallback={<div className="section-padding h-64" aria-hidden />}>
         <CategorySection locale={appLocale} />

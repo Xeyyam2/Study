@@ -1,14 +1,13 @@
-import { Header } from '@/components/layout/header';
-import { Footer } from '@/components/layout/footer';
-import { FloatingChatButtons } from '@/components/layout/whatsapp-float';
-import { FloatingApplyButton } from '@/components/layout/FloatingApplyButton';
-// F3: Lazy-load ChatWidget — it's a heavy client component (OpenAI API,
-// message state) only used in 4 GEO locales. `ssr: false` is not allowed in
-// Server Components (Next.js 15), so lazy-load via Suspense instead.
-import { Suspense } from 'react';
-import dynamic from 'next/dynamic';
-const ChatWidget = dynamic(() => import('@/components/layout/chat-widget').then((m) => m.ChatWidget));
-import { isGeoLocale } from '@/lib/seo/geo';
+import { Header } from "@/components/layout/header";
+import { Footer } from "@/components/layout/footer";
+import { FloatingChatButtons } from "@/components/layout/whatsapp-float";
+import { FloatingApplyButton } from "@/components/layout/FloatingApplyButton";
+// ChatWidgetMount lazy-loads the chat widget on the client (code-splitting).
+// A server-side <Suspense> is deliberately avoided: Suspense in the tree
+// forces streaming, which makes notFound() return HTTP 200 (soft-404) instead
+// of a real 404 on university/blog/country pages.
+import { ChatWidgetMount } from "@/components/layout/chat-widget-mount";
+import { isGeoLocale } from "@/lib/seo/geo";
 
 export default async function MarketingLayout({
   children,
@@ -23,16 +22,14 @@ export default async function MarketingLayout({
   return (
     <>
       <Header />
-      <main id="main" tabIndex={-1}>{children}</main>
+      <main id="main" tabIndex={-1}>
+        {children}
+      </main>
       <Footer />
       <FloatingApplyButton />
       <FloatingChatButtons />
-      {/* AI chatbot — only in 4 GEO locales (en/tr/az/ru) */}
-      {showChat && (
-        <Suspense fallback={null}>
-          <ChatWidget />
-        </Suspense>
-      )}
+      {/* AI chatbot — only in 4 GEO locales (en/tr/az/ru), mounted client-side */}
+      {showChat && <ChatWidgetMount />}
     </>
   );
 }

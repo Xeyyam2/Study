@@ -209,6 +209,71 @@ export function itemListJsonLd(
 }
 
 /**
+ * ItemList of universities with side-by-side comparison facts — for the
+ * /compare page. Comparison content is the most-cited content type in AI
+ * answers, so every row the page displays (name, city, tuition, ranking,
+ * founding year, student count) is emitted as structured data an AI engine
+ * can extract without parsing the interactive table.
+ */
+export interface ComparisonItem {
+  name: string;
+  url: string;
+  city?: string;
+  tuitionUSD?: number;
+  ranking?: number;
+  foundedYear?: number;
+  studentCount?: number;
+  isState?: boolean;
+}
+
+export function comparisonJsonLd(
+  items: ComparisonItem[],
+  pageUrl: string,
+): JsonLd {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "@id": `${pageUrl}#comparison`,
+    name: "Turkish universities compared",
+    itemListElement: items.map((item, i) =>
+      L("ListItem", {
+        position: i + 1,
+        item: {
+          "@type": "CollegeOrUniversity",
+          name: item.name,
+          url: item.url,
+          ...(item.city
+            ? {
+                address: {
+                  "@type": "PostalAddress",
+                  addressLocality: item.city,
+                  addressCountry: "TR",
+                },
+              }
+            : {}),
+          // Real tuition from the listing metadata — the same number the page
+          // displays, so the structured data never invents facts.
+          ...(item.tuitionUSD
+            ? {
+                offers: {
+                  "@type": "Offer",
+                  price: item.tuitionUSD,
+                  priceCurrency: "USD",
+                },
+              }
+            : {}),
+          ...(item.ranking ? { ranking: item.ranking } : {}),
+          ...(item.foundedYear
+            ? { foundingDate: String(item.foundedYear) }
+            : {}),
+          ...(item.studentCount ? { numberOfStudents: item.studentCount } : {}),
+        },
+      }),
+    ),
+  };
+}
+
+/**
  * HowTo schema — step-by-step guide (e.g. "How to apply to a Turkish university").
  * AEO core: Google AI Overview sources HowTo schemas for answer extraction.
  */

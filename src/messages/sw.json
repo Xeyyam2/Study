@@ -15,12 +15,11 @@
     "emptyTitle": "Haipatikani",
     "emptySubtitle": "Hakuna cha kuonyesha sasa — badilisha utafutaji wako."
   },
-
   "Meta": {
     "title": "StudyHub — Masomo nchini Uturuki",
     "description": "Linganisha vyuo vikuu vya Kituruki vilivyoidhinishwa, programu, ada na ufadhili. Omba usaidizi kutoka kwa wataalamu — msaada wa visa umejumuishwa.",
     "home": {
-      "title": "Masumo nchini Uturuki — Linganisha vyuo, programu na ufadhili",
+      "title": "Masomo nchini Uturuki — vyuo na ufadhili",
       "description": "Linganisha vyuo vikuu vya Kituruki, programu, ada na ufadhili. Omba usaidizi kutoka kwa wataalamu — msaada wa visa umejumuishwa."
     }
   },
@@ -58,7 +57,10 @@
     "contact": "Wasiliana",
     "address": "Istanbul, Uturuki",
     "rights": "Haki zote zimehifadhiwa.",
-    "disclaimer": "Majina na nembo za vyuo ni mali ya wamiliki wao."
+    "disclaimer": "Majina na nembo za vyuo ni mali ya wamiliki wao.",
+    "studyFrom": "Kusoma Uturuki — kutoka nchi yako",
+    "privacy": "Privacy Policy",
+    "terms": "Terms of Service"
   },
   "HomePage": {
     "hero": {
@@ -166,6 +168,16 @@
       "subtitle": "Pata ushauri wa bure na omba chuo cha ndoto chako Uturuki leo.",
       "primary": "Omba sasa",
       "whatsapp": "Piga gumzo WhatsApp"
+    },
+    "whyStudy": {
+      "eyebrow": "Why study in Turkey",
+      "title": "Study in Turkey: quality education at a fraction of Western costs",
+      "shortAnswer": "Studying in Turkey means YÖK-accredited degrees from 150+ universities, tuition from around USD 600 a year at state universities and scholarships up to 100%. Hundreds of programs are taught in English, living costs stay low, and Istanbul, Ankara and Izmir host some of the region's strongest engineering, medicine and business schools.",
+      "universitiesLabel": "Accredited universities",
+      "stateTuitionLabel": "State tuition from",
+      "englishProgramsLabel": "English-taught programs",
+      "scholarshipLabel": "Scholarships up to",
+      "cta": "Browse universities"
     }
   },
   "UniversitiesPage": {
@@ -372,7 +384,8 @@
     "blog": "Blogu",
     "back": "Rudi kwenye blogu",
     "ctaTitle": "Tayari kuanza maombi yako?",
-    "ctaButton": "Omba sasa"
+    "ctaButton": "Omba sasa",
+    "lastUpdated": "Ilisasishwa mara ya mwisho"
   },
   "Apply": {
     "metaTitle": "Omba kusoma Uturuki — Ushauri wa bure",
@@ -438,7 +451,8 @@
     "intake": "Intake",
     "intakePlaceholder": "Select intake",
     "intakeFall": "Fall",
-    "intakeSpring": "Spring"
+    "intakeSpring": "Spring",
+    "privacyPolicy": "Read our Privacy Policy"
   },
   "About": {
     "metaTitle": "Kuhusu — Wataalamu wa masomo Uturuki",
@@ -647,5 +661,48 @@
     "greeting": "Hi! I'm your study-in-Turkey assistant. Ask me about universities, programs, tuition fees, or the application process.",
     "error": "Sorry, I couldn't respond. Please try again or contact us via WhatsApp.",
     "closed": "Chat closed"
+  },
+  "Privacy": {
+    "metaTitle": "Privacy Policy — Study in Turkey",
+    "metaDescription": "How StudyHub collects, uses and protects your personal data when you apply to study in Turkey — including cookies and your privacy rights.",
+    "title": "Privacy Policy",
+    "lastUpdated": "Last updated: August 17, 2026",
+    "s1Title": "1. Who we are",
+    "s1Body": "StudyHub (\"we\", \"us\") is a study-in-Turkey consultancy that connects international students with accredited Turkish universities. We operate this website and process your personal data as the data controller.",
+    "s2Title": "2. Data we collect",
+    "s2Body": "When you browse, we collect technical data such as your IP address, browser and pages visited. When you submit an application or contact form, we collect the details you provide: name, email, phone, country, program of interest and uploaded documents such as your passport and diploma.",
+    "s3Title": "3. How we use your data",
+    "s3Body": "We use your data to process and manage your university applications, contact you about your application, send you relevant university offers and scholarships, and improve our website. We never sell your personal data.",
+    "s4Title": "4. Cookies",
+    "s4Body": "Our website uses essential cookies for functionality and optional analytics cookies to understand how visitors use the site. You can control or delete cookies through your browser settings at any time.",
+    "s5Title": "5. Data sharing",
+    "s5Body": "We share your application data only with the universities you apply to and with trusted partners who help us deliver our service. They are bound by confidentiality and may only use your data for your application.",
+    "s6Title": "6. Your rights",
+    "s6Body": "Depending on your country, you may have the right to access, correct, delete or export your personal data, and to object to or restrict processing. To exercise any of these rights, contact us — we respond within 30 days.",
+    "s7Title": "7. Data retention & security",
+    "s7Body": "We keep your data only as long as needed for your application and legal obligations, and we use industry-standard safeguards such as encryption and access controls to protect it.",
+    "contact": "Questions about your data? Contact us at {email} or via our contact page.",
+    "contactTitle": "Contact"
+  },
+  "Terms": {
+    "metaTitle": "Terms of Service — Study in Turkey",
+    "metaDescription": "The terms that govern your use of the StudyHub website and our free study-in-Turkey application and consultation services.",
+    "title": "Terms of Service",
+    "lastUpdated": "Last updated: August 17, 2026",
+    "s1Title": "1. The service",
+    "s1Body": "StudyHub provides free guidance and application support for international students applying to accredited universities in Turkey. Our consultants help you choose programs, prepare documents and manage your applications.",
+    "s2Title": "2. Your responsibilities",
+    "s2Body": "You confirm that the information and documents you provide are accurate and genuine. False documents or information may lead to cancellation of your application and could affect your university admission.",
+    "s3Title": "3. No guarantee of admission",
+    "s3Body": "University admission decisions are made solely by the universities. While we work to give you the best chance, we cannot guarantee acceptance, scholarship awards or specific outcomes.",
+    "s4Title": "4. Fees",
+    "s4Body": "Our consultation and application support services are free. Tuition fees and any university or government charges are paid directly to the relevant institutions and are not collected by us.",
+    "s5Title": "5. Disclaimer of liability",
+    "s5Body": "We provide our website and services on an \"as is\" basis. To the maximum extent permitted by law, we are not liable for indirect or consequential losses arising from your use of the site or our services.",
+    "s6Title": "6. Changes",
+    "s6Body": "We may update these terms from time to time. The latest version is always available on this page, and continued use of the site after changes means you accept the updated terms.",
+    "s7Title": "7. Contact",
+    "s7Body": "If you have questions about these terms, contact us at {email} or through our contact page.",
+    "contactTitle": "Contact"
   }
 }

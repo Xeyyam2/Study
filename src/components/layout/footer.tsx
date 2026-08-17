@@ -1,19 +1,57 @@
-import { getTranslations } from 'next-intl/server';
-import { GraduationCap, Instagram, Youtube, Mail, Phone, MapPin } from 'lucide-react';
-import { Link } from '@/i18n/navigation';
-import { siteConfig } from '@/config/site';
+import { getLocale, getTranslations } from "next-intl/server";
+import {
+  GraduationCap,
+  Instagram,
+  Youtube,
+  Mail,
+  Phone,
+  MapPin,
+} from "lucide-react";
+import { Link } from "@/i18n/navigation";
+import { siteConfig } from "@/config/site";
+import { data } from "@/lib/data";
+
+// Country-landing pages (/study-in-turkey-from/{slug}) are high-intent SEO
+// funnels. They are in the sitemap but had zero internal links (orphans) —
+// surface the top student-origin countries in the footer so every page links
+// to them and crawlers/AI can follow the funnel.
+const TOP_COUNTRY_SLUGS = [
+  "azerbaijan",
+  "uzbekistan",
+  "kazakhstan",
+  "turkmenistan",
+  "kyrgyzstan",
+  "russia",
+  "iran",
+  "iraq",
+  "pakistan",
+  "nigeria",
+  "germany",
+  "france",
+  "united-kingdom",
+  "bulgaria",
+  "greece",
+];
 
 const studentLinks = [
-  { key: 'universities', href: '/universities' },
-  { key: 'programs', href: '/programs' },
-  { key: 'apply', href: '/apply' },
-  { key: 'blog', href: '/blog' },
+  { key: "universities", href: "/universities" },
+  { key: "programs", href: "/programs" },
+  { key: "apply", href: "/apply" },
+  { key: "blog", href: "/blog" },
 ] as const;
 
 export async function Footer() {
-  const t = await getTranslations('Footer');
-  const tNav = await getTranslations('Nav');
+  const t = await getTranslations("Footer");
+  const tNav = await getTranslations("Nav");
+  const locale = await getLocale();
   const year = new Date().getFullYear();
+
+  // Localized country names from the data layer, in the curated priority order.
+  const countries = await data.countries.list();
+  const bySlug = new Map(countries.map((c) => [c.slug, c]));
+  const countryLinks = TOP_COUNTRY_SLUGS.map((slug) => bySlug.get(slug)).filter(
+    (c): c is NonNullable<typeof c> => Boolean(c),
+  );
 
   return (
     <footer className="mt-section-lg border-t border-border bg-card">
@@ -28,7 +66,9 @@ export async function Footer() {
             </span>
             {siteConfig.name}
           </Link>
-          <p className="max-w-xs text-sm text-muted-foreground">{t('tagline')}</p>
+          <p className="max-w-xs text-sm text-muted-foreground">
+            {t("tagline")}
+          </p>
           <div className="flex items-center gap-3">
             <a
               href={siteConfig.social.instagram}
@@ -53,22 +93,31 @@ export async function Footer() {
 
         <div>
           <h3 className="font-display text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-            {t('quickLinks')}
+            {t("quickLinks")}
           </h3>
           <ul className="mt-4 space-y-2 text-sm">
             <li>
-              <Link href="/about" className="text-foreground hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">
-                {tNav('about')}
+              <Link
+                href="/about"
+                className="text-foreground hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+              >
+                {tNav("about")}
               </Link>
             </li>
             <li>
-              <Link href="/contact" className="text-foreground hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">
-                {tNav('contact')}
+              <Link
+                href="/contact"
+                className="text-foreground hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+              >
+                {tNav("contact")}
               </Link>
             </li>
             <li>
-              <Link href="/compare" className="text-foreground hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2">
-                {tNav('compare')}
+              <Link
+                href="/compare"
+                className="text-foreground hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+              >
+                {tNav("compare")}
               </Link>
             </li>
           </ul>
@@ -76,7 +125,7 @@ export async function Footer() {
 
         <div>
           <h3 className="font-display text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-            {t('forStudents')}
+            {t("forStudents")}
           </h3>
           <ul className="mt-4 space-y-2 text-sm">
             {studentLinks.map((item) => (
@@ -94,7 +143,7 @@ export async function Footer() {
 
         <div>
           <h3 className="font-display text-sm font-semibold uppercase tracking-wide text-muted-foreground">
-            {t('contact')}
+            {t("contact")}
           </h3>
           <ul className="mt-4 space-y-3 text-sm">
             <li>
@@ -108,7 +157,7 @@ export async function Footer() {
             </li>
             <li>
               <a
-                href={`tel:${siteConfig.contact.phone.replace(/\s/g, '')}`}
+                href={`tel:${siteConfig.contact.phone.replace(/\s/g, "")}`}
                 className="flex items-center gap-2 text-foreground hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
               >
                 <Phone className="h-4 w-4 text-muted-foreground" aria-hidden />
@@ -117,8 +166,29 @@ export async function Footer() {
             </li>
             <li className="flex items-center gap-2 text-muted-foreground">
               <MapPin className="h-4 w-4" aria-hidden />
-              {t('address')}
+              {t("address")}
             </li>
+          </ul>
+        </div>
+      </div>
+
+      <div className="border-t border-border">
+        <div className="container-page py-6">
+          <h3 className="font-display text-sm font-semibold uppercase tracking-wide text-muted-foreground">
+            {t("studyFrom")}
+          </h3>
+          <ul className="mt-3 flex flex-wrap gap-x-5 gap-y-2 text-sm">
+            {countryLinks.map((c) => (
+              <li key={c.slug}>
+                <Link
+                  href={`/study-in-turkey-from/${c.slug}`}
+                  className="text-foreground hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                >
+                  {(c.name as Record<string, string>)[locale] ??
+                    (c.name as Record<string, string>).en}
+                </Link>
+              </li>
+            ))}
           </ul>
         </div>
       </div>
@@ -126,9 +196,23 @@ export async function Footer() {
       <div className="border-t border-border">
         <div className="container-page flex flex-col gap-2 py-6 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
           <p>
-            © {year} {siteConfig.name}. {t('rights')}
+            © {year} {siteConfig.name}. {t("rights")}
           </p>
-          <p className="max-w-md sm:text-right">{t('disclaimer')}</p>
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-1">
+            <Link
+              href="/privacy"
+              className="hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+            >
+              {t("privacy")}
+            </Link>
+            <Link
+              href="/terms"
+              className="hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+            >
+              {t("terms")}
+            </Link>
+            <p className="max-w-md sm:text-right">{t("disclaimer")}</p>
+          </div>
         </div>
       </div>
     </footer>

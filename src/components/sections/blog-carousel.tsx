@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { ArrowLeft, ArrowRight, Clock } from "lucide-react";
+import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -23,7 +24,6 @@ interface BlogCarouselProps {
   items: BlogCarouselItem[];
   locale: AppLocale;
   labels: {
-    minRead: string;
     readMore: string;
     prev: string;
     next: string;
@@ -46,6 +46,11 @@ const TRACK_GAP = 16; // gap-4
  * viewport — no half card visible) and every click moves by one card.
  */
 export function BlogCarousel({ items, locale, labels }: BlogCarouselProps) {
+  // minRead is an ICU message (`{min} min read`) — read it here with the
+  // variable provided. The server-side section previously called
+  // `t("minRead")` without `{ min }`, which threw a FORMATTING_ERROR on every
+  // homepage render.
+  const tBlog = useTranslations("HomePage.blog");
   const trackRef = useRef<HTMLDivElement>(null);
   const viewportRef = useRef<HTMLDivElement>(null);
   const touchX = useRef<number | null>(null);
@@ -169,10 +174,7 @@ export function BlogCarousel({ items, locale, labels }: BlogCarouselProps) {
                     </p>
                     <div className="flex items-center gap-1 pt-1.5 text-xs text-muted-foreground">
                       <Clock className="h-3.5 w-3.5" />
-                      {labels.minRead.replace(
-                        "{min}",
-                        String(item.readingMinutes),
-                      )}
+                      {tBlog("minRead", { min: item.readingMinutes })}
                     </div>
                   </CardContent>
                 </Card>

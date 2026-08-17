@@ -101,6 +101,21 @@ export default async function BlogPostPage({
                 day: "numeric",
               })}
             </span>
+            {/* Freshness signal (AEO): surface when the post was revised after
+                publishing — AI systems and Google both weight recency. */}
+            {post.updatedAt &&
+              new Date(post.updatedAt).getTime() !==
+                new Date(post.publishedAt).getTime() && (
+                <span className="flex items-center gap-1">
+                  <Clock className="h-4 w-4" />
+                  {t("lastUpdated")}:{" "}
+                  {new Date(post.updatedAt).toLocaleDateString(locale, {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </span>
+              )}
             <span className="flex items-center gap-1">
               <Clock className="h-4 w-4" />
               {t("minRead", { min: post.readingMinutes })}

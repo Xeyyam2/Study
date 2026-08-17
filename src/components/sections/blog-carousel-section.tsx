@@ -79,7 +79,11 @@ export async function BlogCarouselSection({
           items={items}
           locale={locale}
           labels={{
-            minRead: t("minRead"),
+            // minRead is intentionally NOT passed here: it is an ICU message
+            // (`{min} min read`) that must be formatted with the variable, so
+            // the client carousel reads it via useTranslations. Calling
+            // `t("minRead")` server-side without `{ min }` throws a
+            // FORMATTING_ERROR on every render.
             readMore: t("readMore"),
             prev: t("prev"),
             next: t("next"),

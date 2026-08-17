@@ -13,6 +13,7 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import type { LeadInput } from "@/lib/validations/lead";
+import { Link } from "@/i18n/navigation";
 import { CheckboxField, Field } from "./primitives";
 
 export function PreferencesSection({
@@ -97,7 +98,13 @@ export function PreferencesSection({
         </Button>
 
         <p className="text-center text-xs text-muted-foreground">
-          {t("privacy")}
+          {t("privacy")}{" "}
+          <Link
+            href="/privacy"
+            className="underline underline-offset-2 hover:text-primary"
+          >
+            {t("privacyPolicy")}
+          </Link>
         </p>
       </CardContent>
     </Card>

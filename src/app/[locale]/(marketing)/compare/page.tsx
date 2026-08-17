@@ -4,7 +4,10 @@ import { Suspense } from "react";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { data } from "@/lib/data";
 import { buildPageMetadata } from "@/lib/seo/alternates";
+import { comparisonJsonLd } from "@/lib/seo/json-ld";
+import { JsonLd } from "@/components/seo/json-ld";
 import { formatCurrency } from "@/lib/utils";
+import { siteConfig } from "@/config/site";
 
 // P2: CompareTool is client-only (useSearchParams + Radix Select) — a dynamic
 // import splits its JS into a separate chunk. SSR stays on; useSearchParams is
@@ -71,6 +74,29 @@ export default async function ComparePage({
     };
   });
 
+  // AEO: comparison content is the most-cited type in AI answers. Emit every
+  // row the page displays (name, city, tuition, ranking, founding year) as
+  // ItemList structured data so AI engines can extract it without parsing the
+  // interactive table. Tuition comes from the same listing metadata the UI
+  // uses, so structured data never invents facts.
+  const pageUrl = `${siteConfig.url}/${locale}/compare`;
+  const comparisonSchema = comparisonJsonLd(
+    universities.map((u) => {
+      const m = metadata.get(u.id);
+      return {
+        name: u.name,
+        url: `${siteConfig.url}/${locale}/universities/${u.slug}`,
+        city: cityById.get(u.cityId)?.name[locale as never],
+        tuitionUSD: m?.minTuitionUSD,
+        ranking: u.ranking,
+        foundedYear: u.foundedYear,
+        studentCount: u.studentCount,
+        isState: u.isState,
+      };
+    }),
+    pageUrl,
+  );
+
   return (
     <div className="container-page py-section-md">
       <header className="mb-8">
@@ -79,6 +105,8 @@ export default async function ComparePage({
         </h1>
         <p className="mt-2 max-w-2xl text-muted-foreground">{t("subtitle")}</p>
       </header>
+
+      <JsonLd data={comparisonSchema} />
 
       {/* F8: Suspense required for useSearchParams in CompareTool */}
       <Suspense fallback={<div className="min-h-[300px]" />}>

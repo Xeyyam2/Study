@@ -16,11 +16,14 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
   searchParams: Promise<{ q?: string }>;
 }): Promise<Metadata> {
-  const [{ locale }, sp] = await Promise.all([params, searchParams]);
+  const [{ locale }, _sp] = await Promise.all([params, searchParams]);
   const t = await getTranslations({ locale, namespace: "Search" });
+  // Canonical/hreflang always point at the bare /search URL — every query
+  // string would otherwise create its own canonical (duplicate content and a
+  // crawl-budget sink). The query still drives the client-side results.
   return buildPageMetadata({
     locale,
-    path: sp.q ? `/search?q=${encodeURIComponent(sp.q)}` : "/search",
+    path: "/search",
     title: t("metaTitle"),
     description: t("metaDescription"),
   });
