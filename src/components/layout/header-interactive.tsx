@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
+import { createPortal } from "react-dom";
 import { useLocale, useTranslations } from "next-intl";
 import { Menu, X } from "lucide-react";
 import { Link, usePathname } from "@/i18n/navigation";
@@ -43,6 +44,7 @@ export function HeaderInteractive() {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [session, setSession] = useState<HeaderSession | null>(null);
   const [loading, setLoading] = useState(true);
+  const [mounted, setMounted] = useState(false);
 
   const redirectTo = `/${locale}`;
   const initial = (
@@ -135,6 +137,10 @@ export function HeaderInteractive() {
     window.history.replaceState({}, "", clean ? `${path}?${clean}` : path);
   }, [session]);
 
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   // Lock body scroll while the mobile menu is open.
   useEffect(() => {
     if (!open) return;
@@ -190,105 +196,110 @@ export function HeaderInteractive() {
         {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
       </button>
 
-      {/* Mobile menu — right-side drawer with dark overlay (StudyLeo-style). */}
-      {open && (
-        <div className="fixed inset-0 z-50 md:hidden">
-          {/* Overlay — click to close */}
-          <button
-            type="button"
-            aria-label={tCommon("close")}
-            onClick={() => setOpen(false)}
-            className="absolute inset-0 bg-black/50"
-          />
-          <aside
-            id="mobile-menu"
-            className="absolute inset-y-0 end-0 flex w-full max-w-sm flex-col bg-card shadow-2xl"
-          >
-            <div className="flex h-16 shrink-0 items-center justify-between border-b border-border px-5">
-              <span className="font-display text-xl font-semibold text-foreground">
-                {tCommon("menu")}
-              </span>
-              <button
-                type="button"
-                onClick={() => setOpen(false)}
-                aria-label={tCommon("close")}
-                className="inline-flex h-10 w-10 items-center justify-center rounded text-foreground hover:bg-accent"
-              >
-                <X className="h-5 w-5" />
-              </button>
-            </div>
-
-            <nav
-              className="flex flex-1 flex-col overflow-y-auto px-3 py-4"
-              aria-label={tCommon("menu")}
+      {/* Mobile menu — right-side drawer with dark overlay (StudyLeo-style).
+          Rendered via portal so it sits above every other element (the sticky
+          header otherwise traps it in a stacking context behind the hero). */}
+      {open &&
+        mounted &&
+        createPortal(
+          <div className="fixed inset-0 z-[100] md:hidden">
+            {/* Overlay — click to close */}
+            <button
+              type="button"
+              aria-label={tCommon("close")}
+              onClick={() => setOpen(false)}
+              className="absolute inset-0 bg-black/50"
+            />
+            <aside
+              id="mobile-menu"
+              className="absolute inset-y-0 end-0 flex w-full max-w-sm flex-col bg-card shadow-2xl"
             >
-              <ul className="flex-1 space-y-1">
-                <li>
-                  <Link
-                    href="/"
-                    onClick={() => setOpen(false)}
-                    className="block rounded-lg px-4 py-3 text-base font-medium text-foreground transition-colors hover:bg-accent"
-                  >
-                    {t("home")}
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/universities"
-                    onClick={() => setOpen(false)}
-                    className="block rounded-lg px-4 py-3 text-base font-medium text-foreground transition-colors hover:bg-accent"
-                  >
-                    {t("universities")}
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/programs"
-                    onClick={() => setOpen(false)}
-                    className="block rounded-lg px-4 py-3 text-base font-medium text-foreground transition-colors hover:bg-accent"
-                  >
-                    {t("programs")}
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/about"
-                    onClick={() => setOpen(false)}
-                    className="block rounded-lg px-4 py-3 text-base font-medium text-foreground transition-colors hover:bg-accent"
-                  >
-                    {t("about")}
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/blog"
-                    onClick={() => setOpen(false)}
-                    className="block rounded-lg px-4 py-3 text-base font-medium text-foreground transition-colors hover:bg-accent"
-                  >
-                    {t("blog")}
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    href="/contact"
-                    onClick={() => setOpen(false)}
-                    className="block rounded-lg px-4 py-3 text-base font-medium text-foreground transition-colors hover:bg-accent"
-                  >
-                    {t("contact")}
-                  </Link>
-                </li>
-              </ul>
-
-              <div className="mt-6 space-y-3 border-t border-border pt-5">
-                <div>{AuthControl()}</div>
-                <div>
-                  <LocaleSwitcher />
-                </div>
+              <div className="flex h-16 shrink-0 items-center justify-between border-b border-border px-5">
+                <span className="font-display text-xl font-semibold text-foreground">
+                  {tCommon("menu")}
+                </span>
+                <button
+                  type="button"
+                  onClick={() => setOpen(false)}
+                  aria-label={tCommon("close")}
+                  className="inline-flex h-10 w-10 items-center justify-center rounded text-foreground hover:bg-accent"
+                >
+                  <X className="h-5 w-5" />
+                </button>
               </div>
-            </nav>
-          </aside>
-        </div>
-      )}
+
+              <nav
+                className="flex flex-1 flex-col overflow-y-auto px-3 py-4"
+                aria-label={tCommon("menu")}
+              >
+                <ul className="flex-1 space-y-1">
+                  <li>
+                    <Link
+                      href="/"
+                      onClick={() => setOpen(false)}
+                      className="block rounded-lg px-4 py-3 text-base font-medium text-foreground transition-colors hover:bg-accent"
+                    >
+                      {t("home")}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/universities"
+                      onClick={() => setOpen(false)}
+                      className="block rounded-lg px-4 py-3 text-base font-medium text-foreground transition-colors hover:bg-accent"
+                    >
+                      {t("universities")}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/programs"
+                      onClick={() => setOpen(false)}
+                      className="block rounded-lg px-4 py-3 text-base font-medium text-foreground transition-colors hover:bg-accent"
+                    >
+                      {t("programs")}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/about"
+                      onClick={() => setOpen(false)}
+                      className="block rounded-lg px-4 py-3 text-base font-medium text-foreground transition-colors hover:bg-accent"
+                    >
+                      {t("about")}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/blog"
+                      onClick={() => setOpen(false)}
+                      className="block rounded-lg px-4 py-3 text-base font-medium text-foreground transition-colors hover:bg-accent"
+                    >
+                      {t("blog")}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/contact"
+                      onClick={() => setOpen(false)}
+                      className="block rounded-lg px-4 py-3 text-base font-medium text-foreground transition-colors hover:bg-accent"
+                    >
+                      {t("contact")}
+                    </Link>
+                  </li>
+                </ul>
+
+                <div className="mt-6 space-y-3 border-t border-border pt-5">
+                  <div>{AuthControl()}</div>
+                  <div>
+                    <LocaleSwitcher />
+                  </div>
+                </div>
+              </nav>
+            </aside>
+          </div>,
+          document.body,
+        )}
 
       {/* Profile drawer */}
       {session && (
