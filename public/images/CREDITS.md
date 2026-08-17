@@ -123,7 +123,7 @@ stored locally so the site does not depend on any remote CDN.
 - `card-2.png` — "Student Laptop" illustration — https://pixabay.com/illustrations/student-laptop-5608074/ (https://cdn.pixabay.com/photo/2020/09/27/22/40/student-5608074_1280.png)
 - `card-3.png` — "Graduation Graduate" illustration — https://pixabay.com/illustrations/graduation-graduate-8910504/ (https://cdn.pixabay.com/photo/2024/07/21/14/55/graduation-8910504_1280.png)
 - `card-4.png` — "Coins Money" illustration — https://pixabay.com/vectors/coins-money-145386/ (https://cdn.pixabay.com/photo/2013/07/12/12/14/euro-145386_1280.png)
-- `card-5.png` — "Approved" stamp illustration — https://pixabay.com/vectors/approved-160120/ (https://cdn.pixabay.com/photo/2013/07/13/12/41/approved-160120_1280.png)
+- `card-5.png` — "Checklist" clipboard illustration — https://pixabay.com/vectors/checklist-2023731/ (https://cdn.pixabay.com/photo/2017/01/31/11/48/checklist-2023731_1280.png)
 - `card-6.png` — "Gift Present" illustration — https://pixabay.com/illustrations/gift-present-8417095/ (https://cdn.pixabay.com/photo/2023/11/28/10/18/gift-8417095_1280.png)
 
 Downloaded from **Pixabay** (https://pixabay.com) under the
