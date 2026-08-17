@@ -21,6 +21,14 @@ export function FadeIn({ children, className, delay = 0 }: FadeInProps) {
     setMounted(true);
     const el = ref.current;
     if (!el || shown) return;
+    // UI-2: respect prefers-reduced-motion — no fade, content shows at once.
+    if (
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      setShown(true);
+      return;
+    }
     const io = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {

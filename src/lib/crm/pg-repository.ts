@@ -579,47 +579,53 @@ export function createPgCrm(getPool: () => Pool): CrmRepository {
       userId: string,
       limit = 20,
     ): Promise<StudentNotification[]> {
-      const [auditRes, msgRes] = await Promise.all([
-        q(
-          `select a.id, a.action, a.metadata, a.created_at, l.id lead_id
+      // PERF: single UNION ALL query instead of two round-trips + JS sort. The
+      // outer ORDER BY/LIMIT applies after the union, so the top-N newest rows
+      // across both sources come back without fetching extra rows or sorting
+      // in JS. Rows carry a `kind` discriminator; audit-only columns (action,
+      // metadata) are coalesced to null for message rows and vice versa.
+      const res = await q(
+        `select kind, id, lead_id, created_at, action, metadata,
+                sender_name, body
+         from (
+           select 'audit' kind, a.id, l.id lead_id, a.created_at, a.action,
+                  a.metadata, null::text sender_name, null::text body
            from public.audit_logs a
            join public.leads l on l.id = a.entity_id
            where l.user_id = $1 and a.entity = 'lead'
              and a.action in ('lead.create', 'lead.update_status', 'lead.assign')
-           order by a.created_at desc limit $2`,
-          [userId, limit],
-        ),
-        q(
-          `select m.id, m.body, m.created_at, m.lead_id, p.full_name sender_name
+           union all
+           select 'message' kind, m.id, m.lead_id, m.created_at, null::text action,
+                  null::jsonb metadata, p.full_name sender_name, m.body
            from public.messages m
            join public.leads l on l.id = m.lead_id
            join public.profiles p on p.id = m.sender_id
            where l.user_id = $1 and m.sender_id <> $1 and m.read_at is null
-           order by m.created_at desc limit $2`,
-          [userId, limit],
-        ),
-      ]);
-      const notes: StudentNotification[] = [
-        ...auditRes.rows.map((r): StudentNotification => ({
-          id: `audit-${r.id}`,
-          type: r.action === "lead.assign" ? "assigned" : "status_change",
-          leadId: r.lead_id,
-          metadata: r.metadata ?? {},
-          createdAt: r.created_at,
-          read: false,
-        })),
-        ...msgRes.rows.map((r): StudentNotification => ({
+         ) n
+         order by created_at desc
+         limit $2`,
+        [userId, limit],
+      );
+      return res.rows.map((r): StudentNotification => {
+        if (r.kind === "audit") {
+          return {
+            id: `audit-${r.id}`,
+            type: r.action === "lead.assign" ? "assigned" : "status_change",
+            leadId: r.lead_id,
+            metadata: r.metadata ?? {},
+            createdAt: r.created_at,
+            read: false,
+          };
+        }
+        return {
           id: `msg-${r.id}`,
           type: "message",
           leadId: r.lead_id,
           metadata: { senderName: r.sender_name, body: r.body },
           createdAt: r.created_at,
           read: false,
-        })),
-      ];
-      return notes
-        .sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1))
-        .slice(0, limit);
+        };
+      });
     },
 
     async addStudentDocument(

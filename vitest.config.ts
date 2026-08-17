@@ -28,6 +28,11 @@ if (!process.env.CI && process.env.DATABASE_URL?.includes("supabase.co")) {
 }
 
 export default defineConfig({
+  // Vitest 4 defaults to the oxc transform, which follows tsconfig's
+  // `jsx: "preserve"` and leaves JSX untransformed (parse failure in .tsx
+  // tests). Disable it and use the esbuild transform, which we configure to
+  // compile JSX automatically.
+  oxc: false,
   esbuild: {
     jsx: "automatic",
   },
@@ -40,7 +45,8 @@ export default defineConfig({
     environment: "node",
     include: ["tests/unit/**/*.test.{ts,tsx}"],
     setupFiles: ["tests/unit/setup.ts"],
-    environmentMatchGlobs: [["tests/unit/components/**", "jsdom"]],
+    // jsdom for component tests is set per-file with `@vitest-environment jsdom`
+    // (Vitest 4 removed `environmentMatchGlobs`).
     coverage: {
       provider: "v8",
       reporter: ["text", "html", "lcov"],

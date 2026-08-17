@@ -83,6 +83,14 @@ stored locally so the site does not depend on any remote CDN.
 
 ## Blog
 
+### study-history-in-turkey
+
+- `cover.webp` — Unsplash, https://images.unsplash.com/photo-1461360370896-922624d12aa1
+
+### study-international-trade-in-turkey
+
+- `cover.webp` — Unsplash, https://images.unsplash.com/photo-1494412574643-ff11b0a5c1c3
+
 ### study-medicine-in-turkey-tuition-costs
 
 - `cover.webp` — Unsplash, photo-1538108149393-fbbd81895907, https://unsplash.com/photos/1538108149393-fbbd81895907
@@ -99,6 +107,10 @@ stored locally so the site does not depend on any remote CDN.
 
 - `cover.webp` — Unsplash, photo-1517486808906-6ca8b3f04846, https://unsplash.com/photos/1517486808906-6ca8b3f04846
 
+### turkiye-burslari-scholarship-guide
+
+- `cover.webp` — Unsplash, photo-1623461487986-9400110de28e, https://unsplash.com/photos/1623461487986-9400110de28e
+
 ### turkish-student-visa-and-residence-guide
 
 - `cover.webp` — Unsplash, photo-1502920917128-1aa500764cbd, https://unsplash.com/photos/1502920917128-1aa500764cbd
@@ -107,9 +119,29 @@ stored locally so the site does not depend on any remote CDN.
 
 - `cover.webp` — Unsplash, photo-1581092160562-40aa08e78837, https://unsplash.com/photos/1581092160562-40aa08e78837
 
+### masters-in-pharmacy-in-turkey
+
+- `cover.webp` — Unsplash, https://images.unsplash.com/photo-1584308666744-24d5c474f2ae
+
+### masters-of-business-administration-in-turkey
+
+- `cover.webp` — Unsplash (downloaded via `scripts/dl-image.mjs`; exact photo slug not retained — Unsplash License applies)
+
+### mechatronics-engineering-in-turkey
+
+- `cover.webp` — Unsplash, https://images.unsplash.com/photo-1485827404703-89b55fcc595e
+
 ### part-time-work-opportunities-for-students-turkey
 
 - `cover.webp` — Unsplash, photo-1521737604893-d14cc237f11d, https://unsplash.com/photos/1521737604893-d14cc237f11d
+
+### automotive-engineering-in-turkey
+
+- `cover.webp` — Unsplash, https://images.unsplash.com/photo-1494976388531-d1058494cdd8
+
+### chemical-engineering-in-turkey
+
+- `cover.webp` — Unsplash, https://images.unsplash.com/photo-1532187863486-abf9dbad1b69
 
 ### cost-of-living-by-region-in-turkey
 

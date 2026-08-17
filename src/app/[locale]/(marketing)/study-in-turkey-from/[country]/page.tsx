@@ -129,6 +129,10 @@ export default async function CountryLandingPage({
               {t("home")}
             </Link>
             <span>/</span>
+            <Link href="/study-in-turkey-from" className="hover:underline">
+              {t("hubLabel")}
+            </Link>
+            <span>/</span>
             <span className="flex items-center gap-1">
               <MapPin className="h-3.5 w-3.5" /> {name}
             </span>

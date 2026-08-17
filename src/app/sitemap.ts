@@ -9,6 +9,11 @@ import { data } from "@/lib/data";
 import { siteConfig, fullyTranslatedLocales } from "@/config/site";
 import { buildAlternates } from "@/lib/seo/alternates";
 
+// PERF/Cache: the sitemap re-resolves thousands of URLs from the data layer on
+// every request; ISR keeps a cached copy between revalidations. Crawlers hit
+// it rarely (per crawl budget), so a longer window is safe.
+export const revalidate = 86400;
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const base = siteConfig.url;
 
@@ -30,6 +35,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { path: "/blog", priority: 0.7, change: "weekly" as const },
     { path: "/contact", priority: 0.5, change: "monthly" as const },
     { path: "/apply", priority: 0.8, change: "monthly" as const },
+    // Hub for the country-landing cluster — links every country page, so it
+    // strengthens the "study in Turkey from {country}" internal-link graph.
+    {
+      path: "/study-in-turkey-from",
+      priority: 0.8,
+      change: "monthly" as const,
+    },
     // Trust pages — indexable so users can verify the site's legal footing.
     { path: "/privacy", priority: 0.3, change: "yearly" as const },
     { path: "/terms", priority: 0.3, change: "yearly" as const },

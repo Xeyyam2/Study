@@ -3,9 +3,12 @@ import { logger } from "@/lib/logger";
 
 describe("logger (QA-1)", () => {
   beforeEach(() => {
-    vi.spyOn(console, "error").mockImplementation(() => {});
-    vi.spyOn(console, "warn").mockImplementation(() => {});
-    vi.spyOn(console, "log").mockImplementation(() => {});
+    // Direct assignment (not vi.spyOn): Vitest 4 routes its own test-runner
+    // output through the spied console methods, which pollutes call counts.
+    // Replacing the methods outright isolates the logger's writes.
+    console.error = vi.fn();
+    console.warn = vi.fn();
+    console.log = vi.fn();
   });
 
   it("emits a single JSON line with level + message", () => {

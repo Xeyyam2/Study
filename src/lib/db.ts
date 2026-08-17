@@ -16,7 +16,10 @@ function defaultPoolMax(): number {
 
 export function getPool(): Pool {
   if (!pool) {
-    const url = process.env.DATABASE_URL;
+    // SEC: prefer the least-privilege runtime role. APP_DATABASE_URL is a
+    // connection string for the `app_user` role created by migration 0026
+    // (DML-only, no DDL). DATABASE_URL remains the owner/migration URL.
+    const url = process.env.APP_DATABASE_URL ?? process.env.DATABASE_URL;
     if (!url) throw new Error("DATABASE_URL is not set");
     const max = Number(process.env.PGPOOL_MAX ?? defaultPoolMax());
     pool = new Pool({ connectionString: url, max });

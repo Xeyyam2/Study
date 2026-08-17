@@ -18,7 +18,11 @@ import { Button } from "@/components/ui/button";
 // ISR — blog posts rarely change after publishing; rebuild hourly.
 // SE-5/P2: pre-render all posts at build time — a small, static set that
 // otherwise pays a cold SSR + DB round-trip on every first visit/crawl.
-export const revalidate = 3600;
+// PERF/Cache: blog posts are long-form and rarely change (seeded content, no
+// admin edits) — a longer ISR window keeps them cached on the CDN longer,
+// reducing origin round-trips. On-demand revalidation via redeploy still
+// refreshes them instantly if content is ever edited.
+export const revalidate = 21600;
 
 export async function generateStaticParams() {
   const posts = await data.blog.list();

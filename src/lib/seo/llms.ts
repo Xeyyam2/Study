@@ -162,6 +162,7 @@ export function buildLlmsTxt({ base }: LlmsContext): string {
     keyPages(base),
     "",
     "## Country guides",
+    `- [All countries](BASE/en/study-in-turkey-from)`.replaceAll("BASE", base),
     countryLinks(base),
     "",
     "## Optional",

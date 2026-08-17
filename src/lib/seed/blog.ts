@@ -201,7 +201,7 @@ export const seedBlog: BlogPost[] = [
     },
     author: "StudyHub Team",
     publishedAt: "2026-05-20",
-    coverImage: seedImages.graduation,
+    coverImage: "/images/blog/turkiye-burslari-scholarship-guide/cover.webp",
     category: {
       en: "Scholarships",
       tr: "Burslar",
@@ -571,7 +571,7 @@ export const seedBlog: BlogPost[] = [
     },
     author: "StudyHub Team",
     publishedAt: "2026-03-16",
-    coverImage: seedImages.engineering,
+    coverImage: "/images/blog/mechatronics-engineering-in-turkey/cover.webp",
     category: {
       en: "Engineering",
       tr: "Mühendislik",
@@ -645,7 +645,7 @@ export const seedBlog: BlogPost[] = [
     },
     author: "StudyHub Team",
     publishedAt: "2026-03-16",
-    coverImage: seedImages.engineering,
+    coverImage: "/images/blog/chemical-engineering-in-turkey/cover.webp",
     category: {
       en: "Engineering",
       tr: "Mühendislik",
@@ -719,7 +719,7 @@ export const seedBlog: BlogPost[] = [
     },
     author: "StudyHub Team",
     publishedAt: "2026-03-16",
-    coverImage: seedImages.engineering,
+    coverImage: "/images/blog/automotive-engineering-in-turkey/cover.webp",
     category: {
       en: "Engineering",
       tr: "Mühendislik",
@@ -941,7 +941,7 @@ export const seedBlog: BlogPost[] = [
     },
     author: "StudyHub Team",
     publishedAt: "2026-03-16",
-    coverImage: seedImages.business,
+    coverImage: "/images/blog/study-international-trade-in-turkey/cover.webp",
     category: {
       en: "Business",
       tr: "İşletme",
@@ -1089,7 +1089,8 @@ export const seedBlog: BlogPost[] = [
     },
     author: "StudyHub Team",
     publishedAt: "2026-03-13",
-    coverImage: seedImages.business,
+    coverImage:
+      "/images/blog/masters-of-business-administration-in-turkey/cover.webp",
     category: {
       en: "Business",
       tr: "İşletme",
@@ -1163,7 +1164,7 @@ export const seedBlog: BlogPost[] = [
     },
     author: "StudyHub Team",
     publishedAt: "2026-03-13",
-    coverImage: seedImages.medicine,
+    coverImage: "/images/blog/masters-in-pharmacy-in-turkey/cover.webp",
     category: {
       en: "Health Sciences",
       tr: "Sağlık Bilimleri",
@@ -1237,7 +1238,7 @@ export const seedBlog: BlogPost[] = [
     },
     author: "StudyHub Team",
     publishedAt: "2026-03-13",
-    coverImage: seedImages.istanbul,
+    coverImage: "/images/blog/study-history-in-turkey/cover.webp",
     category: {
       en: "Humanities",
       tr: "Beşeri Bilimler",
@@ -1385,7 +1386,8 @@ export const seedBlog: BlogPost[] = [
     },
     author: "StudyHub Team",
     publishedAt: "2026-07-10",
-    coverImage: "/images/blog/yos-exam-preparation-guide/cover.webp",
+    coverImage:
+      "/images/blog/study-medicine-in-turkey-tuition-costs/cover.webp",
     category: {
       en: "Guides",
       tr: "Rehberler",
@@ -1459,7 +1461,7 @@ export const seedBlog: BlogPost[] = [
     },
     author: "StudyHub Team",
     publishedAt: "2026-07-05",
-    coverImage: "/images/blog/student-life-in-izmir/cover.webp",
+    coverImage: "/images/blog/yos-exam-preparation-guide/cover.webp",
     category: {
       en: "Guides",
       tr: "Rehberler",
@@ -1682,7 +1684,7 @@ export const seedBlog: BlogPost[] = [
     author: "StudyHub Team",
     publishedAt: "2026-06-12",
     coverImage:
-      "/images/blog/english-taught-engineering-programs-turkey/cover.webp",
+      "/images/blog/turkish-student-visa-and-residence-guide/cover.webp",
     category: {
       en: "Guides",
       tr: "Rehberler",

@@ -60,7 +60,8 @@
     "disclaimer": "University names and logos belong to their respective owners.",
     "studyFrom": "Study in Turkey from",
     "privacy": "Privacy Policy",
-    "terms": "Terms of Service"
+    "terms": "Terms of Service",
+    "viewAllCountries": "View all countries"
   },
   "HomePage": {
     "hero": {
@@ -351,7 +352,8 @@
     "currencyBody": "Tuition and living costs in Turkey are affordable for students from {country}. We help you compare options in your currency.",
     "languageTitle": "Language of study",
     "languageBody": "You can study fully in English with no Turkish required, or join Turkish-medium programs with a language preparation year.",
-    "popularTitle": "Popular universities"
+    "popularTitle": "Popular universities",
+    "hubLabel": "Study in Turkey from"
   },
   "Compare": {
     "metaTitle": "Compare Turkish Universities Side by Side",
@@ -704,5 +706,18 @@
       "associate": "Associate"
     },
     "annualCost": "Annual cost (tuition + living)"
+  },
+  "CountryHub": {
+    "metaTitle": "Study in Turkey from Any Country — Guides for 140+ Countries",
+    "metaDescription": "Country-by-country guides to studying in Turkey: visa requirements, tuition and living costs, English-taught programs and free application support for students from every country.",
+    "title": "Study in Turkey from Your Country",
+    "subtitle": "Wherever you are from, Turkey is closer than you think. Pick your country for a tailored guide — visa, costs, programs and free application support.",
+    "intro": "Every year students from 140+ countries choose Turkey for university: affordable tuition, English-taught programs, generous scholarships and a fast, guided application process. Below you will find a dedicated guide for your country.",
+    "countriesHeading": "All countries",
+    "breadcrumbLabel": "Study in Turkey from",
+    "ctaTitle": "Not sure where to start?",
+    "ctaBody": "Send us a message — our advisors reply within one business day, free of charge.",
+    "ctaButton": "Get free advice",
+    "home": "Home"
   }
 }

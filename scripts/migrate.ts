@@ -35,6 +35,7 @@ const SKIP_LOCAL = [
   "0013_role_guard.sql",
   "0018_rls_least_privilege.sql",
   "0021_apply_documents_bucket.sql",
+  "0027_apply_documents_bucket_policies.sql",
 ];
 
 // A destructive reset is only safe against a local/dev database. Refuse if

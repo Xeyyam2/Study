@@ -64,6 +64,10 @@ const nextConfig = {
   },
   images: {
     formats: ["image/avif", "image/webp"],
+    // PERF: source images (seeded covers, Unsplash/Pexels refs) rarely change —
+    // cache optimized derivatives for a day instead of the 60s default so ISR
+    // revalidations don't re-run the optimizer for the same URL.
+    minimumCacheTTL: 86400,
     remotePatterns: [
       { protocol: "https", hostname: "images.unsplash.com" },
       { protocol: "https", hostname: "images.pexels.com" },

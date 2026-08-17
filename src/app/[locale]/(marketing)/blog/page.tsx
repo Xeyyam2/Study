@@ -14,7 +14,9 @@ import { Badge } from "@/components/ui/badge";
 import { lx } from "@/lib/i18n/lx";
 
 // PERF/SEO: ISR so new posts appear without a redeploy.
-export const revalidate = 3600;
+// PERF/Cache: blog index mirrors post cadence (seeded, rarely changes) —
+// longer ISR window than the price/program listings, which change more often.
+export const revalidate = 21600;
 
 export async function generateMetadata({
   params,

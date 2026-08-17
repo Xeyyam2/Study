@@ -60,7 +60,8 @@
     "disclaimer": "Universitet nomlari va logotiplari tegishli egalarga tegishli.",
     "studyFrom": "Turkiyada o'qish — mamlakatingizdan",
     "privacy": "Privacy Policy",
-    "terms": "Terms of Service"
+    "terms": "Terms of Service",
+    "viewAllCountries": "View all countries"
   },
   "HomePage": {
     "hero": {
@@ -351,7 +352,8 @@
     "currencyBody": "Turkiyada o‘qish to‘lovi va turmush xarajatlari {country} talabalari uchun arzon. O‘z valyutangizda solishtirishda yordam beramiz.",
     "languageTitle": "O‘qish tili",
     "languageBody": "Turk tili talab qilinmasdan to‘liq ingliz tilida o‘qishingiz yoki til tayyorgarlik yili bilan turk-medium dasturlarga qo‘shilishingiz mumkin.",
-    "popularTitle": "Mashhur universitetlar"
+    "popularTitle": "Mashhur universitetlar",
+    "hubLabel": "Study in Turkey from"
   },
   "Compare": {
     "metaTitle": "Turk universitetlarini birga solishtirish",
@@ -704,5 +706,18 @@
     "s7Title": "7. Contact",
     "s7Body": "If you have questions about these terms, contact us at {email} or through our contact page.",
     "contactTitle": "Contact"
+  },
+  "CountryHub": {
+    "metaTitle": "Study in Turkey from Any Country — Guides for 140+ Countries",
+    "metaDescription": "Country-by-country guides to studying in Turkey: visa requirements, tuition and living costs, English-taught programs and free application support for students from every country.",
+    "title": "Study in Turkey from Your Country",
+    "subtitle": "Wherever you are from, Turkey is closer than you think. Pick your country for a tailored guide — visa, costs, programs and free application support.",
+    "intro": "Every year students from 140+ countries choose Turkey for university: affordable tuition, English-taught programs, generous scholarships and a fast, guided application process. Below you will find a dedicated guide for your country.",
+    "countriesHeading": "All countries",
+    "breadcrumbLabel": "Study in Turkey from",
+    "ctaTitle": "Not sure where to start?",
+    "ctaBody": "Send us a message — our advisors reply within one business day, free of charge.",
+    "ctaButton": "Get free advice",
+    "home": "Home"
   }
 }

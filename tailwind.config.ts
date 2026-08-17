@@ -20,13 +20,11 @@ const config: Config = {
     },
     extend: {
       fontFamily: {
-        sans: ["var(--font-inter)", "system-ui", "sans-serif"],
-        display: [
-          "var(--font-geist-sans)",
-          "var(--font-inter)",
-          "system-ui",
-          "sans-serif",
-        ],
+        // PERF: a single font family (Geist) for both body and display — only
+        // one variable font downloads instead of two. Geist covers latin +
+        // latin-ext; cyrillic locales (ru/bg/kk/ky/uz) fall back to system-ui.
+        sans: ["var(--font-geist-sans)", "system-ui", "sans-serif"],
+        display: ["var(--font-geist-sans)", "system-ui", "sans-serif"],
       },
       colors: {
         // shadcn semantic tokens (light only for Phase 1)

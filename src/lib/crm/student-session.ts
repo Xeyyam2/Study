@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
+import { cache } from "react";
 import type { AppLocale } from "@/i18n/routing";
 import { crm } from "./index";
 import { getSessionUser } from "@/lib/supabase/server-session";
@@ -23,31 +24,37 @@ export interface StudentSession {
   profile: Profile;
 }
 
-export async function getStudentSession(): Promise<StudentSession | null> {
-  // Same defensive pattern as getStaffSession: a Supabase failure must not
-  // block the dev fallback from running.
-  try {
-    const user = await getSessionUser();
-    if (!user) return null;
-    let profile = await crm.getProfileByAuthUid(user.id);
-    if (!profile) {
-      profile = await crm.getProfile(user.id);
+// PERF: React.cache dedupes within a single request. The dashboard layout and
+// each page both call requireStudentAny → getStudentSession; without caching
+// that is 2× Supabase getUser() (network round-trip) + 2× PG profile lookups
+// per pageview. cache() collapses them to one each.
+export const getStudentSession = cache(
+  async (): Promise<StudentSession | null> => {
+    // Same defensive pattern as getStaffSession: a Supabase failure must not
+    // block the dev fallback from running.
+    try {
+      const user = await getSessionUser();
+      if (!user) return null;
+      let profile = await crm.getProfileByAuthUid(user.id);
+      if (!profile) {
+        profile = await crm.getProfile(user.id);
+      }
+      if (!profile) {
+        profile = await crm.upsertStudentByAuthUid({
+          authUid: user.id,
+          email: user.email ?? "",
+          fullName: (user.user_metadata?.full_name as string | undefined) ?? "",
+        });
+      }
+      // Email collision with a staff profile (or another taken email) → no
+      // student session.
+      if (!profile) return null;
+      return { userId: profile.id, profile };
+    } catch {
+      return null;
     }
-    if (!profile) {
-      profile = await crm.upsertStudentByAuthUid({
-        authUid: user.id,
-        email: user.email ?? "",
-        fullName: (user.user_metadata?.full_name as string | undefined) ?? "",
-      });
-    }
-    // Email collision with a staff profile (or another taken email) → no
-    // student session.
-    if (!profile) return null;
-    return { userId: profile.id, profile };
-  } catch {
-    return null;
-  }
-}
+  },
+);
 
 /**
  * Read-mostly resolution for /api/me (header avatar). Avoids the
@@ -58,29 +65,31 @@ export async function getStudentSession(): Promise<StudentSession | null> {
  * per pageview — preserving the perf win while fixing the post-login window
  * where the header showed a Google-login button instead of the avatar.
  */
-export async function getStudentSessionReadOnly(): Promise<StudentSession | null> {
-  try {
-    const user = await getSessionUser();
-    if (!user) return null;
-    let profile = await crm.getProfileByAuthUid(user.id);
-    if (!profile) {
-      profile = await crm.getProfile(user.id);
+export const getStudentSessionReadOnly = cache(
+  async (): Promise<StudentSession | null> => {
+    try {
+      const user = await getSessionUser();
+      if (!user) return null;
+      let profile = await crm.getProfileByAuthUid(user.id);
+      if (!profile) {
+        profile = await crm.getProfile(user.id);
+      }
+      if (!profile) {
+        // Profile not linked yet (first /api/me after Google login, before any
+        // /dashboard visit). Link it once; subsequent calls hit the read path.
+        profile = await crm.upsertStudentByAuthUid({
+          authUid: user.id,
+          email: user.email ?? "",
+          fullName: (user.user_metadata?.full_name as string | undefined) ?? "",
+        });
+      }
+      if (!profile) return null;
+      return { userId: profile.id, profile };
+    } catch {
+      return null;
     }
-    if (!profile) {
-      // Profile not linked yet (first /api/me after Google login, before any
-      // /dashboard visit). Link it once; subsequent calls hit the read path.
-      profile = await crm.upsertStudentByAuthUid({
-        authUid: user.id,
-        email: user.email ?? "",
-        fullName: (user.user_metadata?.full_name as string | undefined) ?? "",
-      });
-    }
-    if (!profile) return null;
-    return { userId: profile.id, profile };
-  } catch {
-    return null;
-  }
-}
+  },
+);
 
 export async function requireStudent(
   locale: AppLocale,

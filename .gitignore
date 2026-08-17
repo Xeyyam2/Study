@@ -48,6 +48,10 @@ yarn-error.log*
 /*.txt
 /*.html
 /*.cjs
+/.freebuff/
+# shell-escape junk (files with broken names created by unescaped commands)
+/'
+/\{console.error('ERR'
 /test-*.{ts,ps1,cjs}
 /_*-backup.*
 /faza*.md
