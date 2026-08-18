@@ -88,7 +88,9 @@ export async function WhyStudyTurkey({ locale }: WhyStudyTurkeyProps) {
               </p>
               {s.label === t("stateTuitionLabel") && (
                 <p className="mt-1 text-xs text-muted-foreground">
-                  {formatNumber(stateCount, locale)}+ state universities
+                  {t("stateUniversitiesNote", {
+                    count: formatNumber(stateCount, locale),
+                  })}
                 </p>
               )}
             </div>

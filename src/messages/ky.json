@@ -171,14 +171,15 @@
       "whatsapp": "WhatsApp-то чат"
     },
     "whyStudy": {
-      "eyebrow": "Why study in Turkey",
-      "title": "Study in Turkey: quality education at a fraction of Western costs",
-      "shortAnswer": "Studying in Turkey means YÖK-accredited degrees from 150+ universities, tuition from around USD 600 a year at state universities and scholarships up to 100%. Hundreds of programs are taught in English, living costs stay low, and Istanbul, Ankara and Izmir host some of the region's strongest engineering, medicine and business schools.",
-      "universitiesLabel": "Accredited universities",
-      "stateTuitionLabel": "State tuition from",
-      "englishProgramsLabel": "English-taught programs",
-      "scholarshipLabel": "Scholarships up to",
-      "cta": "Browse universities"
+      "eyebrow": "Эмне үчүн Түркияда окуу керек",
+      "title": "Түркияда билим алуу: батыш чыгымдарынын бир бөлүгүнө сапалуу билим",
+      "shortAnswer": "Түркияда окуу — 150дён ашык университеттен YÖK аккредиттелген диплом, мамлекеттик университеттерде жылына такталар 600 АКШ долларынан башталган окуу акысы жана 100%ке чейинки стипендиялар. Жүздөгөн программалар англис тилинде өтүлөт, жашоо чыгымдары төмөн, ал эми Истанбул, Анкара жана Измир аймактагы эң күчтүү инженердик, медициналык жана бизнес мектептерин камтыйт.",
+      "universitiesLabel": "Аккредиттелген университеттер",
+      "stateTuitionLabel": "Мамлекеттик акысы",
+      "englishProgramsLabel": "Англисче программалар",
+      "scholarshipLabel": "Стипендиялар",
+      "cta": "Университеттерди көрүү",
+      "stateUniversitiesNote": "{count}+ мамлекеттик университет"
     }
   },
   "UniversitiesPage": {

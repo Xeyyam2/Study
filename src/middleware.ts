@@ -81,6 +81,13 @@ export default async function middleware(req: NextRequest) {
           toSet.forEach(({ name, value, options }) =>
             res.cookies.set(name, value, options),
           );
+          // Forward the refreshed session to the downstream request as well
+          // (the Supabase-documented pattern). Without this, the page/RSC
+          // render still sees the OLD access token from the browser and
+          // performs a SECOND refresh with the already-rotated refresh token;
+          // when that loses the rotation race getUser() returns null and
+          // protected pages bounce the user back to /dashboard/login.
+          toSet.forEach(({ name, value }) => req.cookies.set(name, value));
         },
       },
     });

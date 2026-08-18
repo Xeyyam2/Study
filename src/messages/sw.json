@@ -171,14 +171,15 @@
       "whatsapp": "Piga gumzo WhatsApp"
     },
     "whyStudy": {
-      "eyebrow": "Why study in Turkey",
-      "title": "Study in Turkey: quality education at a fraction of Western costs",
-      "shortAnswer": "Studying in Turkey means YÖK-accredited degrees from 150+ universities, tuition from around USD 600 a year at state universities and scholarships up to 100%. Hundreds of programs are taught in English, living costs stay low, and Istanbul, Ankara and Izmir host some of the region's strongest engineering, medicine and business schools.",
-      "universitiesLabel": "Accredited universities",
-      "stateTuitionLabel": "State tuition from",
-      "englishProgramsLabel": "English-taught programs",
-      "scholarshipLabel": "Scholarships up to",
-      "cta": "Browse universities"
+      "eyebrow": "Kwa nini usome nchini Uturuki",
+      "title": "Kusoma Uturuki: elimu bora kwa gharama ndogo kuliko ya nchi za Magharibi",
+      "shortAnswer": "Kusoma Uturuki kunamaanisha shahada zenye uidhinisho wa YÖK kutoka vyuo vikuu zaidi ya 150, ada kuanzia takribani Dola 600 kwa mwaka katika vyuo vya umma na ufadhili wa masomo hadi 100%. Programu mamia zinafundishwa kwa Kiingereza, gharama za maisha zinabaki chini, na Istanbul, Ankara na Izmir zinashughulikia baadhi ya shule bora zaidi za uhandisi, tiba na biashara katika eneo hilo.",
+      "universitiesLabel": "Vyuo vikuu vilivyoidhinishwa",
+      "stateTuitionLabel": "Ada za vyuo vya umma kutoka",
+      "englishProgramsLabel": "Programu za Kiingereza",
+      "scholarshipLabel": "Ufadhili hadi",
+      "cta": "Tazama vyuo vikuu",
+      "stateUniversitiesNote": "{count}+ vyuo vikuu vya umma"
     }
   },
   "UniversitiesPage": {

@@ -84,7 +84,8 @@
       "stateTuitionLabel": "State tuition from",
       "englishProgramsLabel": "English-taught programs",
       "scholarshipLabel": "Scholarships up to",
-      "cta": "Browse universities"
+      "cta": "Browse universities",
+      "stateUniversitiesNote": "{count}+ state universities"
     },
     "stats": {
       "universities": "Universities",

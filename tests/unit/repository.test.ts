@@ -82,6 +82,59 @@ describe("UniversityRepository (seed)", () => {
     expect(await data.universities.getListingMetadata([])).toEqual(new Map());
   });
 
+  describe("listWithMetadata (listing + card metadata in one call)", () => {
+    it("returns one item per listed university with metadata attached", async () => {
+      const items = await data.universities.listWithMetadata();
+      const universities = await data.universities.list();
+
+      expect(items.map((i) => i.university.id)).toEqual(
+        universities.map((u) => u.id),
+      );
+      for (const item of items) {
+        expect(item.metadata.city).toEqual(expect.anything());
+        expect(Array.isArray(item.metadata.degreeLevels)).toBe(true);
+        expect(typeof item.metadata.rating).toBe("number");
+        expect(typeof item.metadata.count).toBe("number");
+      }
+    });
+
+    it("matches getListingMetadata values (same source of truth)", async () => {
+      const items = await data.universities.listWithMetadata();
+      const byId = new Map(items.map((i) => [i.university.id, i.metadata]));
+      const batch = await data.universities.getListingMetadata([
+        ...byId.keys(),
+      ]);
+
+      for (const [id, metadata] of byId) {
+        expect(metadata).toEqual(batch.get(id));
+      }
+    });
+
+    it("respects the same filters as list()", async () => {
+      const items = await data.universities.listWithMetadata({
+        citySlug: "istanbul",
+      });
+
+      expect(items.length).toBeGreaterThan(0);
+      expect(items.every((i) => i.metadata.city?.slug === "istanbul")).toBe(
+        true,
+      );
+    });
+
+    it("carries known seed values for the flagship university", async () => {
+      const items = await data.universities.listWithMetadata();
+      const bahcesehir = items.find((i) => i.university.id === "u-bahcesehir");
+
+      expect(bahcesehir).toBeDefined();
+      expect(bahcesehir!.metadata).toMatchObject({
+        city: expect.objectContaining({ slug: "istanbul" }),
+        minTuitionUSD: 3500,
+        originalFeeUSD: 3850,
+        degreeLevels: expect.arrayContaining(["bachelor"]),
+      });
+    });
+  });
+
   it("returns related universities excluding self", async () => {
     const related = await data.universities.getRelated("bahcesehir-university");
     expect(related.every((u) => u.slug !== "bahcesehir-university")).toBe(true);
