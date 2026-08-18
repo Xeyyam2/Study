@@ -11,6 +11,49 @@ const SESSION_COOKIE = "admin_session";
 
 const intlMiddleware = createMiddleware(routing);
 
+/**
+ * Refresh the Supabase session inside the middleware and propagate it BOTH
+ * ways (the Supabase-documented pattern):
+ *   - response: Set-Cookie so the browser persists the rotated tokens
+ *   - request: req.cookies.set so the downstream page/RSC render sees the
+ *     fresh access token instead of the stale one the browser sent.
+ *
+ * Without the request-side forward, the page render performs a SECOND refresh
+ * with the already-rotated refresh token; once that loses the rotation race
+ * (Supabase refresh-token reuse detection), the whole token family is revoked
+ * and protected pages bounce the user to a login page — the "admin panel
+ * randomly logs me out" class of bugs.
+ *
+ * Returns the resolved user (null when anonymous / refresh failed), so callers
+ * can gate on it without a second network round-trip.
+ */
+async function refreshSupabaseSession(
+  req: NextRequest,
+  res: NextResponse,
+): Promise<{ user: unknown | null }> {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!url || !anon) return { user: null };
+  const supabase = createServerClient(url, anon, {
+    auth: { flowType: "pkce" },
+    cookies: {
+      getAll: () => req.cookies.getAll(),
+      setAll: (toSet) => {
+        toSet.forEach(({ name, value, options }) =>
+          res.cookies.set(name, value, options),
+        );
+        toSet.forEach(({ name, value }) => req.cookies.set(name, value));
+      },
+    },
+  });
+  // getUser() validates the JWT server-side (preferred over getSession()) and
+  // transparently refreshes an expired access token.
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  return { user };
+}
+
 export default async function middleware(req: NextRequest) {
   const { pathname } = req.nextUrl;
 
@@ -24,23 +67,19 @@ export default async function middleware(req: NextRequest) {
     // cookie is accepted here so demo logins (DEV_AUTH_ENABLED) keep working —
     // the layout re-validates the actual profile/role.
     if (!pathname.startsWith("/admin/login")) {
-      const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-      const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+      const res = NextResponse.next();
+      // PERF(P0): skip the Supabase round-trip when no auth cookie is present.
+      const hasAuthCookie = req.cookies
+        .getAll()
+        .some((c) => /^sb[-.]/.test(c.name));
       let authenticated = false;
-      if (url && anon) {
-        const supabase = createServerClient(url, anon, {
-          auth: { flowType: "pkce" },
-          cookies: {
-            getAll: () => req.cookies.getAll(),
-            setAll: () => {
-              // Read-only in middleware; refresh happens via getUser() below.
-            },
-          },
-        });
-        // getUser() validates the JWT server-side (preferred over getSession()).
-        const {
-          data: { user },
-        } = await supabase.auth.getUser();
+      if (hasAuthCookie) {
+        // Same persist+forward refresh as the intl branch below: previously
+        // this client was read-only (setAll: noop), so rotated tokens never
+        // reached the browser — every /admin pageview after the first hour
+        // raced the refresh-token rotation and eventually revoked the whole
+        // token family (random logouts inside the admin panel).
+        const { user } = await refreshSupabaseSession(req, res);
         authenticated = !!user;
       }
       if (!authenticated && req.cookies.get(SESSION_COOKIE)?.value) {
@@ -52,6 +91,7 @@ export default async function middleware(req: NextRequest) {
         loginUrl.search = "";
         return NextResponse.redirect(loginUrl);
       }
+      return res;
     }
     // /admin/* never passes through the intl middleware (locale-less routes).
     return NextResponse.next();
@@ -67,31 +107,11 @@ export default async function middleware(req: NextRequest) {
   // cookie is actually present — anonymous visitors otherwise pay a Supabase
   // hop on every marketing pageview. Supabase ssr cookies are named
   // `sb-<ref>-auth-token` / `sb.<ref>.auth.token*`.
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   const hasAuthCookie = req.cookies
     .getAll()
     .some((c) => /^sb[-.]/.test(c.name));
-  if (url && anon && hasAuthCookie) {
-    const supabase = createServerClient(url, anon, {
-      auth: { flowType: "pkce" },
-      cookies: {
-        getAll: () => req.cookies.getAll(),
-        setAll: (toSet) => {
-          toSet.forEach(({ name, value, options }) =>
-            res.cookies.set(name, value, options),
-          );
-          // Forward the refreshed session to the downstream request as well
-          // (the Supabase-documented pattern). Without this, the page/RSC
-          // render still sees the OLD access token from the browser and
-          // performs a SECOND refresh with the already-rotated refresh token;
-          // when that loses the rotation race getUser() returns null and
-          // protected pages bounce the user back to /dashboard/login.
-          toSet.forEach(({ name, value }) => req.cookies.set(name, value));
-        },
-      },
-    });
-    await supabase.auth.getUser();
+  if (hasAuthCookie) {
+    await refreshSupabaseSession(req, res);
   }
 
   return res;

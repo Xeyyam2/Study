@@ -9,6 +9,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { EmailOtpForm } from "@/components/auth/EmailOtpForm";
+import { GoogleSignInButton } from "@/components/auth/GoogleSignInButton";
 import { isDevAuthEnabled } from "@/lib/crm/student-session";
 
 export const dynamic = "force-dynamic";
@@ -28,6 +29,17 @@ export default async function AdminLoginPage() {
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
+          {/* Google sign-in for admin/consultant/editor accounts: the auth
+              callback routes allowlisted emails straight to /admin, so an
+              admin Gmail lands directly in the panel. The OTP form below is
+              the password-based path for non-Google staff mailboxes (requires
+              the email provider to be enabled in Supabase). */}
+          <GoogleSignInButton next="/admin" />
+          <div className="flex items-center gap-3" aria-hidden="true">
+            <span className="h-px flex-1 bg-border" />
+            <span className="text-xs uppercase text-muted-foreground">or</span>
+            <span className="h-px flex-1 bg-border" />
+          </div>
           <EmailOtpForm next="/admin" />
           {showDev && staff.length > 0 && (
             <div className="space-y-2 border-t border-border pt-4">
