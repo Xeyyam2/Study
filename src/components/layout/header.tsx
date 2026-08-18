@@ -12,6 +12,7 @@ import { HeaderInteractive } from "./header-interactive";
 const navItems = [
   { key: "universities", href: "/universities" },
   { key: "programs", href: "/programs" },
+  { key: "compare", href: "/compare" },
   { key: "about", href: "/about" },
   { key: "blog", href: "/blog" },
   { key: "contact", href: "/contact" },

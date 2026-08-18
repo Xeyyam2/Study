@@ -261,6 +261,15 @@ export function HeaderInteractive() {
                   </li>
                   <li>
                     <Link
+                      href="/compare"
+                      onClick={() => setOpen(false)}
+                      className="block rounded-lg px-4 py-3 text-base font-medium text-foreground transition-colors hover:bg-accent"
+                    >
+                      {t("compare")}
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
                       href="/about"
                       onClick={() => setOpen(false)}
                       className="block rounded-lg px-4 py-3 text-base font-medium text-foreground transition-colors hover:bg-accent"
