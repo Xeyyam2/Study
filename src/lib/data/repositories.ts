@@ -21,10 +21,30 @@ export interface UniversityListingMetadata {
   originalFeeUSD?: number;
   rating: number;
   count: number;
+  /** Degree levels offered — drives the client-side degree filter (Phase 2). */
+  degreeLevels: DegreeLevel[];
+}
+
+/**
+ * One row of the universities listing: the university plus the metadata its
+ * card renders (city, min tuition, rating). Shape is intentionally plain and
+ * JSON-serializable so the whole listing can cross an `unstable_cache`
+ * boundary (Maps cannot).
+ */
+export interface UniversityListingItem {
+  university: University;
+  metadata: UniversityListingMetadata;
 }
 
 export interface UniversityRepository {
   list(filters?: UniversityFilters): Promise<University[]>;
+  /**
+   * Listing query + card metadata in a single round trip. Equivalent to
+   * `list(filters)` + `getListingMetadata(ids)` without the waterfall.
+   */
+  listWithMetadata(
+    filters?: UniversityFilters,
+  ): Promise<UniversityListingItem[]>;
   getFeatured(limit?: number): Promise<University[]>;
   getBySlug(slug: string): Promise<University | null>;
   getDetail(slug: string): Promise<UniversityDetail | null>;

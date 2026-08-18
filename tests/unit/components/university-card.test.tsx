@@ -60,6 +60,7 @@ describe("UniversityCard pricing", () => {
           originalFeeUSD: metadataOriginalFee,
           rating: 4.5,
           count: 10,
+          degreeLevels: ["bachelor"],
         }}
         labels={labels}
       />,

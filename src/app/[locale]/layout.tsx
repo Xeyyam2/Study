@@ -24,6 +24,7 @@ const CLIENT_NAMESPACES = [
   "Compare",
   "Search",
   "Errors",
+  "UniversitiesPage",
 ] as const;
 
 function pickClientMessages(

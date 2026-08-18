@@ -29,6 +29,7 @@ import type {
   ReviewRepository,
   ScholarshipRepository,
   UniversityRepository,
+  UniversityListingItem,
   UniversityListingMetadata,
   SearchResult,
 } from "./repositories";
@@ -168,6 +169,51 @@ function mapProgramItem(r: Record<string, unknown>) {
 }
 
 /**
+ * Builds the shared WHERE clause + parameter list for the university listing
+ * queries (`list` / `listWithMetadata`) so the two listings can never drift
+ * apart semantically. `maxTuitionUSD` is intentionally NOT handled here — the
+ * callers apply it via their own tuition expression.
+ */
+function buildUniversityWhere(filters: UniversityFilters) {
+  const where: string[] = [];
+  const params: unknown[] = [];
+  let pi = 1;
+  if (filters.citySlug) {
+    where.push(
+      `u.city_id = (select id from public.cities where slug = $${pi})`,
+    );
+    params.push(filters.citySlug);
+    pi++;
+  }
+  if (typeof filters.isState === "boolean") {
+    where.push(`u.is_state = $${pi}`);
+    params.push(filters.isState);
+    pi++;
+  }
+  if (filters.search) {
+    where.push(`(lower(u.name) like $${pi} or u.slug like $${pi})`);
+    params.push(`%${filters.search.toLowerCase()}%`);
+    pi++;
+  }
+  if (filters.degreeLevel) {
+    where.push(
+      `exists (select 1 from public.university_programs up join public.programs p on p.id = up.program_id
+       where up.university_id = u.id and p.degree_level = $${pi})`,
+    );
+    params.push(filters.degreeLevel);
+    pi++;
+  }
+  if (filters.language) {
+    where.push(
+      `($${pi} = any(u.languages) or exists (select 1 from public.university_programs up where up.university_id = u.id and up.language = $${pi}))`,
+    );
+    params.push(filters.language);
+    pi++;
+  }
+  return { where, params };
+}
+
+/**
  * Builds the shared WHERE clause + parameter list for program listing
  * queries (countAll / listPage). Filters:
  *  - category: exact program category slug (p.category_slug)
@@ -256,41 +302,7 @@ function rowBlogPost(r: Record<string, unknown>): BlogPost {
 export function createPgDataLayer(getPool: () => Pool): DataLayer {
   const universities: UniversityRepository = {
     async list(filters: UniversityFilters = {}): Promise<University[]> {
-      const where: string[] = [];
-      const params: unknown[] = [];
-      let pi = 1;
-      if (filters.citySlug) {
-        where.push(
-          `u.city_id = (select id from public.cities where slug = $${pi})`,
-        );
-        params.push(filters.citySlug);
-        pi++;
-      }
-      if (typeof filters.isState === "boolean") {
-        where.push(`u.is_state = $${pi}`);
-        params.push(filters.isState);
-        pi++;
-      }
-      if (filters.search) {
-        where.push(`(lower(u.name) like $${pi} or u.slug like $${pi})`);
-        params.push(`%${filters.search.toLowerCase()}%`);
-        pi++;
-      }
-      if (filters.degreeLevel) {
-        where.push(
-          `exists (select 1 from public.university_programs up join public.programs p on p.id = up.program_id
-           where up.university_id = u.id and p.degree_level = $${pi})`,
-        );
-        params.push(filters.degreeLevel);
-        pi++;
-      }
-      if (filters.language) {
-        where.push(
-          `($${pi} = any(u.languages) or exists (select 1 from public.university_programs up where up.university_id = u.id and up.language = $${pi}))`,
-        );
-        params.push(filters.language);
-        pi++;
-      }
+      const { where, params } = buildUniversityWhere(filters);
       // Min USD tədris haqqı — korrelyasiyalı subquery (filtr SQL-də tətbiq olunur, N+1 yoxdur).
       const minTuitionExpr = `(select min(tuition_fee) filter (where currency='USD' and tuition_fee > 0) from public.university_programs up where up.university_id = u.id)`;
       const wantMaxTuition =
@@ -301,12 +313,80 @@ export function createPgDataLayer(getPool: () => Pool): DataLayer {
       sql += ` from public.universities u`;
       if (where.length) sql += ` where ` + where.join(" and ");
       if (wantMaxTuition) {
-        sql += `${where.length ? " and " : " where "}${minTuitionExpr} is not null and ${minTuitionExpr} <= $${pi}`;
+        sql += `${where.length ? " and " : " where "}${minTuitionExpr} is not null and ${minTuitionExpr} <= $${params.length + 1}`;
         params.push(filters.maxTuitionUSD as number);
       }
       sql += ` order by u.name`;
       const res = await getPool().query(sql, params);
       return res.rows.map(rowUniversity);
+    },
+
+    async listWithMetadata(
+      filters: UniversityFilters = {},
+    ): Promise<UniversityListingItem[]> {
+      const { where, params } = buildUniversityWhere(filters);
+      const wantMaxTuition =
+        filters.maxTuitionUSD !== undefined && filters.maxTuitionUSD > 0;
+
+      let sql = `select u.*,
+            c.id c_id, c.slug c_slug, c.country_code c_country_code, c.name_i18n c_name_i18n,
+            t.min_tuition, t.original_fee,
+            coalesce(rs.avg_rating, 0) avg_rating, coalesce(rs.review_count, 0) review_count,
+            coalesce(dp.degree_levels, '{}') degree_levels
+          from public.universities u
+          left join public.cities c on c.id = u.city_id
+          left join lateral (
+            select up.tuition_fee min_tuition, up.original_fee
+            from public.university_programs up
+            where up.university_id = u.id and up.currency = 'USD' and up.tuition_fee > 0
+            order by up.tuition_fee asc, up.id asc
+            limit 1
+          ) t on true
+          left join lateral (
+            select avg(r.rating) avg_rating, count(*)::int review_count
+            from public.reviews r
+            where r.university_id = u.id
+          ) rs on true
+          left join lateral (
+            select coalesce(array_agg(distinct p.degree_level) filter (where p.degree_level is not null), '{}') degree_levels
+            from public.university_programs up
+            join public.programs p on p.id = up.program_id
+            where up.university_id = u.id
+          ) dp on true`;
+      if (where.length) sql += ` where ` + where.join(" and ");
+      if (wantMaxTuition) {
+        // The lateral tuition row is the min USD fee, so the max-tuition filter
+        // is a simple predicate on it — no repeated correlated subquery.
+        sql += `${where.length ? " and " : " where "}t.min_tuition is not null and t.min_tuition <= $${params.length + 1}`;
+        params.push(filters.maxTuitionUSD as number);
+      }
+      sql += ` order by u.name`;
+
+      const res = await getPool().query(sql, params);
+      return res.rows.map((r) => ({
+        university: rowUniversity(r),
+        metadata: {
+          city: r.c_id
+            ? {
+                id: r.c_id as string,
+                slug: r.c_slug as string,
+                countryId: r.c_country_code as string,
+                name: i18n(r.c_name_i18n),
+              }
+            : null,
+          minTuitionUSD:
+            r.min_tuition == null ? undefined : Number(r.min_tuition),
+          originalFeeUSD:
+            r.original_fee != null &&
+            r.min_tuition != null &&
+            Number(r.original_fee) > Number(r.min_tuition)
+              ? Number(r.original_fee)
+              : undefined,
+          rating: Math.round(Number(r.avg_rating ?? 0) * 10) / 10,
+          count: Number(r.review_count ?? 0),
+          degreeLevels: (r.degree_levels as DegreeLevel[]) ?? [],
+        },
+      }));
     },
 
     async getFeatured(limit = 4): Promise<University[]> {
@@ -447,17 +527,26 @@ export function createPgDataLayer(getPool: () => Pool): DataLayer {
                from public.reviews
                where university_id = any($1::text[])
                group by university_id
+             ), degree_levels as (
+               select up.university_id,
+                      coalesce(array_agg(distinct p.degree_level) filter (where p.degree_level is not null), '{}') degree_levels
+               from public.university_programs up
+               join public.programs p on p.id = up.program_id
+               where up.university_id = any($1::text[])
+               group by up.university_id
              )
          select u.id,
                 c.id city_id, c.slug city_slug, c.country_code city_country_code, c.name_i18n city_name_i18n,
                 tuition.min_tuition,
                 tuition.original_fee,
                 coalesce(review_stats.avg_rating, 0) avg_rating,
-                coalesce(review_stats.review_count, 0) review_count
+                coalesce(review_stats.review_count, 0) review_count,
+                coalesce(degree_levels.degree_levels, '{}') degree_levels
          from public.universities u
          left join public.cities c on c.id = u.city_id
          left join tuition on tuition.university_id = u.id
          left join review_stats on review_stats.university_id = u.id
+         left join degree_levels on degree_levels.university_id = u.id
          where u.id = any($1::text[])
          `,
         [universityIds],
@@ -483,6 +572,7 @@ export function createPgDataLayer(getPool: () => Pool): DataLayer {
               : undefined,
           rating: Math.round(Number(row.avg_rating ?? 0) * 10) / 10,
           count: Number(row.review_count ?? 0),
+          degreeLevels: (row.degree_levels as DegreeLevel[]) ?? [],
         });
       }
       return metadata;

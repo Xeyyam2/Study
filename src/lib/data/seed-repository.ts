@@ -2,6 +2,7 @@ import type {
   BlogPost,
   City,
   Country,
+  DegreeLevel,
   Dormitory,
   Faq,
   Program,
@@ -38,6 +39,7 @@ import type {
   ReviewRepository,
   ScholarshipRepository,
   UniversityRepository,
+  UniversityListingItem,
   UniversityListingMetadata,
 } from "./repositories";
 
@@ -93,6 +95,31 @@ class SeedUniversityRepository implements UniversityRepository {
         return true;
       }),
     );
+  }
+
+  async listWithMetadata(
+    filters: UniversityFilters = {},
+  ): Promise<UniversityListingItem[]> {
+    const universities = await this.list(filters);
+    const metadata = await this.getListingMetadata(
+      universities.map((u) => u.id),
+    );
+    return universities.map((university) => {
+      const meta = metadata.get(university.id);
+      // getListingMetadata covers every seed university, so a miss would be a
+      // seed-data bug — fall back to an empty card rather than crash.
+      return {
+        university,
+        metadata: meta ?? {
+          city: null,
+          minTuitionUSD: undefined,
+          originalFeeUSD: undefined,
+          rating: 0,
+          count: 0,
+          degreeLevels: [],
+        },
+      };
+    });
   }
 
   async getFeatured(limit = 4): Promise<University[]> {
@@ -186,6 +213,18 @@ class SeedUniversityRepository implements UniversityRepository {
         : 0;
       const cheapest = fees[0];
 
+      const degreeLevels = [
+        ...new Set(
+          seedUniversityPrograms
+            .filter((up) => up.universityId === university.id)
+            .map(
+              (up) =>
+                seedPrograms.find((p) => p.id === up.programId)?.degreeLevel,
+            )
+            .filter((level): level is DegreeLevel => Boolean(level)),
+        ),
+      ];
+
       metadata.set(university.id, {
         city,
         minTuitionUSD: cheapest?.tuitionFee,
@@ -195,6 +234,7 @@ class SeedUniversityRepository implements UniversityRepository {
             : undefined,
         rating,
         count: reviews.length,
+        degreeLevels,
       });
     }
 

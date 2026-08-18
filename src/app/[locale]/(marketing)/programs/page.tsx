@@ -3,7 +3,6 @@ import { Suspense } from "react";
 import Image from "next/image";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import { GraduationCap, MapPin, SearchX } from "lucide-react";
-import { data } from "@/lib/data";
 import type { AppLocale } from "@/i18n/routing";
 import { Link } from "@/i18n/navigation";
 import { buildPageMetadata } from "@/lib/seo/alternates";
@@ -21,6 +20,11 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { parseProgramListingQuery } from "@/lib/programs/listing-query";
+import {
+  getCachedCities,
+  getCachedProgramCategories,
+  getCachedProgramListingPage,
+} from "@/lib/programs/listing-data";
 
 const PER_PAGE = 10;
 
@@ -84,10 +88,12 @@ export default async function ProgramsPage({
     ...(query.search ? { search: query.search } : {}),
   };
 
+  // PERF: categories/cities/listing are data-cached (unstable_cache) — repeat
+  // requests render without Postgres round-trips. Same pattern as universities.
   const [categories, cities, listing] = await Promise.all([
-    data.programs.getCategories(),
-    data.cities.list(),
-    data.programs.listPage(page, PER_PAGE, filters),
+    getCachedProgramCategories(),
+    getCachedCities(),
+    getCachedProgramListingPage(page, PER_PAGE, filters),
   ]);
   const listedPrograms = listing.programs;
 

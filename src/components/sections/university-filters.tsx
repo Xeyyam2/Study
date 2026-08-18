@@ -78,6 +78,14 @@ export function UniversityFilters({
   const lastUrlSearch = useRef(searchParams.get("search") ?? "");
   const searchEditedLocally = useRef(false);
   const searchTimeout = useRef<number | null>(null);
+  // maxTuition is debounced like search — pushing a URL update on every
+  // keystroke would spam history and re-render the whole explorer per digit.
+  const [maxTuitionValue, setMaxTuitionValue] = useState(
+    searchParams.get("maxTuition") ?? "",
+  );
+  const lastUrlMaxTuition = useRef(searchParams.get("maxTuition") ?? "");
+  const maxTuitionEditedLocally = useRef(false);
+  const maxTuitionTimeout = useRef<number | null>(null);
 
   const update = useCallback(
     (key: string, value: string | null) => {
@@ -97,8 +105,14 @@ export function UniversityFilters({
       window.clearTimeout(searchTimeout.current);
       searchTimeout.current = null;
     }
+    if (maxTuitionTimeout.current !== null) {
+      window.clearTimeout(maxTuitionTimeout.current);
+      maxTuitionTimeout.current = null;
+    }
     searchEditedLocally.current = false;
+    maxTuitionEditedLocally.current = false;
     setSearchValue("");
+    setMaxTuitionValue("");
     const params = new URLSearchParams(searchParams.toString());
     LISTING_FILTER_KEYS.forEach((key) => params.delete(key));
     const qs = params.toString();
@@ -134,6 +148,34 @@ export function UniversityFilters({
     };
   }, [searchParams, searchValue, update]);
 
+  useEffect(() => {
+    const urlMaxTuition = searchParams.get("maxTuition") ?? "";
+    if (urlMaxTuition === lastUrlMaxTuition.current) return;
+
+    lastUrlMaxTuition.current = urlMaxTuition;
+    maxTuitionEditedLocally.current = false;
+    setMaxTuitionValue(urlMaxTuition);
+  }, [searchParams]);
+
+  useEffect(() => {
+    const urlMaxTuition = searchParams.get("maxTuition") ?? "";
+    if (!maxTuitionEditedLocally.current || maxTuitionValue === urlMaxTuition)
+      return;
+
+    maxTuitionTimeout.current = window.setTimeout(() => {
+      maxTuitionEditedLocally.current = false;
+      maxTuitionTimeout.current = null;
+      update("maxTuition", maxTuitionValue || null);
+    }, 400);
+
+    return () => {
+      if (maxTuitionTimeout.current !== null) {
+        window.clearTimeout(maxTuitionTimeout.current);
+        maxTuitionTimeout.current = null;
+      }
+    };
+  }, [searchParams, maxTuitionValue, update]);
+
   const activeFilterCount = LISTING_FILTER_KEYS.filter((key) =>
     searchParams.get(key),
   ).length;
@@ -146,6 +188,11 @@ export function UniversityFilters({
     setSearchValue: (value: string) => {
       searchEditedLocally.current = true;
       setSearchValue(value);
+    },
+    maxTuitionValue,
+    setMaxTuitionValue: (value: string) => {
+      maxTuitionEditedLocally.current = true;
+      setMaxTuitionValue(value);
     },
     update,
     clearFilters,
@@ -231,6 +278,8 @@ function FilterControls({
   searchParams,
   searchValue,
   setSearchValue,
+  maxTuitionValue,
+  setMaxTuitionValue,
   update,
   clearFilters,
 }: {
@@ -240,6 +289,8 @@ function FilterControls({
   searchParams: ReturnType<typeof useSearchParams>;
   searchValue: string;
   setSearchValue: (value: string) => void;
+  maxTuitionValue: string;
+  setMaxTuitionValue: (value: string) => void;
   update: (key: string, value: string | null) => void;
   clearFilters: () => void;
 }) {
@@ -313,8 +364,8 @@ function FilterControls({
           type="number"
           min="0"
           inputMode="decimal"
-          value={searchParams.get("maxTuition") ?? ""}
-          onChange={(event) => change("maxTuition", event.target.value || null)}
+          value={maxTuitionValue}
+          onChange={(event) => setMaxTuitionValue(event.target.value)}
           placeholder="25000"
           aria-label={labels.maxTuition ?? "Maximum tuition (USD)"}
         />
