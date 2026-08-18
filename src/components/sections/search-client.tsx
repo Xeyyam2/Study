@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import Image from "next/image";
 import { useLocale, useTranslations } from "next-intl";
 import { Search, SearchX, ArrowRight } from "lucide-react";
@@ -20,19 +20,22 @@ import { cn } from "@/lib/utils";
 const SEARCH_LIMIT = 12;
 
 /**
- * Live search page (StudyLeo-style): as the user types, results appear below
- * grouped into Universities (hero-image cards), Programs (list) and Cities
- * (chips), each with a "View All" link. Empty queries show nothing; no
- * matches show a friendly empty state.
+ * Live search page (StudyLeo-style): as the user types, an autocomplete
+ * dropdown mirrors the hero search (keyboard-navigable suggestions under the
+ * input), and full results appear below grouped into Universities (hero-image
+ * cards), Programs (list) and Cities (chips), each with a "View All" link.
+ * Empty queries show nothing; no matches show a friendly empty state.
  */
 export function SearchClient({ initialQuery }: { initialQuery: string }) {
   const t = useTranslations("Search");
   const locale = useLocale();
+  const boxRef = useRef<HTMLDivElement>(null);
   const {
     query,
     setQuery,
     hits,
     open,
+    setOpen,
     activeIndex,
     setActiveIndex,
     onInputKeyDown,
@@ -44,6 +47,16 @@ export function SearchClient({ initialQuery }: { initialQuery: string }) {
     if (initialQuery) setQuery(initialQuery);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  // Close the autocomplete dropdown when clicking outside.
+  useEffect(() => {
+    function onClick(e: MouseEvent) {
+      if (boxRef.current && !boxRef.current.contains(e.target as Node))
+        setOpen(false);
+    }
+    document.addEventListener("mousedown", onClick);
+    return () => document.removeEventListener("mousedown", onClick);
+  }, [setOpen]);
 
   const q = query.trim();
   const universities = hits.filter((h) => h.type === "university");
@@ -74,8 +87,9 @@ export function SearchClient({ initialQuery }: { initialQuery: string }) {
         <p className="mt-2 max-w-2xl text-muted-foreground">{t("subtitle")}</p>
       </header>
 
-      {/* Search box — results appear live as you type */}
-      <div className="relative mx-auto max-w-2xl">
+      {/* Search box — autocomplete dropdown under the input (hero-style) +
+          live results appear below as you type */}
+      <div className="relative mx-auto max-w-2xl" ref={boxRef}>
         <Search className="pointer-events-none absolute start-4 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
         <input
           type="search"
@@ -83,12 +97,13 @@ export function SearchClient({ initialQuery }: { initialQuery: string }) {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={onKey}
+          onFocus={() => hits.length && setOpen(true)}
           placeholder={t("placeholder")}
           aria-label={t("placeholder")}
           role="combobox"
           aria-autocomplete="list"
           aria-expanded={open}
-          aria-controls="search-results-listbox"
+          aria-controls="search-suggest-listbox"
           aria-activedescendant={
             open && hits.length ? `search-option-${activeIndex}` : undefined
           }
@@ -97,11 +112,50 @@ export function SearchClient({ initialQuery }: { initialQuery: string }) {
         <span className="pointer-events-none absolute end-5 top-1/2 hidden -translate-y-1/2 text-sm text-muted-foreground sm:block">
           {t("search")}
         </span>
+
+        {/* Autocomplete dropdown — mirrors the hero search (same hook,
+            same keyboard model: ↑/↓ move, Enter opens, Esc closes). */}
+        {open && hits.length > 0 && (
+          <ul
+            id="search-suggest-listbox"
+            role="listbox"
+            className="absolute z-40 mt-1 w-full overflow-hidden rounded-xl border border-border bg-card shadow-flat-hover"
+          >
+            {hits.map((h, i) => (
+              <li
+                key={`${h.type}-${h.id}`}
+                id={`search-option-${i}`}
+                role="option"
+                aria-selected={i === activeIndex}
+              >
+                <button
+                  type="button"
+                  onMouseEnter={() => setActiveIndex(i)}
+                  onClick={() => {
+                    setOpen(false);
+                    window.location.href = searchHitRoute(h);
+                  }}
+                  className={cn(
+                    "flex w-full items-center justify-between gap-3 px-4 py-2.5 text-left text-sm",
+                    i === activeIndex ? "bg-surface-low" : "",
+                  )}
+                >
+                  <span className="truncate font-medium text-foreground">
+                    {hitLabel(h)}
+                  </span>
+                  <span className="shrink-0 text-xs uppercase text-muted-foreground">
+                    {h.type}
+                  </span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
 
       {/* Live results */}
       {q.length >= 2 && (
-        <div id="search-results-listbox" className="mt-10 space-y-10">
+        <div className="mt-10 space-y-10">
           <p className="text-sm text-muted-foreground">
             {t("results", { count: hits.length, query: q })}
           </p>
