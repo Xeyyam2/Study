@@ -1,6 +1,7 @@
 // src/lib/crm/session.ts — admin/staff auth (Supabase session + dev fallback)
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
+import { cache } from "react";
 import { crm } from "./index";
 import { getSessionUser } from "@/lib/supabase/server-session";
 import { verifySessionPayload } from "./cookie-signature";
@@ -72,9 +73,14 @@ async function getDevStaffSession(): Promise<AdminSession | null> {
   };
 }
 
-export async function getSession(): Promise<AdminSession | null> {
+// PERF: React.cache dedupes within a single request — the admin layout and
+// each page both call requireStaff → getSession; without caching that is
+// 2× Supabase getUser() (network round-trip) + 2× allowlist/profile queries
+// per admin pageview. cache() collapses them to one each (same pattern as
+// getStudentSession).
+export const getSession = cache(async (): Promise<AdminSession | null> => {
   return (await getStaffSession()) ?? (await getDevStaffSession());
-}
+});
 
 export async function requireStaff(): Promise<AdminSession> {
   const session = await getSession();

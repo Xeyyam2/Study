@@ -18,10 +18,14 @@ import { AdminAllowlistManager } from "@/components/admin/AdminAllowlistManager"
 export const dynamic = "force-dynamic";
 
 export default async function UsersPage() {
-  const { t, locale } = await getAdminT();
-  const session = await requireStaff();
-  const staff = await crm.listStaff();
-  const leads = await crm.listLeads();
+  // PERF: translations, session, staff and leads are independent — fetch
+  // concurrently; only the allowlist depends on the resolved role.
+  const [{ t, locale }, session, staff, leads] = await Promise.all([
+    getAdminT(),
+    requireStaff(),
+    crm.listStaff(),
+    crm.listLeads(),
+  ]);
   const adminCount = staff.filter((s) => s.role === "admin").length;
   const allowlist =
     session.role === "admin" ? await crm.listAdminAllowlist() : [];
